@@ -2,51 +2,130 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-              Shopelios
-            </Link>
-          </div>
+    <header className="w-full bg-white border-b border-gray-200 font-sans">
+      {/* Top Bar */}
+      <div className="hidden md:flex justify-between items-center px-4 py-2 text-sm text-gray-600 border-b border-gray-100 max-w-7xl mx-auto w-full">
+        <div>Welcome to Shopelios</div>
+        <div className="flex items-center space-x-6">
+          <Link href="/store-locator" className="flex items-center hover:text-yellow-500 transition">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            Store Locator
+          </Link>
+          <Link href="/order-tracking" className="flex items-center hover:text-yellow-500 transition">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" /></svg>
+            Order Tracking
+          </Link>
+          <Link href="/login" className="flex items-center hover:text-yellow-500 transition">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+            Login
+          </Link>
+        </div>
+      </div>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/nouveautes" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
-              Nouveautés
-            </Link>
-            <Link href="/hommes" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
-              Hommes
-            </Link>
-            <Link href="/femmes" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
-              Femmes
-            </Link>
-            <Link href="/accessoires" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">
-              Accessoires
-            </Link>
-          </nav>
+      {/* Middle Bar */}
+      <div className="py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-6">
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <Link href="/" className="text-3xl font-extrabold tracking-tight text-gray-900">
+            LOGO
+          </Link>
+        </div>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-400 hover:text-indigo-600 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+        {/* Search Bar & Quick Links */}
+        <div className="flex-1 w-full max-w-3xl flex flex-col">
+          <div className="flex items-center w-full border border-gray-300 rounded-md overflow-hidden bg-white h-11">
+            <input 
+              type="text" 
+              placeholder="Search for Products..." 
+              className="flex-1 px-4 h-full outline-none text-gray-700 placeholder-gray-400"
+            />
+            <div className="flex items-center px-3 border-l border-gray-300 h-full bg-white text-gray-600 text-sm cursor-pointer hover:bg-gray-50">
+              <span>All Categories</span>
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </div>
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 h-full transition-colors">
+              Search
             </button>
-            <button className="p-2 text-gray-400 hover:text-indigo-600 transition-colors relative">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-indigo-600 rounded-full">
+          </div>
+          {/* Quick links under search */}
+          <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+            <Link href="/air" className="hover:text-yellow-500">Air</Link>
+            <Link href="/galaxy" className="hover:text-yellow-500">Galaxy</Link>
+            <Link href="/tab" className="hover:text-yellow-500">Tab</Link>
+            <Link href="/laptop-ai" className="hover:text-yellow-500">Laptop AI</Link>
+            <Link href="/vivo" className="hover:text-yellow-500">Vivo V30E</Link>
+          </div>
+        </div>
+
+        {/* Wishlist & Cart */}
+        <div className="flex items-center flex-shrink-0 space-x-4">
+          <button className="p-2 text-gray-700 hover:text-yellow-500 transition">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          </button>
+          
+          <div className="flex items-center bg-orange-50 rounded-md px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition">
+            <div className="relative mr-3">
+              <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+              <span className="absolute -top-1 -right-2 bg-yellow-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
                 0
               </span>
+            </div>
+            <span className="font-bold text-gray-900 ml-2">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 w-full flex items-center justify-between h-14">
+          
+          <div className="flex items-center h-full space-x-8">
+            {/* All Categories Button */}
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 h-full flex items-center space-x-2 rounded-t-md mt-0.5">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
+              <span>All Categories</span>
+              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
-            <Link href="/login" className="hidden md:inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
-              Connexion
+
+            {/* Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-6 font-semibold text-gray-800">
+              <Link href="/" className="text-yellow-500 flex items-center">
+                Home <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </Link>
+              <Link href="/shop" className="hover:text-yellow-500 flex items-center transition">
+                Shop <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </Link>
+              <Link href="/pages" className="hover:text-yellow-500 flex items-center transition">
+                Pages <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </Link>
+              <Link href="/blogs" className="hover:text-yellow-500 flex items-center transition">
+                Blogs <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </Link>
+              <Link href="/portfolios" className="hover:text-yellow-500 transition">
+                Portfolios
+              </Link>
+              <Link href="/contact" className="hover:text-yellow-500 transition">
+                Contact Us
+              </Link>
+            </nav>
+          </div>
+
+          {/* Right side tags */}
+          <div className="hidden lg:flex items-center space-x-4 text-sm font-semibold text-gray-800">
+            <Link href="/new" className="flex items-center hover:text-yellow-500 transition">
+              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+              New
+            </Link>
+            <Link href="/hot" className="flex items-center hover:text-yellow-500 transition">
+              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+              Hot
+            </Link>
+            <Link href="/sale" className="flex items-center hover:text-yellow-500 transition">
+              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+              Sale
             </Link>
           </div>
+
         </div>
       </div>
     </header>
