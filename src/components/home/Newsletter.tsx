@@ -15,7 +15,7 @@ export default function Newsletter() {
 
         {/* Right Side: Form */}
         <div className="flex-1 w-full max-w-lg">
-          <form className="flex items-center w-full" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex items-center w-full">
             <input 
               type="email" 
               placeholder="enter your e-mail ..." 

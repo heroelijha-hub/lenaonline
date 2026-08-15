@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 
 export default function Footer() {
@@ -36,7 +38,7 @@ export default function Footer() {
               <p className="text-sm text-gray-400 mb-4 leading-relaxed">
                 Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!
               </p>
-              <form className="flex" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex">
                 <input 
                   type="email" 
                   placeholder="Enter your email..." 
