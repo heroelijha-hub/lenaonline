@@ -11,7 +11,7 @@ export default function Hero() {
             <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-3 block">Supper Discount</span>
             <h2 className="text-3xl font-bold text-slate-800 mb-2">Apple Iphone 17 Pro Max</h2>
             <p className="text-gray-600 mb-6 text-lg">from <span className="font-bold text-2xl text-slate-900">$349.99</span></p>
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
+            <button className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
               Shop Now
             </button>
           </div>
@@ -39,7 +39,7 @@ export default function Hero() {
               <div className="z-10 w-2/3">
                 <span className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-wide">Use Code: <span className="text-red-500">SALE35%</span></span>
                 <h2 className="text-2xl font-bold text-slate-800 mb-6 leading-tight">Heavy On Features<br/>Light On Price</h2>
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105">
+                <button className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105">
                   Shop Now
                 </button>
               </div>
@@ -55,7 +55,7 @@ export default function Hero() {
                 <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-2 block">New Product</span>
                 <h2 className="text-2xl font-bold text-slate-800 mb-2 leading-tight">Sale 10%<br/>Off Speaker</h2>
                 <p className="text-gray-500 text-xs mb-6 font-semibold uppercase tracking-wide">Limited Time Offer *</p>
-                <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105">
+                <button className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105">
                   Shop Now
                 </button>
               </div>
@@ -72,7 +72,7 @@ export default function Hero() {
             <div className="z-10 w-1/2 lg:pl-4">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3 leading-tight">Headphones Listen With<br/>Heart</h2>
               <p className="text-slate-600 mb-6 font-medium">Last call for up to <span className="text-red-500">25% off</span></p>
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
+              <button className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
                 Shop Now
               </button>
             </div>

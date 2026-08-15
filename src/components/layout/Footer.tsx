@@ -18,16 +18,16 @@ export default function Footer() {
               <h3 className="text-white font-bold text-lg mb-4">Our Locations</h3>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start">
-                  <span className="text-yellow-400 mr-2 mt-0.5">
+                  <span className="text-orange-500 mr-2 mt-0.5">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   </span>
-                  <p><span className="text-yellow-400 font-medium">Store 1:</span> 2972 Westheimer Rd. Illinois 85486</p>
+                  <p><span className="text-orange-500 font-medium">Store 1:</span> 2972 Westheimer Rd. Illinois 85486</p>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-yellow-400 mr-2 mt-0.5">
+                  <span className="text-orange-500 mr-2 mt-0.5">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   </span>
-                  <p><span className="text-yellow-400 font-medium">Store 2:</span> 17 Princess Road, London, Greater London NW1 8JR, UK</p>
+                  <p><span className="text-orange-500 font-medium">Store 2:</span> 17 Princess Road, London, Greater London NW1 8JR, UK</p>
                 </li>
               </ul>
             </div>
@@ -44,7 +44,7 @@ export default function Footer() {
                   placeholder="Enter your email..." 
                   className="w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-l outline-none"
                 />
-                <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-r transition">
+                <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-gray-900 px-4 py-2 rounded-r transition">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                 </button>
               </form>
@@ -52,11 +52,11 @@ export default function Footer() {
 
             {/* Call Us */}
             <div className="flex items-center space-x-4 pt-2">
-              <div className="bg-transparent border border-yellow-400 text-yellow-400 p-2 rounded-lg">
+              <div className="bg-transparent border border-orange-500 text-orange-500 p-2 rounded-lg">
                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               </div>
               <div>
-                <p className="text-white font-bold text-lg">Call Us Now <span className="text-yellow-400">+08 9229 8228</span></p>
+                <p className="text-white font-bold text-lg">Call Us Now <span className="text-orange-500">+08 9229 8228</span></p>
                 <p className="text-sm text-gray-400">Email: info@shopelios.com</p>
               </div>
             </div>
@@ -70,11 +70,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Contact Us</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">About Us</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Contact Us</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Our Team</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">FAQs</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Portfolios</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">About Us</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Contact Us</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Our Team</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">FAQs</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Portfolios</Link></li>
               </ul>
             </div>
 
@@ -82,11 +82,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Account</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">Shop</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Checkout</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">My account</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Tracking Order</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">On Sale Product</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Shop</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Checkout</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">My account</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Tracking Order</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">On Sale Product</Link></li>
               </ul>
             </div>
 
@@ -94,11 +94,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Quick Links</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">Shipping & Returns</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Term Of Use</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Vacancies</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Social Share</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Shipping & Returns</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Privacy Policy</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Term Of Use</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Vacancies</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Social Share</Link></li>
               </ul>
             </div>
 
@@ -106,11 +106,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Customer Care</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">Our Team</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Portfolios</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Tbay List Icons</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Flash Sale</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Tracking Order</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Our Team</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Portfolios</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Tbay List Icons</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Flash Sale</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Tracking Order</Link></li>
               </ul>
             </div>
 
@@ -118,11 +118,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Help & Support</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">Shipping Info</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Returns</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">How to Order</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Size Guide</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Newsletter</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Shipping Info</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Returns</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">How to Order</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Size Guide</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Newsletter</Link></li>
               </ul>
             </div>
 
@@ -130,11 +130,11 @@ export default function Footer() {
             <div>
               <h3 className="text-white font-bold text-base mb-4">Company Info</h3>
               <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="#" className="hover:text-yellow-400 transition">New York</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">London</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Cockfosters</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Los Angeles</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition">Chicago</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">New York</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">London</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Cockfosters</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Los Angeles</Link></li>
+                <li><Link href="#" className="hover:text-orange-500 transition">Chicago</Link></li>
               </ul>
             </div>
 
@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 pt-2">
           
           <div className="mb-4 md:mb-0">
-            © 2025 <span className="text-yellow-400 font-semibold">Shopelios</span> All rights reserved.
+            © 2025 <span className="text-orange-500 font-semibold">Shopelios</span> All rights reserved.
           </div>
           
           {/* Payment Icons */}
