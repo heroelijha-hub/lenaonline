@@ -1,5 +1,10 @@
 import Header from '@/components/layout/Header';
 import Hero from '@/components/home/Hero';
+import BestDeals from '@/components/home/BestDeals';
+import BestSeller from '@/components/home/BestSeller';
+import LatestBlogs from '@/components/home/LatestBlogs';
+import Newsletter from '@/components/home/Newsletter';
+import Footer from '@/components/layout/Footer';
 
 export default function Home() {
   return (
@@ -7,8 +12,12 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        {/* Autres sections viendront ici */}
+        <BestDeals />
+        <BestSeller />
+        <LatestBlogs />
+        <Newsletter />
       </main>
+      <Footer />
     </div>
   );
 }
