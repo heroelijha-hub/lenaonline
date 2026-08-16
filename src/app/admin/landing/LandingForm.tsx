@@ -436,7 +436,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   };
 
   const renderFormContent = (inPopup: boolean) => (
-    <div className={`space-y-6 overflow-y-auto pr-2 custom-scrollbar ${inPopup ? 'h-[65vh] p-4' : 'h-[calc(100vh-120px)]'}`}>
+    <div className={`space-y-6 overflow-y-auto pr-2 custom-scrollbar ${inPopup ? 'h-[75vh] p-4' : 'h-[calc(100vh-120px)]'}`}>
       {message && (
         <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
           {message}
@@ -578,8 +578,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       {/* Floating Popup (Desktop Only) */}
       {isPopupMode && (
         <div 
-          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[450px]"
-          style={{ left: `${position.x}px`, top: `${position.y}px` }}
+          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[650px]"
+          style={{ left: `${position.x}px`, top: `${position.y}px`, maxHeight: '85vh' }}
         >
           {/* Draggable Header */}
           <div 
