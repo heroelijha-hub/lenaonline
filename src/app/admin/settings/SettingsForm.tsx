@@ -192,7 +192,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       )}
 
       <div>
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Paramètres Régionaux</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Paramètres Régionaux</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Devise principale</label>
@@ -250,7 +250,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Taxes & TVA</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Taxes & TVA</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -293,7 +293,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Fonctionnalités Boutique</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Fonctionnalités Boutique</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -336,7 +336,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Design & En-tête (Header)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Design & En-tête (Header)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Couleur principale de la boutique (Thème)</label>
@@ -413,7 +413,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Liens de Navigation (Menu)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Liens de Navigation (Menu)</h3>
         <div className="space-y-4">
           {menuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
@@ -471,7 +471,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Paramètres du Chat</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Paramètres du Chat</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -527,7 +527,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Pied de Page (Footer)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Pied de Page (Footer)</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="md:col-span-2 grid grid-cols-2 gap-6 pb-4 border-b">
@@ -672,7 +672,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Page 404 (Introuvable)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Page 404 (Introuvable)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Titre de la page</label>
