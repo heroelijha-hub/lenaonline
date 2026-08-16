@@ -122,8 +122,8 @@ export default async function BestSeller() {
                 key={i}
                 icon={["📱", "👟", "🍯", "⌚"][i]} 
                 title={p?.title || "Product placeholder"} 
-                price={p ? `$${p.price}` : "$18.00"} 
-                imageUrl={p?.images[0]}
+                price={p ? p.price : "$18.00"} 
+                imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
               />
             );
@@ -134,12 +134,12 @@ export default async function BestSeller() {
         <div className="col-span-1">
           <BigCard 
             icon="🧀" 
-            category={bigProduct2?.category?.name || "Cosmetics"} 
+            category={bigProduct2?.category || "Cosmetics"} 
             title={bigProduct2?.title || "Comfortable Regular Comfort Sports Sneakers"} 
-            price={bigProduct2 ? `$${bigProduct2.price}` : "$35.00"} 
+            price={bigProduct2 ? bigProduct2.price : "$35.00"} 
             rating={3} 
             ratingText="(3.00)" 
-            imageUrl={bigProduct2?.images[0]}
+            imageUrl={bigProduct2?.imageUrl}
             linkUrl={bigProduct2 ? `/product/${bigProduct2.slug}` : '#'}
           />
         </div>
@@ -153,8 +153,8 @@ export default async function BestSeller() {
                 key={i}
                 icon={["🩳", "🧀", "🎒", "👟"][i]} 
                 title={p?.title || "Product placeholder"} 
-                price={p ? `$${p.price}` : "$35.00"} 
-                imageUrl={p?.images[0]}
+                price={p ? p.price : "$35.00"} 
+                imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
               />
             );
