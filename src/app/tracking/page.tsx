@@ -100,7 +100,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: { n
             <div className="mb-10">
               <div className="flex justify-between text-sm font-medium text-gray-500 mb-2">
                 <span>Départ: {order.originCity}</span>
-                <span>Arrivée: {order.destinationCity || order.destinationCountry}</span>
+                <span>Arrivée: {order.destinationAddress || order.destinationCountry}</span>
               </div>
               <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div className="absolute top-0 left-0 h-full bg-green-500 transition-all duration-1000" style={{ width: `${percentage}%` }}></div>
