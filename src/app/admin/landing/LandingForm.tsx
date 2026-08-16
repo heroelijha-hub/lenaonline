@@ -247,7 +247,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     setSections([...sections, newSec]);
   };
 
-  const renderConfig = (section: SectionConfig) => {
+  const renderConfig = (section: SectionConfig, inPopup: boolean) => {
     if (section.type === 'Newsletter') {
       return (
         <div className="p-4 bg-gray-50 border rounded text-sm text-gray-500">
@@ -261,7 +261,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           <p className="text-sm text-gray-500 mb-4">L'en-tête principal contient 4 blocs. Modifiez les textes principaux ci-dessous.</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
@@ -355,7 +355,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           <p className="text-sm text-gray-500">Configurer les 2 bannières promotionnelles côte à côte.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
@@ -514,7 +514,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {/* Config Panel */}
               {editingId === section.id && (
                 <div className="border-t border-gray-100 bg-white p-3">
-                  {renderConfig(section)}
+                  {renderConfig(section, inPopup)}
                 </div>
               )}
             </div>
@@ -578,7 +578,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       {/* Floating Popup (Desktop Only) */}
       {isPopupMode && (
         <div 
-          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[650px]"
+          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[450px]"
           style={{ left: `${position.x}px`, top: `${position.y}px`, maxHeight: '85vh' }}
         >
           {/* Draggable Header */}
