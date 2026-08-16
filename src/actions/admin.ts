@@ -87,6 +87,7 @@ export async function getProducts() {
 export async function createProduct(formData: FormData, imageUrls: string[]) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
+  const shortDescription = formData.get('shortDescription') as string;
   const price = parseFloat(formData.get('price') as string);
   const compareAtPrice = formData.get('compareAtPrice') ? parseFloat(formData.get('compareAtPrice') as string) : undefined;
   
@@ -112,6 +113,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
       data: {
         title,
         slug: uniqueSlug,
+        shortDescription,
         description,
         price,
         compareAtPrice,
@@ -135,6 +137,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
 export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const id = formData.get('id') as string;
   const title = formData.get('title') as string;
+  const shortDescription = formData.get('shortDescription') as string;
   const description = formData.get('description') as string;
   const price = parseFloat(formData.get('price') as string);
   const compareAtPrice = formData.get('compareAtPrice') ? parseFloat(formData.get('compareAtPrice') as string) : undefined;
@@ -156,6 +159,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
       where: { id },
       data: {
         title,
+        shortDescription,
         description,
         price,
         compareAtPrice,
@@ -201,6 +205,7 @@ export async function duplicateProduct(id: string) {
       data: {
         title: newTitle,
         slug: uniqueSlug,
+        shortDescription: existing.shortDescription,
         description: existing.description,
         price: existing.price,
         compareAtPrice: existing.compareAtPrice,

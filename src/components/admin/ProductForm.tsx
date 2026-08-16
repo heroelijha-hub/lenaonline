@@ -123,10 +123,16 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           )}
         </div>
 
-        {/* Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          <textarea name="description" defaultValue={initialData?.description} rows={4} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+        {/* Description Courte & Longue */}
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description Courte</label>
+            <textarea name="shortDescription" defaultValue={initialData?.shortDescription} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description Longue</label>
+            <textarea name="description" defaultValue={initialData?.description} rows={4} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+          </div>
         </div>
 
         {/* Flags / Labels */}

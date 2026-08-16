@@ -40,7 +40,8 @@ model Product {
   id             String      @id @default(uuid()) @db.Uuid
   title          String
   slug           String      @unique @default("temp-slug")
-  description    String?
+  shortDescription String?   @db.Text
+  description    String?     @db.Text
   price          Float
   compareAtPrice Float?
   images         String[]
