@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { submitNewsletter } from '@/actions/contact';
 
-export default function Newsletter() {
+export default function Newsletter({ config }: { config?: any }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
