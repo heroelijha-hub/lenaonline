@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { getBestSellers } from '@/actions/public';
+import { getFilteredProducts } from '@/actions/public';
 import Price from '@/components/Price';
 
 // ... (Star component kept the same)
@@ -61,8 +61,11 @@ const BigCard = ({
   </Link>
 );
 
-export default async function BestSeller() {
-  const dbProducts = await getBestSellers();
+export default async function BestSeller({ config }: { config?: any }) {
+  const filterType = config?.filterType || 'POPULAR';
+  const categoryId = config?.categoryId || undefined;
+
+  const dbProducts = await getFilteredProducts(filterType, categoryId, 10);
 
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
     id: p.id,
@@ -88,7 +91,7 @@ export default async function BestSeller() {
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Our Best Seller</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{config?.title || "Our Best Seller"}</h2>
         <Link href="/best-seller" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
           See All
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

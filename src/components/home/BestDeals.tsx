@@ -1,4 +1,4 @@
-import { getBestDeals } from '@/actions/public';
+import { getFilteredProducts } from '@/actions/public';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 
@@ -22,8 +22,11 @@ const staticProducts = [
   { id: 6, imagePlaceholder: '🚲', category: 'Cosmetics', title: 'Bike Frame Performance 700C 49/51/54/57cm', rating: 5, ratingText: '(5.00)', price: '$23.00' },
 ];
 
-export default async function BestDeals() {
-  const dbProducts = await getBestDeals();
+export default async function BestDeals({ config }: { config?: any }) {
+  const filterType = config?.filterType || 'ON_SALE';
+  const categoryId = config?.categoryId || undefined;
+  
+  const dbProducts = await getFilteredProducts(filterType, categoryId, 6);
   const settingsDb = await prisma.setting.findMany();
   const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
@@ -47,10 +50,10 @@ export default async function BestDeals() {
       {/* Header Section */}
       <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-6">
-          <h2 className="text-2xl font-bold text-gray-900">Today's Best Deals</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{config?.title || "Today's Best Deals"}</h2>
           
           {/* Countdown Timer */}
-          <div className="flex items-center gap-2 border border-orange-200 bg-orange-50/50 px-4 py-1.5 rounded text-sm text-gray-800 font-semibold">
+          <div className="flex items-center gap-2 border border-orange-200 bg-orange-50/50 px-4 py-1.5 rounded text-sm text-gray-800 font-semibold" data-countdown={config?.countdown}>
             <span>00 <span className="text-xs text-gray-500 font-normal">Days</span></span>
             <span className="text-gray-300">:</span>
             <span>00 <span className="text-xs text-gray-500 font-normal">Hrs</span></span>

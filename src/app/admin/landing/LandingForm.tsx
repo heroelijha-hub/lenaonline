@@ -2,235 +2,263 @@
 
 import { useState } from 'react';
 import { updateSetting } from '@/actions/settings';
-import { uploadImage } from '@/actions/admin';
 
-export default function LandingForm({ initialSettings }: { initialSettings: Record<string, string> }) {
-  const [settings, setSettings] = useState(initialSettings);
+export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners';
+
+export interface SectionConfig {
+  id: string;
+  type: SectionType;
+  name: string;
+  enabled: boolean;
+  settings: any;
+}
+
+const DEFAULT_SECTIONS: SectionConfig[] = [
+  { id: 'sec_1', type: 'Hero', name: 'En-tête Principal (Hero)', enabled: true, settings: {} },
+  { id: 'sec_2', type: 'BestDeals', name: 'Promotions du Jour (Best Deals)', enabled: true, settings: { title: "Today's Best Deals", countdown: '2026-12-31T23:59:59', filterType: 'ON_SALE', categoryId: '' } },
+  { id: 'sec_3', type: 'PromoBanners', name: 'Bannières Promo', enabled: true, settings: {} },
+  { id: 'sec_4', type: 'BestSeller', name: 'Meilleures Ventes', enabled: true, settings: { title: "Best Seller", filterType: 'POPULAR', categoryId: '' } },
+  { id: 'sec_5', type: 'LatestBlogs', name: 'Derniers Articles de Blog', enabled: true, settings: { title: "Latest Blogs" } },
+  { id: 'sec_6', type: 'Newsletter', name: 'Inscription Newsletter', enabled: true, settings: {} }
+];
+
+export default function LandingForm({ initialSettings, categories }: { initialSettings: Record<string, string>, categories: any[] }) {
+  const [sections, setSections] = useState<SectionConfig[]>(() => {
+    try {
+      if (initialSettings.HOMEPAGE_LAYOUT) {
+        return JSON.parse(initialSettings.HOMEPAGE_LAYOUT);
+      }
+      return DEFAULT_SECTIONS;
+    } catch {
+      return DEFAULT_SECTIONS;
+    }
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  
-  // Keep track of new files selected for each key
-  const [imageFiles, setImageFiles] = useState<Record<string, File>>({});
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const handleChange = (key: string, value: string) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleFileChange = (key: string, file: File | null) => {
-    if (file) {
-      setImageFiles(prev => ({ ...prev, [key]: file }));
-    } else {
-      const newFiles = { ...imageFiles };
-      delete newFiles[key];
-      setImageFiles(newFiles);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async () => {
     setIsLoading(true);
     setMessage('');
-    
     try {
-      const finalSettings = { ...settings };
-
-      // 1. Upload new images if selected
-      for (const [key, file] of Object.entries(imageFiles)) {
-        const formData = new FormData();
-        formData.append('file', file);
-        const url = await uploadImage(formData);
-        if (url) {
-          finalSettings[key] = url; // Update setting with new URL
-        }
-      }
-
-      // 2. Save all settings to DB
-      for (const [key, value] of Object.entries(finalSettings)) {
-        await updateSetting(key, value);
-      }
-      
-      // Update local state to reflect new URLs
-      setSettings(finalSettings);
-      setImageFiles({}); // Clear pending uploads
-      
-      setMessage('Modifications enregistrées avec succès !');
-    } catch (error) {
-      setMessage('Erreur lors de la sauvegarde.');
+      await updateSetting('HOMEPAGE_LAYOUT', JSON.stringify(sections));
+      setMessage('Mise à jour réussie !');
+    } catch (e) {
+      setMessage('Erreur lors de la mise à jour.');
     } finally {
       setIsLoading(false);
+      setTimeout(() => setMessage(''), 3000);
     }
   };
 
-  const renderInput = (label: string, key: string, placeholder: string) => (
-    <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <input
-        type="text"
-        value={settings[key] || ''}
-        onChange={(e) => handleChange(key, e.target.value)}
-        placeholder={placeholder}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-      />
-    </div>
-  );
+  const moveSection = (index: number, direction: 'UP' | 'DOWN') => {
+    const newSections = [...sections];
+    if (direction === 'UP' && index > 0) {
+      [newSections[index - 1], newSections[index]] = [newSections[index], newSections[index - 1]];
+    } else if (direction === 'DOWN' && index < newSections.length - 1) {
+      [newSections[index + 1], newSections[index]] = [newSections[index], newSections[index + 1]];
+    }
+    setSections(newSections);
+  };
 
-  const renderImageUpload = (label: string, key: string, sizeHint: string) => (
-    <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label} <span className="text-xs text-gray-500 font-normal">({sizeHint})</span></label>
-      
-      {/* Aperçu de l'image actuelle si elle existe et qu'aucun nouveau fichier n'est sélectionné */}
-      {settings[key] && !imageFiles[key] && (
-        <div className="mb-2 relative w-24 h-24 border rounded overflow-hidden bg-gray-50">
-           <img src={settings[key]} alt="Aperçu" className="w-full h-full object-contain" />
-           <button 
-             type="button" 
-             onClick={() => handleChange(key, '')} 
-             className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
-           >
-             &times;
-           </button>
+  const toggleSection = (index: number) => {
+    const newSections = [...sections];
+    newSections[index].enabled = !newSections[index].enabled;
+    setSections(newSections);
+  };
+
+  const removeSection = (index: number) => {
+    const newSections = [...sections];
+    newSections.splice(index, 1);
+    setSections(newSections);
+  };
+
+  const updateSectionSettings = (id: string, key: string, value: any) => {
+    setSections(sections.map(s => {
+      if (s.id === id) {
+        return { ...s, settings: { ...s.settings, [key]: value } };
+      }
+      return s;
+    }));
+  };
+
+  const updateSectionName = (id: string, name: string) => {
+    setSections(sections.map(s => s.id === id ? { ...s, name } : s));
+  };
+
+  const addSection = (type: SectionType) => {
+    const newSec: SectionConfig = {
+      id: 'sec_' + Date.now(),
+      type,
+      name: `Nouvelle section (${type})`,
+      enabled: true,
+      settings: {}
+    };
+    if (type === 'BestDeals') {
+      newSec.settings = { title: "New Deals", countdown: '2026-12-31T23:59:59', filterType: 'ON_SALE', categoryId: '' };
+    } else if (type === 'BestSeller') {
+      newSec.settings = { title: "New Selection", filterType: 'POPULAR', categoryId: '' };
+    }
+    setSections([...sections, newSec]);
+  };
+
+  const renderConfig = (section: SectionConfig) => {
+    if (section.type === 'Hero' || section.type === 'PromoBanners' || section.type === 'Newsletter') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded text-sm text-gray-500">
+          Les paramètres de cette section sont statiques ou gérés ailleurs pour le moment. Vous pouvez cependant la déplacer ou la désactiver.
         </div>
-      )}
-
-      {/* Upload input */}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => handleFileChange(key, e.target.files?.[0] || null)}
-        className="w-full px-3 py-1.5 border border-gray-300 rounded-md file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 text-sm"
-      />
-      {imageFiles[key] && <p className="text-xs text-green-600 mt-1">Nouveau fichier prêt à être uploadé : {imageFiles[key].name}</p>}
-      {!settings[key] && !imageFiles[key] && <p className="text-xs text-gray-400 mt-1">Aucune image. Dessin par défaut affiché.</p>}
-    </div>
-  );
-
-  const renderColorInput = (label: string, key: string, defaultColor: string) => (
-    <div className="mb-4 flex items-center justify-between">
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
-      <input
-        type="color"
-        value={settings[key] || defaultColor}
-        onChange={(e) => handleChange(key, e.target.value)}
-        className="w-10 h-10 p-1 border border-gray-300 rounded cursor-pointer"
-      />
-    </div>
-  );
+      );
+    }
+    
+    if (section.type === 'BestDeals' || section.type === 'BestSeller') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Titre de la section</label>
+            <input 
+              type="text" 
+              value={section.settings.title || ''} 
+              onChange={e => updateSectionSettings(section.id, 'title', e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+            />
+          </div>
+          {section.type === 'BestDeals' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>
+              <input 
+                type="datetime-local" 
+                value={section.settings.countdown ? section.settings.countdown.substring(0,16) : ''} 
+                onChange={e => updateSectionSettings(section.id, 'countdown', e.target.value + ':00Z')}
+                className="w-full border rounded px-3 py-2 text-sm"
+              />
+            </div>
+          )}
+          <div>
+            <label className="block text-sm font-medium mb-1">Critère d'affichage des produits</label>
+            <select 
+              value={section.settings.filterType || 'NEWEST'}
+              onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+            >
+              <option value="NEWEST">Les Plus Récents</option>
+              <option value="ON_SALE">En Promotion (On Sale)</option>
+              <option value="POPULAR">Les Plus Populaires (Best Sellers)</option>
+              <option value="CATEGORY">Par Catégorie Spécifique</option>
+            </select>
+          </div>
+          {section.settings.filterType === 'CATEGORY' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Sélectionner la Catégorie</label>
+              <select 
+                value={section.settings.categoryId || ''}
+                onChange={e => updateSectionSettings(section.id, 'categoryId', e.target.value)}
+                className="w-full border rounded px-3 py-2 text-sm"
+              >
+                <option value="">-- Choisissez --</option>
+                {categories.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    return null;
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div className="space-y-6">
       {message && (
-        <div className={`p-4 rounded-md ${message.includes('succès') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+        <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
           {message}
         </div>
       )}
 
-      {/* Hero Section */}
-      <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4 pb-2 border-b">Section Principale (Hero)</h2>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Bloc Principal Gauche */}
-          <div className="bg-gray-50 p-4 rounded border">
-            <h3 className="font-semibold mb-3 text-orange-600">Bloc Principal (Gauche)</h3>
-            {renderInput('Titre (ex: Apple Iphone 17 Pro Max)', 'HERO_1_TITLE', 'Titre principal')}
-            {renderInput('Sous-titre (ex: Super Discount)', 'HERO_1_SUBTITLE', 'Sous-titre')}
-            {renderInput('Prix (ex: from $349.99)', 'HERO_1_PRICE', 'Texte de prix')}
-            {renderInput('Texte du bouton', 'HERO_1_CTA', 'Shop Now')}
-            {renderInput('Lien du bouton', 'HERO_1_LINK', '/product/...')}
-            {renderImageUpload('Image du Produit', 'HERO_1_IMAGE', 'Taille rec. ~ 400x500px, PNG sans fond')}
-            {renderColorInput('Couleur du texte', 'HERO_1_TEXT_COLOR', '#1e293b')}
-            {renderColorInput('Couleur fond bouton', 'HERO_1_BTN_BG_COLOR', '#f97316')}
-            {renderColorInput('Couleur texte bouton', 'HERO_1_BTN_TEXT_COLOR', '#111827')}
-            {renderColorInput('Couleur de fond du bloc', 'HERO_1_BG_COLOR', '#fff5ee')}
-            {renderImageUpload('Image de fond du bloc', 'HERO_1_BG_IMAGE', 'Optionnel, couvre tout le bloc')}
-          </div>
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Constructeur de Page d'Accueil</h2>
+          <button 
+            onClick={handleSave} 
+            disabled={isLoading}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
+          >
+            {isLoading ? 'Sauvegarde...' : 'Enregistrer la disposition'}
+          </button>
+        </div>
 
-          <div className="space-y-6">
-            {/* Bloc Haut Milieu */}
-            <div className="bg-gray-50 p-4 rounded border">
-              <h3 className="font-semibold mb-3 text-orange-600">Bloc Haut (Montres)</h3>
-              {renderInput('Titre (ex: Heavy On Features...)', 'HERO_2_TITLE', 'Titre principal')}
-              {renderInput('Sous-titre (ex: Use Code: SALE35%)', 'HERO_2_SUBTITLE', 'Sous-titre')}
-              {renderInput('Lien', 'HERO_2_LINK', '/category/...')}
-              {renderImageUpload('Image du Produit', 'HERO_2_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
-              {renderColorInput('Couleur du texte', 'HERO_2_TEXT_COLOR', '#1e293b')}
-              {renderColorInput('Couleur fond bouton', 'HERO_2_BTN_BG_COLOR', '#f97316')}
-              {renderColorInput('Couleur texte bouton', 'HERO_2_BTN_TEXT_COLOR', '#111827')}
-              {renderColorInput('Couleur de fond du bloc', 'HERO_2_BG_COLOR', '#f8f9fa')}
-              {renderImageUpload('Image de fond du bloc', 'HERO_2_BG_IMAGE', 'Optionnel')}
-            </div>
+        <p className="text-sm text-gray-500 mb-6">
+          Réorganisez les sections de votre page d'accueil en les montant ou descendant. Cliquez sur "Configurer" pour modifier le titre, le filtre de produits et le compte à rebours (le cas échéant).
+        </p>
 
-            {/* Bloc Haut Droite */}
-            <div className="bg-gray-50 p-4 rounded border">
-              <h3 className="font-semibold mb-3 text-orange-600">Bloc Haut (Enceinte)</h3>
-              {renderInput('Titre (ex: Sale 10% Off Speaker)', 'HERO_3_TITLE', 'Titre principal')}
-              {renderInput('Sous-titre (ex: New Product)', 'HERO_3_SUBTITLE', 'Sous-titre')}
-              {renderInput('Lien', 'HERO_3_LINK', '/category/...')}
-              {renderImageUpload('Image du Produit', 'HERO_3_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
-              {renderColorInput('Couleur du texte', 'HERO_3_TEXT_COLOR', '#1e293b')}
-              {renderColorInput('Couleur fond bouton', 'HERO_3_BTN_BG_COLOR', '#f97316')}
-              {renderColorInput('Couleur texte bouton', 'HERO_3_BTN_TEXT_COLOR', '#111827')}
-              {renderColorInput('Couleur de fond du bloc', 'HERO_3_BG_COLOR', '#f8f9fa')}
-              {renderImageUpload('Image de fond du bloc', 'HERO_3_BG_IMAGE', 'Optionnel')}
+        <div className="space-y-4">
+          {sections.map((section, index) => (
+            <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
+              <div className="flex items-center p-4 gap-4">
+                {/* Actions */}
+                <div className="flex flex-col gap-1">
+                  <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                  </button>
+                  <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                </div>
+                
+                {/* Info */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-1">
+                    <span className="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-2 py-0.5 rounded">{section.type}</span>
+                    <input 
+                      type="text" 
+                      value={section.name} 
+                      onChange={e => updateSectionName(section.id, e.target.value)}
+                      className="font-bold text-lg border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent"
+                    />
+                  </div>
+                </div>
+
+                {/* Toggles */}
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => setEditingId(editingId === section.id ? null : section.id)}
+                    className="text-sm px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50 transition"
+                  >
+                    {editingId === section.id ? 'Fermer' : 'Configurer'}
+                  </button>
+                  <button 
+                    onClick={() => toggleSection(index)}
+                    className={`text-sm px-3 py-1.5 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                  >
+                    {section.enabled ? 'Visible' : 'Masqué'}
+                  </button>
+                  <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                  </button>
+                </div>
+              </div>
+              
+              {/* Config Panel */}
+              {editingId === section.id && (
+                <div className="border-t border-gray-100 bg-white p-4">
+                  {renderConfig(section)}
+                </div>
+              )}
             </div>
-            
-            {/* Bloc Bas */}
-            <div className="bg-gray-50 p-4 rounded border">
-              <h3 className="font-semibold mb-3 text-orange-600">Bloc Bas (Casque)</h3>
-              {renderInput('Titre (ex: Headphones Listen...)', 'HERO_4_TITLE', 'Titre principal')}
-              {renderInput('Sous-titre (ex: Last call for up to 25% off)', 'HERO_4_SUBTITLE', 'Sous-titre')}
-              {renderInput('Lien', 'HERO_4_LINK', '/category/...')}
-              {renderImageUpload('Image du Produit', 'HERO_4_IMAGE', 'Taille rec. ~ 300x300px, PNG sans fond')}
-              {renderColorInput('Couleur du texte', 'HERO_4_TEXT_COLOR', '#1e293b')}
-              {renderColorInput('Couleur fond bouton', 'HERO_4_BTN_BG_COLOR', '#f97316')}
-              {renderColorInput('Couleur texte bouton', 'HERO_4_BTN_TEXT_COLOR', '#111827')}
-              {renderColorInput('Couleur de fond du bloc', 'HERO_4_BG_COLOR', '#fff5ee')}
-              {renderImageUpload('Image de fond du bloc', 'HERO_4_BG_IMAGE', 'Optionnel')}
-            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 border-t pt-6">
+          <h3 className="font-semibold mb-3">Ajouter une nouvelle section</h3>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => addSection('BestDeals')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Promo (Compte à rebours)</button>
+            <button onClick={() => addSection('BestSeller')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Simple (Produits)</button>
           </div>
         </div>
       </div>
-
-      {/* Best Deals Promo Banners */}
-      <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4 pb-2 border-b">Bannières Promotionnelles (Bas)</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-gray-50 p-4 rounded border">
-            <h3 className="font-semibold mb-3 text-orange-600">Bannière Gauche (Montre)</h3>
-            {renderInput('Titre', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
-            {renderInput('Sous-titre', 'PROMO_1_SUBTITLE', 'Price Start $69')}
-            {renderInput('Lien', 'PROMO_1_LINK', '/product/...')}
-            {renderImageUpload('Image du Produit', 'PROMO_1_IMAGE', 'Taille rec. ~ 250x250px')}
-            {renderColorInput('Couleur du texte', 'PROMO_1_TEXT_COLOR', '#111827')}
-            {renderColorInput('Couleur fond bouton', 'PROMO_1_BTN_BG_COLOR', '#ffffff')}
-            {renderColorInput('Couleur texte bouton', 'PROMO_1_BTN_TEXT_COLOR', '#111827')}
-            {renderColorInput('Couleur de fond du bloc', 'PROMO_1_BG_COLOR', '#e5f1fc')}
-            {renderImageUpload('Image de fond du bloc', 'PROMO_1_BG_IMAGE', 'Optionnel')}
-          </div>
-          <div className="bg-gray-50 p-4 rounded border">
-            <h3 className="font-semibold mb-3 text-orange-600">Bannière Droite (Women Store)</h3>
-            {renderInput('Titre', 'PROMO_2_TITLE', 'Get 20% Off')}
-            {renderInput('Sous-titre', 'PROMO_2_SUBTITLE', 'Women Store')}
-            {renderInput('Lien', 'PROMO_2_LINK', '/category/women')}
-            {renderImageUpload('Image du Produit', 'PROMO_2_IMAGE', 'Taille rec. ~ 250x250px')}
-            {renderColorInput('Couleur du texte', 'PROMO_2_TEXT_COLOR', '#111827')}
-            {renderColorInput('Couleur fond bouton', 'PROMO_2_BTN_BG_COLOR', '#ff5c00')}
-            {renderColorInput('Couleur texte bouton', 'PROMO_2_BTN_TEXT_COLOR', '#ffffff')}
-            {renderColorInput('Couleur de fond du bloc', 'PROMO_2_BG_COLOR', '#fbe9dc')}
-            {renderImageUpload('Image de fond du bloc', 'PROMO_2_BG_IMAGE', 'Optionnel')}
-          </div>
-        </div>
-      </div>
-
-      <div className="pt-4 border-t border-gray-200">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full sm:w-auto px-8 py-3 bg-orange-600 text-white font-medium rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
-        >
-          {isLoading ? 'Upload et Enregistrement en cours...' : 'Enregistrer les modifications'}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
