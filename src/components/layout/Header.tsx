@@ -1,6 +1,20 @@
+'use client';
+
 import Link from 'next/link';
+import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const [mounted, setMounted] = useState(false);
+  const cartItems = useCartStore((state) => state.getTotalItems());
+  const cartTotal = useCartStore((state) => state.getTotalPrice());
+  const wishlistItems = useWishlistStore((state) => state.items.length);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <header className="w-full bg-white border-b border-gray-200 font-sans">
       {/* Top Bar */}
@@ -59,18 +73,25 @@ export default function Header() {
 
         {/* Wishlist & Cart */}
         <div className="flex items-center flex-shrink-0 space-x-4">
-          <button className="p-2 text-gray-700 hover:text-orange-600 transition">
+          <button className="p-2 text-gray-700 hover:text-orange-600 transition relative">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            {mounted && wishlistItems > 0 && (
+              <span className="absolute 0 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                {wishlistItems}
+              </span>
+            )}
           </button>
           
           <div className="flex items-center bg-orange-50 rounded-md px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition">
             <div className="relative mr-3">
               <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-              <span className="absolute -top-1 -right-2 bg-orange-500 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
-                0
-              </span>
+              {mounted && (
+                <span className="absolute -top-1 -right-2 bg-orange-500 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                  {cartItems}
+                </span>
+              )}
             </div>
-            <span className="font-bold text-gray-900 ml-2">$0.00</span>
+            <span className="font-bold text-gray-900 ml-2">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
           </div>
         </div>
       </div>

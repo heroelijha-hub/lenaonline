@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ProductActions from '@/components/product/ProductActions';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -110,87 +111,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 <span>Sold: <span className="font-semibold text-gray-900">24</span></span>
               </div>
 
-              {/* Price */}
-              <div className="mb-6">
-                {product.compareAtPrice && (
-                  <span className="text-2xl text-gray-400 line-through mr-3">${product.compareAtPrice.toFixed(2)}</span>
-                )}
-                <span className="text-3xl font-bold text-red-600">${product.price.toFixed(2)}</span>
-              </div>
-
-              {/* Features list (Mocked for now since schema has generic attributes) */}
-              <ul className="list-disc pl-5 mb-6 text-sm text-gray-600 space-y-2">
-                <li>RAM: 16GB</li>
-                <li>Hard Drive: 256GB SSD</li>
-                <li>Screen Size: 13.3 inches</li>
-              </ul>
-
-              {/* Color Swatches */}
-              <div className="mb-6">
-                <span className="text-sm text-gray-500 mb-2 block">color : <span className="text-gray-900 font-semibold">Black</span></span>
-                <div className="flex gap-2">
-                  <div className="w-8 h-8 rounded-full bg-black border-2 border-white ring-2 ring-black cursor-pointer flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-amber-700 cursor-pointer border border-gray-200"></div>
-                  <div className="w-8 h-8 rounded-full bg-pink-500 cursor-pointer border border-gray-200"></div>
-                </div>
-              </div>
-
-              {/* Short Description */}
-              {product.shortDescription ? (
-                <div 
-                  className="text-sm text-gray-600 mb-6 leading-relaxed prose prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-                />
-              ) : (
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                  Aucune description courte disponible pour ce produit.
-                </p>
-              )}
-
-              {/* Stock status */}
-              <p className="text-teal-600 font-semibold mb-6">
-                {product.stock === null ? 'En stock' : `${product.stock} in stock`}
-              </p>
-
-              {/* Actions (Quantity + Cart + Buy) */}
-              <div className="flex gap-4 mb-8">
-                {/* Qty */}
-                <div className="flex border border-gray-300 rounded-md overflow-hidden bg-gray-50 w-32">
-                  <button className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">-</button>
-                  <input type="text" value="1" readOnly className="w-full text-center bg-transparent font-semibold border-x border-gray-300" />
-                  <button className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">+</button>
-                </div>
-                
-                <button className="flex-1 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-md transition shadow-sm">
-                  Add to Cart
-                </button>
-                
-                <button className="flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm">
-                  Buy Now
-                </button>
-              </div>
-
-              {/* Secondary Actions */}
-              <div className="flex flex-wrap gap-3 mb-8">
-                <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                  Add to wishlist
-                </button>
-                <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-                  Compare
-                </button>
-                <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  Ask a Question
-                </button>
-                <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                  Delivery Return
-                </button>
-              </div>
+              {/* Product Actions (Price, Variations, Add to Cart, Wishlist) */}
+              <ProductActions product={product} />
 
               {/* Meta tags */}
               <div className="space-y-2 text-sm">

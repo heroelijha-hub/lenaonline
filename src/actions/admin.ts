@@ -85,6 +85,12 @@ export async function getProducts() {
 }
 
 export async function createProduct(formData: FormData, imageUrls: string[]) {
+  const type = formData.get('type') as any || 'SIMPLE';
+  const attributesRaw = formData.get('attributes') as string;
+  const variationsRaw = formData.get('variations') as string;
+  const attributes = attributesRaw ? JSON.parse(attributesRaw) : [];
+  const variations = variationsRaw ? JSON.parse(variationsRaw) : [];
+
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const shortDescription = formData.get('shortDescription') as string;
@@ -113,6 +119,9 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
       data: {
         title,
         slug: uniqueSlug,
+        type,
+        attributes,
+        variations,
         shortDescription,
         description,
         price,
@@ -127,15 +136,22 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
     });
 
     revalidatePath('/admin/products');
+    revalidatePath('/');
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return { error: "Erreur lors de la création du produit." };
+    return { error: error.message || "Impossible de créer le produit." };
   }
 }
 
 export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const id = formData.get('id') as string;
+  const type = formData.get('type') as any || 'SIMPLE';
+  const attributesRaw = formData.get('attributes') as string;
+  const variationsRaw = formData.get('variations') as string;
+  const attributes = attributesRaw ? JSON.parse(attributesRaw) : [];
+  const variations = variationsRaw ? JSON.parse(variationsRaw) : [];
+
   const title = formData.get('title') as string;
   const shortDescription = formData.get('shortDescription') as string;
   const description = formData.get('description') as string;
@@ -159,6 +175,9 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
       where: { id },
       data: {
         title,
+        type,
+        attributes,
+        variations,
         shortDescription,
         description,
         price,
@@ -205,6 +224,9 @@ export async function duplicateProduct(id: string) {
       data: {
         title: newTitle,
         slug: uniqueSlug,
+        type: existing.type,
+        attributes: existing.attributes || undefined,
+        variations: existing.variations || undefined,
         shortDescription: existing.shortDescription,
         description: existing.description,
         price: existing.price,
