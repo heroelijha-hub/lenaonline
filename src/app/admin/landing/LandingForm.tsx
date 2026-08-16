@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { updateSetting } from '@/actions/settings';
 import { uploadImage } from '@/actions/admin';
+import Cookies from 'js-cookie';
 
 export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners';
 
@@ -38,6 +39,21 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Sync to cookie for preview iframe
+  useEffect(() => {
+    Cookies.set('preview_layout', JSON.stringify(sections), { path: '/' });
+    
+    // Debounce iframe reload
+    const timer = setTimeout(() => {
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        iframeRef.current.contentWindow.location.reload();
+      }
+    }, 1000); // 1 second debounce
+    
+    return () => clearTimeout(timer);
+  }, [sections]);
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -387,93 +403,113 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   };
 
   return (
-    <div className="space-y-6">
-      {message && (
-        <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-          {message}
-        </div>
-      )}
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      {/* Left side: Form */}
+      <div className="space-y-6 h-[calc(100vh-120px)] overflow-y-auto pr-2 custom-scrollbar">
+        {message && (
+          <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
+            {message}
+          </div>
+        )}
 
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Constructeur de Page d'Accueil</h2>
-          <button 
-            onClick={handleSave} 
-            disabled={isLoading}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
-          >
-            {isLoading ? 'Sauvegarde...' : 'Enregistrer la disposition'}
-          </button>
-        </div>
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold">Constructeur de Page d'Accueil</h2>
+            <button 
+              onClick={handleSave} 
+              disabled={isLoading}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
+            >
+              {isLoading ? 'Sauvegarde...' : 'Enregistrer'}
+            </button>
+          </div>
 
-        <p className="text-sm text-gray-500 mb-6">
-          Réorganisez les sections de votre page d'accueil en les montant ou descendant. Cliquez sur "Configurer" pour modifier le titre, le filtre de produits et le compte à rebours (le cas échéant).
-        </p>
+          <p className="text-sm text-gray-500 mb-6">
+            Réorganisez les sections de votre page d'accueil en les montant ou descendant. L'aperçu en direct se trouve sur la droite.
+          </p>
 
-        <div className="space-y-4">
-          {sections.map((section, index) => (
-            <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
-              <div className="flex items-center p-4 gap-4">
-                {/* Actions */}
-                <div className="flex flex-col gap-1">
-                  <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
-                  </button>
-                  <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </button>
-                </div>
-                
-                {/* Info */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-2 py-0.5 rounded">{section.type}</span>
-                    <input 
-                      type="text" 
-                      value={section.name} 
-                      onChange={e => updateSectionName(section.id, e.target.value)}
-                      className="font-bold text-lg border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent"
-                    />
+          <div className="space-y-4">
+            {sections.map((section, index) => (
+              <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
+                <div className="flex items-center p-4 gap-4">
+                  {/* Actions */}
+                  <div className="flex flex-col gap-1">
+                    <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                    </button>
+                    <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                  </div>
+                  
+                  {/* Info */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-2 py-0.5 rounded">{section.type}</span>
+                      <input 
+                        type="text" 
+                        value={section.name} 
+                        onChange={e => updateSectionName(section.id, e.target.value)}
+                        className="font-bold text-lg border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Toggles */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button 
+                      onClick={() => setEditingId(editingId === section.id ? null : section.id)}
+                      className="text-xs px-2 py-1.5 border border-gray-300 rounded hover:bg-gray-50 transition"
+                    >
+                      {editingId === section.id ? 'Fermer' : 'Configurer'}
+                    </button>
+                    <button 
+                      onClick={() => toggleSection(index)}
+                      className={`text-xs px-2 py-1.5 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                    >
+                      {section.enabled ? 'Visible' : 'Masqué'}
+                    </button>
+                    <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-1">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>
                   </div>
                 </div>
-
-                {/* Toggles */}
-                <div className="flex items-center gap-3">
-                  <button 
-                    onClick={() => setEditingId(editingId === section.id ? null : section.id)}
-                    className="text-sm px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50 transition"
-                  >
-                    {editingId === section.id ? 'Fermer' : 'Configurer'}
-                  </button>
-                  <button 
-                    onClick={() => toggleSection(index)}
-                    className={`text-sm px-3 py-1.5 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                  >
-                    {section.enabled ? 'Visible' : 'Masqué'}
-                  </button>
-                  <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                  </button>
-                </div>
+                
+                {/* Config Panel */}
+                {editingId === section.id && (
+                  <div className="border-t border-gray-100 bg-white p-4">
+                    {renderConfig(section)}
+                  </div>
+                )}
               </div>
-              
-              {/* Config Panel */}
-              {editingId === section.id && (
-                <div className="border-t border-gray-100 bg-white p-4">
-                  {renderConfig(section)}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-8 border-t pt-6">
-          <h3 className="font-semibold mb-3">Ajouter une nouvelle section</h3>
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => addSection('BestDeals')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Promo (Compte à rebours)</button>
-            <button onClick={() => addSection('BestSeller')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Simple (Produits)</button>
+          <div className="mt-8 border-t pt-6">
+            <h3 className="font-semibold mb-3">Ajouter une nouvelle section</h3>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => addSection('BestDeals')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Promo (Compte à rebours)</button>
+              <button onClick={() => addSection('BestSeller')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Simple (Produits)</button>
+            </div>
           </div>
         </div>
+      </div>
+      
+      {/* Right side: Live Preview */}
+      <div className="hidden xl:block h-[calc(100vh-120px)] bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative shadow-inner">
+        <div className="absolute top-0 w-full bg-slate-800 text-white py-1 px-4 text-xs font-semibold flex justify-between items-center z-10 opacity-90">
+          <span>Aperçu en direct</span>
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            En temps réel
+          </span>
+        </div>
+        <iframe 
+          ref={iframeRef} 
+          src="/preview" 
+          className="w-full h-full pt-6 bg-white" 
+          title="Live Preview"
+        />
       </div>
     </div>
   );

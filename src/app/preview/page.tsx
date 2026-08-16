@@ -4,33 +4,30 @@ import BestSeller from '@/components/home/BestSeller';
 import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
+import { SectionConfig } from '@/app/admin/landing/LandingForm';
+import { cookies } from 'next/headers';
 import { getSettings } from '@/actions/settings';
-import { SectionConfig, SectionType } from '@/app/admin/landing/LandingForm';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
-  const settings = await getSettings();
+export default async function PreviewPage() {
+  const cookieStore = await cookies();
+  const layoutCookie = cookieStore.get('preview_layout');
   
   let layout: SectionConfig[] = [];
-  try {
+  if (layoutCookie && layoutCookie.value) {
+    try {
+      layout = JSON.parse(layoutCookie.value);
+    } catch (e) {
+      console.error(e);
+    }
+  } else {
+    const settings = await getSettings();
     if (settings.HOMEPAGE_LAYOUT) {
       layout = JSON.parse(settings.HOMEPAGE_LAYOUT);
-    } else {
-      layout = [
-        { id: 'sec_1', type: 'Hero', name: 'Hero', enabled: true, settings: {} },
-        { id: 'sec_2', type: 'BestDeals', name: 'Best Deals', enabled: true, settings: { title: "Today's Best Deals", countdown: '2026-12-31T23:59:59', filterType: 'ON_SALE' } },
-        { id: 'sec_3', type: 'PromoBanners', name: 'Banners', enabled: false, settings: {} },
-        { id: 'sec_4', type: 'BestSeller', name: 'Best Seller', enabled: true, settings: { title: "Best Seller", filterType: 'POPULAR' } },
-        { id: 'sec_5', type: 'LatestBlogs', name: 'Blogs', enabled: true, settings: {} },
-        { id: 'sec_6', type: 'Newsletter', name: 'Newsletter', enabled: true, settings: {} }
-      ];
     }
-  } catch (e) {
-    console.error("Failed to parse HOMEPAGE_LAYOUT", e);
   }
 
-  // Filter only enabled sections
   const activeSections = layout.filter(s => s.enabled);
 
   const renderSection = (section: SectionConfig) => {
@@ -55,7 +52,9 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white">
       <main>
-        {activeSections.map(renderSection)}
+        {activeSections.length > 0 ? activeSections.map(renderSection) : (
+          <div className="flex items-center justify-center h-64 text-gray-400">Aucune section active.</div>
+        )}
       </main>
     </div>
   );
