@@ -89,6 +89,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     }
   });
 
+  // 404 Page settings
+  const [notFoundTitle, setNotFoundTitle] = useState(initialSettings.NOT_FOUND_TITLE || 'Oops! Cette page est introuvable.');
+  const [notFoundText, setNotFoundText] = useState(initialSettings.NOT_FOUND_TEXT || 'Il semble que nous ne puissions pas trouver la page que vous cherchez. Elle a peut-être été déplacée ou supprimée.');
+  const [notFoundCta, setNotFoundCta] = useState(initialSettings.NOT_FOUND_CTA || 'Retour à l\'accueil');
+  const [notFoundBgColor, setNotFoundBgColor] = useState(initialSettings.NOT_FOUND_BG_COLOR || '#000000');
+  const [notFoundBgImage, setNotFoundBgImage] = useState(initialSettings.NOT_FOUND_BG_IMAGE || '');
+  const [notFoundFile, setNotFoundFile] = useState<File | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -157,6 +165,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('FOOTER_SOCIAL_LINKEDIN', footerSocialLinkedin);
     await updateSetting('FOOTER_COLUMNS', JSON.stringify(footerColumns));
     
+    let finalNotFoundImage = notFoundBgImage;
+    if (notFoundFile) {
+      const formData = new FormData();
+      formData.append('file', notFoundFile);
+      const url = await uploadImage(formData);
+      if (url) finalNotFoundImage = url;
+    }
+    await updateSetting('NOT_FOUND_TITLE', notFoundTitle);
+    await updateSetting('NOT_FOUND_TEXT', notFoundText);
+    await updateSetting('NOT_FOUND_CTA', notFoundCta);
+    await updateSetting('NOT_FOUND_BG_COLOR', notFoundBgColor);
+    await updateSetting('NOT_FOUND_BG_IMAGE', finalNotFoundImage);
+
     setIsLoading(false);
     setMessage('Paramètres mis à jour avec succès.');
     setTimeout(() => setMessage(''), 3000);
@@ -647,6 +668,56 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
             + Ajouter une colonne
           </button>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Page 404 (Introuvable)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titre de la page</label>
+            <input type="text" value={notFoundTitle} onChange={e => setNotFoundTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte d'explication</label>
+            <textarea value={notFoundText} onChange={e => setNotFoundText(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du bouton retour (CTA)</label>
+            <input type="text" value={notFoundCta} onChange={e => setNotFoundCta(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond (Si pas d'image)</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={notFoundBgColor} onChange={e => setNotFoundBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={notFoundBgColor} onChange={e => setNotFoundBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Image de fond (Upload)</label>
+            {notFoundBgImage && !notFoundFile && (
+              <div className="relative inline-block mb-2">
+                <img src={notFoundBgImage} alt="404 BG" className="h-20 object-cover border bg-gray-50 p-1" />
+                <button 
+                  type="button" 
+                  onClick={() => setNotFoundBgImage('')}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setNotFoundFile(e.target.files[0]);
+                }
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
         </div>
       </div>
 
