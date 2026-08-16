@@ -9,7 +9,7 @@ import { useCurrency } from '@/components/CurrencyProvider';
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, getCartTotal, clearCart } = useCartStore();
+  const { items: cart, getTotalPrice, clearCart } = useCartStore();
   
   const [shippingMethod, setShippingMethod] = useState<'free' | 'standard' | 'express'>('free');
   const [paymentMethod, setPaymentMethod] = useState<'BANK_TRANSFER' | 'PAYPAL' | 'STRIPE'>('BANK_TRANSFER');
@@ -23,7 +23,7 @@ export default function CheckoutPage() {
     express: 53.87
   };
 
-  const cartTotal = getCartTotal();
+  const cartTotal = getTotalPrice();
   const finalTotal = cartTotal + shippingCosts[shippingMethod];
 
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
