@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ProductActions from '@/components/product/ProductActions';
 import Price from '@/components/Price';
+import ProductReviews from '@/components/product/ProductReviews';
+import { createClient } from '@/utils/supabase/server';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -20,7 +22,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
   
   const product = await prisma.product.findUnique({
     where: { slug },
-    include: { category: true }
+    include: { 
+      category: true,
+      reviews: {
+        where: { isApproved: true },
+        orderBy: { createdAt: 'desc' },
+        include: { user: { select: { email: true } } }
+      }
+    }
   });
 
   const setting = await prisma.setting.findUnique({
@@ -39,8 +48,18 @@ export default async function ProductPage({ params }: { params: { slug: string }
     take: 4,
   });
 
+  // Check if logged in
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  const isLoggedIn = !!session;
+
   const hasImages = product.images && product.images.length > 0;
   const mainImage = hasImages ? product.images[0] : null;
+
+  // Calculate Average Rating
+  const avgRating = product.reviews.length > 0 
+    ? product.reviews.reduce((acc, curr) => acc + curr.rating, 0) / product.reviews.length 
+    : 0;
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
@@ -106,9 +125,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <div className="flex">
-                    {[1,2,3,4,5].map(i => <Star key={i} />)}
+                    {[1,2,3,4,5].map(i => <Star key={i} filled={i <= Math.round(avgRating)} />)}
                   </div>
-                  <span className="ml-1 text-gray-600">1 customer review</span>
+                  <span className="ml-1 text-gray-600">{product.reviews.length} customer review{product.reviews.length > 1 ? 's' : ''}</span>
                 </div>
                 <span className="border-l border-gray-300 h-4"></span>
                 <span>Sold: <span className="font-semibold text-gray-900">24</span></span>
@@ -127,27 +146,13 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
           </div>
 
-          {/* Tabs Section */}
-          <div className="mt-20">
-            <div className="flex justify-center border-b border-gray-200 mb-8">
-              <button className="px-8 py-4 text-sm font-bold text-gray-900 border-b-2 border-orange-500">
-                Description
-              </button>
-              <button className="px-8 py-4 text-sm font-semibold text-gray-500 hover:text-gray-900">
-                Reviews (1)
-              </button>
-            </div>
-            <div className="max-w-4xl mx-auto text-sm text-gray-700 leading-relaxed space-y-6">
-              {product.description ? (
-                <div 
-                  className="prose prose-sm max-w-none" 
-                  dangerouslySetInnerHTML={{ __html: product.description }} 
-                />
-              ) : (
-                <div className="whitespace-pre-wrap">Aucune description détaillée.</div>
-              )}
-            </div>
-          </div>
+          {/* Tabs Section (Description & Reviews) */}
+          <ProductReviews 
+            productId={product.id}
+            reviews={product.reviews as any}
+            description={product.description}
+            isLoggedIn={isLoggedIn}
+          />
 
           {/* Related Products Section */}
           <div className="mt-20">

@@ -44,6 +44,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orders    Order[]
+  reviews   Review[]
 }
 
 model Category {
@@ -72,6 +73,7 @@ model Product {
   discountLabel  String?
   tags           String[]    @default([])
   orderItems     OrderItem[]
+  reviews        Review[]
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }
@@ -190,4 +192,17 @@ model DeliveryPosition {
   longitude Float
   note      String?  @db.Text
   createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid()) @db.Uuid
+  productId String   @db.Uuid
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String   @db.Text
+  isApproved Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -14,6 +14,8 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState<'free' | 'standard' | 'express'>('free');
   const [paymentMethod, setPaymentMethod] = useState<'BANK_TRANSFER' | 'PAYPAL' | 'STRIPE'>('BANK_TRANSFER');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showCouponInput, setShowCouponInput] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
   const { formatPrice } = useCurrency();
 
   // Constants for shipping prices
@@ -62,8 +64,23 @@ export default function CheckoutPage() {
         <div className="lg:col-span-7 space-y-8">
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
-            Vous avez un coupon? <button type="button" className="text-orange-600 hover:underline font-medium">Cliquez ici pour saisir votre code</button>
+            Vous avez un coupon? <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">Cliquez ici pour saisir votre code</button>
           </div>
+          
+          {showCouponInput && (
+            <div className="bg-white p-4 border border-gray-200 rounded flex gap-2">
+              <input 
+                type="text" 
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="Code promo" 
+                className="flex-grow px-4 py-2 border border-gray-200 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
+              />
+              <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
+                Appliquer
+              </button>
+            </div>
+          )}
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
             Déjà client? <Link href="/login" className="text-orange-600 hover:underline font-medium">Cliquez ici pour vous connecter</Link>
