@@ -13,11 +13,11 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const { slug } = await params;
   
   const product = await prisma.product.findUnique({
-    where: { id },
+    where: { slug },
     include: { category: true }
   });
 
@@ -223,7 +223,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.length > 0 ? (
               relatedProducts.map(rp => (
-                <Link href={`/product/${rp.id}`} key={rp.id} className="group border border-gray-200 rounded-lg p-4 bg-white hover:shadow-md transition flex flex-col">
+                <Link href={`/product/${rp.slug}`} key={rp.id} className="group border border-gray-200 rounded-lg p-4 bg-white hover:shadow-md transition flex flex-col">
                   <div className="relative h-48 w-full flex items-center justify-center mb-4">
                     {rp.images && rp.images[0] ? (
                       <img src={rp.images[0]} alt={rp.title} className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500" />

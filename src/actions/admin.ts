@@ -102,10 +102,16 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
     return { error: "Le titre, le prix et la catégorie sont obligatoires." };
   }
 
+  // Generate slug from title
+  let baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  if (!baseSlug) baseSlug = 'produit';
+  const uniqueSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
+
   try {
     await prisma.product.create({
       data: {
         title,
+        slug: uniqueSlug,
         description,
         price,
         compareAtPrice,

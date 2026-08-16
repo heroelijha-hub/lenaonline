@@ -61,15 +61,26 @@ const BigCard = ({
 );
 
 export default async function BestSeller() {
-  const products = await getBestSellers();
+  const dbProducts = await getBestSellers();
 
-  // On extrait les 2 premiers produits pour les "BigCards"
-  const bigProduct1 = products[0];
-  const bigProduct2 = products[5]; // On saute 4 petits
+  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
+    id: p.id,
+    slug: p.slug,
+    imageUrl: p.images[0],
+    category: p.category?.name || 'N/A',
+    title: p.title,
+    rating: 5,
+    ratingText: '(5.00)',
+    price: `$${p.price.toFixed(2)}`,
+    oldPrice: p.compareAtPrice ? `$${p.compareAtPrice.toFixed(2)}` : undefined,
+    imagePlaceholder: '🛍️'
+  })) : [];
 
-  // On extrait les petits produits
-  const smallProductsGroup1 = products.slice(1, 5);
-  const smallProductsGroup2 = products.slice(6, 10);
+  const bigProduct1 = displayProducts[0];
+  const bigProduct2 = displayProducts[5];
+
+  const smallProductsGroup1 = displayProducts.slice(1, 5);
+  const smallProductsGroup2 = displayProducts.slice(6, 10);
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
@@ -91,14 +102,14 @@ export default async function BestSeller() {
         {/* Column 1: Big Card */}
         <div className="col-span-1">
           <BigCard 
-            icon="👟" 
-            category={bigProduct1?.category?.name || "Cosmetics"} 
+            icon={bigProduct1?.imagePlaceholder || "👟"} 
+            category={bigProduct1?.category || "Cosmetics"} 
             title={bigProduct1?.title || "Comfortable Regular Comfort Sports Sneakers"} 
-            price={bigProduct1 ? `$${bigProduct1.price}` : "$33.00"} 
+            price={bigProduct1?.price || "$33.00"} 
             rating={5} 
             ratingText="(5.00)" 
-            imageUrl={bigProduct1?.images[0]}
-            linkUrl={bigProduct1 ? `/product/${bigProduct1.id}` : '#'}
+            imageUrl={bigProduct1?.imageUrl}
+            linkUrl={bigProduct1 ? `/product/${bigProduct1.slug}` : '#'}
           />
         </div>
 
@@ -113,7 +124,7 @@ export default async function BestSeller() {
                 title={p?.title || "Product placeholder"} 
                 price={p ? `$${p.price}` : "$18.00"} 
                 imageUrl={p?.images[0]}
-                linkUrl={p ? `/product/${p.id}` : '#'}
+                linkUrl={p ? `/product/${p.slug}` : '#'}
               />
             );
           })}
@@ -129,7 +140,7 @@ export default async function BestSeller() {
             rating={3} 
             ratingText="(3.00)" 
             imageUrl={bigProduct2?.images[0]}
-            linkUrl={bigProduct2 ? `/product/${bigProduct2.id}` : '#'}
+            linkUrl={bigProduct2 ? `/product/${bigProduct2.slug}` : '#'}
           />
         </div>
 
@@ -144,7 +155,7 @@ export default async function BestSeller() {
                 title={p?.title || "Product placeholder"} 
                 price={p ? `$${p.price}` : "$35.00"} 
                 imageUrl={p?.images[0]}
-                linkUrl={p ? `/product/${p.id}` : '#'}
+                linkUrl={p ? `/product/${p.slug}` : '#'}
               />
             );
           })}

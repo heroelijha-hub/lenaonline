@@ -27,6 +27,7 @@ export default async function BestDeals() {
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
     id: p.id,
+    slug: p.slug,
     imageUrl: p.images[0],
     category: p.category?.name || 'N/A',
     title: p.title,
@@ -69,7 +70,7 @@ export default async function BestDeals() {
       <div className="border border-gray-200 rounded-lg bg-white mb-8 overflow-x-auto">
         <div className="flex min-w-[1000px] divide-x divide-gray-200">
           {displayProducts.map((product) => (
-            <Link href={`/product/${product.id}`} key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
+            <Link href={`/product/${(product as any).slug || product.id}`} key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
               {/* Product Image Area */}
               <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
                 {product.discount && (
