@@ -124,10 +124,17 @@ export default async function BestDeals() {
             <span className="text-orange-600 font-bold text-sm block mb-2">
               {settings.PROMO_1_SUBTITLE || 'Price Start $69'}
             </span>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line" style={settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : undefined}>
               {settings.PROMO_1_TITLE || 'NOTHING\nWATCH PRO 2'}
             </h2>
-            <Link href={settings.PROMO_1_LINK || '/#'} className="inline-block bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm">
+            <Link 
+              href={settings.PROMO_1_LINK || '/#'} 
+              className="inline-block bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm"
+              style={{
+                backgroundColor: settings.PROMO_1_BTN_BG_COLOR || undefined,
+                color: settings.PROMO_1_BTN_TEXT_COLOR || undefined
+              }}
+            >
               Shop Now
             </Link>
           </div>
@@ -149,13 +156,20 @@ export default async function BestDeals() {
         {/* Right Banner */}
         <div className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center">
           <div className="z-10 w-1/2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line" style={settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : undefined}>
               {settings.PROMO_2_TITLE || 'Get 20% Off'}
             </h2>
-            <p className="font-bold text-gray-800 mb-6 text-lg">
+            <p className="font-bold text-gray-800 mb-6 text-lg" style={settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : undefined}>
               {settings.PROMO_2_SUBTITLE || 'Women Store'}
             </p>
-            <Link href={settings.PROMO_2_LINK || '/#'} className="inline-block bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm">
+            <Link 
+              href={settings.PROMO_2_LINK || '/#'} 
+              className="inline-block bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm"
+              style={{
+                backgroundColor: settings.PROMO_2_BTN_BG_COLOR || undefined,
+                color: settings.PROMO_2_BTN_TEXT_COLOR || undefined
+              }}
+            >
               Shop Now
             </Link>
           </div>

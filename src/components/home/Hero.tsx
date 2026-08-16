@@ -15,13 +15,20 @@ export default async function Hero() {
             <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-3 block">
               {settings.HERO_1_SUBTITLE || 'Supper Discount'}
             </span>
-            <h2 className="text-3xl font-bold text-slate-800 mb-2">
+            <h2 className="text-3xl font-bold text-slate-800 mb-2" style={settings.HERO_1_TEXT_COLOR ? { color: settings.HERO_1_TEXT_COLOR } : undefined}>
               {settings.HERO_1_TITLE || 'Apple Iphone 17 Pro Max'}
             </h2>
-            <p className="text-gray-600 mb-6 text-lg">
+            <p className="text-gray-600 mb-6 text-lg" style={settings.HERO_1_TEXT_COLOR ? { color: settings.HERO_1_TEXT_COLOR } : undefined}>
               {settings.HERO_1_PRICE || 'from $349.99'}
             </p>
-            <Link href={settings.HERO_1_LINK || '/#'} className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
+            <Link 
+              href={settings.HERO_1_LINK || '/#'} 
+              className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
+              style={{
+                backgroundColor: settings.HERO_1_BTN_BG_COLOR || undefined,
+                color: settings.HERO_1_BTN_TEXT_COLOR || undefined
+              }}
+            >
               {settings.HERO_1_CTA || 'Shop Now'}
             </Link>
           </div>
@@ -53,10 +60,17 @@ export default async function Hero() {
                 <span className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-wide">
                   {settings.HERO_2_SUBTITLE || 'Use Code: SALE35%'}
                 </span>
-                <h2 className="text-2xl font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line">
+                <h2 className="text-2xl font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line" style={settings.HERO_2_TEXT_COLOR ? { color: settings.HERO_2_TEXT_COLOR } : undefined}>
                   {settings.HERO_2_TITLE || 'Heavy On Features\nLight On Price'}
                 </h2>
-                <Link href={settings.HERO_2_LINK || '/#'} className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105">
+                <Link 
+                  href={settings.HERO_2_LINK || '/#'} 
+                  className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105"
+                  style={{
+                    backgroundColor: settings.HERO_2_BTN_BG_COLOR || undefined,
+                    color: settings.HERO_2_BTN_TEXT_COLOR || undefined
+                  }}
+                >
                   Shop Now
                 </Link>
               </div>
@@ -76,10 +90,17 @@ export default async function Hero() {
                 <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-2 block">
                   {settings.HERO_3_SUBTITLE || 'New Product'}
                 </span>
-                <h2 className="text-2xl font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line">
+                <h2 className="text-2xl font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line" style={settings.HERO_3_TEXT_COLOR ? { color: settings.HERO_3_TEXT_COLOR } : undefined}>
                   {settings.HERO_3_TITLE || 'Sale 10%\nOff Speaker'}
                 </h2>
-                <Link href={settings.HERO_3_LINK || '/#'} className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105">
+                <Link 
+                  href={settings.HERO_3_LINK || '/#'} 
+                  className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105"
+                  style={{
+                    backgroundColor: settings.HERO_3_BTN_BG_COLOR || undefined,
+                    color: settings.HERO_3_BTN_TEXT_COLOR || undefined
+                  }}
+                >
                   Shop Now
                 </Link>
               </div>
@@ -98,13 +119,20 @@ export default async function Hero() {
           {/* Bottom Row Banner (Headphones) */}
           <div className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center h-full lg:h-[50%] border border-gray-100 group">
             <div className="z-10 w-1/2 lg:pl-4">
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line">
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line" style={settings.HERO_4_TEXT_COLOR ? { color: settings.HERO_4_TEXT_COLOR } : undefined}>
                 {settings.HERO_4_TITLE || 'Headphones Listen With\nHeart'}
               </h2>
-              <p className="text-slate-600 mb-6 font-medium">
+              <p className="text-slate-600 mb-6 font-medium" style={settings.HERO_4_TEXT_COLOR ? { color: settings.HERO_4_TEXT_COLOR } : undefined}>
                 {settings.HERO_4_SUBTITLE || 'Last call for up to 25% off'}
               </p>
-              <Link href={settings.HERO_4_LINK || '/#'} className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105">
+              <Link 
+                href={settings.HERO_4_LINK || '/#'} 
+                className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
+                style={{
+                  backgroundColor: settings.HERO_4_BTN_BG_COLOR || undefined,
+                  color: settings.HERO_4_BTN_TEXT_COLOR || undefined
+                }}
+              >
                 Shop Now
               </Link>
             </div>

@@ -104,6 +104,18 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
     </div>
   );
 
+  const renderColorInput = (label: string, key: string) => (
+    <div className="mb-4 flex items-center justify-between">
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <input
+        type="color"
+        value={settings[key] || '#000000'}
+        onChange={(e) => handleChange(key, e.target.value)}
+        className="w-10 h-10 p-1 border border-gray-300 rounded cursor-pointer"
+      />
+    </div>
+  );
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       {message && (
@@ -126,6 +138,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderInput('Texte du bouton', 'HERO_1_CTA', 'Shop Now')}
             {renderInput('Lien du bouton', 'HERO_1_LINK', '/product/...')}
             {renderImageUpload('Image du Produit', 'HERO_1_IMAGE', 'Taille rec. ~ 400x500px, PNG sans fond')}
+            {renderColorInput('Couleur du texte', 'HERO_1_TEXT_COLOR')}
+            {renderColorInput('Couleur fond bouton', 'HERO_1_BTN_BG_COLOR')}
+            {renderColorInput('Couleur texte bouton', 'HERO_1_BTN_TEXT_COLOR')}
           </div>
 
           <div className="space-y-6">
@@ -136,6 +151,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Sous-titre (ex: Use Code: SALE35%)', 'HERO_2_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_2_LINK', '/category/...')}
               {renderImageUpload('Image du Produit', 'HERO_2_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
+              {renderColorInput('Couleur du texte', 'HERO_2_TEXT_COLOR')}
+              {renderColorInput('Couleur fond bouton', 'HERO_2_BTN_BG_COLOR')}
+              {renderColorInput('Couleur texte bouton', 'HERO_2_BTN_TEXT_COLOR')}
             </div>
 
             {/* Bloc Haut Droite */}
@@ -145,6 +163,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Sous-titre (ex: New Product)', 'HERO_3_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_3_LINK', '/category/...')}
               {renderImageUpload('Image du Produit', 'HERO_3_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
+              {renderColorInput('Couleur du texte', 'HERO_3_TEXT_COLOR')}
+              {renderColorInput('Couleur fond bouton', 'HERO_3_BTN_BG_COLOR')}
+              {renderColorInput('Couleur texte bouton', 'HERO_3_BTN_TEXT_COLOR')}
             </div>
             
             {/* Bloc Bas */}
@@ -154,6 +175,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Sous-titre (ex: Last call for up to 25% off)', 'HERO_4_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_4_LINK', '/category/...')}
               {renderImageUpload('Image du Produit', 'HERO_4_IMAGE', 'Taille rec. ~ 300x300px, PNG sans fond')}
+              {renderColorInput('Couleur du texte', 'HERO_4_TEXT_COLOR')}
+              {renderColorInput('Couleur fond bouton', 'HERO_4_BTN_BG_COLOR')}
+              {renderColorInput('Couleur texte bouton', 'HERO_4_BTN_TEXT_COLOR')}
             </div>
           </div>
         </div>
@@ -169,6 +193,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderInput('Sous-titre', 'PROMO_1_SUBTITLE', 'Price Start $69')}
             {renderInput('Lien', 'PROMO_1_LINK', '/product/...')}
             {renderImageUpload('Image du Produit', 'PROMO_1_IMAGE', 'Taille rec. ~ 250x250px')}
+            {renderColorInput('Couleur du texte', 'PROMO_1_TEXT_COLOR')}
+            {renderColorInput('Couleur fond bouton', 'PROMO_1_BTN_BG_COLOR')}
+            {renderColorInput('Couleur texte bouton', 'PROMO_1_BTN_TEXT_COLOR')}
           </div>
           <div className="bg-gray-50 p-4 rounded border">
             <h3 className="font-semibold mb-3 text-orange-600">Bannière Droite (Women Store)</h3>
@@ -176,6 +203,9 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderInput('Sous-titre', 'PROMO_2_SUBTITLE', 'Women Store')}
             {renderInput('Lien', 'PROMO_2_LINK', '/category/women')}
             {renderImageUpload('Image du Produit', 'PROMO_2_IMAGE', 'Taille rec. ~ 250x250px')}
+            {renderColorInput('Couleur du texte', 'PROMO_2_TEXT_COLOR')}
+            {renderColorInput('Couleur fond bouton', 'PROMO_2_BTN_BG_COLOR')}
+            {renderColorInput('Couleur texte bouton', 'PROMO_2_BTN_TEXT_COLOR')}
           </div>
         </div>
       </div>
