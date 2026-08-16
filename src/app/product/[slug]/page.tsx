@@ -138,9 +138,16 @@ export default async function ProductPage({ params }: { params: { slug: string }
               </div>
 
               {/* Short Description */}
-              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                {product.shortDescription || "Aucune description courte disponible pour ce produit."}
-              </p>
+              {product.shortDescription ? (
+                <div 
+                  className="text-sm text-gray-600 mb-6 leading-relaxed prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+                />
+              ) : (
+                <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                  Aucune description courte disponible pour ce produit.
+                </p>
+              )}
 
               {/* Stock status */}
               <p className="text-teal-600 font-semibold mb-6">
@@ -206,9 +213,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
               </button>
             </div>
             <div className="max-w-4xl mx-auto text-sm text-gray-700 leading-relaxed space-y-6">
-              <div className="whitespace-pre-wrap">
-                {product.description || "Aucune description détaillée."}
-              </div>
+              {product.description ? (
+                <div 
+                  className="prose prose-sm max-w-none" 
+                  dangerouslySetInnerHTML={{ __html: product.description }} 
+                />
+              ) : (
+                <div className="whitespace-pre-wrap">Aucune description détaillée.</div>
+              )}
             </div>
           </div>
 
