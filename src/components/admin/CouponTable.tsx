@@ -39,7 +39,9 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
             coupons.map((coupon) => (
               <tr key={coupon.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{coupon.code}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-{coupon.discountPercentage}%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {coupon.type === 'PERCENTAGE' ? `-${coupon.value}%` : `-${coupon.value}€`}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <button 
                     onClick={() => handleToggle(coupon.id, coupon.isActive)}

@@ -311,18 +311,20 @@ export async function getCoupons() {
 
 export async function createCoupon(formData: FormData) {
   const code = formData.get('code') as string;
-  const discountPercentage = parseInt(formData.get('discountPercentage') as string, 10);
+  const type = formData.get('type') as any || 'PERCENTAGE';
+  const value = parseFloat(formData.get('value') as string);
   const isActive = formData.get('isActive') === 'on';
 
-  if (!code || isNaN(discountPercentage)) {
-    return { error: "Le code et le pourcentage sont obligatoires." };
+  if (!code || isNaN(value)) {
+    return { error: "Le code et la valeur sont obligatoires." };
   }
 
   try {
     await prisma.coupon.create({
       data: {
         code: code.toUpperCase(),
-        discountPercentage,
+        type,
+        value,
         isActive
       }
     });

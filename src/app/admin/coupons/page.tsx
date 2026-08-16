@@ -18,8 +18,15 @@ export default async function CouponsPage() {
             <input type="text" name="code" required placeholder="ex: SOLDES20" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 uppercase" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pourcentage de réduction *</label>
-            <input type="number" name="discountPercentage" required min="1" max="100" placeholder="ex: 20" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Type de réduction *</label>
+            <select name="type" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 mb-4">
+              <option value="PERCENTAGE">Pourcentage (%)</option>
+              <option value="FIXED_AMOUNT">Montant fixe (€)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Valeur de la réduction *</label>
+            <input type="number" step="0.01" name="value" required min="0.01" placeholder="ex: 20" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="flex items-center">
             <input type="checkbox" name="isActive" id="isActive" defaultChecked className="w-4 h-4 text-orange-600 border-gray-300 rounded" />

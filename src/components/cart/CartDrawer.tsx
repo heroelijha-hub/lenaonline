@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import Price from '@/components/Price';
-import Image from 'next/image';
 
 type CartDrawerProps = {
   isOpen: boolean;
@@ -43,7 +42,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="flex items-center">
             <div className="relative mr-2">
               <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-              <span className="absolute -top-1 -right-2 bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+              <span className="absolute -top-1 -right-2 bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
                 {getTotalItems()}
               </span>
             </div>
@@ -85,7 +84,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <p className="text-gray-800 font-medium mb-6">Aucun produit dans le panier.</p>
               <button 
                 onClick={onClose}
-                className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-3 px-8 rounded-md transition"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-md transition"
               >
                 Continuez mes achats
               </button>
@@ -96,14 +95,14 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <div key={item.id} className="flex gap-4 border-b border-gray-100 pb-4">
                   <div className="w-20 h-20 bg-gray-50 border border-gray-100 flex-shrink-0 rounded flex items-center justify-center relative overflow-hidden">
                     {item.image ? (
-                       <Image src={item.image} alt={item.title} fill className="object-contain p-1" />
+                       <img src={item.image} alt={item.title} className="w-full h-full object-contain p-1" />
                     ) : (
                        <span className="text-xs text-gray-400">No Image</span>
                     )}
                   </div>
                   
                   <div className="flex-1 flex flex-col">
-                    <Link href={`/product/${item.productId}`} onClick={onClose} className="font-medium text-gray-900 text-sm hover:text-emerald-700 line-clamp-2 leading-tight mb-2">
+                    <Link href={`/product/${item.productId}`} onClick={onClose} className="font-medium text-gray-900 text-sm hover:text-orange-600 line-clamp-2 leading-tight mb-2">
                       {item.title}
                     </Link>
                     
@@ -155,20 +154,20 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="mb-4">
             <button 
               onClick={() => setShowCoupon(!showCoupon)}
-              className="flex items-center text-sm text-gray-700 hover:text-emerald-700 transition"
+              className="flex items-center text-sm text-gray-700 hover:text-orange-600 transition"
             >
               <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" /></svg>
-              <span className="font-semibold text-emerald-700 mr-1">Cliquez ici</span> Appliquer le coupon
+              <span className="font-semibold text-orange-600 mr-1">Cliquez ici</span> Appliquer le coupon
             </button>
             {showCoupon && (
               <div className="mt-3 flex gap-2">
-                <input type="text" placeholder="Code coupon" className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-emerald-600" />
+                <input type="text" placeholder="Code coupon" className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500" />
                 <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">Appliquer</button>
               </div>
             )}
           </div>
 
-          <div className="border border-emerald-700 rounded-md p-4 mb-4">
+          <div className="border border-orange-500 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
               <span className="text-gray-900 font-medium">Subtotal</span>
               <Price amount={getTotalPrice()} className="text-gray-900" />
@@ -190,7 +189,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <Link 
               href="/checkout" 
               onClick={onClose}
-              className="flex-1 flex justify-center items-center py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-md transition"
+              className="flex-1 flex justify-center items-center py-3 px-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md transition"
             >
               Commander
             </Link>
