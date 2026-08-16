@@ -1,5 +1,6 @@
 import { getCategories, createCategory } from '@/actions/admin';
-import { revalidatePath } from 'next/cache';
+
+export const dynamic = 'force-dynamic';
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
