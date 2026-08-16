@@ -17,7 +17,7 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
   const product = await prisma.product.findUnique({

@@ -3,8 +3,9 @@ import TrackingMap from '@/components/tracking/TrackingMap';
 
 export const dynamic = 'force-dynamic';
 
-export default async function TrackingPage({ searchParams }: { searchParams: { number?: string } }) {
-  const trackingNumber = searchParams.number;
+export default async function TrackingPage({ searchParams }: { searchParams: Promise<{ number?: string }> }) {
+  const { number } = await searchParams;
+  const trackingNumber = number;
   
   let order = null;
   let error = null;

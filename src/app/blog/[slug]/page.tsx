@@ -7,8 +7,9 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
-  const article = await getArticleBySlug(params.slug);
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
   
   if (!article || !article.isPublished) {
     notFound();

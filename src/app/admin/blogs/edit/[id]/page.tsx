@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { getArticleById } from '@/actions/blog';
 import { notFound } from 'next/navigation';
 
-export default async function EditBlogPage({ params }: { params: { id: string } }) {
-  const article = await getArticleById(params.id);
+export default async function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = await getArticleById(id);
 
   if (!article) {
     notFound();
