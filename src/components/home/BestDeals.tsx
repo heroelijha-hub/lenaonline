@@ -1,4 +1,5 @@
 import { getBestDeals } from '@/actions/public';
+import Link from 'next/link';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (

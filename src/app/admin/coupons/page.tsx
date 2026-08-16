@@ -11,6 +11,7 @@ export default async function CouponsPage() {
       {/* Colonne gauche: Formulaire */}
       <div className="w-1/3 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h2 className="text-lg font-bold text-gray-900 mb-6">Nouveau Coupon</h2>
+        {/* @ts-expect-error Server Action typing */}
         <form action={createCoupon} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Code Promo *</label>

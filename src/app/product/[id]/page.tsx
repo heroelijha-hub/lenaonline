@@ -28,6 +28,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   // Related products (same category)
   const relatedProducts = await prisma.product.findMany({
     where: { categoryId: product.categoryId, id: { not: product.id } },
+    include: { category: true },
     take: 4,
   });
 
