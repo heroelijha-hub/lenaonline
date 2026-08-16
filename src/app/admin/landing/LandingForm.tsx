@@ -104,19 +104,25 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const renderHeroBlockConfig = (section: SectionConfig, blockNum: number) => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
-        <h5 className="font-bold text-xs mb-2 text-gray-700">Design, Liens & Médias</h5>
+        <h5 className="font-bold text-sm mb-2 text-red-600">Design, Liens & Médias</h5>
         <label className="block text-xs font-medium mb-1">Lien de redirection (URL)</label>
         <input type="text" value={section.settings[`HERO_${blockNum}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_LINK`, e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-3" placeholder="/product/..." />
         
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
-            <label className="block text-xs font-medium mb-1">Image Principale</label>
-            <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_IMAGE`, e.target.files[0])} className="w-full text-xs" />
+            <label className="block text-xs font-bold mb-1 text-red-600">Image Principale</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+              Cliquez ici pour uploader
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
+            </label>
             {section.settings[`HERO_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`HERO_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `HERO_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">Image de Fond (BG)</label>
-            <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_BG_IMAGE`, e.target.files[0])} className="w-full text-xs" />
+            <label className="block text-xs font-bold mb-1 text-red-600">Image de Fond (BG)</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+              Cliquez ici pour uploader
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
+            </label>
             {section.settings[`HERO_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`HERO_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `HERO_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
@@ -142,16 +148,22 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const renderPromoBannerConfig = (section: SectionConfig, blockNum: number) => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
-        <h5 className="font-bold text-xs mb-2 text-gray-700">Design & Médias</h5>
+        <h5 className="font-bold text-sm mb-2 text-red-600">Design & Médias</h5>
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
-            <label className="block text-xs font-medium mb-1">Image Principale</label>
-            <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_IMAGE`, e.target.files[0])} className="w-full text-xs" />
+            <label className="block text-xs font-bold mb-1 text-red-600">Image Principale</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+              Cliquez ici pour uploader
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
+            </label>
             {section.settings[`BANNER_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`BANNER_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `BANNER_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">Image de Fond (BG)</label>
-            <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_BG_IMAGE`, e.target.files[0])} className="w-full text-xs" />
+            <label className="block text-xs font-bold mb-1 text-red-600">Image de Fond (BG)</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+              Cliquez ici pour uploader
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
+            </label>
             {section.settings[`BANNER_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`BANNER_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `BANNER_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
@@ -202,7 +214,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bloc 1 (Gauche)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.HERO_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Apple Iphone 17 Pro Max" />
               <label className="block text-xs font-medium mb-1">Sous-titre</label>
@@ -215,7 +227,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             </div>
 
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bloc 2 (Haut Centre)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Haut Centre)</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.HERO_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Heavy On Features..." />
               <label className="block text-xs font-medium mb-1">Sous-titre</label>
@@ -224,7 +236,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             </div>
 
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bloc 3 (Haut Droite)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Haut Droite)</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.HERO_3_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_3_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Sale 10% Off" />
               <label className="block text-xs font-medium mb-1">Sous-titre</label>
@@ -233,7 +245,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             </div>
 
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bloc 4 (Bas Droite)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bas Droite)</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.HERO_4_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_4_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Headphones Listen..." />
               <label className="block text-xs font-medium mb-1">Sous-titre</label>
@@ -296,7 +308,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <p className="text-sm text-gray-500">Configurer les 2 bannières promotionnelles côte à côte.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bannière Gauche</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.BANNER_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartwatch" />
               <label className="block text-xs font-medium mb-1">Lien cible</label>
@@ -304,7 +316,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {renderPromoBannerConfig(section, 1)}
             </div>
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2">Bannière Droite</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Droite</h4>
               <label className="block text-xs font-medium mb-1">Titre</label>
               <input type="text" value={section.settings.BANNER_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartphones" />
               <label className="block text-xs font-medium mb-1">Lien cible</label>
