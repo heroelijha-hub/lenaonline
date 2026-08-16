@@ -24,6 +24,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
   const [chatIconFile, setChatIconFile] = useState<File | null>(null);
 
+  // Contact & Newsletter settings
+  const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com');
+  const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !');
+
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
@@ -131,6 +135,9 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('TAX_INCLUDED_IN_PRICE', taxIncludedInPrice.toString());
     await updateSetting('DEFAULT_VAT_RATE', defaultVatRate);
     await updateSetting('ENABLE_EU_VAT', enableEuVat.toString());
+
+    await updateSetting('CONTACT_RECEIVER_EMAIL', contactReceiverEmail);
+    await updateSetting('NEWSLETTER_SUCCESS_MESSAGE', newsletterSuccessMessage);
     
     await updateSetting('FOOTER_ADDRESS_1', footerAddress1);
     await updateSetting('FOOTER_ADDRESS_2', footerAddress2);
@@ -262,17 +269,44 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Fonctionnalités Boutique</h3>
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id="enableBuyNow"
-            checked={enableBuyNow}
-            onChange={(e) => setEnableBuyNow(e.target.checked)}
-            className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
-          />
-          <label htmlFor="enableBuyNow" className="text-sm font-medium text-gray-700 cursor-pointer">
-            Activer le bouton "Buy Now" (Achat rapide) sur les pages produits
-          </label>
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="enableBuyNow"
+              checked={enableBuyNow}
+              onChange={(e) => setEnableBuyNow(e.target.checked)}
+              className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
+            />
+            <label htmlFor="enableBuyNow" className="text-sm font-medium text-gray-700 cursor-pointer">
+              Activer le bouton "Buy Now" (Achat rapide) sur les pages produits
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Email de réception (Contact & Newsletter)</label>
+              <input
+                type="email"
+                value={contactReceiverEmail}
+                onChange={(e) => setContactReceiverEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                placeholder="admin@shopelios.com"
+              />
+              <p className="mt-2 text-xs text-gray-500">L'adresse e-mail qui recevra les messages du formulaire de contact et les notifications d'inscription.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Message de succès (Newsletter)</label>
+              <textarea
+                value={newsletterSuccessMessage}
+                onChange={(e) => setNewsletterSuccessMessage(e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                placeholder="Merci pour votre inscription !"
+              />
+              <p className="mt-2 text-xs text-gray-500">Message affiché à l'utilisateur après une inscription réussie.</p>
+            </div>
+          </div>
         </div>
       </div>
 

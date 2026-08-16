@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import ContactForm from './ContactForm';
 
 export default function ContactPage() {
   return (
@@ -87,58 +88,7 @@ export default function ContactPage() {
                 Contactez-Nous En Remplissant Le Formulaire Ci-Dessous.
               </p>
 
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder="Nom complet" 
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="email" 
-                      placeholder="@" 
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <input 
-                      type="tel" 
-                      placeholder="+32 XXX ....." 
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder="Objet" 
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <textarea 
-                    placeholder="Votre Message" 
-                    rows={6}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-                  ></textarea>
-                </div>
-
-                <div>
-                  <button 
-                    type="submit" 
-                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors mt-2"
-                  >
-                    Envoyer
-                  </button>
-                </div>
-              </form>
+              <ContactForm />
             </div>
             
           </div>
