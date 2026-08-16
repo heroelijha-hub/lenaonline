@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { loginUser } from '@/actions/auth';
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -9,9 +11,27 @@ type LoginModalProps = {
 };
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState('');
 
   if (!isOpen) return null;
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+    const formData = new FormData(e.currentTarget);
+    startTransition(async () => {
+      const res = await loginUser(formData);
+      if (res.error) {
+        setError(res.error);
+      } else {
+        onClose();
+        router.push('/account');
+      }
+    });
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 font-sans">
@@ -28,10 +48,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">Sign in</h2>
 
-        <form className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
+          {error && <div className="text-red-500 text-sm font-medium">{error}</div>}
           <div>
             <input
-              type="text"
+              type="email"
+              name="email"
+              required
               placeholder="Username or email"
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
             />
@@ -40,6 +63,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
+              required
               placeholder="Password"
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 pr-12"
             />
@@ -79,14 +104,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="pt-2 space-y-3">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#0f172a] hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900"
+              disabled={isPending}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
             >
-              Log In
+              {isPending ? 'Connexion...' : 'Log In'}
             </button>
             <Link
               href="/login"
               onClick={onClose}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-slate-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
               Create an account
             </Link>

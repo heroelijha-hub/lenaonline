@@ -1,12 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Footer from '@/components/layout/Footer';
+import { loginUser, registerUser } from '@/actions/auth';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  
+  const [isPendingLogin, startTransitionLogin] = useTransition();
+  const [loginError, setLoginError] = useState('');
+
+  const [isPendingRegister, startTransitionRegister] = useTransition();
+  const [registerError, setRegisterError] = useState('');
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoginError('');
+    const formData = new FormData(e.currentTarget);
+    startTransitionLogin(async () => {
+      const res = await loginUser(formData);
+      if (res.error) {
+        setLoginError(res.error);
+      } else {
+        router.push('/account');
+      }
+    });
+  };
+
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setRegisterError('');
+    const formData = new FormData(e.currentTarget);
+    startTransitionRegister(async () => {
+      const res = await registerUser(formData);
+      if (res.error) {
+        setRegisterError(res.error);
+      } else {
+        router.push('/account');
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 font-sans">
@@ -16,13 +53,15 @@ export default function LoginPage() {
           {/* LOGIN CARD */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Login</h2>
-            <form className="space-y-5">
+            <form onSubmit={handleLogin} className="space-y-5">
+              {loginError && <div className="text-red-500 text-sm font-medium">{loginError}</div>}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Username or email address <span className="text-red-500">*</span>
+                  Email address <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="email"
+                  name="email"
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
                 />
@@ -34,6 +73,7 @@ export default function LoginPage() {
                 </label>
                 <input
                   type={showLoginPassword ? "text" : "password"}
+                  name="password"
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 pr-12"
                 />
@@ -64,9 +104,10 @@ export default function LoginPage() {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-slate-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none"
+                  disabled={isPendingLogin}
+                  className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  Log In
+                  {isPendingLogin ? 'Connexion...' : 'Log In'}
                 </button>
               </div>
             </form>
@@ -96,13 +137,15 @@ export default function LoginPage() {
           {/* REGISTER CARD */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Register</h2>
-            <form className="space-y-5">
+            <form onSubmit={handleRegister} className="space-y-5">
+              {registerError && <div className="text-red-500 text-sm font-medium">{registerError}</div>}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Username <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
+                  name="username"
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
                 />
@@ -114,6 +157,7 @@ export default function LoginPage() {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
                 />
@@ -125,6 +169,7 @@ export default function LoginPage() {
                 </label>
                 <input
                   type={showRegisterPassword ? "text" : "password"}
+                  name="password"
                   required
                   className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 pr-12"
                 />
@@ -144,9 +189,10 @@ export default function LoginPage() {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#0f172a] hover:bg-slate-800 focus:outline-none"
+                  disabled={isPendingRegister}
+                  className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  Register
+                  {isPendingRegister ? 'Création...' : 'Register'}
                 </button>
               </div>
             </form>
