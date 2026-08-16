@@ -10,6 +10,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>(initialData?.images || []);
+  const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
   const isEditing = !!initialData;
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       formData.append('variations', JSON.stringify(variations));
       formData.append('tags', JSON.stringify(tags));
       
-      const imageUrls: string[] = isEditing && initialData.images ? [...initialData.images] : [];
+      const imageUrls: string[] = [...existingImages];
       if (imageFiles.length > 0) {
         // Upload each file
         for (const file of imageFiles) {
@@ -249,13 +251,40 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
         )}
 
-        {/* Image Upload (Cloudinary) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d'images (Cloudinary - max 20)</label>
-          {isEditing && initialData?.images && initialData.images.length > 0 && (
-            <div className="flex gap-2 mb-3 overflow-x-auto">
-              {initialData.images.map((img: string, idx: number) => (
-                <img key={idx} src={img} alt={`img-${idx}`} className="h-16 w-16 object-cover rounded border" />
+          <p className="text-xs text-gray-500 mb-2">Glissez-déposez les images existantes pour modifier leur ordre. Cliquez sur la croix pour supprimer.</p>
+          {existingImages.length > 0 && (
+            <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
+              {existingImages.map((img: string, idx: number) => (
+                <div 
+                  key={idx} 
+                  className="relative group cursor-move"
+                  draggable
+                  onDragStart={() => setDraggedImageIdx(idx)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => {
+                    if (draggedImageIdx === null || draggedImageIdx === idx) return;
+                    const newImages = [...existingImages];
+                    const draggedImg = newImages[draggedImageIdx];
+                    newImages.splice(draggedImageIdx, 1);
+                    newImages.splice(idx, 0, draggedImg);
+                    setExistingImages(newImages);
+                    setDraggedImageIdx(null);
+                  }}
+                >
+                  <img src={img} alt={`img-${idx}`} className="h-20 w-20 object-cover rounded border" />
+                  <button 
+                    type="button" 
+                    onClick={() => setExistingImages(existingImages.filter((_, i) => i !== idx))}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition"
+                  >
+                    &times;
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-[10px] text-center opacity-0 group-hover:opacity-100 transition">
+                    Ordre: {idx + 1}
+                  </div>
+                </div>
               ))}
             </div>
           )}

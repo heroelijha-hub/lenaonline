@@ -267,7 +267,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <label className="block text-sm font-medium text-gray-700 mb-2">Logo de la Boutique (Upload)</label>
             <p className="text-xs text-gray-500 mb-2">Taille recommandée: 150x50 pixels (PNG transparent).</p>
             {headerLogoImage && !logoFile && (
-              <img src={headerLogoImage} alt="Logo" className="h-10 mb-2 object-contain border bg-gray-50 p-1" />
+              <div className="relative inline-block mb-2">
+                <img src={headerLogoImage} alt="Logo" className="h-10 object-contain border bg-gray-50 p-1" />
+                <button 
+                  type="button" 
+                  onClick={() => setHeaderLogoImage('')}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                >
+                  &times;
+                </button>
+              </div>
             )}
             <input
               type="file"
@@ -389,7 +398,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               <label className="block text-sm font-medium text-gray-700 mb-2">Icône du Chat (Upload)</label>
               <p className="text-xs text-gray-500 mb-2">Taille recommandée: 64x64 pixels (Carré).</p>
               {chatStoreIcon && !chatIconFile && (
-                <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 mb-2 object-cover rounded-full border" />
+                <div className="relative inline-block mb-2">
+                  <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 object-cover rounded-full border" />
+                  <button 
+                    type="button" 
+                    onClick={() => setChatStoreIcon('')}
+                    className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs hover:bg-red-600"
+                  >
+                    &times;
+                  </button>
+                </div>
               )}
               <input
                 type="file"
