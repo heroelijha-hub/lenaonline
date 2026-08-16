@@ -132,6 +132,114 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   }
 }
 
+export async function updateProduct(formData: FormData, imageUrls: string[]) {
+  const id = formData.get('id') as string;
+  const title = formData.get('title') as string;
+  const description = formData.get('description') as string;
+  const price = parseFloat(formData.get('price') as string);
+  const compareAtPrice = formData.get('compareAtPrice') ? parseFloat(formData.get('compareAtPrice') as string) : undefined;
+  
+  const stockRaw = formData.get('stock') as string;
+  const stock = stockRaw ? parseInt(stockRaw, 10) : null;
+
+  const categoryId = formData.get('categoryId') as string;
+  const isBestSeller = formData.get('isBestSeller') === 'on';
+  const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
+  const discountLabel = formData.get('discountLabel') as string || undefined;
+
+  if (!id || !title || !price || !categoryId) {
+    return { error: "L'ID, le titre, le prix et la catégorie sont obligatoires." };
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: {
+        title,
+        description,
+        price,
+        compareAtPrice,
+        stock,
+        categoryId,
+        isBestSeller,
+        isDealOfTheDay,
+        discountLabel,
+        images: imageUrls,
+      }
+    });
+    revalidatePath('/admin/products');
+    revalidatePath('/');
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: error.message || "Erreur lors de la mise à jour." };
+  }
+}
+
+export async function deleteProduct(id: string) {
+  try {
+    await prisma.product.delete({ where: { id } });
+    revalidatePath('/admin/products');
+    revalidatePath('/');
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: "Impossible de supprimer le produit." };
+  }
+}
+
+export async function duplicateProduct(id: string) {
+  try {
+    const existing = await prisma.product.findUnique({ where: { id } });
+    if (!existing) return { error: "Produit introuvable." };
+
+    const newTitle = existing.title + " (Copie)";
+    let baseSlug = newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const uniqueSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
+
+    await prisma.product.create({
+      data: {
+        title: newTitle,
+        slug: uniqueSlug,
+        description: existing.description,
+        price: existing.price,
+        compareAtPrice: existing.compareAtPrice,
+        stock: existing.stock,
+        categoryId: existing.categoryId,
+        isBestSeller: existing.isBestSeller,
+        isDealOfTheDay: existing.isDealOfTheDay,
+        discountLabel: existing.discountLabel,
+        images: existing.images,
+      }
+    });
+    revalidatePath('/admin/products');
+    revalidatePath('/');
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: "Erreur lors de la duplication." };
+  }
+}
+
+export async function quickEditProduct(id: string, data: { title: string, categoryId: string, slug: string }) {
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: {
+        title: data.title,
+        categoryId: data.categoryId,
+        slug: data.slug,
+      }
+    });
+    revalidatePath('/admin/products');
+    revalidatePath('/');
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: "Erreur lors de la modification rapide. Vérifiez que le slug est unique." };
+  }
+}
+
 // --- ORDERS ---
 export async function getOrders() {
   return await prisma.order.findMany({
