@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useEffect, useState } from 'react';
+import LoginModal from '@/components/auth/LoginModal';
 
 export default function Header() {
   const [mounted, setMounted] = useState(false);
   const cartItems = useCartStore((state) => state.getTotalItems());
   const cartTotal = useCartStore((state) => state.getTotalPrice());
   const wishlistItems = useWishlistStore((state) => state.items.length);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -29,10 +31,13 @@ export default function Header() {
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" /></svg>
             Order Tracking
           </Link>
-          <Link href="/login" className="flex items-center hover:text-orange-600 transition">
+          <button 
+            onClick={() => setIsLoginModalOpen(true)}
+            className="flex items-center hover:text-orange-600 transition"
+          >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
             Login
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -149,6 +154,11 @@ export default function Header() {
 
         </div>
       </div>
+
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </header>
   );
 }

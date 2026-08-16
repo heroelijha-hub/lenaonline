@@ -142,8 +142,20 @@ model ChatMessage {
 model ShippingZone {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
-  rate      Float    
   isActive  Boolean  @default(true)
+  methods   ShippingMethod[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ShippingMethod {
+  id               String       @id @default(uuid()) @db.Uuid
+  zoneId           String       @db.Uuid
+  zone             ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+  type             String       // "Livraison Gratuite", "Standard", "Expresse", "Collecte au magasin"
+  rate             Float        @default(0.0)
+  minOrderAmount   Float?
+  isActive         Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
 }

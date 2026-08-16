@@ -26,6 +26,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     currencyPosition: (settingsMap.currencyPosition as any) || defaultCurrencyOptions.currencyPosition,
     thousandSeparator: settingsMap.thousandSeparator !== undefined ? settingsMap.thousandSeparator : defaultCurrencyOptions.thousandSeparator,
     decimalSeparator: settingsMap.decimalSeparator || defaultCurrencyOptions.decimalSeparator,
+    taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
+    defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
   };
 
   return (
