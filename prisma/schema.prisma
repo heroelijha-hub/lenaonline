@@ -39,7 +39,7 @@ model Category {
 model Product {
   id             String      @id @default(uuid()) @db.Uuid
   title          String
-  slug           String      @unique @default(cuid())
+  slug           String      @unique @default("temp-slug")
   description    String?
   price          Float
   compareAtPrice Float?
