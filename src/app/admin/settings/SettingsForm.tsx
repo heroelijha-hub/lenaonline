@@ -57,7 +57,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   // Footer settings
   const [footerAddress1, setFooterAddress1] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
   const [footerAddress2, setFooterAddress2] = useState(initialSettings.FOOTER_ADDRESS_2 || '17 Princess Road, London, Greater London NW1 8JR, UK');
+  const [footerLocationsTitle, setFooterLocationsTitle] = useState(initialSettings.FOOTER_LOCATIONS_TITLE || 'Our Locations');
+  
+  const [footerNewsletterTitle, setFooterNewsletterTitle] = useState(initialSettings.FOOTER_NEWSLETTER_TITLE || 'Newsletter');
   const [footerNewsletterText, setFooterNewsletterText] = useState(initialSettings.FOOTER_NEWSLETTER_TEXT || 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!');
+  const [footerNewsletterPlaceholder, setFooterNewsletterPlaceholder] = useState(initialSettings.FOOTER_NEWSLETTER_PLACEHOLDER || 'Enter your email...');
+  
+  const [footerCallUsText, setFooterCallUsText] = useState(initialSettings.FOOTER_CALL_US_TEXT || 'Call Us Now');
   const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 Shopelios All rights reserved.');
   
   const [footerSocialFacebook, setFooterSocialFacebook] = useState(initialSettings.FOOTER_SOCIAL_FACEBOOK || '#');
@@ -128,7 +134,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     
     await updateSetting('FOOTER_ADDRESS_1', footerAddress1);
     await updateSetting('FOOTER_ADDRESS_2', footerAddress2);
+    await updateSetting('FOOTER_LOCATIONS_TITLE', footerLocationsTitle);
+    await updateSetting('FOOTER_NEWSLETTER_TITLE', footerNewsletterTitle);
     await updateSetting('FOOTER_NEWSLETTER_TEXT', footerNewsletterText);
+    await updateSetting('FOOTER_NEWSLETTER_PLACEHOLDER', footerNewsletterPlaceholder);
+    await updateSetting('FOOTER_CALL_US_TEXT', footerCallUsText);
     await updateSetting('FOOTER_COPYRIGHT', footerCopyright);
     await updateSetting('FOOTER_SOCIAL_FACEBOOK', footerSocialFacebook);
     await updateSetting('FOOTER_SOCIAL_TWITTER', footerSocialTwitter);
@@ -473,7 +483,29 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <label className="block text-sm font-medium text-gray-700 mb-2">Texte de la Newsletter</label>
             <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 border-t pt-4 mt-2">
+            <h4 className="text-md font-medium text-gray-800 mb-4">Textes d'interface (Titres et Labels)</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Titre Adresses (ex: Our Locations)</label>
+                <input type="text" value={footerLocationsTitle} onChange={e => setFooterLocationsTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Titre Newsletter (ex: Newsletter)</label>
+                <input type="text" value={footerNewsletterTitle} onChange={e => setFooterNewsletterTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Texte Placeholder Email (ex: Enter your email...)</label>
+                <input type="text" value={footerNewsletterPlaceholder} onChange={e => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Texte "Appelez-nous" (ex: Call Us Now)</label>
+                <input type="text" value={footerCallUsText} onChange={e => setFooterCallUsText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="md:col-span-2 border-t pt-4 mt-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Texte du Copyright (ex: © 2026 Shopelios)</label>
             <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>

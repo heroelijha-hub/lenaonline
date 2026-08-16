@@ -7,7 +7,11 @@ type FooterProps = {
   supportEmail?: string;
   footerAddress1?: string;
   footerAddress2?: string;
+  footerLocationsTitle?: string;
+  footerNewsletterTitle?: string;
   footerNewsletterText?: string;
+  footerNewsletterPlaceholder?: string;
+  footerCallUsText?: string;
   footerCopyright?: string;
   footerSocialFacebook?: string;
   footerSocialTwitter?: string;
@@ -21,7 +25,11 @@ export default function Footer({
   supportEmail = 'info@shopelios.com',
   footerAddress1 = '2972 Westheimer Rd. Illinois 85486',
   footerAddress2 = '17 Princess Road, London, Greater London NW1 8JR, UK',
+  footerLocationsTitle = 'Our Locations',
+  footerNewsletterTitle = 'Newsletter',
   footerNewsletterText = 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!',
+  footerNewsletterPlaceholder = 'Enter your email...',
+  footerCallUsText = 'Call Us Now',
   footerCopyright = '© 2026 Shopelios All rights reserved.',
   footerSocialFacebook = '#',
   footerSocialTwitter = '#',
@@ -37,11 +45,10 @@ export default function Footer({
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-16 border-b border-gray-700/50 pb-12">
           
           {/* Left Column (Locations, Newsletter, Contact) */}
-          <div className="w-full lg:w-[30%] space-y-8">
-            
+          <div className="w-full lg:w-[35%]">
             {/* Our Locations */}
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Our Locations</h3>
+              <h3 className="text-white font-bold text-lg mb-4">{footerLocationsTitle}</h3>
               <ul className="space-y-3 text-sm">
                 {footerAddress1 && (
                   <li className="flex items-start">
@@ -62,17 +69,17 @@ export default function Footer({
               </ul>
             </div>
 
-            {/* Newsletter Info */}
-            <div>
-              <h3 className="text-white font-bold text-lg mb-4">Newsletter</h3>
+            {/* Newsletter */}
+            <div className="mt-10">
+              <h3 className="text-white font-bold text-lg mb-4">{footerNewsletterTitle}</h3>
               <p className="text-sm text-gray-400 mb-4 leading-relaxed">
                 {footerNewsletterText}
               </p>
               <form className="flex">
                 <input 
                   type="email" 
-                  placeholder="Enter your email..." 
-                  className="w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-l outline-none"
+                  placeholder={footerNewsletterPlaceholder}
+                  className="flex-grow px-4 py-3 rounded-l-md text-gray-900 focus:outline-none"
                 />
                 <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-gray-900 px-4 py-2 rounded-r transition">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
@@ -81,12 +88,12 @@ export default function Footer({
             </div>
 
             {/* Call Us */}
-            <div className="flex items-center space-x-4 pt-2">
-              <div className="bg-transparent border border-orange-500 text-orange-500 p-2 rounded-lg">
-                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <div className="mt-10 flex items-center">
+              <div className="border border-orange-500 rounded-lg p-3 mr-4">
+                <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               </div>
               <div>
-                <p className="text-white font-bold text-lg">Call Us Now <span className="text-orange-500">{supportPhone}</span></p>
+                <p className="text-xl font-bold text-white mb-1"><span className="text-blue-500">{footerCallUsText}</span> <span className="text-orange-500">{supportPhone}</span></p>
                 <p className="text-sm text-gray-400">Email: {supportEmail}</p>
               </div>
             </div>

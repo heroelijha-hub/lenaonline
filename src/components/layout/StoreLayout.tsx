@@ -14,7 +14,11 @@ type StoreLayoutProps = {
     menuLinks: Array<{ label: string, url: string }>;
     footerAddress1: string;
     footerAddress2: string;
+    footerLocationsTitle: string;
+    footerNewsletterTitle: string;
     footerNewsletterText: string;
+    footerNewsletterPlaceholder: string;
+    footerCallUsText: string;
     footerCopyright: string;
     footerSocialFacebook: string;
     footerSocialTwitter: string;
@@ -47,7 +51,11 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         supportEmail={settings.supportEmail} 
         footerAddress1={settings.footerAddress1}
         footerAddress2={settings.footerAddress2}
+        footerLocationsTitle={settings.footerLocationsTitle}
+        footerNewsletterTitle={settings.footerNewsletterTitle}
         footerNewsletterText={settings.footerNewsletterText}
+        footerNewsletterPlaceholder={settings.footerNewsletterPlaceholder}
+        footerCallUsText={settings.footerCallUsText}
         footerCopyright={settings.footerCopyright}
         footerSocialFacebook={settings.footerSocialFacebook}
         footerSocialTwitter={settings.footerSocialTwitter}
