@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { updateSetting } from '@/actions/settings';
 import { uploadImage } from '@/actions/admin';
 
@@ -14,6 +15,7 @@ const CURRENCIES = [
 ];
 
 export default function SettingsForm({ initialSettings }: { initialSettings: Record<string, string> }) {
+  const router = useRouter();
   const [currency, setCurrency] = useState(initialSettings.currency || 'USD');
   const [currencyPosition, setCurrencyPosition] = useState(initialSettings.currencyPosition || 'left');
   const [thousandSeparator, setThousandSeparator] = useState(initialSettings.thousandSeparator || ',');
