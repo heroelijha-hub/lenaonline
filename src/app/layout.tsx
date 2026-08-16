@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import { defaultCurrencyOptions } from "@/lib/formatPrice";
 import ChatWidget from "@/components/chat/ChatWidget";
+import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
             storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
           />
+          <BackToTop />
         </CurrencyProvider>
       </body>
     </html>
