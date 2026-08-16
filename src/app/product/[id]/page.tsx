@@ -225,7 +225,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               relatedProducts.map(rp => (
                 <Link href={`/product/${rp.id}`} key={rp.id} className="group border border-gray-200 rounded-lg p-4 bg-white hover:shadow-md transition flex flex-col">
                   <div className="relative h-48 w-full flex items-center justify-center mb-4">
-                    {rp.images[0] ? (
+                    {rp.images && rp.images[0] ? (
                       <img src={rp.images[0]} alt={rp.title} className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500" />
                     ) : (
                       <div className="text-6xl text-gray-300">🛍️</div>

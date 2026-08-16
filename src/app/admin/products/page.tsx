@@ -40,7 +40,7 @@ export default async function ProductsPage() {
               products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {product.images[0] ? (
+                    {product.images && product.images[0] ? (
                       <img src={product.images[0]} alt={product.title} className="h-10 w-10 rounded object-cover" />
                     ) : (
                       <div className="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-xs text-gray-500">N/A</div>
