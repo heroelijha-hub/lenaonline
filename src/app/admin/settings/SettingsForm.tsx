@@ -59,6 +59,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [enableEuVat, setEnableEuVat] = useState(initialSettings.ENABLE_EU_VAT === 'true');
 
   // Footer settings
+  const [footerBgColor, setFooterBgColor] = useState(initialSettings.FOOTER_BG_COLOR || '#0B162C');
+  const [footerTextColor, setFooterTextColor] = useState(initialSettings.FOOTER_TEXT_COLOR || '#d1d5db');
   const [footerAddress1, setFooterAddress1] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
   const [footerAddress2, setFooterAddress2] = useState(initialSettings.FOOTER_ADDRESS_2 || '17 Princess Road, London, Greater London NW1 8JR, UK');
   const [footerLocationsTitle, setFooterLocationsTitle] = useState(initialSettings.FOOTER_LOCATIONS_TITLE || 'Our Locations');
@@ -139,6 +141,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('CONTACT_RECEIVER_EMAIL', contactReceiverEmail);
     await updateSetting('NEWSLETTER_SUCCESS_MESSAGE', newsletterSuccessMessage);
     
+    await updateSetting('FOOTER_BG_COLOR', footerBgColor);
+    await updateSetting('FOOTER_TEXT_COLOR', footerTextColor);
     await updateSetting('FOOTER_ADDRESS_1', footerAddress1);
     await updateSetting('FOOTER_ADDRESS_2', footerAddress2);
     await updateSetting('FOOTER_LOCATIONS_TITLE', footerLocationsTitle);
@@ -505,6 +509,22 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         <h3 className="text-lg font-medium text-gray-900 mb-4">Pied de Page (Footer)</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="md:col-span-2 grid grid-cols-2 gap-6 pb-4 border-b">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de Fond du Footer</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+                <input type="text" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du Texte Principal</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+                <input type="text" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
+              </div>
+            </div>
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Adresse 1 (Store 1)</label>
             <input type="text" value={footerAddress1} onChange={e => setFooterAddress1(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />

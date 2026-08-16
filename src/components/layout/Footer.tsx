@@ -5,6 +5,8 @@ import Link from 'next/link';
 type FooterProps = {
   supportPhone?: string;
   supportEmail?: string;
+  footerBgColor?: string;
+  footerTextColor?: string;
   footerAddress1?: string;
   footerAddress2?: string;
   footerLocationsTitle?: string;
@@ -23,6 +25,8 @@ type FooterProps = {
 export default function Footer({ 
   supportPhone = '+08 9229 8228', 
   supportEmail = 'info@shopelios.com',
+  footerBgColor = '#0B162C',
+  footerTextColor = '#d1d5db',
   footerAddress1 = '2972 Westheimer Rd. Illinois 85486',
   footerAddress2 = '17 Princess Road, London, Greater London NW1 8JR, UK',
   footerLocationsTitle = 'Our Locations',
@@ -38,7 +42,10 @@ export default function Footer({
   footerColumns = []
 }: FooterProps) {
   return (
-    <footer className="bg-[#0B162C] text-gray-300 font-sans pt-16 pb-6 relative">
+    <footer 
+      className="font-sans pt-16 pb-6 relative" 
+      style={{ backgroundColor: footerBgColor, color: footerTextColor }}
+    >
       <div className="max-w-7xl mx-auto px-4 w-full">
         
         {/* Top Section */}
@@ -48,7 +55,7 @@ export default function Footer({
           <div className="w-full lg:w-[35%]">
             {/* Our Locations */}
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">{footerLocationsTitle}</h3>
+              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{footerLocationsTitle}</h3>
               <ul className="space-y-3 text-sm">
                 {footerAddress1 && (
                   <li className="flex items-start">
@@ -71,8 +78,8 @@ export default function Footer({
 
             {/* Newsletter */}
             <div className="mt-10">
-              <h3 className="text-white font-bold text-lg mb-4">{footerNewsletterTitle}</h3>
-              <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{footerNewsletterTitle}</h3>
+              <p className="text-sm mb-4 leading-relaxed opacity-80">
                 {footerNewsletterText}
               </p>
               <form className="flex">
@@ -93,8 +100,8 @@ export default function Footer({
                 <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               </div>
               <div>
-                <p className="text-xl font-bold text-white mb-1"><span className="text-blue-500">{footerCallUsText}</span> <span className="text-orange-500">{supportPhone}</span></p>
-                <p className="text-sm text-gray-400">Email: {supportEmail}</p>
+                <p className="text-xl font-bold mb-1"><span className="text-blue-500">{footerCallUsText}</span> <span className="text-orange-500">{supportPhone}</span></p>
+                <p className="text-sm opacity-80">Email: {supportEmail}</p>
               </div>
             </div>
 
@@ -104,8 +111,8 @@ export default function Footer({
             
             {footerColumns.map((col, idx) => (
               <div key={idx}>
-                <h3 className="text-white font-bold text-base mb-4">{col.title}</h3>
-                <ul className="space-y-3 text-sm text-gray-400">
+                <h3 className="font-bold text-base mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{col.title}</h3>
+                <ul className="space-y-3 text-sm opacity-80">
                   {col.links.map((link, lIdx) => (
                     <li key={lIdx}><Link href={link.url} className="hover:text-orange-500 transition">{link.label}</Link></li>
                   ))}
@@ -117,7 +124,7 @@ export default function Footer({
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 pt-2">
+        <div className="flex flex-col md:flex-row items-center justify-between text-xs opacity-60 pt-2">
           
           <div className="mb-4 md:mb-0">
             {footerCopyright}
