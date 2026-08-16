@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { getBestDeals } from '@/actions/public';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -11,66 +11,31 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const products = [
-  {
-    id: 1,
-    imagePlaceholder: '📱',
-    category: 'Electronics',
-    title: '256GB iphone 16 pro max Ratina Reday',
-    rating: 5,
-    ratingText: '(5.00)',
-    price: '$18.00',
-  },
-  {
-    id: 2,
-    imagePlaceholder: '👟',
-    category: 'Clothings',
-    title: 'Niki Dust & Water Proof Comfort Sneakers',
-    rating: 5,
-    ratingText: '(5.00)',
-    price: '$19.00',
-  },
-  {
-    id: 3,
-    imagePlaceholder: '🍯',
-    category: 'Gift Box',
-    title: 'Heinz Portion Healthy Food For Everyday',
-    rating: 3,
-    ratingText: '(2.00)',
-    price: '$18.00',
-  },
-  {
-    id: 4,
-    imagePlaceholder: '⌚',
-    category: 'Clothings',
-    title: 'Explore Pixel and Samsung Watches with...',
-    rating: 5,
-    ratingText: '(5.00)',
-    price: '$33.00 - $59.00',
-    discount: '-14%',
-  },
-  {
-    id: 5,
-    imagePlaceholder: '🪑',
-    category: 'Electronics',
-    title: 'Soft Bamboo Entryway Flexible Sofa set',
-    rating: 5,
-    ratingText: '(5.00)',
-    price: '$18.00 - $30.00',
-    discount: '-18%',
-  },
-  {
-    id: 6,
-    imagePlaceholder: '🚲',
-    category: 'Cosmetics',
-    title: 'Bike Frame Performance 700C 49/51/54/57cm',
-    rating: 5,
-    ratingText: '(5.00)',
-    price: '$23.00',
-  },
+const staticProducts = [
+  { id: 1, imagePlaceholder: '📱', category: 'Electronics', title: '256GB iphone 16 pro max Ratina Reday', rating: 5, ratingText: '(5.00)', price: '$18.00' },
+  { id: 2, imagePlaceholder: '👟', category: 'Clothings', title: 'Niki Dust & Water Proof Comfort Sneakers', rating: 5, ratingText: '(5.00)', price: '$19.00' },
+  { id: 3, imagePlaceholder: '🍯', category: 'Gift Box', title: 'Heinz Portion Healthy Food For Everyday', rating: 3, ratingText: '(2.00)', price: '$18.00' },
+  { id: 4, imagePlaceholder: '⌚', category: 'Clothings', title: 'Explore Pixel and Samsung Watches with...', rating: 5, ratingText: '(5.00)', price: '$33.00 - $59.00', discount: '-14%' },
+  { id: 5, imagePlaceholder: '🪑', category: 'Electronics', title: 'Soft Bamboo Entryway Flexible Sofa set', rating: 5, ratingText: '(5.00)', price: '$18.00 - $30.00', discount: '-18%' },
+  { id: 6, imagePlaceholder: '🚲', category: 'Cosmetics', title: 'Bike Frame Performance 700C 49/51/54/57cm', rating: 5, ratingText: '(5.00)', price: '$23.00' },
 ];
 
-export default function BestDeals() {
+export default async function BestDeals() {
+  const dbProducts = await getBestDeals();
+  
+  // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
+  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
+    id: p.id,
+    imageUrl: p.images[0],
+    category: p.category?.name || 'N/A',
+    title: p.title,
+    rating: 5, // Rating statique pour l'instant
+    ratingText: '(5.00)',
+    price: `$${p.price.toFixed(2)}`,
+    discount: p.discountLabel || undefined,
+    imagePlaceholder: '🛍️'
+  })) : staticProducts;
+
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
@@ -102,19 +67,23 @@ export default function BestDeals() {
       {/* Products Grid */}
       <div className="border border-gray-200 rounded-lg bg-white mb-8 overflow-x-auto">
         <div className="flex min-w-[1000px] divide-x divide-gray-200">
-          {products.map((product) => (
+          {displayProducts.map((product) => (
             <div key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
               {/* Product Image Area */}
-              <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center">
+              <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
                 {product.discount && (
-                  <span className="absolute top-0 left-0 bg-orange-100 text-orange-600 text-xs font-bold px-2 py-1 rounded">
+                  <span className="absolute top-0 left-0 bg-orange-100 text-orange-600 text-xs font-bold px-2 py-1 rounded z-10">
                     {product.discount}
                   </span>
                 )}
-                {/* Placeholder Image */}
-                <div className="text-7xl group-hover:scale-110 transition duration-500">
-                  {product.imagePlaceholder}
-                </div>
+                {/* Image or Placeholder */}
+                {(product as any).imageUrl ? (
+                  <img src={(product as any).imageUrl} alt={product.title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+                ) : (
+                  <div className="text-7xl group-hover:scale-110 transition duration-500">
+                    {product.imagePlaceholder}
+                  </div>
+                )}
               </div>
               
               {/* Product Info */}
