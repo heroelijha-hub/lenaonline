@@ -3,7 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { getOrCreateSession, sendMessage, getSessionMessages } from '@/actions/chat';
 import { ChatSender, ChatMessage } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
+
+function generateId() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
 
 interface ChatWidgetProps {
   enabled: boolean;
@@ -24,7 +30,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     
     let id = localStorage.getItem('chat_guest_id');
     if (!id) {
-      id = uuidv4();
+      id = generateId();
       localStorage.setItem('chat_guest_id', id);
     }
     setGuestId(id);
