@@ -9,13 +9,13 @@ import CartDrawer from '@/components/cart/CartDrawer';
 
 type HeaderProps = {
   announcement?: string;
-  logoText?: string;
+  logoImage?: string;
   menuLinks?: Array<{ label: string, url: string }>;
 };
 
 export default function Header({ 
   announcement = 'Welcome to Shopelios', 
-  logoText = 'LOGO',
+  logoImage = '',
   menuLinks = []
 }: HeaderProps) {
   const [mounted, setMounted] = useState(false);
@@ -57,8 +57,12 @@ export default function Header({
       <div className="py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-6">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Link href="/" className="text-3xl font-extrabold tracking-tight text-gray-900">
-            {logoText}
+          <Link href="/" className="flex items-center">
+            {logoImage ? (
+              <img src={logoImage} alt="Shopelios Logo" className="h-10 object-contain" />
+            ) : (
+              <span className="text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
+            )}
           </Link>
         </div>
 

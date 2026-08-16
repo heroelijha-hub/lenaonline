@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { updateSetting } from '@/actions/settings';
+import { uploadImage } from '@/actions/admin';
 
 const CURRENCIES = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -21,11 +22,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
   const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'Shopelios');
   const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
+  const [chatIconFile, setChatIconFile] = useState<File | null>(null);
 
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
-  const [headerLogoText, setHeaderLogoText] = useState(initialSettings.HEADER_LOGO_TEXT || 'Shopelios');
+  const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
   const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@shopelios.com');
   
@@ -69,13 +72,29 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('thousandSeparator', thousandSeparator);
     await updateSetting('decimalSeparator', decimalSeparator);
     await updateSetting('ENABLE_BUY_NOW_BUTTON', enableBuyNow.toString());
+    let finalChatIcon = chatStoreIcon;
+    if (chatIconFile) {
+      const formData = new FormData();
+      formData.append('file', chatIconFile);
+      const url = await uploadImage(formData);
+      if (url) finalChatIcon = url;
+    }
+
+    let finalLogoImage = headerLogoImage;
+    if (logoFile) {
+      const formData = new FormData();
+      formData.append('file', logoFile);
+      const url = await uploadImage(formData);
+      if (url) finalLogoImage = url;
+    }
+    
     await updateSetting('CHAT_ENABLED', chatEnabled.toString());
     await updateSetting('CHAT_STORE_NAME', chatStoreName);
-    await updateSetting('CHAT_STORE_ICON', chatStoreIcon);
+    await updateSetting('CHAT_STORE_ICON', finalChatIcon);
     
     await updateSetting('THEME_COLOR', themeColor);
     await updateSetting('HEADER_ANNOUNCEMENT', headerAnnouncement);
-    await updateSetting('HEADER_LOGO_TEXT', headerLogoText);
+    await updateSetting('HEADER_LOGO_IMAGE', finalLogoImage);
     await updateSetting('HEADER_SUPPORT_PHONE', headerSupportPhone);
     await updateSetting('HEADER_SUPPORT_EMAIL', headerSupportEmail);
     await updateSetting('HEADER_MENU_LINKS', JSON.stringify(menuLinks));
@@ -245,11 +264,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du Logo</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Logo de la Boutique (Upload)</label>
+            <p className="text-xs text-gray-500 mb-2">Taille recommandée: 150x50 pixels (PNG transparent).</p>
+            {headerLogoImage && !logoFile && (
+              <img src={headerLogoImage} alt="Logo" className="h-10 mb-2 object-contain border bg-gray-50 p-1" />
+            )}
             <input
-              type="text"
-              value={headerLogoText}
-              onChange={(e) => setHeaderLogoText(e.target.value)}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setLogoFile(e.target.files[0]);
+                }
+              }}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
@@ -359,13 +386,20 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Icône de la boutique (URL)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Icône du Chat (Upload)</label>
+              <p className="text-xs text-gray-500 mb-2">Taille recommandée: 64x64 pixels (Carré).</p>
+              {chatStoreIcon && !chatIconFile && (
+                <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 mb-2 object-cover rounded-full border" />
+              )}
               <input
-                type="text"
-                value={chatStoreIcon}
-                onChange={(e) => setChatStoreIcon(e.target.value)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setChatIconFile(e.target.files[0]);
+                  }
+                }}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                placeholder="Ex: /logo.png"
               />
             </div>
           </div>
