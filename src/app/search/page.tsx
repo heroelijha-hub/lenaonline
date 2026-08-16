@@ -16,7 +16,7 @@ export default async function SearchPage({
   
   if (q) {
     where.OR = [
-      { name: { contains: q, mode: 'insensitive' } },
+      { title: { contains: q, mode: 'insensitive' } },
       { description: { contains: q, mode: 'insensitive' } },
     ];
   }
@@ -57,7 +57,7 @@ export default async function SearchPage({
                   {product.images && product.images.length > 0 ? (
                     <img 
                       src={product.images[0]} 
-                      alt={product.name} 
+                      alt={product.title} 
                       className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300"
                     />
                   ) : (
@@ -76,7 +76,7 @@ export default async function SearchPage({
                     <span className="text-xs text-gray-500 mb-1">{product.category.name}</span>
                   )}
                   <Link href={`/product/${product.slug}`} className="text-sm font-medium text-gray-900 hover:text-orange-600 transition line-clamp-2 mb-2 flex-grow">
-                    {product.name}
+                    {product.title}
                   </Link>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-2">

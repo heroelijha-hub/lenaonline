@@ -27,7 +27,7 @@ type StoreLayoutProps = {
     footerSocialInstagram: string;
     footerSocialLinkedin: string;
     footerColumns: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
-    categories?: Array<{ id: string, name: string, slug: string }>;
+    categories?: Array<{ id: string, name: string, slug: string | null }>;
   };
 };
 

@@ -46,7 +46,7 @@ export async function searchProducts(query: string, categoryId?: string, limit: 
 
   let where: any = {
     OR: [
-      { name: { contains: query, mode: 'insensitive' } },
+      { title: { contains: query, mode: 'insensitive' } },
       { description: { contains: query, mode: 'insensitive' } },
     ]
   };
@@ -59,7 +59,7 @@ export async function searchProducts(query: string, categoryId?: string, limit: 
     where,
     select: {
       id: true,
-      name: true,
+      title: true,
       price: true,
       compareAtPrice: true,
       images: true,

@@ -13,7 +13,7 @@ type HeaderProps = {
   announcement?: string;
   logoImage?: string;
   menuLinks?: Array<{ label: string, url: string }>;
-  categories?: Array<{ id: string, name: string, slug: string }>;
+  categories?: Array<{ id: string, name: string, slug: string | null }>;
 };
 
 export default function Header({ 
