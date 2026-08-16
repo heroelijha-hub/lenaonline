@@ -14,6 +14,24 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
   const isEditing = !!initialData;
 
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [slug, setSlug] = useState(initialData?.slug || '');
+  
+  // Helper to slugify
+  const generateSlug = (text: string) => 
+    text.toString().toLowerCase().trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-');
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    if (!isEditing) {
+      setSlug(generateSlug(newTitle));
+    }
+  };
+
   useEffect(() => {
     getCategories().then(setCategories);
   }, []);
@@ -62,6 +80,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         }
       }
 
+      formData.append('slug', slug);
+
       // If editing, we will call updateProduct (to be created), otherwise createProduct
       if (isEditing) {
         formData.append('id', initialData.id);
@@ -106,12 +126,32 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </select>
         </div>
 
-        {/* Titre & Catégorie */}
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Titre du produit *</label>
-            <input type="text" name="title" defaultValue={initialData?.title} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <input 
+              type="text" 
+              name="title" 
+              value={title} 
+              onChange={handleTitleChange} 
+              required 
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Slug (URL) *</label>
+            <input 
+              type="text" 
+              name="slug" 
+              value={slug} 
+              onChange={(e) => setSlug(e.target.value)} 
+              required 
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 bg-gray-50" 
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie *</label>
             <select name="categoryId" defaultValue={initialData?.categoryId} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500">

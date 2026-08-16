@@ -22,6 +22,21 @@ export default function BlogForm({ article }: { article?: any }) {
     isPublished: article ? article.isPublished : true,
   });
 
+  const generateSlug = (text: string) => 
+    text.toString().toLowerCase().trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-');
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      title: newTitle,
+      ...(!article ? { slug: generateSlug(newTitle) } : {})
+    }));
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0]) return;
     try {
@@ -73,7 +88,7 @@ export default function BlogForm({ article }: { article?: any }) {
               <input 
                 type="text" 
                 value={formData.title} 
-                onChange={e => setFormData({ ...formData, title: e.target.value })}
+                onChange={handleTitleChange}
                 required
                 className="w-full border px-4 py-2 rounded text-sm"
               />

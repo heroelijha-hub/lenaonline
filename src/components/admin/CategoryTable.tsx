@@ -6,26 +6,36 @@ import { updateCategory, deleteCategory } from '@/actions/admin';
 type Category = {
   id: string;
   name: string;
+  slug?: string | null;
 };
 
 export default function CategoryTable({ categories }: { categories: Category[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
+  const [editSlug, setEditSlug] = useState('');
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
+  const generateSlug = (text: string) => 
+    text.toString().toLowerCase().trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-');
 
   const handleEditClick = (cat: Category) => {
     setEditingId(cat.id);
     setEditName(cat.name);
+    setEditSlug(cat.slug || '');
   };
 
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditName('');
+    setEditSlug('');
   };
 
   const handleSaveEdit = async (id: string) => {
     if (!editName.trim()) return;
-    const res = await updateCategory(id, editName);
+    const res = await updateCategory(id, editName, editSlug);
     if (res.error) {
       alert(res.error);
     } else {
@@ -49,7 +59,8 @@ export default function CategoryTable({ categories }: { categories: Category[] }
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom de la Catégorie</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -69,12 +80,27 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                     <input 
                       type="text" 
                       value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
+                      onChange={(e) => {
+                        setEditName(e.target.value);
+                        setEditSlug(generateSlug(e.target.value));
+                      }}
                       className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm"
                       autoFocus
                     />
                   ) : (
                     cat.name
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {editingId === cat.id ? (
+                    <input 
+                      type="text" 
+                      value={editSlug}
+                      onChange={(e) => setEditSlug(e.target.value)}
+                      className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm bg-gray-50"
+                    />
+                  ) : (
+                    cat.slug
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

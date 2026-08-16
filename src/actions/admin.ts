@@ -42,10 +42,17 @@ export async function getCategories() {
 
 export async function createCategory(formData: FormData) {
   const name = formData.get('name') as string;
+  let slug = formData.get('slug') as string;
   if (!name) return { error: "Nom requis" };
 
+  if (!slug) {
+    slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  } else {
+    slug = slug.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/(^-|-$)+/g, '');
+  }
+
   try {
-    await prisma.category.create({ data: { name } });
+    await prisma.category.create({ data: { name, slug } });
     revalidatePath('/admin/categories');
     return { success: true };
   } catch (error) {
@@ -53,11 +60,17 @@ export async function createCategory(formData: FormData) {
   }
 }
 
-export async function updateCategory(id: string, name: string) {
+export async function updateCategory(id: string, name: string, slug?: string) {
   try {
+    let finalSlug = slug;
+    if (!finalSlug) {
+      finalSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    } else {
+      finalSlug = finalSlug.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
     await prisma.category.update({
       where: { id },
-      data: { name }
+      data: { name, slug: finalSlug }
     });
     revalidatePath('/admin/categories');
     return { success: true };
@@ -108,14 +121,21 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const tagsRaw = formData.get('tags') as string;
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
 
+  const providedSlug = formData.get('slug') as string;
+
   if (!title || !price || !categoryId) {
     return { error: "Le titre, le prix et la catégorie sont obligatoires." };
   }
 
-  // Generate slug from title
-  let baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  if (!baseSlug) baseSlug = 'produit';
-  const uniqueSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
+  // Generate slug
+  let uniqueSlug = providedSlug;
+  if (!uniqueSlug) {
+    let baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    if (!baseSlug) baseSlug = 'produit';
+    uniqueSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
+  } else {
+    uniqueSlug = uniqueSlug.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/(^-|-$)+/g, '');
+  }
 
   try {
     await prisma.product.create({
@@ -173,8 +193,15 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const tagsRaw = formData.get('tags') as string;
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
 
+  const providedSlug = formData.get('slug') as string;
+
   if (!id || !title || !price || !categoryId) {
     return { error: "L'ID, le titre, le prix et la catégorie sont obligatoires." };
+  }
+
+  let finalSlug = providedSlug;
+  if (finalSlug) {
+    finalSlug = finalSlug.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/(^-|-$)+/g, '');
   }
 
   try {
@@ -182,6 +209,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
       where: { id },
       data: {
         title,
+        ...(finalSlug ? { slug: finalSlug } : {}),
         type,
         attributes,
         variations,
