@@ -5,6 +5,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useEffect, useState } from 'react';
 import LoginModal from '@/components/auth/LoginModal';
+import CartDrawer from '@/components/cart/CartDrawer';
 
 export default function Header() {
   const [mounted, setMounted] = useState(false);
@@ -12,6 +13,7 @@ export default function Header() {
   const cartTotal = useCartStore((state) => state.getTotalPrice());
   const wishlistItems = useWishlistStore((state) => state.items.length);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -87,11 +89,14 @@ export default function Header() {
             )}
           </button>
           
-          <div className="flex items-center bg-orange-50 rounded-md px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition">
+          <div 
+            onClick={() => setIsCartDrawerOpen(true)}
+            className="flex items-center bg-orange-50 rounded-md px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition"
+          >
             <div className="relative mr-3">
               <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
               {mounted && (
-                <span className="absolute -top-1 -right-2 bg-orange-500 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                <span className="absolute -top-1 -right-2 bg-emerald-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
                   {cartItems}
                 </span>
               )}
@@ -158,6 +163,11 @@ export default function Header() {
       <LoginModal 
         isOpen={isLoginModalOpen} 
         onClose={() => setIsLoginModalOpen(false)} 
+      />
+      
+      <CartDrawer 
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
       />
     </header>
   );
