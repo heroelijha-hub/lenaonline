@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export default function ContactPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900 font-sans">
-      <Header />
       
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16">
