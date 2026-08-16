@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { getBestSellers } from '@/actions/public';
+import Price from '@/components/Price';
 
 // ... (Star component kept the same)
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -13,7 +14,7 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: string, imageUrl?: string, linkUrl?: string }) => (
+const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string }) => (
   <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
     <div className="border border-gray-100 rounded-xl mb-3 aspect-square flex items-center justify-center p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
       {imageUrl ? (
@@ -25,14 +26,14 @@ const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: stri
     <h3 className="text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
       {title}
     </h3>
-    <p className="text-sm font-bold text-gray-900 mt-auto">{price}</p>
+    <Price amount={price} className="text-sm font-bold text-gray-900 mt-auto" />
   </Link>
 );
 
 const BigCard = ({ 
   icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#' 
 }: { 
-  icon: string, category: string, title: string, price: string, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string 
+  icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string 
 }) => (
   <Link href={linkUrl} className="border border-gray-200 rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white">
     <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
@@ -55,7 +56,7 @@ const BigCard = ({
         </div>
         <span className="text-xs text-gray-500">{ratingText}</span>
       </div>
-      <p className="font-bold text-gray-900">{price}</p>
+      <Price amount={price} className="font-bold text-gray-900" />
     </div>
   </Link>
 );
@@ -71,8 +72,8 @@ export default async function BestSeller() {
     title: p.title,
     rating: 5,
     ratingText: '(5.00)',
-    price: `$${p.price.toFixed(2)}`,
-    oldPrice: p.compareAtPrice ? `$${p.compareAtPrice.toFixed(2)}` : undefined,
+    price: p.price,
+    oldPrice: p.compareAtPrice ? p.compareAtPrice : undefined,
     imagePlaceholder: '🛍️'
   })) : [];
 
@@ -105,7 +106,7 @@ export default async function BestSeller() {
             icon={bigProduct1?.imagePlaceholder || "👟"} 
             category={bigProduct1?.category || "Cosmetics"} 
             title={bigProduct1?.title || "Comfortable Regular Comfort Sports Sneakers"} 
-            price={bigProduct1?.price || "$33.00"} 
+            price={bigProduct1?.price || 33.00} 
             rating={5} 
             ratingText="(5.00)" 
             imageUrl={bigProduct1?.imageUrl}
@@ -122,7 +123,7 @@ export default async function BestSeller() {
                 key={i}
                 icon={["📱", "👟", "🍯", "⌚"][i]} 
                 title={p?.title || "Product placeholder"} 
-                price={p ? p.price : "$18.00"} 
+                price={p ? p.price : 18.00} 
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
               />
@@ -136,7 +137,7 @@ export default async function BestSeller() {
             icon="🧀" 
             category={bigProduct2?.category || "Cosmetics"} 
             title={bigProduct2?.title || "Comfortable Regular Comfort Sports Sneakers"} 
-            price={bigProduct2 ? bigProduct2.price : "$35.00"} 
+            price={bigProduct2 ? bigProduct2.price : 35.00} 
             rating={3} 
             ratingText="(3.00)" 
             imageUrl={bigProduct2?.imageUrl}
@@ -153,7 +154,7 @@ export default async function BestSeller() {
                 key={i}
                 icon={["🩳", "🧀", "🎒", "👟"][i]} 
                 title={p?.title || "Product placeholder"} 
-                price={p ? p.price : "$35.00"} 
+                price={p ? p.price : 35.00} 
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
               />

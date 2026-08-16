@@ -1,0 +1,70 @@
+'use server';
+
+import prisma from '@/lib/prisma';
+import { ChatSender, ChatSessionStatus } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
+
+// Client actions
+export async function getOrCreateSession(guestId: string) {
+  let session = await prisma.chatSession.findFirst({
+    where: { guestId, status: 'OPEN' },
+  });
+
+  if (!session) {
+    session = await prisma.chatSession.create({
+      data: {
+        guestId,
+        status: 'OPEN',
+      },
+    });
+  }
+
+  return session;
+}
+
+export async function sendMessage(sessionId: string, sender: ChatSender, content: string) {
+  const message = await prisma.chatMessage.create({
+    data: {
+      sessionId,
+      sender,
+      content,
+    },
+  });
+  
+  // Update session updatedAt to bring it to top
+  await prisma.chatSession.update({
+    where: { id: sessionId },
+    data: { updatedAt: new Date() },
+  });
+
+  revalidatePath('/admin/chat');
+  return message;
+}
+
+export async function getSessionMessages(sessionId: string) {
+  return await prisma.chatMessage.findMany({
+    where: { sessionId },
+    orderBy: { createdAt: 'asc' },
+  });
+}
+
+// Admin actions
+export async function getAdminSessions() {
+  return await prisma.chatSession.findMany({
+    orderBy: { updatedAt: 'desc' },
+    include: {
+      messages: {
+        orderBy: { createdAt: 'desc' },
+        take: 1, // Get last message for preview
+      },
+    },
+  });
+}
+
+export async function closeSession(sessionId: string) {
+  await prisma.chatSession.update({
+    where: { id: sessionId },
+    data: { status: 'CLOSED' },
+  });
+  revalidatePath('/admin/chat');
+}

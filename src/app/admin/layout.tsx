@@ -24,6 +24,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link href="/admin/coupons" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
               Coupons
             </Link>
+            <Link href="/admin/chat" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
+              Chat Client
+            </Link>
             <Link href="/admin/settings" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
               Paramètres
             </Link>

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
+import { useCurrency } from '@/components/CurrencyProvider';
 
 interface ProductActionsProps {
   product: {
@@ -16,11 +18,14 @@ interface ProductActionsProps {
     attributes?: any;
     variations?: any;
   };
+  enableBuyNow?: boolean;
 }
 
-export default function ProductActions({ product }: ProductActionsProps) {
+export default function ProductActions({ product, enableBuyNow = false }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
+  const router = useRouter();
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+  const { formatPrice } = useCurrency();
   
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
@@ -67,14 +72,34 @@ export default function ProductActions({ product }: ProductActionsProps) {
     alert('Produit ajouté au panier !');
   };
 
+  const handleBuyNow = () => {
+    if (isVariable && !currentVariation) {
+      alert("Veuillez sélectionner toutes les options avant l'achat rapide.");
+      return;
+    }
+
+    cartStore.addItem({
+      id: currentVariation ? `${product.id}-${currentVariation.id}` : product.id,
+      productId: product.id,
+      variationId: currentVariation?.id,
+      title: product.title,
+      price: currentPrice,
+      image: product.images?.[0] || '',
+      quantity,
+      attributes: currentVariation ? selectedAttributes : undefined,
+    });
+    
+    router.push('/checkout');
+  };
+
   return (
     <div>
       {/* Price Display */}
       <div className="mb-6">
         {product.compareAtPrice && !currentVariation && (
-          <span className="text-2xl text-gray-400 line-through mr-3">${product.compareAtPrice.toFixed(2)}</span>
+          <span className="text-2xl text-gray-400 line-through mr-3">{formatPrice(product.compareAtPrice)}</span>
         )}
-        <span className="text-3xl font-bold text-red-600">${currentPrice.toFixed(2)}</span>
+        <span className="text-3xl font-bold text-red-600">{formatPrice(currentPrice)}</span>
       </div>
 
       {/* Attributes Selection (Only if Variable) */}
@@ -125,9 +150,14 @@ export default function ProductActions({ product }: ProductActionsProps) {
           Add to Cart
         </button>
         
-        <button className="flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm">
-          Buy Now
-        </button>
+        {enableBuyNow && (
+          <button 
+            onClick={handleBuyNow}
+            className="flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm"
+          >
+            Buy Now
+          </button>
+        )}
       </div>
 
       {/* Secondary Actions */}
@@ -145,7 +175,10 @@ export default function ProductActions({ product }: ProductActionsProps) {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
           Compare
         </button>
-        <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
+        <button 
+          onClick={() => router.push('/contact')}
+          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
+        >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           Ask a Question
         </button>

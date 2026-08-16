@@ -23,6 +23,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       : []
   );
   const [variations, setVariations] = useState<Array<any>>(initialData?.variations || []);
+  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [tagInput, setTagInput] = useState('');
 
   const addAttribute = () => setAttributes([...attributes, { name: '', options: '' }]);
   const removeAttribute = (idx: number) => setAttributes(attributes.filter((_, i) => i !== idx));
@@ -45,6 +47,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       
       formData.append('attributes', JSON.stringify(formattedAttributes));
       formData.append('variations', JSON.stringify(variations));
+      formData.append('tags', JSON.stringify(tags));
       
       const imageUrls: string[] = isEditing && initialData.images ? [...initialData.images] : [];
       if (imageFiles.length > 0) {
@@ -280,6 +283,56 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description Longue</label>
             <textarea name="description" defaultValue={initialData?.description} rows={4} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+          </div>
+        </div>
+
+        {/* Tags */}
+        <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Tags (Mots-clés)</label>
+          <div className="flex gap-2 mb-2">
+            <input 
+              type="text" 
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+                    setTags([...tags, tagInput.trim()]);
+                    setTagInput('');
+                  }
+                }
+              }}
+              placeholder="Ex: nouveauté, été, promotion... (Appuyez sur Entrée)" 
+              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+            />
+            <button 
+              type="button" 
+              onClick={() => {
+                if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+                  setTags([...tags, tagInput.trim()]);
+                  setTagInput('');
+                }
+              }}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition"
+            >
+              Ajouter
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, idx) => (
+              <span key={idx} className="bg-white border border-gray-300 px-3 py-1 rounded-full text-sm flex items-center shadow-sm">
+                {tag}
+                <button 
+                  type="button" 
+                  onClick={() => setTags(tags.filter((_, i) => i !== idx))} 
+                  className="ml-2 text-red-500 hover:text-red-700 font-bold"
+                >
+                  &times;
+                </button>
+              </span>
+            ))}
+            {tags.length === 0 && <p className="text-xs text-gray-500 italic">Aucun tag pour le moment.</p>}
           </div>
         </div>
 

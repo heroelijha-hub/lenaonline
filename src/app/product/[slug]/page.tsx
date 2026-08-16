@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ProductActions from '@/components/product/ProductActions';
+import Price from '@/components/Price';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -23,6 +24,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
     where: { slug },
     include: { category: true }
   });
+
+  const setting = await prisma.setting.findUnique({
+    where: { key: 'ENABLE_BUY_NOW_BUTTON' }
+  });
+  const enableBuyNow = setting?.value === 'true';
 
   if (!product) {
     return notFound();
@@ -112,7 +118,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
               </div>
 
               {/* Product Actions (Price, Variations, Add to Cart, Wishlist) */}
-              <ProductActions product={product} />
+              <ProductActions product={product} enableBuyNow={enableBuyNow} />
 
               {/* Meta tags */}
               <div className="space-y-2 text-sm">
@@ -166,7 +172,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
                     <div className="mt-auto">
                       <p className="text-xs text-blue-500 font-semibold mb-1">{rp.category?.name}</p>
                       <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">{rp.title}</h3>
-                      <p className="font-bold text-red-600">${rp.price.toFixed(2)}</p>
+                      <Price amount={rp.price} className="font-bold text-red-600" />
                     </div>
                   </Link>
                 ))

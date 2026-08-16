@@ -104,6 +104,9 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
+  
+  const tagsRaw = formData.get('tags') as string;
+  const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
 
   if (!title || !price || !categoryId) {
     return { error: "Le titre, le prix et la catégorie sont obligatoires." };
@@ -131,6 +134,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
+        tags,
         images: imageUrls,
       }
     });
@@ -166,6 +170,9 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
 
+  const tagsRaw = formData.get('tags') as string;
+  const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
+
   if (!id || !title || !price || !categoryId) {
     return { error: "L'ID, le titre, le prix et la catégorie sont obligatoires." };
   }
@@ -187,6 +194,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
+        tags,
         images: imageUrls,
       }
     });
@@ -236,6 +244,7 @@ export async function duplicateProduct(id: string) {
         isBestSeller: existing.isBestSeller,
         isDealOfTheDay: existing.isDealOfTheDay,
         discountLabel: existing.discountLabel,
+        tags: existing.tags,
         images: existing.images,
       }
     });
