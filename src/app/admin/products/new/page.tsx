@@ -8,7 +8,7 @@ export default function NewProductPage() {
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   useEffect(() => {
     getCategories().then(setCategories);
@@ -21,16 +21,17 @@ export default function NewProductPage() {
     try {
       const formData = new FormData(e.currentTarget);
       
-      let uploadedUrl = '';
-      if (imageFile) {
-        const imageFormData = new FormData();
-        imageFormData.append('file', imageFile);
-        const url = await uploadImage(imageFormData);
-        if (url) uploadedUrl = url;
+      const imageUrls: string[] = [];
+      if (imageFiles.length > 0) {
+        // Upload each file
+        for (const file of imageFiles) {
+          const imageFormData = new FormData();
+          imageFormData.append('file', file);
+          const url = await uploadImage(imageFormData);
+          if (url) imageUrls.push(url);
+        }
       }
 
-      const imageUrls = uploadedUrl ? [uploadedUrl] : [];
-      
       const res = await createProduct(formData, imageUrls);
       
       if (res.error) {
@@ -79,20 +80,27 @@ export default function NewProductPage() {
             <input type="number" step="0.01" name="compareAtPrice" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
-            <input type="number" name="stock" defaultValue={10} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Stock (Laisser vide = illimité)</label>
+            <input type="number" name="stock" placeholder="En stock" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
         </div>
 
         {/* Image Upload (Cloudinary) */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Image du Produit (Cloudinary)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d'images (Cloudinary - max 20)</label>
           <input 
             type="file" 
+            multiple
             accept="image/*"
-            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+            onChange={(e) => {
+              const files = Array.from(e.target.files || []).slice(0, 20);
+              setImageFiles(files);
+            }}
             className="w-full px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
           />
+          {imageFiles.length > 0 && (
+            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} fichier(s) sélectionné(s)</p>
+          )}
         </div>
 
         {/* Description */}

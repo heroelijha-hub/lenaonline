@@ -53,6 +53,29 @@ export async function createCategory(formData: FormData) {
   }
 }
 
+export async function updateCategory(id: string, name: string) {
+  try {
+    await prisma.category.update({
+      where: { id },
+      data: { name }
+    });
+    revalidatePath('/admin/categories');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur lors de la mise à jour." };
+  }
+}
+
+export async function deleteCategory(id: string) {
+  try {
+    await prisma.category.delete({ where: { id } });
+    revalidatePath('/admin/categories');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur: Cette catégorie contient peut-être des produits." };
+  }
+}
+
 // --- PRODUCTS ---
 export async function getProducts() {
   return await prisma.product.findMany({
@@ -66,7 +89,10 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const description = formData.get('description') as string;
   const price = parseFloat(formData.get('price') as string);
   const compareAtPrice = formData.get('compareAtPrice') ? parseFloat(formData.get('compareAtPrice') as string) : undefined;
-  const stock = parseInt(formData.get('stock') as string, 10);
+  
+  const stockRaw = formData.get('stock') as string;
+  const stock = stockRaw ? parseInt(stockRaw, 10) : null; // Si vide -> null (En stock)
+
   const categoryId = formData.get('categoryId') as string;
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';

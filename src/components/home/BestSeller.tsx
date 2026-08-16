@@ -13,8 +13,8 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, imageUrl }: { icon: string, title: string, price: string, imageUrl?: string }) => (
-  <div className="flex flex-col group cursor-pointer h-full">
+const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: string, imageUrl?: string, linkUrl?: string }) => (
+  <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
     <div className="border border-gray-100 rounded-xl mb-3 aspect-square flex items-center justify-center p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -26,15 +26,15 @@ const SmallCard = ({ icon, title, price, imageUrl }: { icon: string, title: stri
       {title}
     </h3>
     <p className="text-sm font-bold text-gray-900 mt-auto">{price}</p>
-  </div>
+  </Link>
 );
 
 const BigCard = ({ 
-  icon, category, title, price, rating, ratingText, imageUrl 
+  icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#' 
 }: { 
-  icon: string, category: string, title: string, price: string, rating: number, ratingText: string, imageUrl?: string 
+  icon: string, category: string, title: string, price: string, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string 
 }) => (
-  <div className="border border-gray-200 rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white">
+  <Link href={linkUrl} className="border border-gray-200 rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white">
     <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
@@ -57,7 +57,7 @@ const BigCard = ({
       </div>
       <p className="font-bold text-gray-900">{price}</p>
     </div>
-  </div>
+  </Link>
 );
 
 export default async function BestSeller() {
@@ -98,6 +98,7 @@ export default async function BestSeller() {
             rating={5} 
             ratingText="(5.00)" 
             imageUrl={bigProduct1?.images[0]}
+            linkUrl={bigProduct1 ? `/product/${bigProduct1.id}` : '#'}
           />
         </div>
 
@@ -112,6 +113,7 @@ export default async function BestSeller() {
                 title={p?.title || "Product placeholder"} 
                 price={p ? `$${p.price}` : "$18.00"} 
                 imageUrl={p?.images[0]}
+                linkUrl={p ? `/product/${p.id}` : '#'}
               />
             );
           })}
@@ -127,6 +129,7 @@ export default async function BestSeller() {
             rating={3} 
             ratingText="(3.00)" 
             imageUrl={bigProduct2?.images[0]}
+            linkUrl={bigProduct2 ? `/product/${bigProduct2.id}` : '#'}
           />
         </div>
 
@@ -141,6 +144,7 @@ export default async function BestSeller() {
                 title={p?.title || "Product placeholder"} 
                 price={p ? `$${p.price}` : "$35.00"} 
                 imageUrl={p?.images[0]}
+                linkUrl={p ? `/product/${p.id}` : '#'}
               />
             );
           })}

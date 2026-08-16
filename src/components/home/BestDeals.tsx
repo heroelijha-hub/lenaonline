@@ -68,7 +68,7 @@ export default async function BestDeals() {
       <div className="border border-gray-200 rounded-lg bg-white mb-8 overflow-x-auto">
         <div className="flex min-w-[1000px] divide-x divide-gray-200">
           {displayProducts.map((product) => (
-            <div key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
+            <Link href={`/product/${product.id}`} key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
               {/* Product Image Area */}
               <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
                 {product.discount && (
@@ -105,7 +105,7 @@ export default async function BestDeals() {
                 
                 <p className="font-bold text-gray-900">{product.price}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

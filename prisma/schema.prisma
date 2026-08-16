@@ -45,7 +45,8 @@ model Product {
   images         String[]
   categoryId     String      @db.Uuid
   category       Category    @relation(fields: [categoryId], references: [id])
-  stock          Int         @default(0)
+  stock          Int?        // Null = En stock (illimité)
+  attributes     Json?       // Pour stocker RAM, Taille, Couleur, etc.
   isBestSeller   Boolean     @default(false)
   isDealOfTheDay Boolean     @default(false)
   discountLabel  String?

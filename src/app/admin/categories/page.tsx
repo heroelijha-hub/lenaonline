@@ -1,4 +1,5 @@
 import { getCategories, createCategory } from '@/actions/admin';
+import CategoryTable from '@/components/admin/CategoryTable';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,30 +34,7 @@ export default async function CategoriesPage() {
         </form>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom de la Catégorie</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {categories.length === 0 ? (
-              <tr>
-                <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-500">Aucune catégorie existante.</td>
-              </tr>
-            ) : (
-              categories.map((cat) => (
-                <tr key={cat.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cat.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cat.name}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <CategoryTable categories={categories} />
     </div>
   );
 }
