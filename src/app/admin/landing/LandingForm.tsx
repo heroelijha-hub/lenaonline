@@ -41,6 +41,39 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [editingId, setEditingId] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  // Popup Mode State
+  const [isPopupMode, setIsPopupMode] = useState(true);
+  const [position, setPosition] = useState({ x: 20, y: 20 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragRef = useRef<{ startX: number, startY: number, initialX: number, initialY: number } | null>(null);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      initialX: position.x,
+      initialY: position.y
+    };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (isDragging && dragRef.current) {
+      const dx = e.clientX - dragRef.current.startX;
+      const dy = e.clientY - dragRef.current.startY;
+      setPosition({
+        x: dragRef.current.initialX + dx,
+        y: Math.max(0, dragRef.current.initialY + dy)
+      });
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    setIsDragging(false);
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  };
+
   // Sync to cookie for preview iframe
   useEffect(() => {
     Cookies.set('preview_layout', JSON.stringify(sections), { path: '/' });
@@ -402,103 +435,133 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     return null;
   };
 
-  return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-      {/* Left side: Form */}
-      <div className="space-y-6 h-[calc(100vh-120px)] overflow-y-auto pr-2 custom-scrollbar">
-        {message && (
-          <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-            {message}
-          </div>
-        )}
+  const renderFormContent = (inPopup: boolean) => (
+    <div className={`space-y-6 overflow-y-auto pr-2 custom-scrollbar ${inPopup ? 'h-[65vh] p-4' : 'h-[calc(100vh-120px)]'}`}>
+      {message && (
+        <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
+          {message}
+        </div>
+      )}
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Constructeur de Page d'Accueil</h2>
-            <button 
-              onClick={handleSave} 
-              disabled={isLoading}
-              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
-            >
-              {isLoading ? 'Sauvegarde...' : 'Enregistrer'}
-            </button>
-          </div>
+      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${!inPopup && 'p-6'}`}>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Constructeur de Page</h2>
+          <button 
+            onClick={handleSave} 
+            disabled={isLoading}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
+          >
+            {isLoading ? 'Sauvegarde...' : 'Enregistrer'}
+          </button>
+        </div>
 
+        {!inPopup && (
           <p className="text-sm text-gray-500 mb-6">
             Réorganisez les sections de votre page d'accueil en les montant ou descendant. L'aperçu en direct se trouve sur la droite.
           </p>
+        )}
 
-          <div className="space-y-4">
-            {sections.map((section, index) => (
-              <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
-                <div className="flex items-center p-4 gap-4">
-                  {/* Actions */}
-                  <div className="flex flex-col gap-1">
-                    <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
-                    </button>
-                    <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                    </button>
+        <div className="space-y-4">
+          {sections.map((section, index) => (
+            <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
+              <div className="flex items-center p-3 gap-3">
+                {/* Actions */}
+                <div className="flex flex-col gap-1">
+                  <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                  </button>
+                  <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                </div>
+                
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded self-start mb-1">{section.type}</span>
+                    <input 
+                      type="text" 
+                      value={section.name} 
+                      onChange={e => updateSectionName(section.id, e.target.value)}
+                      className="font-bold text-sm md:text-base border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent w-full truncate"
+                    />
                   </div>
-                  
-                  {/* Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="text-xs font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-2 py-0.5 rounded">{section.type}</span>
-                      <input 
-                        type="text" 
-                        value={section.name} 
-                        onChange={e => updateSectionName(section.id, e.target.value)}
-                        className="font-bold text-lg border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent"
-                      />
-                    </div>
-                  </div>
+                </div>
 
-                  {/* Toggles */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button 
-                      onClick={() => setEditingId(editingId === section.id ? null : section.id)}
-                      className="text-xs px-2 py-1.5 border border-gray-300 rounded hover:bg-gray-50 transition"
-                    >
-                      {editingId === section.id ? 'Fermer' : 'Configurer'}
-                    </button>
+                {/* Toggles */}
+                <div className="flex flex-col md:flex-row items-end md:items-center gap-1.5">
+                  <button 
+                    onClick={() => setEditingId(editingId === section.id ? null : section.id)}
+                    className="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-50 transition whitespace-nowrap"
+                  >
+                    {editingId === section.id ? 'Fermer' : 'Éditer'}
+                  </button>
+                  <div className="flex gap-1.5">
                     <button 
                       onClick={() => toggleSection(index)}
-                      className={`text-xs px-2 py-1.5 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                      className={`text-[10px] px-1.5 py-1 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                      title={section.enabled ? 'Visible' : 'Masqué'}
                     >
-                      {section.enabled ? 'Visible' : 'Masqué'}
+                      {section.enabled ? 'Vis' : 'Masq'}
                     </button>
-                    <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-1">
+                    <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-1 bg-red-50 rounded">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                     </button>
                   </div>
                 </div>
-                
-                {/* Config Panel */}
-                {editingId === section.id && (
-                  <div className="border-t border-gray-100 bg-white p-4">
-                    {renderConfig(section)}
-                  </div>
-                )}
               </div>
-            ))}
-          </div>
-
-          <div className="mt-8 border-t pt-6">
-            <h3 className="font-semibold mb-3">Ajouter une nouvelle section</h3>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={() => addSection('BestDeals')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Promo (Compte à rebours)</button>
-              <button onClick={() => addSection('BestSeller')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm rounded transition">+ Grille Simple (Produits)</button>
+              
+              {/* Config Panel */}
+              {editingId === section.id && (
+                <div className="border-t border-gray-100 bg-white p-3">
+                  {renderConfig(section)}
+                </div>
+              )}
             </div>
+          ))}
+        </div>
+
+        <div className="mt-6 border-t pt-4">
+          <h3 className="font-semibold mb-2 text-sm">Ajouter une section</h3>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => addSection('BestDeals')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Promo</button>
+            <button onClick={() => addSection('BestSeller')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Simple</button>
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <div className={`grid grid-cols-1 ${!isPopupMode ? 'xl:grid-cols-2' : ''} gap-6 relative`}>
+      
+      {/* Left side: Form (Inline Mode) */}
+      <div className={`${isPopupMode ? 'xl:hidden' : 'block'}`}>
+        {renderFormContent(false)}
+      </div>
       
       {/* Right side: Live Preview */}
-      <div className="hidden xl:block h-[calc(100vh-120px)] bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative shadow-inner">
+      <div className={`hidden xl:block h-[calc(100vh-120px)] bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative shadow-inner ${isPopupMode ? 'col-span-1' : ''}`}>
         <div className="absolute top-0 w-full bg-slate-800 text-white py-1 px-4 text-xs font-semibold flex justify-between items-center z-10 opacity-90">
-          <span>Aperçu en direct</span>
+          <div className="flex items-center gap-4">
+            <span>Aperçu en direct</span>
+            <button 
+              onClick={() => setIsPopupMode(!isPopupMode)} 
+              className="bg-slate-600 hover:bg-slate-500 px-2 py-0.5 rounded border border-slate-500 transition flex items-center gap-1"
+            >
+              {isPopupMode ? (
+                <>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                  Figer à gauche (Mode Tablette)
+                </>
+              ) : (
+                <>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" /></svg>
+                  Détacher (Mode Pop-up)
+                </>
+              )}
+            </button>
+          </div>
           <span className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
             En temps réel
@@ -511,6 +574,41 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           title="Live Preview"
         />
       </div>
+
+      {/* Floating Popup (Desktop Only) */}
+      {isPopupMode && (
+        <div 
+          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[450px]"
+          style={{ left: `${position.x}px`, top: `${position.y}px` }}
+        >
+          {/* Draggable Header */}
+          <div 
+            className="bg-slate-800 text-white px-4 py-2 cursor-move flex justify-between items-center select-none"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+          >
+            <span className="font-semibold text-sm flex items-center gap-2">
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+              Éditeur de Page
+            </span>
+            <button 
+              onClick={() => setIsPopupMode(false)}
+              className="text-slate-300 hover:text-white p-1 rounded-md hover:bg-slate-700 transition"
+              title="Fermer le pop-up (retour au mode fixe)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          
+          {/* Form Content */}
+          <div className="bg-gray-50">
+            {renderFormContent(true)}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
