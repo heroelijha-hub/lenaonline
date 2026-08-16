@@ -1,53 +1,40 @@
 import Link from 'next/link';
+import prisma from '@/lib/prisma';
 
-const blogs = [
-  {
-    id: 1,
-    imagePlaceholder: 'bg-green-100',
-    icon: '🏃‍♂️',
-    category: 'Fashion',
-    title: 'What Does It Really Mean For A Site To Be Keyboard Navigable',
-    date: '2 May-2025',
-    comments: 0,
-  },
-  {
-    id: 2,
-    imagePlaceholder: 'bg-gray-200',
-    icon: '⌚',
-    category: 'Accessories',
-    title: 'Our Boosting Up Your Creativity Without Endless Reference',
-    date: '2 May-2025',
-    comments: 0,
-  },
-  {
-    id: 3,
-    imagePlaceholder: 'bg-teal-100',
-    icon: '👗',
-    category: 'Electronics',
-    title: 'How A Bottom-Up Design Approach Enhances Site...',
-    date: '2 May-2025',
-    comments: 0,
-  },
-  {
-    id: 4,
-    imagePlaceholder: 'bg-orange-50',
-    icon: '🛋️',
-    category: 'Fashion',
-    title: 'Building An Offline-Friendly Image are Upload System',
-    date: '2 May-2025',
-    comments: 2,
-  },
-];
+export default async function LatestBlogs({ config }: { config?: any }) {
+  const displayMode = config?.displayMode || 'DATE_DESC';
+  let articles: any[] = [];
+  
+  if (displayMode === 'MANUAL' && config?.manualIds) {
+    const ids = config.manualIds.split(',').map((id: string) => id.trim()).filter(Boolean);
+    if (ids.length > 0) {
+      // Pour respecter l'ordre des ids, on fetch puis on trie en JS, ou on utilise IN
+      const fetched = await prisma.article.findMany({
+        where: { id: { in: ids }, isPublished: true },
+        include: { _count: { select: { comments: { where: { isApproved: true } } } } }
+      });
+      // Réordonner selon l'ordre manuel
+      articles = ids.map((id: string) => fetched.find(a => a.id === id)).filter(Boolean);
+    }
+  } else {
+    articles = await prisma.article.findMany({
+      where: { isPublished: true },
+      orderBy: { createdAt: displayMode === 'DATE_ASC' ? 'asc' : 'desc' },
+      take: 4,
+      include: { _count: { select: { comments: { where: { isApproved: true } } } } }
+    });
+  }
 
-export default function LatestBlogs({ config }: { config?: any }) {
+  if (articles.length === 0) return null;
+
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold text-gray-900">{config?.title || 'Our Latest Blogs'}</h2>
-        <Link href="/blogs" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
-          See All
+        <Link href="/blog" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
+          Voir tout
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -56,19 +43,25 @@ export default function LatestBlogs({ config }: { config?: any }) {
 
       {/* Blogs Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {blogs.map((blog) => (
-          <div key={blog.id} className="flex flex-col group cursor-pointer">
-            {/* Image Placeholder */}
-            <div className={`w-full aspect-[4/3] rounded-xl mb-4 ${blog.imagePlaceholder} flex items-center justify-center overflow-hidden`}>
-               <div className="text-6xl group-hover:scale-110 transition duration-500">{blog.icon}</div>
+        {articles.map((blog) => (
+          <Link href={`/blog/${blog.slug}`} key={blog.id} className="flex flex-col group cursor-pointer h-full">
+            {/* Image Placeholder or Actual Image */}
+            <div className={`w-full aspect-[4/3] rounded-xl mb-4 bg-gray-100 flex items-center justify-center overflow-hidden border`}>
+               {blog.image ? (
+                 <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+               ) : (
+                 <div className="text-4xl text-gray-300">📝</div>
+               )}
             </div>
             
             {/* Category Badge */}
-            <div className="mb-3">
-              <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded">
-                {blog.category}
-              </span>
-            </div>
+            {blog.category && (
+              <div className="mb-3">
+                <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded">
+                  {blog.category}
+                </span>
+              </div>
+            )}
             
             {/* Title */}
             <h3 className="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-orange-500 transition line-clamp-2">
@@ -77,11 +70,11 @@ export default function LatestBlogs({ config }: { config?: any }) {
             
             {/* Metadata */}
             <div className="flex items-center text-sm text-gray-500 mt-auto">
-              <span>{blog.date}</span>
+              <span>{new Date(blog.createdAt).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               <span className="mx-2">/</span>
-              <span>Comments: {blog.comments}</span>
+              <span>{blog._count.comments} Comments</span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 

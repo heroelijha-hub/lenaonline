@@ -257,7 +257,35 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               className="w-full border rounded px-3 py-2 text-sm"
             />
           </div>
-          <p className="text-xs text-gray-500">Les articles sont affichés dynamiquement depuis la base de données. Si aucun article n'existe, la section n'apparaîtra pas ou affichera un espace vide.</p>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Ordre d'affichage des articles</label>
+            <select 
+              value={section.settings.displayMode || 'DATE_DESC'}
+              onChange={e => updateSectionSettings(section.id, 'displayMode', e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+            >
+              <option value="DATE_DESC">Plus Récents d'abord</option>
+              <option value="DATE_ASC">Plus Anciens d'abord</option>
+              <option value="MANUAL">Sélection Manuelle (par ID)</option>
+            </select>
+          </div>
+
+          {section.settings.displayMode === 'MANUAL' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">IDs des articles (séparés par virgule)</label>
+              <input 
+                type="text" 
+                value={section.settings.manualIds || ''} 
+                onChange={e => updateSectionSettings(section.id, 'manualIds', e.target.value)}
+                className="w-full border rounded px-3 py-2 text-sm"
+                placeholder="Ex: id1, id2, id3"
+              />
+              <p className="text-xs text-gray-500 mt-1">Saisissez les IDs exacts des articles que vous souhaitez afficher sur l'accueil.</p>
+            </div>
+          )}
+          
+          <p className="text-xs text-gray-500">Les articles sont affichés dynamiquement depuis la base de données. Si aucun article n'existe, la section n'apparaîtra pas.</p>
         </div>
       );
     }
