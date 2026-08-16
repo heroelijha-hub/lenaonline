@@ -54,6 +54,29 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [defaultVatRate, setDefaultVatRate] = useState(initialSettings.DEFAULT_VAT_RATE || '20');
   const [enableEuVat, setEnableEuVat] = useState(initialSettings.ENABLE_EU_VAT === 'true');
 
+  // Footer settings
+  const [footerAddress1, setFooterAddress1] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
+  const [footerAddress2, setFooterAddress2] = useState(initialSettings.FOOTER_ADDRESS_2 || '17 Princess Road, London, Greater London NW1 8JR, UK');
+  const [footerNewsletterText, setFooterNewsletterText] = useState(initialSettings.FOOTER_NEWSLETTER_TEXT || 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!');
+  const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 Shopelios All rights reserved.');
+  
+  const [footerSocialFacebook, setFooterSocialFacebook] = useState(initialSettings.FOOTER_SOCIAL_FACEBOOK || '#');
+  const [footerSocialTwitter, setFooterSocialTwitter] = useState(initialSettings.FOOTER_SOCIAL_TWITTER || '#');
+  const [footerSocialInstagram, setFooterSocialInstagram] = useState(initialSettings.FOOTER_SOCIAL_INSTAGRAM || '#');
+  const [footerSocialLinkedin, setFooterSocialLinkedin] = useState(initialSettings.FOOTER_SOCIAL_LINKEDIN || '#');
+  
+  const defaultColumns = [
+    { title: 'Contact Us', links: [{ label: 'About Us', url: '#' }, { label: 'Contact Us', url: '#' }] },
+    { title: 'Account', links: [{ label: 'Shop', url: '#' }, { label: 'Checkout', url: '#' }] }
+  ];
+  const [footerColumns, setFooterColumns] = useState<Array<{title: string, links: Array<{label: string, url: string}>}>>(() => {
+    try {
+      return initialSettings.FOOTER_COLUMNS ? JSON.parse(initialSettings.FOOTER_COLUMNS) : defaultColumns;
+    } catch {
+      return defaultColumns;
+    }
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -102,6 +125,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('TAX_INCLUDED_IN_PRICE', taxIncludedInPrice.toString());
     await updateSetting('DEFAULT_VAT_RATE', defaultVatRate);
     await updateSetting('ENABLE_EU_VAT', enableEuVat.toString());
+    
+    await updateSetting('FOOTER_ADDRESS_1', footerAddress1);
+    await updateSetting('FOOTER_ADDRESS_2', footerAddress2);
+    await updateSetting('FOOTER_NEWSLETTER_TEXT', footerNewsletterText);
+    await updateSetting('FOOTER_COPYRIGHT', footerCopyright);
+    await updateSetting('FOOTER_SOCIAL_FACEBOOK', footerSocialFacebook);
+    await updateSetting('FOOTER_SOCIAL_TWITTER', footerSocialTwitter);
+    await updateSetting('FOOTER_SOCIAL_INSTAGRAM', footerSocialInstagram);
+    await updateSetting('FOOTER_SOCIAL_LINKEDIN', footerSocialLinkedin);
+    await updateSetting('FOOTER_COLUMNS', JSON.stringify(footerColumns));
     
     setIsLoading(false);
     setMessage('Paramètres mis à jour avec succès.');
@@ -421,6 +454,113 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Pied de Page (Footer)</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse 1 (Store 1)</label>
+            <input type="text" value={footerAddress1} onChange={e => setFooterAddress1(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse 2 (Store 2 - Optionnel)</label>
+            <input type="text" value={footerAddress2} onChange={e => setFooterAddress2(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte de la Newsletter</label>
+            <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du Copyright (ex: © 2026 Shopelios)</label>
+            <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+        </div>
+
+        <h4 className="text-md font-medium text-gray-800 mb-3">Réseaux Sociaux (URL)</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
+            <input type="text" value={footerSocialFacebook} onChange={e => setFooterSocialFacebook(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Twitter (X)</label>
+            <input type="text" value={footerSocialTwitter} onChange={e => setFooterSocialTwitter(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
+            <input type="text" value={footerSocialInstagram} onChange={e => setFooterSocialInstagram(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
+            <input type="text" value={footerSocialLinkedin} onChange={e => setFooterSocialLinkedin(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+        </div>
+
+        <h4 className="text-md font-medium text-gray-800 mb-3">Colonnes de liens du Footer</h4>
+        <div className="space-y-6">
+          {footerColumns.map((col, cIdx) => (
+            <div key={cIdx} className="bg-gray-50 p-4 border rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <input 
+                  type="text" 
+                  value={col.title}
+                  onChange={e => {
+                    const newCols = [...footerColumns];
+                    newCols[cIdx].title = e.target.value;
+                    setFooterColumns(newCols);
+                  }}
+                  className="font-bold px-3 py-1.5 border border-gray-300 rounded focus:ring-orange-500 w-1/2"
+                  placeholder="Titre de la colonne (ex: Contact Us)"
+                />
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    const newCols = [...footerColumns];
+                    newCols.splice(cIdx, 1);
+                    setFooterColumns(newCols);
+                  }}
+                  className="text-red-500 hover:text-red-700 text-sm"
+                >
+                  Supprimer la colonne
+                </button>
+              </div>
+              
+              <div className="space-y-2 pl-4 border-l-2 border-gray-200">
+                {col.links.map((link, lIdx) => (
+                  <div key={lIdx} className="flex gap-2 items-center">
+                    <input type="text" value={link.label} placeholder="Nom du lien" onChange={e => {
+                      const newCols = [...footerColumns];
+                      newCols[cIdx].links[lIdx].label = e.target.value;
+                      setFooterColumns(newCols);
+                    }} className="text-sm px-2 py-1 border rounded w-1/3" />
+                    <input type="text" value={link.url} placeholder="URL" onChange={e => {
+                      const newCols = [...footerColumns];
+                      newCols[cIdx].links[lIdx].url = e.target.value;
+                      setFooterColumns(newCols);
+                    }} className="text-sm px-2 py-1 border rounded w-1/3" />
+                    <button type="button" onClick={() => {
+                      const newCols = [...footerColumns];
+                      newCols[cIdx].links.splice(lIdx, 1);
+                      setFooterColumns(newCols);
+                    }} className="text-red-500">&times;</button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => {
+                  const newCols = [...footerColumns];
+                  newCols[cIdx].links.push({ label: 'Nouveau lien', url: '#' });
+                  setFooterColumns(newCols);
+                }} className="text-orange-600 text-xs mt-2">+ Ajouter un lien</button>
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={() => {
+            setFooterColumns([...footerColumns, { title: 'Nouvelle Colonne', links: [] }]);
+          }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
+            + Ajouter une colonne
+          </button>
         </div>
       </div>
 

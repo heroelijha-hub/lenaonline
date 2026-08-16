@@ -48,6 +48,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   } catch (e) {
     console.error("Erreur parsing HEADER_MENU_LINKS", e);
   }
+  
+  const defaultFooterColumns = [
+    { title: 'Contact Us', links: [{ label: 'About Us', url: '#' }, { label: 'Contact Us', url: '#' }] },
+    { title: 'Account', links: [{ label: 'Shop', url: '#' }, { label: 'Checkout', url: '#' }] }
+  ];
+  let footerColumns = defaultFooterColumns;
+  try {
+    if (settingsMap.FOOTER_COLUMNS) {
+      footerColumns = JSON.parse(settingsMap.FOOTER_COLUMNS);
+    }
+  } catch (e) {}
 
   const storeSettings = {
     announcement: settingsMap.HEADER_ANNOUNCEMENT || 'Welcome to Shopelios',
@@ -55,6 +66,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     supportPhone: settingsMap.HEADER_SUPPORT_PHONE || '+08 9229 8228',
     supportEmail: settingsMap.HEADER_SUPPORT_EMAIL || 'support@shopelios.com',
     menuLinks: menuLinks,
+    footerAddress1: settingsMap.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486',
+    footerAddress2: settingsMap.FOOTER_ADDRESS_2 || '17 Princess Road, London, Greater London NW1 8JR, UK',
+    footerNewsletterText: settingsMap.FOOTER_NEWSLETTER_TEXT || 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!',
+    footerCopyright: settingsMap.FOOTER_COPYRIGHT || '© 2026 Shopelios All rights reserved.',
+    footerSocialFacebook: settingsMap.FOOTER_SOCIAL_FACEBOOK || '#',
+    footerSocialTwitter: settingsMap.FOOTER_SOCIAL_TWITTER || '#',
+    footerSocialInstagram: settingsMap.FOOTER_SOCIAL_INSTAGRAM || '#',
+    footerSocialLinkedin: settingsMap.FOOTER_SOCIAL_LINKEDIN || '#',
+    footerColumns: footerColumns,
   };
 
   return (
