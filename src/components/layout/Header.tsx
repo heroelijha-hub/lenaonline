@@ -147,8 +147,8 @@ export default function Header({
             >
               <span className="truncate max-w-[100px] md:max-w-[150px]">
                 {selectedCategory === 'all' 
-                  ? 'All Categories' 
-                  : categories.find(c => c.id === selectedCategory)?.name || 'All Categories'}
+                  ? 'Toutes les catégories' 
+                  : categories.find(c => c.id === selectedCategory)?.name || 'Toutes les catégories'}
               </span>
               <svg className="w-4 h-4 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               
@@ -159,7 +159,7 @@ export default function Header({
                     className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-gray-700"
                     onClick={() => setSelectedCategory('all')}
                   >
-                    All Categories
+                    Toutes les catégories
                   </div>
                   {categories.map(cat => (
                     <div 
@@ -203,7 +203,7 @@ export default function Header({
                         >
                           <div className="w-12 h-12 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden mr-4">
                             {product.images && product.images.length > 0 ? (
-                              <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain p-1" />
+                              <img src={product.images[0]} alt={product.title} className="w-full h-full object-contain p-1" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-gray-300">
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -211,7 +211,7 @@ export default function Header({
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-semibold text-gray-900 truncate">{product.name}</h4>
+                            <h4 className="text-sm font-semibold text-gray-900 truncate">{product.title}</h4>
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-orange-600 font-bold text-sm">${product.price.toFixed(2)}</span>
                               {product.compareAtPrice && product.compareAtPrice > product.price && (
