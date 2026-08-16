@@ -2,14 +2,28 @@
 
 import { useState } from 'react';
 import { updateSetting } from '@/actions/settings';
+import { uploadImage } from '@/actions/admin';
 
 export default function LandingForm({ initialSettings }: { initialSettings: Record<string, string> }) {
   const [settings, setSettings] = useState(initialSettings);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
+  
+  // Keep track of new files selected for each key
+  const [imageFiles, setImageFiles] = useState<Record<string, File>>({});
 
   const handleChange = (key: string, value: string) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleFileChange = (key: string, file: File | null) => {
+    if (file) {
+      setImageFiles(prev => ({ ...prev, [key]: file }));
+    } else {
+      const newFiles = { ...imageFiles };
+      delete newFiles[key];
+      setImageFiles(newFiles);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,10 +32,27 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
     setMessage('');
     
     try {
-      // Loop through all settings and update them
-      for (const [key, value] of Object.entries(settings)) {
+      const finalSettings = { ...settings };
+
+      // 1. Upload new images if selected
+      for (const [key, file] of Object.entries(imageFiles)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const url = await uploadImage(formData);
+        if (url) {
+          finalSettings[key] = url; // Update setting with new URL
+        }
+      }
+
+      // 2. Save all settings to DB
+      for (const [key, value] of Object.entries(finalSettings)) {
         await updateSetting(key, value);
       }
+      
+      // Update local state to reflect new URLs
+      setSettings(finalSettings);
+      setImageFiles({}); // Clear pending uploads
+      
       setMessage('Modifications enregistrées avec succès !');
     } catch (error) {
       setMessage('Erreur lors de la sauvegarde.');
@@ -40,6 +71,36 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
         placeholder={placeholder}
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
       />
+    </div>
+  );
+
+  const renderImageUpload = (label: string, key: string, sizeHint: string) => (
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">{label} <span className="text-xs text-gray-500 font-normal">({sizeHint})</span></label>
+      
+      {/* Aperçu de l'image actuelle si elle existe et qu'aucun nouveau fichier n'est sélectionné */}
+      {settings[key] && !imageFiles[key] && (
+        <div className="mb-2 relative w-24 h-24 border rounded overflow-hidden bg-gray-50">
+           <img src={settings[key]} alt="Aperçu" className="w-full h-full object-contain" />
+           <button 
+             type="button" 
+             onClick={() => handleChange(key, '')} 
+             className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+           >
+             &times;
+           </button>
+        </div>
+      )}
+
+      {/* Upload input */}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleFileChange(key, e.target.files?.[0] || null)}
+        className="w-full px-3 py-1.5 border border-gray-300 rounded-md file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 text-sm"
+      />
+      {imageFiles[key] && <p className="text-xs text-green-600 mt-1">Nouveau fichier prêt à être uploadé : {imageFiles[key].name}</p>}
+      {!settings[key] && !imageFiles[key] && <p className="text-xs text-gray-400 mt-1">Aucune image. Dessin par défaut affiché.</p>}
     </div>
   );
 
@@ -64,7 +125,7 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderInput('Prix (ex: from $349.99)', 'HERO_1_PRICE', 'Texte de prix')}
             {renderInput('Texte du bouton', 'HERO_1_CTA', 'Shop Now')}
             {renderInput('Lien du bouton', 'HERO_1_LINK', '/product/...')}
-            {renderInput('Image URL', 'HERO_1_IMAGE', 'Laissez vide pour le dessin par défaut')}
+            {renderImageUpload('Image du Produit', 'HERO_1_IMAGE', 'Taille rec. ~ 400x500px, PNG sans fond')}
           </div>
 
           <div className="space-y-6">
@@ -74,7 +135,7 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Titre (ex: Heavy On Features...)', 'HERO_2_TITLE', 'Titre principal')}
               {renderInput('Sous-titre (ex: Use Code: SALE35%)', 'HERO_2_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_2_LINK', '/category/...')}
-              {renderInput('Image URL', 'HERO_2_IMAGE', 'Laissez vide pour le dessin par défaut')}
+              {renderImageUpload('Image du Produit', 'HERO_2_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
             </div>
 
             {/* Bloc Haut Droite */}
@@ -83,7 +144,7 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Titre (ex: Sale 10% Off Speaker)', 'HERO_3_TITLE', 'Titre principal')}
               {renderInput('Sous-titre (ex: New Product)', 'HERO_3_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_3_LINK', '/category/...')}
-              {renderInput('Image URL', 'HERO_3_IMAGE', 'Laissez vide pour le dessin par défaut')}
+              {renderImageUpload('Image du Produit', 'HERO_3_IMAGE', 'Taille rec. ~ 200x200px, PNG sans fond')}
             </div>
             
             {/* Bloc Bas */}
@@ -92,7 +153,7 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderInput('Titre (ex: Headphones Listen...)', 'HERO_4_TITLE', 'Titre principal')}
               {renderInput('Sous-titre (ex: Last call for up to 25% off)', 'HERO_4_SUBTITLE', 'Sous-titre')}
               {renderInput('Lien', 'HERO_4_LINK', '/category/...')}
-              {renderInput('Image URL', 'HERO_4_IMAGE', 'Laissez vide pour le dessin par défaut')}
+              {renderImageUpload('Image du Produit', 'HERO_4_IMAGE', 'Taille rec. ~ 300x300px, PNG sans fond')}
             </div>
           </div>
         </div>
@@ -107,14 +168,14 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderInput('Titre', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
             {renderInput('Sous-titre', 'PROMO_1_SUBTITLE', 'Price Start $69')}
             {renderInput('Lien', 'PROMO_1_LINK', '/product/...')}
-            {renderInput('Image URL', 'PROMO_1_IMAGE', 'Laissez vide pour le dessin par défaut')}
+            {renderImageUpload('Image du Produit', 'PROMO_1_IMAGE', 'Taille rec. ~ 250x250px')}
           </div>
           <div className="bg-gray-50 p-4 rounded border">
             <h3 className="font-semibold mb-3 text-orange-600">Bannière Droite (Women Store)</h3>
             {renderInput('Titre', 'PROMO_2_TITLE', 'Get 20% Off')}
             {renderInput('Sous-titre', 'PROMO_2_SUBTITLE', 'Women Store')}
             {renderInput('Lien', 'PROMO_2_LINK', '/category/women')}
-            {renderInput('Image URL', 'PROMO_2_IMAGE', 'Laissez vide pour le dessin par défaut')}
+            {renderImageUpload('Image du Produit', 'PROMO_2_IMAGE', 'Taille rec. ~ 250x250px')}
           </div>
         </div>
       </div>
@@ -125,7 +186,7 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
           disabled={isLoading}
           className="w-full sm:w-auto px-8 py-3 bg-orange-600 text-white font-medium rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
         >
-          {isLoading ? 'Enregistrement...' : 'Enregistrer les modifications'}
+          {isLoading ? 'Upload et Enregistrement en cours...' : 'Enregistrer les modifications'}
         </button>
       </div>
     </form>
