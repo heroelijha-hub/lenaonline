@@ -21,7 +21,31 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
   const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'Shopelios');
   const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
+
+  // Design & Header settings
+  const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
+  const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
+  const [headerLogoText, setHeaderLogoText] = useState(initialSettings.HEADER_LOGO_TEXT || 'Shopelios');
+  const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
+  const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@shopelios.com');
   
+  // Menu links
+  const defaultMenu = [
+    { label: 'Home', url: '/' },
+    { label: 'Shop', url: '/shop' },
+    { label: 'Pages', url: '/pages' },
+    { label: 'Blogs', url: '/blogs' },
+    { label: 'Portfolios', url: '/portfolios' },
+    { label: 'Contact Us', url: '/contact' },
+  ];
+  const [menuLinks, setMenuLinks] = useState<Array<{label: string, url: string}>>(() => {
+    try {
+      return initialSettings.HEADER_MENU_LINKS ? JSON.parse(initialSettings.HEADER_MENU_LINKS) : defaultMenu;
+    } catch {
+      return defaultMenu;
+    }
+  });
+
   // Tax settings
   const [taxIncludedInPrice, setTaxIncludedInPrice] = useState(initialSettings.TAX_INCLUDED_IN_PRICE === 'true');
   const [defaultVatRate, setDefaultVatRate] = useState(initialSettings.DEFAULT_VAT_RATE || '20');
@@ -48,6 +72,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('CHAT_ENABLED', chatEnabled.toString());
     await updateSetting('CHAT_STORE_NAME', chatStoreName);
     await updateSetting('CHAT_STORE_ICON', chatStoreIcon);
+    
+    await updateSetting('THEME_COLOR', themeColor);
+    await updateSetting('HEADER_ANNOUNCEMENT', headerAnnouncement);
+    await updateSetting('HEADER_LOGO_TEXT', headerLogoText);
+    await updateSetting('HEADER_SUPPORT_PHONE', headerSupportPhone);
+    await updateSetting('HEADER_SUPPORT_EMAIL', headerSupportEmail);
+    await updateSetting('HEADER_MENU_LINKS', JSON.stringify(menuLinks));
     
     await updateSetting('TAX_INCLUDED_IN_PRICE', taxIncludedInPrice.toString());
     await updateSetting('DEFAULT_VAT_RATE', defaultVatRate);
@@ -180,6 +211,124 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           <label htmlFor="enableBuyNow" className="text-sm font-medium text-gray-700 cursor-pointer">
             Activer le bouton "Buy Now" (Achat rapide) sur les pages produits
           </label>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Design & En-tête (Header)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur principale de la boutique (Thème)</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={themeColor}
+                onChange={(e) => setThemeColor(e.target.value)}
+                className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer"
+              />
+              <input
+                type="text"
+                value={themeColor}
+                onChange={(e) => setThemeColor(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                placeholder="#f97316"
+              />
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message du bandeau supérieur</label>
+            <input
+              type="text"
+              value={headerAnnouncement}
+              onChange={(e) => setHeaderAnnouncement(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du Logo</label>
+            <input
+              type="text"
+              value={headerLogoText}
+              onChange={(e) => setHeaderLogoText(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone Support (En-tête)</label>
+            <input
+              type="text"
+              value={headerSupportPhone}
+              onChange={(e) => setHeaderSupportPhone(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email Support (En-tête)</label>
+            <input
+              type="email"
+              value={headerSupportEmail}
+              onChange={(e) => setHeaderSupportEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Liens de Navigation (Menu)</h3>
+        <div className="space-y-4">
+          {menuLinks.map((link, idx) => (
+            <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Nom du lien</label>
+                <input
+                  type="text"
+                  value={link.label}
+                  onChange={(e) => {
+                    const newLinks = [...menuLinks];
+                    newLinks[idx].label = e.target.value;
+                    setMenuLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <input
+                  type="text"
+                  value={link.url}
+                  onChange={(e) => {
+                    const newLinks = [...menuLinks];
+                    newLinks[idx].url = e.target.value;
+                    setMenuLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                />
+              </div>
+              <div className="pt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newLinks = [...menuLinks];
+                    newLinks.splice(idx, 1);
+                    setMenuLinks(newLinks);
+                  }}
+                  className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
+                  title="Supprimer ce lien"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setMenuLinks([...menuLinks, { label: 'Nouveau Lien', url: '/' }])}
+            className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            Ajouter un lien
+          </button>
         </div>
       </div>
 

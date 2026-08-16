@@ -11,6 +11,18 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Dynamic Theme Colors mapping */
+  --color-orange-50: color-mix(in srgb, var(--theme-primary, #f97316), white 90%);
+  --color-orange-100: color-mix(in srgb, var(--theme-primary, #f97316), white 80%);
+  --color-orange-200: color-mix(in srgb, var(--theme-primary, #f97316), white 60%);
+  --color-orange-300: color-mix(in srgb, var(--theme-primary, #f97316), white 40%);
+  --color-orange-400: color-mix(in srgb, var(--theme-primary, #f97316), white 20%);
+  --color-orange-500: var(--theme-primary, #f97316);
+  --color-orange-600: color-mix(in srgb, var(--theme-primary, #f97316), black 10%);
+  --color-orange-700: color-mix(in srgb, var(--theme-primary, #f97316), black 20%);
+  --color-orange-800: color-mix(in srgb, var(--theme-primary, #f97316), black 30%);
+  --color-orange-900: color-mix(in srgb, var(--theme-primary, #f97316), black 40%);
 }
 
 @media (prefers-color-scheme: dark) {

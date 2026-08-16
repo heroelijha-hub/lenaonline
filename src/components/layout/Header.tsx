@@ -7,7 +7,17 @@ import { useEffect, useState } from 'react';
 import LoginModal from '@/components/auth/LoginModal';
 import CartDrawer from '@/components/cart/CartDrawer';
 
-export default function Header() {
+type HeaderProps = {
+  announcement?: string;
+  logoText?: string;
+  menuLinks?: Array<{ label: string, url: string }>;
+};
+
+export default function Header({ 
+  announcement = 'Welcome to Shopelios', 
+  logoText = 'LOGO',
+  menuLinks = []
+}: HeaderProps) {
   const [mounted, setMounted] = useState(false);
   const cartItems = useCartStore((state) => state.getTotalItems());
   const cartTotal = useCartStore((state) => state.getTotalPrice());
@@ -23,7 +33,7 @@ export default function Header() {
     <header className="w-full bg-white border-b border-gray-200 font-sans">
       {/* Top Bar */}
       <div className="hidden md:flex justify-between items-center px-4 py-2 text-sm text-gray-600 border-b border-gray-100 max-w-7xl mx-auto w-full">
-        <div>Welcome to Shopelios</div>
+        <div>{announcement}</div>
         <div className="flex items-center space-x-6">
           <Link href="/store-locator" className="flex items-center hover:text-orange-600 transition">
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -48,7 +58,7 @@ export default function Header() {
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="text-3xl font-extrabold tracking-tight text-gray-900">
-            LOGO
+            {logoText}
           </Link>
         </div>
 
@@ -120,24 +130,12 @@ export default function Header() {
 
             {/* Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-6 font-semibold text-gray-800">
-              <Link href="/" className="text-orange-600 flex items-center">
-                Home <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </Link>
-              <Link href="/shop" className="hover:text-orange-600 flex items-center transition">
-                Shop <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </Link>
-              <Link href="/pages" className="hover:text-orange-600 flex items-center transition">
-                Pages <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </Link>
-              <Link href="/blogs" className="hover:text-orange-600 flex items-center transition">
-                Blogs <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </Link>
-              <Link href="/portfolios" className="hover:text-orange-600 transition">
-                Portfolios
-              </Link>
-              <Link href="/contact" className="hover:text-orange-600 transition">
-                Contact Us
-              </Link>
+              {menuLinks.map((link, idx) => (
+                <Link key={idx} href={link.url} className="hover:text-orange-600 flex items-center transition">
+                  {link.label}
+                  {/* Optionnel: Icône flèche si nécessaire, on garde simple pour l'instant */}
+                </Link>
+              ))}
             </nav>
           </div>
 

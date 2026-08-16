@@ -7,6 +7,7 @@ import { defaultCurrencyOptions } from "@/lib/formatPrice";
 import ChatWidget from "@/components/chat/ChatWidget";
 import BackToTop from "@/components/BackToTop";
 import StoreLayout from "@/components/layout/StoreLayout";
+import ThemeProvider from "@/components/layout/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
     defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
   };
+  const defaultMenuLinks = [
+    { label: 'Home', url: '/' },
+    { label: 'Shop', url: '/shop' },
+    { label: 'Pages', url: '/pages' },
+    { label: 'Blogs', url: '/blogs' },
+    { label: 'Portfolios', url: '/portfolios' },
+    { label: 'Contact Us', url: '/contact' },
+  ];
+
+  let menuLinks = defaultMenuLinks;
+  try {
+    if (settingsMap.HEADER_MENU_LINKS) {
+      menuLinks = JSON.parse(settingsMap.HEADER_MENU_LINKS);
+    }
+  } catch (e) {
+    console.error("Erreur parsing HEADER_MENU_LINKS", e);
+  }
+
+  const storeSettings = {
+    announcement: settingsMap.HEADER_ANNOUNCEMENT || 'Welcome to Shopelios',
+    logoText: settingsMap.HEADER_LOGO_TEXT || 'LOGO',
+    supportPhone: settingsMap.HEADER_SUPPORT_PHONE || '+08 9229 8228',
+    supportEmail: settingsMap.HEADER_SUPPORT_EMAIL || 'support@shopelios.com',
+    menuLinks: menuLinks,
+  };
 
   return (
     <html
@@ -37,8 +63,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
+        <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
         <CurrencyProvider options={currencyOptions}>
-          <StoreLayout>
+          <StoreLayout settings={storeSettings}>
             {children}
             <ChatWidget 
               enabled={settingsMap.CHAT_ENABLED !== 'false'} 
