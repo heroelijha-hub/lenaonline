@@ -113,7 +113,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
     const rateToSave = isFreeOrCollect ? 0 : Number(methodRate);
     if (!isFreeOrCollect && methodRate === '') return setError('Le tarif est requis pour cette méthode.');
 
-    const minAmountToSave = methodType === 'Livraison Gratuite' && methodMinAmount !== '' ? Number(methodMinAmount) : null;
+    const minAmountToSave = methodType === 'Livraison Gratuite' && methodMinAmount !== '' ? Number(methodMinAmount) : undefined;
 
     setLoading(true);
     setError('');
