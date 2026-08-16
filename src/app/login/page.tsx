@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Footer from '@/components/layout/Footer';
 import { loginUser, registerUser } from '@/actions/auth';
 
 export default function LoginPage() {
@@ -46,7 +45,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 font-sans">
+    <div className="flex flex-col bg-gray-50 font-sans">
       <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
           
@@ -216,7 +215,6 @@ export default function LoginPage() {
           
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

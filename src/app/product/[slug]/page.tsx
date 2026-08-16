@@ -1,8 +1,6 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import ProductActions from '@/components/product/ProductActions';
 import Price from '@/components/Price';
 
@@ -46,7 +44,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
-      <Header />
       
       <main className="flex-grow pb-20">
         {/* Breadcrumb */}
@@ -184,8 +181,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

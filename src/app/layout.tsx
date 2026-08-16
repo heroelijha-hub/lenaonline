@@ -6,6 +6,7 @@ import CurrencyProvider from "@/components/CurrencyProvider";
 import { defaultCurrencyOptions } from "@/lib/formatPrice";
 import ChatWidget from "@/components/chat/ChatWidget";
 import BackToTop from "@/components/BackToTop";
+import StoreLayout from "@/components/layout/StoreLayout";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,13 +38,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <body className="min-h-full flex flex-col font-sans">
         <CurrencyProvider options={currencyOptions}>
-          {children}
-          <ChatWidget 
-            enabled={settingsMap.CHAT_ENABLED !== 'false'} 
-            storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
-            storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
-          />
-          <BackToTop />
+          <StoreLayout>
+            {children}
+            <ChatWidget 
+              enabled={settingsMap.CHAT_ENABLED !== 'false'} 
+              storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
+              storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
+            />
+            <BackToTop />
+          </StoreLayout>
         </CurrencyProvider>
       </body>
     </html>

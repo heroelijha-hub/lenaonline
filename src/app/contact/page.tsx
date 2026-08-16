@@ -1,5 +1,4 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import { Metadata } from 'next';
 
 export default function ContactPage() {
   return (
@@ -147,7 +146,6 @@ export default function ContactPage() {
         </div>
       </main>
       
-      <Footer />
     </div>
   );
 }

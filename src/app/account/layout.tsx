@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { logoutUser } from '@/actions/auth';
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +19,6 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gray-50">
-      <Header />
       <main className="flex-grow max-w-7xl mx-auto w-full px-4 py-12">
         <div className="flex flex-col md:flex-row gap-8">
           
@@ -64,7 +61,6 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
