@@ -82,14 +82,7 @@ export default function Header({
               Search
             </button>
           </div>
-          {/* Quick links under search */}
-          <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-            <Link href="/air" className="hover:text-orange-600">Air</Link>
-            <Link href="/galaxy" className="hover:text-orange-600">Galaxy</Link>
-            <Link href="/tab" className="hover:text-orange-600">Tab</Link>
-            <Link href="/laptop-ai" className="hover:text-orange-600">Laptop AI</Link>
-            <Link href="/vivo" className="hover:text-orange-600">Vivo V30E</Link>
-          </div>
+
         </div>
 
         {/* Wishlist & Cart */}
