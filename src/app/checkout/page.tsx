@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import Link from 'next/link';
-import { processCheckout } from '@/actions/checkout';
+import { processCheckout, validateCoupon } from '@/actions/checkout';
 import { useCurrency } from '@/components/CurrencyProvider';
 
 export default function CheckoutPage() {
@@ -16,6 +16,8 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showCouponInput, setShowCouponInput] = useState(false);
   const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, type: 'PERCENTAGE' | 'FIXED_AMOUNT', value: number} | null>(null);
+  const [couponError, setCouponError] = useState('');
   const { formatPrice } = useCurrency();
 
   // Constants for shipping prices
@@ -26,7 +28,32 @@ export default function CheckoutPage() {
   };
 
   const cartTotal = getTotalPrice();
-  const finalTotal = cartTotal + shippingCosts[shippingMethod];
+  
+  // Calculate Discount
+  let discountAmount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.type === 'PERCENTAGE') {
+      discountAmount = cartTotal * (appliedCoupon.value / 100);
+    } else {
+      discountAmount = appliedCoupon.value;
+    }
+  }
+
+  const finalTotal = Math.max(0, cartTotal - discountAmount) + shippingCosts[shippingMethod];
+
+  const handleApplyCoupon = async () => {
+    setCouponError('');
+    if (!couponCode) return;
+    
+    const res = await validateCoupon(couponCode);
+    if (res.error) {
+      setCouponError(res.error);
+      setAppliedCoupon(null);
+    } else if (res.coupon) {
+      setAppliedCoupon(res.coupon as any);
+      setShowCouponInput(false);
+    }
+  };
 
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,18 +94,28 @@ export default function CheckoutPage() {
             Vous avez un coupon? <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">Cliquez ici pour saisir votre code</button>
           </div>
           
-          {showCouponInput && (
-            <div className="bg-white p-4 border border-gray-200 rounded flex gap-2">
-              <input 
-                type="text" 
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-                placeholder="Code promo" 
-                className="flex-grow px-4 py-2 border border-gray-200 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
-              />
-              <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
-                Appliquer
-              </button>
+          {showCouponInput && !appliedCoupon && (
+            <div className="bg-white p-4 border border-gray-200 rounded">
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  placeholder="Code promo" 
+                  className="flex-grow px-4 py-2 border border-gray-200 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
+                />
+                <button type="button" onClick={handleApplyCoupon} className="bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
+                  Appliquer
+                </button>
+              </div>
+              {couponError && <p className="text-red-500 text-xs mt-2">{couponError}</p>}
+            </div>
+          )}
+          
+          {appliedCoupon && (
+            <div className="bg-green-50 p-4 rounded text-sm text-green-700 flex justify-between items-center border border-green-200">
+              <span>Code promo <strong>{appliedCoupon.code}</strong> appliqué avec succès !</span>
+              <button type="button" onClick={() => setAppliedCoupon(null)} className="text-red-500 hover:underline font-medium text-xs">Retirer</button>
             </div>
           )}
           
@@ -188,6 +225,13 @@ export default function CheckoutPage() {
               <span>Sous-total</span>
               <span>{formatPrice(cartTotal)}</span>
             </div>
+
+            {appliedCoupon && (
+              <div className="border-b border-gray-200 pb-4 mb-4 flex justify-between text-sm font-bold text-green-600">
+                <span>Réduction ({appliedCoupon.code})</span>
+                <span>-{formatPrice(discountAmount)}</span>
+              </div>
+            )}
 
             <div className="border-b border-gray-200 pb-4 mb-4 flex justify-between text-sm text-gray-900">
               <span className="font-bold">Expédition</span>

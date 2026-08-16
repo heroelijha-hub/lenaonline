@@ -39,13 +39,13 @@ const blogs = [
   },
 ];
 
-export default function LatestBlogs() {
+export default function LatestBlogs({ config }: { config?: any }) {
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Our Latest Blogs</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{config?.title || 'Our Latest Blogs'}</h2>
         <Link href="/blogs" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
           See All
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

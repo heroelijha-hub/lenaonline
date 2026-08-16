@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 
-export default async function Hero() {
+export default async function Hero({ config }: { config?: any }) {
   const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  let settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  
+  if (config) {
+    settings = { ...settings, ...config };
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-6 font-sans">

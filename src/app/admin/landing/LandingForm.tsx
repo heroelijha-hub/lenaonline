@@ -104,10 +104,97 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   };
 
   const renderConfig = (section: SectionConfig) => {
-    if (section.type === 'Hero' || section.type === 'PromoBanners' || section.type === 'Newsletter') {
+    if (section.type === 'Newsletter') {
       return (
         <div className="p-4 bg-gray-50 border rounded text-sm text-gray-500">
-          Les paramètres de cette section sont statiques ou gérés ailleurs pour le moment. Vous pouvez cependant la déplacer ou la désactiver.
+          Les paramètres de cette section sont gérés ailleurs. Vous pouvez cependant la déplacer ou la désactiver.
+        </div>
+      );
+    }
+
+    if (section.type === 'Hero') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <p className="text-sm text-gray-500 mb-4">L'en-tête principal contient 4 blocs. Modifiez les textes principaux ci-dessous.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bloc 1 (Gauche)</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.HERO_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Apple Iphone 17 Pro Max" />
+              <label className="block text-xs font-medium mb-1">Sous-titre</label>
+              <input type="text" value={section.settings.HERO_1_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Supper Discount" />
+              <label className="block text-xs font-medium mb-1">Prix/Texte</label>
+              <input type="text" value={section.settings.HERO_1_PRICE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_PRICE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="from $349.99" />
+              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Shop Now" />
+            </div>
+
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bloc 2 (Haut Centre)</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.HERO_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Heavy On Features..." />
+              <label className="block text-xs font-medium mb-1">Sous-titre</label>
+              <input type="text" value={section.settings.HERO_2_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_2_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Use Code: SALE35%" />
+            </div>
+
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bloc 3 (Haut Droite)</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.HERO_3_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_3_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Sale 10% Off" />
+              <label className="block text-xs font-medium mb-1">Sous-titre</label>
+              <input type="text" value={section.settings.HERO_3_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_3_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="New Product" />
+            </div>
+
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bloc 4 (Bas Droite)</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.HERO_4_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_4_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Headphones Listen..." />
+              <label className="block text-xs font-medium mb-1">Sous-titre</label>
+              <input type="text" value={section.settings.HERO_4_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_4_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Last call..." />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (section.type === 'LatestBlogs') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Titre de la section Blog</label>
+            <input 
+              type="text" 
+              value={section.settings.title || 'Latest Blogs'} 
+              onChange={e => updateSectionSettings(section.id, 'title', e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+            />
+          </div>
+          <p className="text-xs text-gray-500">Les articles sont affichés dynamiquement depuis la base de données. Si aucun article n'existe, la section n'apparaîtra pas ou affichera un espace vide.</p>
+        </div>
+      );
+    }
+
+    if (section.type === 'PromoBanners') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <p className="text-sm text-gray-500">Configurer les 2 bannières promotionnelles côte à côte.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bannière Gauche</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.BANNER_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartwatch" />
+              <label className="block text-xs font-medium mb-1">Lien cible</label>
+              <input type="text" value={section.settings.BANNER_1_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
+            </div>
+            <div className="border p-3 rounded bg-white">
+              <h4 className="font-bold text-sm mb-2">Bannière Droite</h4>
+              <label className="block text-xs font-medium mb-1">Titre</label>
+              <input type="text" value={section.settings.BANNER_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartphones" />
+              <label className="block text-xs font-medium mb-1">Lien cible</label>
+              <input type="text" value={section.settings.BANNER_2_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
+            </div>
+          </div>
         </div>
       );
     }

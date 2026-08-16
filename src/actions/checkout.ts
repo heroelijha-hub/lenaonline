@@ -2,6 +2,35 @@
 
 import prisma from '@/lib/prisma';
 
+export async function validateCoupon(code: string) {
+  try {
+    const coupon = await prisma.coupon.findUnique({
+      where: { code: code.toUpperCase() }
+    });
+
+    if (!coupon) {
+      return { error: "Code promo invalide." };
+    }
+
+    if (!coupon.isActive) {
+      return { error: "Ce code promo n'est plus actif." };
+    }
+
+    return { 
+      success: true, 
+      coupon: {
+        code: coupon.code,
+        type: coupon.type,
+        value: coupon.value
+      } 
+    };
+  } catch (error) {
+    console.error("Coupon validation error:", error);
+    return { error: "Erreur lors de la validation du code promo." };
+  }
+}
+
+
 export async function processCheckout(formData: FormData, cartItems: any[], finalTotal: number, paymentMethod: string) {
   try {
     const email = formData.get('email') as string;

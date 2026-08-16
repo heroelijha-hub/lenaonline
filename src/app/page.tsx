@@ -3,6 +3,7 @@ import BestDeals from '@/components/home/BestDeals';
 import BestSeller from '@/components/home/BestSeller';
 import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
+import PromoBanners from '@/components/home/PromoBanners';
 import { getSettings } from '@/actions/settings';
 import { SectionConfig, SectionType } from '@/app/admin/landing/LandingForm';
 
@@ -41,11 +42,11 @@ export default async function Home() {
       case 'BestSeller':
         return <BestSeller key={section.id} config={section.settings} />;
       case 'LatestBlogs':
-        return <LatestBlogs key={section.id} />;
+        return <LatestBlogs key={section.id} config={section.settings} />;
       case 'Newsletter':
         return <Newsletter key={section.id} />;
       case 'PromoBanners':
-        return null; // A implementer plus tard si besoin
+        return <PromoBanners key={section.id} config={section.settings} />;
       default:
         return null;
     }
