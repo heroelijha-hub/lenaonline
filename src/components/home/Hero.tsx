@@ -10,7 +10,15 @@ export default async function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[600px]">
         
         {/* Left Tall Banner (Apple iPhone 17 Pro Max) */}
-        <div className="lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-8 flex flex-col items-center text-center h-full border border-gray-100 group">
+        <div 
+          className="lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-8 flex flex-col items-center text-center h-full border border-gray-100 group"
+          style={{
+            backgroundColor: settings.HERO_1_BG_COLOR || undefined,
+            backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
           <div className="z-10 relative mt-4">
             <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-3 block">
               {settings.HERO_1_SUBTITLE || 'Supper Discount'}
@@ -55,7 +63,15 @@ export default async function Hero() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full lg:h-[50%]">
             
             {/* Middle Top Banner (Watches) */}
-            <div className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group">
+            <div 
+              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group"
+              style={{
+                backgroundColor: settings.HERO_2_BG_COLOR || undefined,
+                backgroundImage: settings.HERO_2_BG_IMAGE ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
               <div className="z-10 w-2/3">
                 <span className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-wide">
                   {settings.HERO_2_SUBTITLE || 'Use Code: SALE35%'}
@@ -85,7 +101,15 @@ export default async function Hero() {
             </div>
 
             {/* Right Top Banner (Speaker) */}
-            <div className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group">
+            <div 
+              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group"
+              style={{
+                backgroundColor: settings.HERO_3_BG_COLOR || undefined,
+                backgroundImage: settings.HERO_3_BG_IMAGE ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
               <div className="z-10 w-2/3">
                 <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-2 block">
                   {settings.HERO_3_SUBTITLE || 'New Product'}
@@ -117,7 +141,15 @@ export default async function Hero() {
           </div>
 
           {/* Bottom Row Banner (Headphones) */}
-          <div className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center h-full lg:h-[50%] border border-gray-100 group">
+          <div 
+            className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center h-full lg:h-[50%] border border-gray-100 group"
+            style={{
+              backgroundColor: settings.HERO_4_BG_COLOR || undefined,
+              backgroundImage: settings.HERO_4_BG_IMAGE ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
             <div className="z-10 w-1/2 lg:pl-4">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line" style={settings.HERO_4_TEXT_COLOR ? { color: settings.HERO_4_TEXT_COLOR } : undefined}>
                 {settings.HERO_4_TITLE || 'Headphones Listen With\nHeart'}

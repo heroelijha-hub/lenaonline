@@ -141,6 +141,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderColorInput('Couleur du texte', 'HERO_1_TEXT_COLOR')}
             {renderColorInput('Couleur fond bouton', 'HERO_1_BTN_BG_COLOR')}
             {renderColorInput('Couleur texte bouton', 'HERO_1_BTN_TEXT_COLOR')}
+            {renderColorInput('Couleur de fond du bloc', 'HERO_1_BG_COLOR')}
+            {renderImageUpload('Image de fond du bloc', 'HERO_1_BG_IMAGE', 'Optionnel, couvre tout le bloc')}
           </div>
 
           <div className="space-y-6">
@@ -154,6 +156,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderColorInput('Couleur du texte', 'HERO_2_TEXT_COLOR')}
               {renderColorInput('Couleur fond bouton', 'HERO_2_BTN_BG_COLOR')}
               {renderColorInput('Couleur texte bouton', 'HERO_2_BTN_TEXT_COLOR')}
+              {renderColorInput('Couleur de fond du bloc', 'HERO_2_BG_COLOR')}
+              {renderImageUpload('Image de fond du bloc', 'HERO_2_BG_IMAGE', 'Optionnel')}
             </div>
 
             {/* Bloc Haut Droite */}
@@ -166,6 +170,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderColorInput('Couleur du texte', 'HERO_3_TEXT_COLOR')}
               {renderColorInput('Couleur fond bouton', 'HERO_3_BTN_BG_COLOR')}
               {renderColorInput('Couleur texte bouton', 'HERO_3_BTN_TEXT_COLOR')}
+              {renderColorInput('Couleur de fond du bloc', 'HERO_3_BG_COLOR')}
+              {renderImageUpload('Image de fond du bloc', 'HERO_3_BG_IMAGE', 'Optionnel')}
             </div>
             
             {/* Bloc Bas */}
@@ -178,6 +184,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
               {renderColorInput('Couleur du texte', 'HERO_4_TEXT_COLOR')}
               {renderColorInput('Couleur fond bouton', 'HERO_4_BTN_BG_COLOR')}
               {renderColorInput('Couleur texte bouton', 'HERO_4_BTN_TEXT_COLOR')}
+              {renderColorInput('Couleur de fond du bloc', 'HERO_4_BG_COLOR')}
+              {renderImageUpload('Image de fond du bloc', 'HERO_4_BG_IMAGE', 'Optionnel')}
             </div>
           </div>
         </div>
@@ -196,6 +204,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderColorInput('Couleur du texte', 'PROMO_1_TEXT_COLOR')}
             {renderColorInput('Couleur fond bouton', 'PROMO_1_BTN_BG_COLOR')}
             {renderColorInput('Couleur texte bouton', 'PROMO_1_BTN_TEXT_COLOR')}
+            {renderColorInput('Couleur de fond du bloc', 'PROMO_1_BG_COLOR')}
+            {renderImageUpload('Image de fond du bloc', 'PROMO_1_BG_IMAGE', 'Optionnel')}
           </div>
           <div className="bg-gray-50 p-4 rounded border">
             <h3 className="font-semibold mb-3 text-orange-600">Bannière Droite (Women Store)</h3>
@@ -206,6 +216,8 @@ export default function LandingForm({ initialSettings }: { initialSettings: Reco
             {renderColorInput('Couleur du texte', 'PROMO_2_TEXT_COLOR')}
             {renderColorInput('Couleur fond bouton', 'PROMO_2_BTN_BG_COLOR')}
             {renderColorInput('Couleur texte bouton', 'PROMO_2_BTN_TEXT_COLOR')}
+            {renderColorInput('Couleur de fond du bloc', 'PROMO_2_BG_COLOR')}
+            {renderImageUpload('Image de fond du bloc', 'PROMO_2_BG_IMAGE', 'Optionnel')}
           </div>
         </div>
       </div>

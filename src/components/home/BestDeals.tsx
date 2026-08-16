@@ -119,7 +119,15 @@ export default async function BestDeals() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Left Banner */}
-        <div className="bg-[#E5F1FC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center">
+        <div 
+          className="bg-[#E5F1FC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center"
+          style={{
+            backgroundColor: settings.PROMO_1_BG_COLOR || undefined,
+            backgroundImage: settings.PROMO_1_BG_IMAGE ? `url(${settings.PROMO_1_BG_IMAGE})` : undefined,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
           <div className="z-10 w-1/2">
             <span className="text-orange-600 font-bold text-sm block mb-2">
               {settings.PROMO_1_SUBTITLE || 'Price Start $69'}
@@ -154,7 +162,15 @@ export default async function BestDeals() {
         </div>
 
         {/* Right Banner */}
-        <div className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center">
+        <div 
+          className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center"
+          style={{
+            backgroundColor: settings.PROMO_2_BG_COLOR || undefined,
+            backgroundImage: settings.PROMO_2_BG_IMAGE ? `url(${settings.PROMO_2_BG_IMAGE})` : undefined,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
           <div className="z-10 w-1/2">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line" style={settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : undefined}>
               {settings.PROMO_2_TITLE || 'Get 20% Off'}
