@@ -27,6 +27,7 @@ type StoreLayoutProps = {
     footerSocialInstagram: string;
     footerSocialLinkedin: string;
     footerColumns: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
+    categories?: Array<{ id: string, name: string, slug: string }>;
   };
 };
 
@@ -44,6 +45,7 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         announcement={settings.announcement} 
         logoImage={settings.logoImage} 
         menuLinks={settings.menuLinks}
+        categories={settings.categories}
       />
       <main className="flex-grow">
         {children}

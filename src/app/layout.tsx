@@ -81,6 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerSocialInstagram: settingsMap.FOOTER_SOCIAL_INSTAGRAM || '#',
     footerSocialLinkedin: settingsMap.FOOTER_SOCIAL_LINKEDIN || '#',
     footerColumns: footerColumns,
+    categories: await prisma.category.findMany({ select: { id: true, name: true, slug: true } }),
   };
 
   return (

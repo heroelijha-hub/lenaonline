@@ -40,3 +40,31 @@ export async function getFilteredProducts(filterType: string, categoryId?: strin
     orderBy
   });
 }
+
+export async function searchProducts(query: string, categoryId?: string, limit: number = 5) {
+  if (!query || query.trim().length === 0) return [];
+
+  let where: any = {
+    OR: [
+      { name: { contains: query, mode: 'insensitive' } },
+      { description: { contains: query, mode: 'insensitive' } },
+    ]
+  };
+
+  if (categoryId && categoryId !== 'all') {
+    where.categoryId = categoryId;
+  }
+
+  return await prisma.product.findMany({
+    where,
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      compareAtPrice: true,
+      images: true,
+      slug: true,
+    },
+    take: limit,
+  });
+}
