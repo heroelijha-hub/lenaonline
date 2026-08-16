@@ -12,7 +12,10 @@ export default async function CategoriesPage() {
 
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h2 className="text-lg font-semibold mb-4 text-gray-800">Ajouter une catégorie</h2>
-        <form action={createCategory} className="flex gap-4">
+        <form action={async (formData) => {
+          "use server";
+          await createCategory(formData);
+        }} className="flex gap-4">
           <input 
             type="text" 
             name="name" 
