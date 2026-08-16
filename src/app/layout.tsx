@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <CurrencyProvider options={currencyOptions}>
           {children}
           <ChatWidget 
-            enabled={settingsMap.CHAT_ENABLED === 'true'} 
+            enabled={settingsMap.CHAT_ENABLED !== 'false'} 
             storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
             storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
           />
