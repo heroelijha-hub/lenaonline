@@ -22,12 +22,13 @@ export default function OrderTable({ orders }: { orders: any[] }) {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {orders.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">Aucune commande.</td>
+              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">Aucune commande.</td>
             </tr>
           ) : (
             orders.map((order) => (
@@ -49,6 +50,9 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                     <option value="DELIVERED">Livrée</option>
                     <option value="CANCELLED">Annulée</option>
                   </select>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Détails & Suivi</a>
                 </td>
               </tr>
             ))
