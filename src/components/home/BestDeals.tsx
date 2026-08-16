@@ -1,5 +1,6 @@
 import { getBestDeals } from '@/actions/public';
 import Link from 'next/link';
+import prisma from '@/lib/prisma';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -23,6 +24,8 @@ const staticProducts = [
 
 export default async function BestDeals() {
   const dbProducts = await getBestDeals();
+  const settingsDb = await prisma.setting.findMany();
+  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
@@ -118,38 +121,54 @@ export default async function BestDeals() {
         {/* Left Banner */}
         <div className="bg-[#E5F1FC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center">
           <div className="z-10 w-1/2">
-            <span className="text-orange-600 font-bold text-sm block mb-2">Price Start $69</span>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">NOTHING<br/>WATCH PRO 2</h2>
-            <button className="bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm">
+            <span className="text-orange-600 font-bold text-sm block mb-2">
+              {settings.PROMO_1_SUBTITLE || 'Price Start $69'}
+            </span>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line">
+              {settings.PROMO_1_TITLE || 'NOTHING\nWATCH PRO 2'}
+            </h2>
+            <Link href={settings.PROMO_1_LINK || '/#'} className="inline-block bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm">
               Shop Now
-            </button>
+            </Link>
           </div>
-          {/* Watches Image Placeholder */}
-          <div className="absolute right-[-10%] top-4 w-64 h-64 flex items-center justify-center">
-             <div className="w-24 h-28 bg-zinc-800 rounded-3xl border-[6px] border-zinc-700 shadow-xl rotate-12 z-20 flex items-center justify-center -mr-4">
-                 <span className="text-white text-xs font-mono">09:28</span>
-             </div>
-             <div className="w-24 h-28 bg-zinc-800 rounded-3xl border-[6px] border-gray-300 shadow-xl -rotate-12 z-10 flex items-center justify-center">
-                 <span className="text-pink-400 text-xs font-mono">09:28</span>
-             </div>
-          </div>
+          {/* Image */}
+          {settings.PROMO_1_IMAGE ? (
+             <img src={settings.PROMO_1_IMAGE} alt="Promo 1" className="absolute right-0 top-0 h-full w-1/2 object-contain" />
+          ) : (
+            <div className="absolute right-[-10%] top-4 w-64 h-64 flex items-center justify-center">
+               <div className="w-24 h-28 bg-zinc-800 rounded-3xl border-[6px] border-zinc-700 shadow-xl rotate-12 z-20 flex items-center justify-center -mr-4">
+                   <span className="text-white text-xs font-mono">09:28</span>
+               </div>
+               <div className="w-24 h-28 bg-zinc-800 rounded-3xl border-[6px] border-gray-300 shadow-xl -rotate-12 z-10 flex items-center justify-center">
+                   <span className="text-pink-400 text-xs font-mono">09:28</span>
+               </div>
+            </div>
+          )}
         </div>
 
         {/* Right Banner */}
         <div className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-8 h-[240px] border border-gray-100 items-center">
           <div className="z-10 w-1/2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2 leading-tight">Get 20% Off</h2>
-            <p className="font-bold text-gray-800 mb-6 text-lg">Women Store</p>
-            <button className="bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line">
+              {settings.PROMO_2_TITLE || 'Get 20% Off'}
+            </h2>
+            <p className="font-bold text-gray-800 mb-6 text-lg">
+              {settings.PROMO_2_SUBTITLE || 'Women Store'}
+            </p>
+            <Link href={settings.PROMO_2_LINK || '/#'} className="inline-block bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm">
               Shop Now
-            </button>
+            </Link>
           </div>
-          {/* Models Image Placeholder */}
-          <div className="absolute right-4 bottom-0 w-1/2 h-[90%] flex items-end justify-center space-x-1">
-              <div className="w-16 h-40 bg-teal-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10 -ml-4"></div>
-              <div className="w-16 h-44 bg-amber-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-20"></div>
-              <div className="w-16 h-36 bg-orange-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10"></div>
-          </div>
+          {/* Image */}
+          {settings.PROMO_2_IMAGE ? (
+             <img src={settings.PROMO_2_IMAGE} alt="Promo 2" className="absolute right-0 bottom-0 h-full w-1/2 object-contain" />
+          ) : (
+            <div className="absolute right-4 bottom-0 w-1/2 h-[90%] flex items-end justify-center space-x-1">
+                <div className="w-16 h-40 bg-teal-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10 -ml-4"></div>
+                <div className="w-16 h-44 bg-amber-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-20"></div>
+                <div className="w-16 h-36 bg-orange-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10"></div>
+            </div>
+          )}
         </div>
 
       </div>
