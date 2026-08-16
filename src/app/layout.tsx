@@ -82,6 +82,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerSocialLinkedin: settingsMap.FOOTER_SOCIAL_LINKEDIN || '#',
     footerColumns: footerColumns,
     categories: await prisma.category.findMany({ select: { id: true, name: true, slug: true } }),
+    maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
+    maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Site en maintenance',
+    maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !',
+    maintenanceImage: settingsMap.MAINTENANCE_IMAGE || '',
   };
 
   return (

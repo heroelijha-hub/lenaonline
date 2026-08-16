@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Footer from './Footer';
+import MaintenanceView from '@/components/maintenance/MaintenanceView';
 
 type StoreLayoutProps = {
   children: React.ReactNode;
@@ -28,6 +29,10 @@ type StoreLayoutProps = {
     footerSocialLinkedin: string;
     footerColumns: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
     categories?: Array<{ id: string, name: string, slug: string | null }>;
+    maintenanceMode?: boolean;
+    maintenanceTitle?: string;
+    maintenanceMessage?: string;
+    maintenanceImage?: string;
   };
 };
 
@@ -35,8 +40,22 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
 
-  if (isAdmin) {
+  const isPreview = pathname?.startsWith('/preview');
+  const isLogin = pathname?.startsWith('/login');
+
+  if (isAdmin || isPreview || isLogin) {
     return <>{children}</>;
+  }
+
+  if (settings.maintenanceMode) {
+    return (
+      <MaintenanceView 
+        title={settings.maintenanceTitle || 'Site en maintenance'} 
+        message={settings.maintenanceMessage || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !'} 
+        image={settings.maintenanceImage} 
+        logoImage={settings.logoImage} 
+      />
+    );
   }
 
   return (

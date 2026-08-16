@@ -97,6 +97,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [notFoundBgImage, setNotFoundBgImage] = useState(initialSettings.NOT_FOUND_BG_IMAGE || '');
   const [notFoundFile, setNotFoundFile] = useState<File | null>(null);
 
+  // Maintenance Page Settings
+  const [maintenanceMode, setMaintenanceMode] = useState(initialSettings.MAINTENANCE_MODE === 'true');
+  const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site en maintenance');
+  const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !');
+  const [maintenanceImage, setMaintenanceImage] = useState(initialSettings.MAINTENANCE_IMAGE || '');
+  const [maintenanceFile, setMaintenanceFile] = useState<File | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -165,22 +172,35 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('FOOTER_SOCIAL_LINKEDIN', footerSocialLinkedin);
     await updateSetting('FOOTER_COLUMNS', JSON.stringify(footerColumns));
     
-    let finalNotFoundImage = notFoundBgImage;
-    if (notFoundFile) {
-      const formData = new FormData();
-      formData.append('file', notFoundFile);
-      const url = await uploadImage(formData);
-      if (url) finalNotFoundImage = url;
-    }
     await updateSetting('NOT_FOUND_TITLE', notFoundTitle);
     await updateSetting('NOT_FOUND_TEXT', notFoundText);
     await updateSetting('NOT_FOUND_CTA', notFoundCta);
     await updateSetting('NOT_FOUND_BG_COLOR', notFoundBgColor);
-    await updateSetting('NOT_FOUND_BG_IMAGE', finalNotFoundImage);
+    
+    let finalNotFoundBgImage = notFoundBgImage;
+    if (notFoundFile) {
+      const formData = new FormData();
+      formData.append('file', notFoundFile);
+      const url = await uploadImage(formData);
+      if (url) finalNotFoundBgImage = url;
+    }
+    await updateSetting('NOT_FOUND_BG_IMAGE', finalNotFoundBgImage);
 
-    setIsLoading(false);
+    let finalMaintenanceImage = maintenanceImage;
+    if (maintenanceFile) {
+      const formData = new FormData();
+      formData.append('file', maintenanceFile);
+      const url = await uploadImage(formData);
+      if (url) finalMaintenanceImage = url;
+    }
+    await updateSetting('MAINTENANCE_MODE', maintenanceMode.toString());
+    await updateSetting('MAINTENANCE_TITLE', maintenanceTitle);
+    await updateSetting('MAINTENANCE_MESSAGE', maintenanceMessage);
+    await updateSetting('MAINTENANCE_IMAGE', finalMaintenanceImage);
+
     setMessage('Paramètres mis à jour avec succès.');
-    setTimeout(() => setMessage(''), 3000);
+    setIsLoading(false);
+    router.refresh();
   };
 
   return (
@@ -668,6 +688,60 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
             + Ajouter une colonne
           </button>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Mode Maintenance</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-orange-50 p-6 rounded-lg border border-orange-100 mb-6">
+          <div className="md:col-span-2 flex items-center mb-2">
+            <input
+              type="checkbox"
+              id="maintenanceMode"
+              checked={maintenanceMode}
+              onChange={(e) => setMaintenanceMode(e.target.checked)}
+              className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
+            />
+            <label htmlFor="maintenanceMode" className="ml-3 text-base font-bold text-orange-900 cursor-pointer">
+              Activer le mode maintenance (Bloque l'accès public au site)
+            </label>
+          </div>
+          
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titre de la page</label>
+            <input type="text" value={maintenanceTitle} onChange={e => setMaintenanceTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message d'explication</label>
+            <textarea value={maintenanceMessage} onChange={e => setMaintenanceMessage(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+          </div>
+          
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Image d'illustration (Upload)</label>
+            {maintenanceImage && !maintenanceFile && (
+              <div className="relative inline-block mb-2">
+                <img src={maintenanceImage} alt="Maintenance" className="h-20 object-contain border bg-white p-1" />
+                <button 
+                  type="button" 
+                  onClick={() => setMaintenanceImage('')}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setMaintenanceFile(e.target.files[0]);
+                }
+              }}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
+            />
+          </div>
         </div>
       </div>
 
