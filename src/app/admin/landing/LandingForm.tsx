@@ -248,6 +248,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         title: "Tondeuses Autoportées", 
         filterType: 'LATEST', 
         categoryId: '',
+        variant: '1',
         cardBorderColor: '#ea580c',
         btnBgColor: '#ea580c',
         btnTextColor: '#ffffff'
@@ -290,6 +291,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
                 <option value="LATEST">Les plus récents</option>
                 <option value="ON_SALE">En promotion (Prix réduit)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Variante de Design</label>
+              <select value={section.settings.variant || '1'} onChange={e => updateSectionSettings(section.id, 'variant', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
+                <option value="1">Variante 1 (Bouton en bas de carte)</option>
+                <option value="2">Variante 2 (Bouton sur l'image au survol)</option>
               </select>
             </div>
 
