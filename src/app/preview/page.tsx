@@ -4,6 +4,7 @@ import BestSeller from '@/components/home/BestSeller';
 import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
+import ProductGrid from '@/components/home/ProductGrid';
 import { SectionConfig } from '@/app/admin/landing/LandingForm';
 import { cookies } from 'next/headers';
 import { getSettings } from '@/actions/settings';
@@ -44,6 +45,8 @@ export default async function PreviewPage() {
         return <Newsletter key={section.id} config={section.settings} />;
       case 'PromoBanners':
         return <PromoBanners key={section.id} config={section.settings} />;
+      case 'ProductGrid':
+        return <ProductGrid key={section.id} config={section.settings} />;
       default:
         return null;
     }

@@ -4,6 +4,7 @@ import BestSeller from '@/components/home/BestSeller';
 import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
+import ProductGrid from '@/components/home/ProductGrid';
 import { getSettings } from '@/actions/settings';
 import { SectionConfig, SectionType } from '@/app/admin/landing/LandingForm';
 
@@ -47,6 +48,8 @@ export default async function Home() {
         return <Newsletter key={section.id} config={section.settings} />;
       case 'PromoBanners':
         return <PromoBanners key={section.id} config={section.settings} />;
+      case 'ProductGrid':
+        return <ProductGrid key={section.id} config={section.settings} />;
       default:
         return null;
     }

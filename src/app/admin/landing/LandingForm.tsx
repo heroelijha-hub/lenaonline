@@ -5,7 +5,7 @@ import { updateSetting } from '@/actions/settings';
 import { uploadImage } from '@/actions/admin';
 import Cookies from 'js-cookie';
 
-export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners';
+export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners' | 'ProductGrid';
 
 export interface SectionConfig {
   id: string;
@@ -243,6 +243,15 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       newSec.settings = { title: "New Deals", countdown: '2026-12-31T23:59:59', filterType: 'ON_SALE', categoryId: '' };
     } else if (type === 'BestSeller') {
       newSec.settings = { title: "New Selection", filterType: 'POPULAR', categoryId: '' };
+    } else if (type === 'ProductGrid') {
+      newSec.settings = { 
+        title: "Tondeuses Autoportées", 
+        filterType: 'LATEST', 
+        categoryId: '',
+        cardBorderColor: '#ea580c',
+        btnBgColor: '#ea580c',
+        btnTextColor: '#ffffff'
+      };
     }
     setSections([...sections, newSec]);
   };
@@ -252,6 +261,53 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       return (
         <div className="p-4 bg-gray-50 border rounded text-sm text-gray-500">
           Les paramètres de cette section sont gérés ailleurs. Vous pouvez cependant la déplacer ou la désactiver.
+        </div>
+      );
+    }
+
+    if (section.type === 'ProductGrid') {
+      return (
+        <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <p className="text-sm text-gray-500">Affiche une grille de produits personnalisée (bordures et boutons modifiables).</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Titre de la section</label>
+              <input type="text" value={section.settings.title || ''} onChange={e => updateSectionSettings(section.id, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500" placeholder="ex: Tondeuses Autoportées" />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Catégorie des produits</label>
+              <select value={section.settings.categoryId || ''} onChange={e => updateSectionSettings(section.id, 'categoryId', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
+                <option value="">Toutes les catégories</option>
+                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Filtre (Tri)</label>
+              <select value={section.settings.filterType || 'LATEST'} onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
+                <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
+                <option value="LATEST">Les plus récents</option>
+                <option value="ON_SALE">En promotion (Prix réduit)</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 col-span-1 md:col-span-2 border-t pt-4 mt-2">
+              <div>
+                <label className="block text-xs font-medium mb-1 text-gray-700">Couleur Bordure (Carte)</label>
+                <input type="color" value={section.settings.cardBorderColor || '#ea580c'} onChange={e => updateSectionSettings(section.id, 'cardBorderColor', e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1 text-gray-700">Fond Bouton (Panier)</label>
+                <input type="color" value={section.settings.btnBgColor || '#ea580c'} onChange={e => updateSectionSettings(section.id, 'btnBgColor', e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1 text-gray-700">Texte Bouton (Panier)</label>
+                <input type="color" value={section.settings.btnTextColor || '#ffffff'} onChange={e => updateSectionSettings(section.id, 'btnTextColor', e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
@@ -526,6 +582,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-wrap gap-2">
             <button onClick={() => addSection('BestDeals')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Promo</button>
             <button onClick={() => addSection('BestSeller')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Simple</button>
+            <button onClick={() => addSection('ProductGrid')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Produits (Grille Hover)</button>
           </div>
         </div>
       </div>
