@@ -14,13 +14,23 @@ type HeaderProps = {
   logoImage?: string;
   menuLinks?: Array<{ label: string, url: string }>;
   categories?: Array<{ id: string, name: string, slug: string | null }>;
+  searchBorderColor?: string;
+  searchPlaceholder?: string;
+  searchBtnText?: string;
+  searchBtnBgColor?: string;
+  searchBtnTextColor?: string;
 };
 
 export default function Header({ 
   announcement = 'Welcome to Shopelios', 
   logoImage = '',
   menuLinks = [],
-  categories = []
+  categories = [],
+  searchBorderColor = '#d1d5db',
+  searchPlaceholder = 'Rechercher un produit...',
+  searchBtnText = 'Search',
+  searchBtnBgColor = '#f97316',
+  searchBtnTextColor = '#111827'
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -39,12 +49,19 @@ export default function Header({
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Close search dropdown on outside click
+  // Bottom categories dropdown
+  const [isBottomCategoryOpen, setIsBottomCategoryOpen] = useState(false);
+  const bottomCategoryRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
         setShowSearchResults(false);
         setIsCategoryDropdownOpen(false);
+      }
+      if (bottomCategoryRef.current && !bottomCategoryRef.current.contains(event.target as Node)) {
+        setIsBottomCategoryOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -130,10 +147,10 @@ export default function Header({
 
         {/* Search Bar & Quick Links */}
         <div className="flex-1 w-full max-w-3xl flex flex-col relative" ref={searchContainerRef}>
-          <form onSubmit={handleSearchSubmit} className="flex items-center w-full border border-gray-300 rounded-md overflow-hidden bg-white h-11 relative z-20">
+          <form onSubmit={handleSearchSubmit} className="flex items-center w-full rounded-md overflow-hidden bg-white h-11 relative z-20" style={{ border: `1px solid ${searchBorderColor}` }}>
             <input 
               type="text" 
-              placeholder="Rechercher un produit..." 
+              placeholder={searchPlaceholder} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => { if (searchQuery.length > 1) setShowSearchResults(true); }}
@@ -142,7 +159,8 @@ export default function Header({
             
             {/* Category Dropdown Toggle */}
             <div 
-              className="relative flex items-center px-3 border-l border-gray-300 h-full bg-white text-gray-600 text-sm cursor-pointer hover:bg-gray-50"
+              className="relative flex items-center px-3 h-full bg-white text-gray-600 text-sm cursor-pointer hover:bg-gray-50"
+              style={{ borderLeft: `1px solid ${searchBorderColor}` }}
               onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
             >
               <span className="truncate max-w-[100px] md:max-w-[150px]">
@@ -174,11 +192,15 @@ export default function Header({
               )}
             </div>
             
-            <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 h-full transition-colors flex items-center justify-center">
+            <button 
+              type="submit" 
+              className="font-semibold px-6 h-full transition-colors flex items-center justify-center hover:opacity-90"
+              style={{ backgroundColor: searchBtnBgColor, color: searchBtnTextColor }}
+            >
               {isSearching ? (
-                <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: searchBtnTextColor, borderTopColor: 'transparent' }}></div>
               ) : (
-                'Search'
+                searchBtnText
               )}
             </button>
           </form>
@@ -276,11 +298,38 @@ export default function Header({
           
           <div className="flex items-center h-full space-x-8">
             {/* All Categories Button */}
-            <button className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 h-full flex items-center space-x-2 rounded-t-md mt-0.5">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
-              <span>All Categories</span>
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </button>
+            <div className="relative h-full" ref={bottomCategoryRef}>
+              <button 
+                onClick={() => setIsBottomCategoryOpen(!isBottomCategoryOpen)}
+                className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 h-full flex items-center space-x-2 rounded-t-md mt-0.5"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
+                <span>Toutes les catégories</span>
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              
+              {isBottomCategoryOpen && (
+                <div className="absolute top-full left-0 w-64 bg-white border border-gray-200 shadow-xl rounded-b-md rounded-tr-md z-40 py-2">
+                  <Link 
+                    href="/search" 
+                    className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 font-medium"
+                    onClick={() => setIsBottomCategoryOpen(false)}
+                  >
+                    Toutes les catégories
+                  </Link>
+                  {categories.map((cat) => (
+                    <Link 
+                      key={cat.id} 
+                      href={`/search?category=${cat.id}`}
+                      className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
+                      onClick={() => setIsBottomCategoryOpen(false)}
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-6 font-semibold text-gray-800">

@@ -33,6 +33,11 @@ type StoreLayoutProps = {
     maintenanceTitle?: string;
     maintenanceMessage?: string;
     maintenanceImage?: string;
+    searchBorderColor?: string;
+    searchPlaceholder?: string;
+    searchBtnText?: string;
+    searchBtnBgColor?: string;
+    searchBtnTextColor?: string;
   };
 };
 
@@ -65,6 +70,11 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         logoImage={settings.logoImage} 
         menuLinks={settings.menuLinks}
         categories={settings.categories}
+        searchBorderColor={settings.searchBorderColor}
+        searchPlaceholder={settings.searchPlaceholder}
+        searchBtnText={settings.searchBtnText}
+        searchBtnBgColor={settings.searchBtnBgColor}
+        searchBtnTextColor={settings.searchBtnTextColor}
       />
       <main className="flex-grow">
         {children}

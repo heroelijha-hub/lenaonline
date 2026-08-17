@@ -55,6 +55,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     }
   });
 
+  // Search Bar (Ajax) settings
+  const [searchBorderColor, setSearchBorderColor] = useState(initialSettings.SEARCH_BORDER_COLOR || '#d1d5db');
+  const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Rechercher un produit...');
+  const [searchBtnText, setSearchBtnText] = useState(initialSettings.SEARCH_BTN_TEXT || 'Search');
+  const [searchBtnBgColor, setSearchBtnBgColor] = useState(initialSettings.SEARCH_BTN_BG_COLOR || '#f97316');
+  const [searchBtnTextColor, setSearchBtnTextColor] = useState(initialSettings.SEARCH_BTN_TEXT_COLOR || '#111827');
+
   // Tax settings
   const [taxIncludedInPrice, setTaxIncludedInPrice] = useState(initialSettings.TAX_INCLUDED_IN_PRICE === 'true');
   const [defaultVatRate, setDefaultVatRate] = useState(initialSettings.DEFAULT_VAT_RATE || '20');
@@ -150,6 +157,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('HEADER_SUPPORT_PHONE', headerSupportPhone);
     await updateSetting('HEADER_SUPPORT_EMAIL', headerSupportEmail);
     await updateSetting('HEADER_MENU_LINKS', JSON.stringify(menuLinks));
+
+    await updateSetting('SEARCH_BORDER_COLOR', searchBorderColor);
+    await updateSetting('SEARCH_PLACEHOLDER', searchPlaceholder);
+    await updateSetting('SEARCH_BTN_TEXT', searchBtnText);
+    await updateSetting('SEARCH_BTN_BG_COLOR', searchBtnBgColor);
+    await updateSetting('SEARCH_BTN_TEXT_COLOR', searchBtnTextColor);
     
     await updateSetting('TAX_INCLUDED_IN_PRICE', taxIncludedInPrice.toString());
     await updateSetting('DEFAULT_VAT_RATE', defaultVatRate);
@@ -430,6 +443,43 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setHeaderSupportEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             />
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Barre de Recherche (Ajax)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de la bordure</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte de l'input (Placeholder)</label>
+            <input type="text" value={searchPlaceholder} onChange={e => setSearchPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du bouton</label>
+            <input type="text" value={searchBtnText} onChange={e => setSearchBtnText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond du bouton</label>
+              <div className="flex items-center gap-2">
+                <input type="color" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
+                <input type="text" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du texte (bouton)</label>
+              <div className="flex items-center gap-2">
+                <input type="color" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
+                <input type="text" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
