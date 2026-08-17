@@ -7,6 +7,7 @@ type ProductGridProps = {
     title: string;
     filterType: string;
     categoryId?: string;
+    variant?: string;
     cardBorderColor?: string;
     btnBgColor?: string;
     btnTextColor?: string;
