@@ -74,7 +74,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const storeSettings = {
     announcement: settingsMap.HEADER_ANNOUNCEMENT || 'Welcome to Shopelios',
-    logoImage: settingsMap.HEADER_LOGO_IMAGE || '',
+    logoImage: settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
     supportPhone: settingsMap.HEADER_SUPPORT_PHONE || '+08 9229 8228',
     supportEmail: settingsMap.HEADER_SUPPORT_EMAIL || 'support@shopelios.com',
     menuLinks: menuLinks,
