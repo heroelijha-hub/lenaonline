@@ -1,6 +1,30 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  // 1. Check if an admin exists in the database
+  const adminCount = await prisma.user.count({ where: { role: 'ADMIN' } });
+  if (adminCount === 0) {
+    redirect('/admin/setup');
+  }
+
+  // 2. Check current session
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (!session) {
+    redirect('/admin/login');
+  }
+
+  // 3. Verify user role
+  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (!user || user.role !== 'ADMIN') {
+    // Optionally sign out the non-admin user
+    redirect('/admin/login');
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar Admin */}
@@ -48,7 +72,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
           <h1 className="text-xl font-semibold text-gray-800">Tableau de bord</h1>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-500">Admin</span>
+            <span className="text-sm text-gray-500 font-medium">{user.email}</span>
+            <form action={async () => {
+              'use server';
+              const sb = await createClient();
+              await sb.auth.signOut({ scope: 'global' });
+              redirect('/');
+            }}>
+              <button type="submit" className="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition-colors font-medium">
+                Se déconnecter
+              </button>
+            </form>
           </div>
         </header>
         <div className="flex-1 p-8 overflow-auto">

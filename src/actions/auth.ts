@@ -90,3 +90,78 @@ export async function logoutUser() {
   revalidatePath('/', 'layout')
   return { success: true }
 }
+
+export async function setupAdmin(formData: FormData) {
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  if (!email || !password) {
+    return { error: 'Tous les champs sont requis.' };
+  }
+
+  // Vérifier qu'il n'y a pas déjà d'admin
+  const adminCount = await prisma.user.count({ where: { role: 'ADMIN' } });
+  if (adminCount > 0) {
+    return { error: 'Un administrateur existe déjà. Configuration verrouillée.' };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username: 'Admin' }
+    }
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (data.user) {
+    // Upsert the user as ADMIN in Prisma
+    await prisma.user.upsert({
+      where: { email: data.user.email || email },
+      update: { role: 'ADMIN', id: data.user.id },
+      create: {
+        id: data.user.id,
+        email: data.user.email || email,
+        role: 'ADMIN',
+      }
+    });
+  }
+
+  revalidatePath('/', 'layout');
+  return { success: true };
+}
+
+export async function loginAdmin(formData: FormData) {
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  if (!email || !password) {
+    return { error: 'L\'email et le mot de passe sont requis.' };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return { error: 'Identifiants incorrects.' };
+  }
+
+  if (data.user) {
+    // Verify role in Prisma
+    const user = await prisma.user.findUnique({ where: { id: data.user.id } });
+    if (!user || user.role !== 'ADMIN') {
+      await supabase.auth.signOut({ scope: 'global' });
+      return { error: 'Accès refusé. Vous n\'êtes pas administrateur.' };
+    }
+  }
+
+  revalidatePath('/admin', 'layout');
+  return { success: true };
+}

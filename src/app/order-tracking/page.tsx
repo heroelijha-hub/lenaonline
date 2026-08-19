@@ -62,7 +62,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
           
           {error && <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm">{error}</div>}
           
-          <form method="GET" action="/tracking" className="flex flex-col gap-4">
+          <form method="GET" action="/order-tracking" className="flex flex-col gap-4">
             <div>
               <label htmlFor="number" className="sr-only">Numéro de suivi</label>
               <input 
@@ -140,7 +140,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
           </div>
 
           <div className="text-center">
-            <a href="/tracking" className="text-orange-500 font-medium hover:underline">&larr; Suivre une autre livraison</a>
+            <a href="/order-tracking" className="text-orange-500 font-medium hover:underline">&larr; Suivre une autre livraison</a>
           </div>
         </div>
       )}
