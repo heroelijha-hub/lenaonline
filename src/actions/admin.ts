@@ -322,10 +322,23 @@ export async function getOrders() {
 
 export async function updateOrderStatus(orderId: string, status: any) {
   try {
-    await prisma.order.update({
+    const updatedOrder = await prisma.order.update({
       where: { id: orderId },
-      data: { status }
+      data: { status },
+      include: { user: true }
     });
+
+    try {
+      if (status === 'SHIPPED' || status === 'CANCELLED' || status === 'DELIVERED') {
+        const { sendOrderStatusUpdate } = await import('@/lib/mailer');
+        if (updatedOrder.user?.email) {
+          sendOrderStatusUpdate(updatedOrder, updatedOrder.user.email, status).catch(e => console.error('Status update email failed', e));
+        }
+      }
+    } catch (e) {
+      console.error('Failed to setup status update email', e);
+    }
+
     revalidatePath('/admin/orders');
     return { success: true };
   } catch (error) {

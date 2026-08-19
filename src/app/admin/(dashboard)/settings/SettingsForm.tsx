@@ -30,6 +30,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com');
   const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !');
 
+  // SMTP Settings
+  const [smtpHost, setSmtpHost] = useState(initialSettings.SMTP_HOST || '');
+  const [smtpPort, setSmtpPort] = useState(initialSettings.SMTP_PORT || '');
+  const [smtpUser, setSmtpUser] = useState(initialSettings.SMTP_USER || '');
+  const [smtpPass, setSmtpPass] = useState(initialSettings.SMTP_PASS || '');
+  const [smtpFrom, setSmtpFrom] = useState(initialSettings.SMTP_FROM || '');
+
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
@@ -189,6 +196,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     await updateSetting('CONTACT_RECEIVER_EMAIL', contactReceiverEmail);
     await updateSetting('NEWSLETTER_SUCCESS_MESSAGE', newsletterSuccessMessage);
+
+    await updateSetting('SMTP_HOST', smtpHost);
+    await updateSetting('SMTP_PORT', smtpPort);
+    await updateSetting('SMTP_USER', smtpUser);
+    await updateSetting('SMTP_PASS', smtpPass);
+    await updateSetting('SMTP_FROM', smtpFrom);
     
     await updateSetting('FOOTER_BG_COLOR', footerBgColor);
     await updateSetting('FOOTER_TEXT_COLOR', footerTextColor);
@@ -400,6 +413,64 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
               <p className="mt-2 text-xs text-gray-500">Message affiché à l'utilisateur après une inscription réussie.</p>
             </div>
+          </div>
+        </div>
+        <SectionSaveButton />
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Serveur E-mail (SMTP) - E-mails Transactionnels</h3>
+        <p className="text-sm text-gray-500 mb-4">Configurez ces paramètres pour que la boutique puisse envoyer automatiquement des e-mails (Confirmation de commande, Expédition, Annulation).</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Hôte SMTP (ex: smtp.gmail.com)</label>
+            <input
+              type="text"
+              value={smtpHost}
+              onChange={(e) => setSmtpHost(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="smtp.gmail.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Port SMTP (ex: 587 ou 465)</label>
+            <input
+              type="text"
+              value={smtpPort}
+              onChange={(e) => setSmtpPort(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="587"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Utilisateur (Email de connexion)</label>
+            <input
+              type="text"
+              value={smtpUser}
+              onChange={(e) => setSmtpUser(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="votre-email@gmail.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe (App Password)</label>
+            <input
+              type="password"
+              value={smtpPass}
+              onChange={(e) => setSmtpPass(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="••••••••"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email d'expédition (De : ...)</label>
+            <input
+              type="text"
+              value={smtpFrom}
+              onChange={(e) => setSmtpFrom(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Boutique Shopelios <contact@shopelios.com>"
+            />
           </div>
         </div>
         <SectionSaveButton />
