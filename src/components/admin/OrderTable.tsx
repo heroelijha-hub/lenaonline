@@ -1,6 +1,6 @@
 'use client';
 
-import { updateOrderStatus } from '@/actions/admin';
+import { updateOrderStatus, deleteOrder } from '@/actions/admin';
 import { useState } from 'react';
 
 export default function OrderTable({ orders }: { orders: any[] }) {
@@ -9,6 +9,13 @@ export default function OrderTable({ orders }: { orders: any[] }) {
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     setLoading(orderId);
     await updateOrderStatus(orderId, newStatus);
+    setLoading(null);
+  };
+
+  const handleDelete = async (orderId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) return;
+    setLoading(orderId);
+    await deleteOrder(orderId);
     setLoading(null);
   };
 
@@ -45,14 +52,18 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                     className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50"
                   >
                     <option value="PENDING">En attente</option>
-                    <option value="PAID">Payée</option>
-                    <option value="SHIPPED">Expédiée</option>
-                    <option value="DELIVERED">Livrée</option>
-                    <option value="CANCELLED">Annulée</option>
+                    <option value="PAID">Paiement reçu</option>
+                    <option value="PROCESSING">En cours de préparation</option>
+                    <option value="SHIPPED">Expédié</option>
+                    <option value="IN_TRANSIT">En transit</option>
+                    <option value="DELIVERED">Livré</option>
+                    <option value="AT_PICKUP_POINT">Déposé en point relais</option>
+                    <option value="CANCELLED">Annulé</option>
                   </select>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Détails & Suivi</a>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                  <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Détails</a>
+                  <button onClick={() => handleDelete(order.id)} disabled={loading === order.id} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1.5 rounded text-xs font-semibold disabled:opacity-50">Supprimer</button>
                 </td>
               </tr>
             ))

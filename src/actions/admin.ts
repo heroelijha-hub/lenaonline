@@ -388,3 +388,13 @@ export async function deleteCoupon(id: string) {
     return { error: "Erreur lors de la suppression." };
   }
 }
+
+export async function deleteOrder(id: string) {
+  try {
+    await prisma.order.delete({ where: { id } });
+    revalidatePath('/admin/orders');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur lors de la suppression de la commande." };
+  }
+}

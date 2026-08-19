@@ -21,8 +21,11 @@ enum CouponType {
 enum OrderStatus {
   PENDING
   PAID
+  PROCESSING
   SHIPPED
+  IN_TRANSIT
   DELIVERED
+  AT_PICKUP_POINT
   CANCELLED
 }
 

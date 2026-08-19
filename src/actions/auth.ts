@@ -85,7 +85,8 @@ export async function registerUser(formData: FormData) {
 
 export async function logoutUser() {
   const supabase = await createClient()
-  await supabase.auth.signOut()
+  // Déconnecte l'utilisateur de tous les appareils et invalide les tokens côté serveur
+  await supabase.auth.signOut({ scope: 'global' })
   revalidatePath('/', 'layout')
   return { success: true }
 }
