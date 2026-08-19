@@ -94,6 +94,15 @@ export default async function ShopPage({
 
   const currentRange = `${totalResults > 0 ? startIndex + 1 : 0}-${endIndex}`;
 
+  const validCategories = allCategories
+    .filter(c => c.slug !== null)
+    .map(c => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug as string,
+      _count: c._count
+    }));
+
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* Breadcrumb */}
@@ -110,7 +119,7 @@ export default async function ShopPage({
           
           {/* Left Sidebar (Filters) */}
           <aside className="w-full lg:w-1/4 flex-shrink-0">
-            <ShopFilters categories={allCategories} />
+            <ShopFilters categories={validCategories} />
           </aside>
 
           {/* Main Content (Products) */}
