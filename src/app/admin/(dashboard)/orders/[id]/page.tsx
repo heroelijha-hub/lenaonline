@@ -46,7 +46,19 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     )}
                     <div>
                       <p className="font-medium text-sm text-gray-900">{item.product.title}</p>
-                      <p className="text-xs text-gray-500">Qté: {item.quantity}</p>
+                      {item.attributes && (
+                        <p className="text-xs text-orange-600 font-medium">
+                          {(() => {
+                            try {
+                              const attrs = typeof item.attributes === 'string' ? JSON.parse(item.attributes) : item.attributes;
+                              return Object.entries(attrs).map(([k, v]) => `${k}: ${v}`).join(', ');
+                            } catch (e) {
+                              return '';
+                            }
+                          })()}
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-500 mt-0.5">Qté: {item.quantity}</p>
                     </div>
                   </div>
                   <p className="font-medium text-sm">${(item.price * item.quantity).toFixed(2)}</p>

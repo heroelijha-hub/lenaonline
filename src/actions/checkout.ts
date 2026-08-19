@@ -57,9 +57,11 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         status: paymentMethod === 'BANK_TRANSFER' ? 'PENDING' : 'PENDING',
         orderItems: {
           create: cartItems.map(item => ({
-            productId: item.id,
+            productId: item.productId,
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
+            variationId: item.variationId || null,
+            attributes: item.attributes || null
           }))
         }
       }

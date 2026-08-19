@@ -80,15 +80,24 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         <p style="color: #666; font-size: 13px;">Commande n°${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-          ${order.orderItems?.map((item: any) => `
+          ${order.orderItems?.map((item: any) => {
+            let attrString = '';
+            if (item.attributes) {
+              try {
+                const attrs = typeof item.attributes === 'string' ? JSON.parse(item.attributes) : item.attributes;
+                attrString = Object.entries(attrs).map(([k, v]) => `${k}: ${v}`).join(', ');
+                if (attrString) attrString = ` <span style="color: #666; font-size: 12px;">(${attrString})</span>`;
+              } catch (e) {}
+            }
+            return `
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 15px 0;">
-                <strong>${item.product?.title || 'Produit'}</strong>
+                <strong>${item.product?.title || 'Produit'}</strong>${attrString}
               </td>
               <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
               <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
             </tr>
-          `).join('') || ''}
+          `}).join('') || ''}
         </table>
         
         <div style="margin-top: 20px; text-align: right; font-size: 16px;">

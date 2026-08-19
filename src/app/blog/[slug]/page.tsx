@@ -5,8 +5,38 @@ import CommentForm from '@/components/blog/CommentForm';
 import { getRecentComments, getArticleBySlug } from '@/actions/blog';
 import Link from 'next/link';
 
+import { Metadata } from 'next';
+
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+  
+  if (!article || !article.isPublished) {
+    return { title: 'Article introuvable' };
+  }
+  
+  const description = article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 160);
+  
+  return {
+    title: article.title,
+    description: description,
+    openGraph: {
+      title: article.title,
+      description: description,
+      images: article.image ? [{ url: article.image }] : [],
+      type: 'article',
+      publishedTime: article.createdAt.toISOString(),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: description,
+      images: article.image ? [article.image] : [],
+    }
+  };
+}
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
