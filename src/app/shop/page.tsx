@@ -103,6 +103,8 @@ export default async function ShopPage({
       _count: c._count
     }));
 
+  const view = (params.view as 'grid' | 'list') || 'grid';
+
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* Breadcrumb */}
@@ -128,9 +130,9 @@ export default async function ShopPage({
             <ShopSort totalResults={totalResults} currentRange={currentRange} />
 
             {paginatedProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className={view === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "flex flex-col gap-6"}>
                 {paginatedProducts.map(product => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} view={view} />
                 ))}
               </div>
             ) : (
