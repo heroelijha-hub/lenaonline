@@ -6,7 +6,7 @@ import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
 import ProductGrid from '@/components/home/ProductGrid';
 import { getSettings } from '@/actions/settings';
-import { SectionConfig, SectionType } from '@/app/admin/landing/LandingForm';
+import { SectionConfig, SectionType } from '@/app/admin/(dashboard)/landing/LandingForm';
 
 export const dynamic = 'force-dynamic';
 

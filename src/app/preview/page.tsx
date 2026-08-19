@@ -5,7 +5,7 @@ import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
 import ProductGrid from '@/components/home/ProductGrid';
-import { SectionConfig } from '@/app/admin/landing/LandingForm';
+import { SectionConfig, SectionType } from '@/app/admin/(dashboard)/landing/LandingForm';
 import { cookies } from 'next/headers';
 import { getSettings } from '@/actions/settings';
 
