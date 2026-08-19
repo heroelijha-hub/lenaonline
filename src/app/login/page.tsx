@@ -15,6 +15,7 @@ export default function LoginPage() {
 
   const [isPendingRegister, startTransitionRegister] = useTransition();
   const [registerError, setRegisterError] = useState('');
+  const [registerSuccess, setRegisterSuccess] = useState('');
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,11 +34,14 @@ export default function LoginPage() {
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setRegisterError('');
+    setRegisterSuccess('');
     const formData = new FormData(e.currentTarget);
     startTransitionRegister(async () => {
       const res = await registerUser(formData);
       if (res.error) {
         setRegisterError(res.error);
+      } else if (res.message) {
+        setRegisterSuccess(res.message);
       } else {
         router.push('/account');
       }
@@ -138,6 +142,7 @@ export default function LoginPage() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">Register</h2>
             <form onSubmit={handleRegister} className="space-y-5">
               {registerError && <div className="text-red-500 text-sm font-medium">{registerError}</div>}
+              {registerSuccess && <div className="text-green-600 bg-green-50 border border-green-200 p-3 rounded-md text-sm font-medium">{registerSuccess}</div>}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Username <span className="text-red-500">*</span>

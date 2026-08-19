@@ -52,7 +52,6 @@ export async function registerUser(formData: FormData) {
     return { error: error.message }
   }
 
-  // Si l'utilisateur est bien créé dans Supabase, on le crée dans Prisma
   if (data.user) {
     try {
       // Check if user exists in Prisma first (shouldn't happen on fresh signup)
@@ -76,6 +75,11 @@ export async function registerUser(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
+  
+  if (!data.session) {
+    return { success: true, message: "Inscription réussie ! Veuillez vérifier votre boîte mail pour confirmer votre compte avant de vous connecter." }
+  }
+  
   return { success: true }
 }
 
