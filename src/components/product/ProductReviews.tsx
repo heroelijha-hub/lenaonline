@@ -89,7 +89,7 @@ export default function ProductReviews({ productId, reviews, description, isLogg
             <div>
               <h3 className="text-xl font-bold mb-6 text-gray-900">Avis Clients</h3>
               {reviews.length === 0 ? (
-                <p className="text-gray-500 text-sm">Il n'y a pas encore d'avis pour ce produit.</p>
+                <p className="text-gray-500 text-sm">Il n&apos;y a pas encore d&apos;avis pour ce produit.</p>
               ) : (
                 <div className="space-y-8">
                   {reviews.map(review => (

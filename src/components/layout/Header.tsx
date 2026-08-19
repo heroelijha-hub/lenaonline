@@ -13,6 +13,9 @@ type HeaderProps = {
   announcement?: string;
   logoImage?: string;
   menuLinks?: Array<{ label: string, url: string }>;
+  topBarLinks?: Array<{ label: string, icon: string, url: string }>;
+  topBarBgColor?: string;
+  topBarTextColor?: string;
   categories?: Array<{ id: string, name: string, slug: string | null }>;
   searchBorderColor?: string;
   searchPlaceholder?: string;
@@ -25,6 +28,12 @@ export default function Header({
   announcement = 'Welcome to Shopelios', 
   logoImage = '',
   menuLinks = [],
+  topBarLinks = [
+    { label: 'Store Locator', icon: 'location', url: '/store-locator' },
+    { label: 'Order Tracking', icon: 'truck', url: '/order-tracking' }
+  ],
+  topBarBgColor = '#ffffff',
+  topBarTextColor = '#4b5563',
   categories = [],
   searchBorderColor = '#d1d5db',
   searchPlaceholder = 'Rechercher un produit...',
@@ -48,6 +57,23 @@ export default function Header({
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Helper pour rendre les icônes
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'location':
+        return <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+      case 'truck':
+        return <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" /></svg>;
+      case 'phone':
+        return <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>;
+      case 'mail':
+        return <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
+      case 'star':
+      default:
+        return <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>;
+    }
+  };
 
   // Bottom categories dropdown
   const [isBottomCategoryOpen, setIsBottomCategoryOpen] = useState(false);
@@ -105,26 +131,33 @@ export default function Header({
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
+
+  // Hydration mismatch preventer for cart/wishlist icons
+  if (!mounted) {
+    // Return early or provide a skeleton if needed. Here we just let it mount without numbers first.
+  }
 
   return (
     <header className="w-full bg-white border-b border-gray-200 font-sans">
       {/* Top Bar */}
-      <div className="hidden md:flex justify-between items-center px-4 py-2 text-sm text-gray-600 border-b border-gray-100 max-w-7xl mx-auto w-full">
+      <div 
+        className="hidden md:flex justify-between items-center px-4 py-2 text-sm border-b border-gray-100 max-w-7xl mx-auto w-full transition-colors"
+        style={{ backgroundColor: topBarBgColor, color: topBarTextColor }}
+      >
         <div>{announcement}</div>
         <div className="flex items-center space-x-6">
-          <Link href="/store-locator" className="flex items-center hover:text-orange-600 transition">
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            Store Locator
-          </Link>
-          <Link href="/order-tracking" className="flex items-center hover:text-orange-600 transition">
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" /></svg>
-            Order Tracking
-          </Link>
+          {topBarLinks.map((link, idx) => (
+            <Link key={idx} href={link.url} className="flex items-center hover:opacity-75 transition">
+              {renderIcon(link.icon)}
+              {link.label}
+            </Link>
+          ))}
           <button 
             onClick={() => setIsLoginModalOpen(true)}
-            className="flex items-center hover:text-orange-600 transition"
+            className="flex items-center hover:opacity-75 transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
             Login
@@ -250,13 +283,13 @@ export default function Header({
                       onClick={handleSearchSubmit}
                       className="text-sm text-orange-600 font-semibold hover:text-orange-700 w-full py-2"
                     >
-                      Voir tous les résultats pour "{searchQuery}"
+                      Voir tous les résultats pour &quot;{searchQuery}&quot;
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="p-6 text-center text-gray-500">
-                  <p>Aucun produit trouvé pour "{searchQuery}"</p>
+                  <p>Aucun produit trouvé pour &quot;{searchQuery}&quot;</p>
                   {selectedCategory !== 'all' && <p className="text-xs mt-1">dans la catégorie sélectionnée.</p>}
                 </div>
               )}

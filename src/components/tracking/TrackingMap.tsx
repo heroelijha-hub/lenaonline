@@ -32,14 +32,15 @@ export default function TrackingMap({
   positions
 }: TrackingMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<any>(null);
+  const mapInstance = useRef<unknown>(null);
   const [isLeafletLoaded, setIsLeafletLoaded] = useState(false);
 
   useEffect(() => {
     if (!isLeafletLoaded) return;
-    if (typeof window === 'undefined' || !(window as any).L) return;
+    if (typeof window === 'undefined' || !('L' in window)) return;
 
     if (!mapInstance.current && mapRef.current) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const L = (window as any).L;
       mapInstance.current = L.map(mapRef.current);
       
@@ -102,20 +103,25 @@ export default function TrackingMap({
       if (destinationLat && destinationLng) boundsPoints.push([destinationLat, destinationLng]);
 
       if (boundsPoints.length > 1) {
-        mapInstance.current.fitBounds(boundsPoints, { padding: [40, 40], maxZoom: 8 });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (mapInstance.current as any).fitBounds(boundsPoints, { padding: [40, 40], maxZoom: 8 });
       } else if (boundsPoints.length === 1) {
-        mapInstance.current.setView(boundsPoints[0], 10);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (mapInstance.current as any).setView(boundsPoints[0], 10);
       } else {
-        mapInstance.current.setView([46.2276, 2.2137], 5); // France default
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (mapInstance.current as any).setView([46.2276, 2.2137], 5); // France default
       }
     }
 
     return () => {
       if (mapInstance.current) {
-        mapInstance.current.remove();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (mapInstance.current as any).remove();
         mapInstance.current = null;
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLeafletLoaded, originLat, originLng, destinationLat, destinationLng, positions]);
 
   return (

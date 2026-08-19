@@ -38,6 +38,21 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
   const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@shopelios.com');
   
+  // Top Bar settings
+  const defaultTopBarLinks = [
+    { label: 'Store Locator', icon: 'location', url: '/store-locator' },
+    { label: 'Order Tracking', icon: 'truck', url: '/order-tracking' },
+  ];
+  const [topBarLinks, setTopBarLinks] = useState<Array<{label: string, icon: string, url: string}>>(() => {
+    try {
+      return initialSettings.TOP_BAR_LINKS ? JSON.parse(initialSettings.TOP_BAR_LINKS) : defaultTopBarLinks;
+    } catch {
+      return defaultTopBarLinks;
+    }
+  });
+  const [topBarBgColor, setTopBarBgColor] = useState(initialSettings.TOP_BAR_BG_COLOR || '#ffffff');
+  const [topBarTextColor, setTopBarTextColor] = useState(initialSettings.TOP_BAR_TEXT_COLOR || '#4b5563');
+
   // Menu links
   const defaultMenu = [
     { label: 'Home', url: '/' },
@@ -157,6 +172,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('HEADER_SUPPORT_PHONE', headerSupportPhone);
     await updateSetting('HEADER_SUPPORT_EMAIL', headerSupportEmail);
     await updateSetting('HEADER_MENU_LINKS', JSON.stringify(menuLinks));
+
+    await updateSetting('TOP_BAR_BG_COLOR', topBarBgColor);
+    await updateSetting('TOP_BAR_TEXT_COLOR', topBarTextColor);
+    await updateSetting('TOP_BAR_LINKS', JSON.stringify(topBarLinks));
 
     await updateSetting('SEARCH_BORDER_COLOR', searchBorderColor);
     await updateSetting('SEARCH_PLACEHOLDER', searchPlaceholder);
@@ -308,7 +327,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="enableEuVat" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Appliquer la TVA dynamique selon les pays de l'Union Européenne (à venir au Checkout)
+              Appliquer la TVA dynamique selon les pays de l&apos;Union Européenne (à venir au Checkout)
             </label>
           </div>
           <div className="w-full md:w-1/2">
@@ -543,6 +562,98 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Liens et Couleurs de la Top Bar</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond (Top Bar)</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du texte (Top Bar)</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
+          </div>
+        </div>
+        <div className="space-y-4">
+          {topBarLinks.map((link, idx) => (
+            <div key={idx} className="flex flex-wrap items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
+              <div className="flex-1 min-w-[120px]">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Icône</label>
+                <select
+                  value={link.icon}
+                  onChange={(e) => {
+                    const newLinks = [...topBarLinks];
+                    newLinks[idx].icon = e.target.value;
+                    setTopBarLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                >
+                  <option value="location">Localisation</option>
+                  <option value="truck">Camion de livraison</option>
+                  <option value="phone">Téléphone</option>
+                  <option value="star">Étoile</option>
+                  <option value="mail">Email</option>
+                </select>
+              </div>
+              <div className="flex-1 min-w-[150px]">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Texte</label>
+                <input
+                  type="text"
+                  value={link.label}
+                  onChange={(e) => {
+                    const newLinks = [...topBarLinks];
+                    newLinks[idx].label = e.target.value;
+                    setTopBarLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                />
+              </div>
+              <div className="flex-1 min-w-[150px]">
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <input
+                  type="text"
+                  value={link.url}
+                  onChange={(e) => {
+                    const newLinks = [...topBarLinks];
+                    newLinks[idx].url = e.target.value;
+                    setTopBarLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                />
+              </div>
+              <div className="pt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newLinks = [...topBarLinks];
+                    newLinks.splice(idx, 1);
+                    setTopBarLinks(newLinks);
+                  }}
+                  className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
+                  title="Supprimer ce lien"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setTopBarLinks([...topBarLinks, { label: 'Nouveau Lien', icon: 'star', url: '#' }])}
+            className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            Ajouter un lien Top Bar
+          </button>
+        </div>
+      </div>
+
+      <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">Paramètres du Chat</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
@@ -631,7 +742,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <h4 className="text-md font-medium text-gray-800 mb-4">Textes d'interface (Titres et Labels)</h4>
+            <h4 className="text-md font-medium text-gray-800 mb-4">Textes d&apos;interface (Titres et Labels)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Titre Adresses (ex: Our Locations)</label>
@@ -646,7 +757,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 <input type="text" value={footerNewsletterPlaceholder} onChange={e => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Texte "Appelez-nous" (ex: Call Us Now)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Texte &quot;Appelez-nous&quot; (ex: Call Us Now)</label>
                 <input type="text" value={footerCallUsText} onChange={e => setFooterCallUsText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
             </div>

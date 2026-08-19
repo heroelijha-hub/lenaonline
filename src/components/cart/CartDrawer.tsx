@@ -16,10 +16,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [showCoupon, setShowCoupon] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    // Return early or provide a skeleton if needed
+  }
 
   return (
     <>

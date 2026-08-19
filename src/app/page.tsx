@@ -24,7 +24,7 @@ export default async function Home() {
         { id: 'sec_3', type: 'PromoBanners', name: 'Banners', enabled: false, settings: {} },
         { id: 'sec_4', type: 'BestSeller', name: 'Best Seller', enabled: true, settings: { title: "Best Seller", filterType: 'POPULAR' } },
         { id: 'sec_5', type: 'LatestBlogs', name: 'Blogs', enabled: true, settings: {} },
-        { id: 'sec_6', type: 'Newsletter', name: 'Newsletter', enabled: true, settings: {} }
+        { id: 'sec_6', type: 'Newsletter', name: 'Newsletter', enabled: false, settings: {} }
       ];
     }
   } catch (e) {

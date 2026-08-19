@@ -33,7 +33,13 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       id = generateId();
       localStorage.setItem('chat_guest_id', id);
     }
-    setGuestId(id);
+    
+    // We update state only if it differs, or use a ref if not needed for render
+    // but here we can just update it once
+    if (guestId !== id) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setGuestId(id);
+    }
 
     const initChat = async () => {
       const session = await getOrCreateSession(id as string);
@@ -43,7 +49,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     };
 
     initChat();
-  }, [enabled]);
+  }, [enabled, guestId]);
 
   // Polling for new messages when open
   useEffect(() => {

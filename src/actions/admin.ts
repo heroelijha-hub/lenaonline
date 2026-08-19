@@ -54,6 +54,7 @@ export async function createCategory(formData: FormData) {
   try {
     await prisma.category.create({ data: { name, slug } });
     revalidatePath('/admin/categories');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
     return { error: "Erreur lors de la création de la catégorie" };
@@ -73,6 +74,7 @@ export async function updateCategory(id: string, name: string, slug?: string) {
       data: { name, slug: finalSlug }
     });
     revalidatePath('/admin/categories');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
     return { error: "Erreur lors de la mise à jour." };
@@ -83,6 +85,7 @@ export async function deleteCategory(id: string) {
   try {
     await prisma.category.delete({ where: { id } });
     revalidatePath('/admin/categories');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
     return { error: "Erreur: Cette catégorie contient peut-être des produits." };

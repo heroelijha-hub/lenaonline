@@ -55,7 +55,6 @@ export default function MaintenanceView({ title, message, image, logoImage }: Ma
         </div>
       </main>
       
-      {/* Footer simple */}
       <footer className="w-full text-center py-6 text-gray-500 text-sm">
         &copy; {new Date().getFullYear()} Shopelios. Tous droits réservés.
       </footer>

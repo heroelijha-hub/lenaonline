@@ -15,8 +15,8 @@ interface ProductActionsProps {
     type: string;
     stock: number | null;
     images: string[];
-    attributes?: any;
-    variations?: any;
+    attributes?: { name: string; options: string[] }[];
+    variations?: { id: string; price: string; stock?: string; attributes: Record<string, string> }[];
   };
   enableBuyNow?: boolean;
 }
@@ -34,10 +34,10 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
 
   // Pour les produits variables, on vérifie si une variation correspond aux attributs sélectionnés
   const isVariable = product.type === 'VARIABLE';
-  const attributes = (product.attributes as any[]) || [];
-  const variations = (product.variations as any[]) || [];
+  const attributes = product.attributes || [];
+  const variations = product.variations || [];
 
-  let currentVariation: any = null;
+  let currentVariation: { id: string; price: string; stock?: string; attributes: Record<string, string> } | null = null;
   if (isVariable && Object.keys(selectedAttributes).length === attributes.length) {
     currentVariation = variations.find(v => {
       // Check if this variation matches all selected attributes
