@@ -1,0 +1,142 @@
+import prisma from '@/lib/prisma';
+import ProductCard from '@/components/shop/ProductCard';
+import ShopFilters from '@/components/shop/ShopFilters';
+import ShopSort from '@/components/shop/ShopSort';
+import ShopPagination from '@/components/shop/ShopPagination';
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'Boutique | Shopelios',
+  description: 'Découvrez notre catalogue de produits',
+};
+
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const params = await searchParams;
+  
+  // Extract query params
+  const categoryParams = params.category;
+  const categories = Array.isArray(categoryParams) ? categoryParams : categoryParams ? [categoryParams] : [];
+  
+  const minPrice = params.minPrice ? parseFloat(params.minPrice as string) : undefined;
+  const maxPrice = params.maxPrice ? parseFloat(params.maxPrice as string) : undefined;
+  
+  const ratingParams = params.rating;
+  const ratings = Array.isArray(ratingParams) ? ratingParams.map(Number) : ratingParams ? [Number(ratingParams)] : [];
+  
+  const sort = params.sort as string;
+  const page = params.page ? parseInt(params.page as string) : 1;
+  const limit = 12;
+
+  // Build Prisma where clause
+  const where: any = {};
+  
+  if (categories.length > 0) {
+    where.category = { slug: { in: categories } };
+  }
+  
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    where.price = {};
+    if (minPrice !== undefined) where.price.gte = minPrice;
+    if (maxPrice !== undefined) where.price.lte = maxPrice;
+  }
+
+  // Fetch all categories for the filter sidebar with product counts
+  const allCategories = await prisma.category.findMany({
+    include: {
+      _count: {
+        select: { products: true }
+      }
+    },
+    orderBy: { name: 'asc' }
+  });
+
+  // Since filtering by average rating requires relation aggregation not directly supported 
+  // in a simple where clause, we fetch products and filter in memory if ratings filter is active.
+  // For sorting, we can do it in Prisma.
+  let orderBy: any = { createdAt: 'desc' }; // default 'newest'
+  if (sort === 'price_asc') orderBy = { price: 'asc' };
+  if (sort === 'price_desc') orderBy = { price: 'desc' };
+
+  // Fetch products
+  const products = await prisma.product.findMany({
+    where,
+    include: {
+      category: { select: { name: true, slug: true } },
+      reviews: { select: { rating: true } }
+    },
+    orderBy
+  });
+
+  // Filter by rating in memory if needed
+  let filteredProducts = products;
+  if (ratings.length > 0) {
+    filteredProducts = products.filter(p => {
+      const avg = p.reviews.length > 0 
+        ? p.reviews.reduce((acc, curr) => acc + curr.rating, 0) / p.reviews.length 
+        : 0;
+      const roundedAvg = Math.round(avg);
+      // We check if the rounded average rating is within the selected ratings
+      return ratings.includes(roundedAvg) || (ratings.includes(0) && p.reviews.length === 0);
+    });
+  }
+
+  const totalResults = filteredProducts.length;
+  const totalPages = Math.ceil(totalResults / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = Math.min(startIndex + limit, totalResults);
+  
+  // Paginate in memory (since we might have filtered in memory)
+  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + limit);
+
+  const currentRange = `${totalResults > 0 ? startIndex + 1 : 0}-${endIndex}`;
+
+  return (
+    <div className="bg-white min-h-screen font-sans">
+      {/* Breadcrumb */}
+      <div className="bg-gray-50 py-4 px-4 sm:px-8 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto text-sm text-gray-500">
+          <Link href="/" className="hover:text-orange-500">Home</Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-900 font-medium">Boutique</span>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+          
+          {/* Left Sidebar (Filters) */}
+          <aside className="w-full lg:w-1/4 flex-shrink-0">
+            <ShopFilters categories={allCategories} />
+          </aside>
+
+          {/* Main Content (Products) */}
+          <section className="w-full lg:w-3/4">
+            
+            <ShopSort totalResults={totalResults} currentRange={currentRange} />
+
+            {paginatedProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {paginatedProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Aucun produit trouvé</h3>
+                <p className="text-gray-500">Essayez de modifier vos filtres pour trouver ce que vous cherchez.</p>
+              </div>
+            )}
+
+            <ShopPagination totalPages={totalPages} currentPage={page} />
+
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
