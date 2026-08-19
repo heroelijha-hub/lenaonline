@@ -37,6 +37,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [smtpPass, setSmtpPass] = useState(initialSettings.SMTP_PASS || '');
   const [smtpFrom, setSmtpFrom] = useState(initialSettings.SMTP_FROM || '');
 
+  // Payment Settings
+  const [stripePublicKey, setStripePublicKey] = useState(initialSettings.STRIPE_PUBLIC_KEY || '');
+  const [stripeSecretKey, setStripeSecretKey] = useState(initialSettings.STRIPE_SECRET_KEY || '');
+  const [paypalClientId, setPaypalClientId] = useState(initialSettings.PAYPAL_CLIENT_ID || '');
+  const [paypalSecret, setPaypalSecret] = useState(initialSettings.PAYPAL_SECRET || '');
+
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
@@ -202,6 +208,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('SMTP_USER', smtpUser);
     await updateSetting('SMTP_PASS', smtpPass);
     await updateSetting('SMTP_FROM', smtpFrom);
+    
+    await updateSetting('STRIPE_PUBLIC_KEY', stripePublicKey);
+    await updateSetting('STRIPE_SECRET_KEY', stripeSecretKey);
+    await updateSetting('PAYPAL_CLIENT_ID', paypalClientId);
+    await updateSetting('PAYPAL_SECRET', paypalSecret);
     
     await updateSetting('FOOTER_BG_COLOR', footerBgColor);
     await updateSetting('FOOTER_TEXT_COLOR', footerTextColor);
@@ -470,6 +481,61 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setSmtpFrom(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="Boutique Shopelios <contact@shopelios.com>"
+            />
+          </div>
+        </div>
+        <SectionSaveButton />
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Paiements (Stripe & PayPal)</h3>
+        <p className="text-sm text-gray-500 mb-4">Laissez vide si vous ne souhaitez pas activer une méthode de paiement spécifique.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <div className="md:col-span-2">
+            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration Stripe (Cartes Bancaires)</h4>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Clé Publique (Publishable Key)</label>
+            <input
+              type="text"
+              value={stripePublicKey}
+              onChange={(e) => setStripePublicKey(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="pk_test_..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Clé Secrète (Secret Key)</label>
+            <input
+              type="password"
+              value={stripeSecretKey}
+              onChange={(e) => setStripeSecretKey(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="sk_test_..."
+            />
+          </div>
+
+          <div className="md:col-span-2 mt-4">
+            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration PayPal</h4>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Client ID PayPal</label>
+            <input
+              type="text"
+              value={paypalClientId}
+              onChange={(e) => setPaypalClientId(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="ASdfas..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Secret PayPal</label>
+            <input
+              type="password"
+              value={paypalSecret}
+              onChange={(e) => setPaypalSecret(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="EAsdf..."
             />
           </div>
         </div>
