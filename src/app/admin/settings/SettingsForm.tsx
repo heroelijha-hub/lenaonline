@@ -423,18 +423,43 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <label className="block text-sm font-medium text-gray-700 mb-2">Logo de la Boutique (Upload)</label>
             <p className="text-xs text-gray-500 mb-2">Taille recommandée: 150x50 pixels (PNG transparent).</p>
             {headerLogoImage && !logoFile && (
-              <div className="relative inline-block mb-2">
-                <img src={headerLogoImage} alt="Logo" className="h-10 object-contain border bg-gray-50 p-1" />
+              <div className="flex items-center gap-4 mb-3">
+                <div className="relative inline-block">
+                  <img src={headerLogoImage} alt="Logo" className="h-10 object-contain border bg-gray-50 p-1" />
+                </div>
                 <button 
                   type="button" 
-                  onClick={() => setHeaderLogoImage('')}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                  onClick={() => {
+                    setHeaderLogoImage('');
+                    setLogoFile(null);
+                  }}
+                  className="px-3 py-1.5 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
                 >
-                  &times;
+                  Supprimer le logo
                 </button>
               </div>
             )}
+            
+            {logoFile && (
+              <div className="flex items-center gap-3 mb-3 p-2 bg-blue-50 border border-blue-100 rounded text-sm text-blue-700">
+                <span>Nouveau fichier : <strong>{logoFile.name}</strong></span>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setLogoFile(null);
+                    // Reset the file input visually
+                    const fileInput = document.getElementById('logo-upload-input') as HTMLInputElement;
+                    if (fileInput) fileInput.value = '';
+                  }}
+                  className="text-red-500 hover:text-red-700 underline text-xs font-semibold"
+                >
+                  Annuler
+                </button>
+              </div>
+            )}
+
             <input
+              id="logo-upload-input"
               type="file"
               accept="image/*"
               onChange={(e) => {
