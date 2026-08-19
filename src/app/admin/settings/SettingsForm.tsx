@@ -237,6 +237,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     router.refresh();
   };
 
+
+  const SectionSaveButton = () => (
+    <div className="flex justify-end pt-4 mt-4 border-t border-gray-100">
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-orange-300 text-sm font-semibold"
+      >
+        {isLoading ? 'Enregistrement...' : 'Enregistrer cette section'}
+      </button>
+    </div>
+  );
+
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-8">
       {message && (
@@ -301,6 +314,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -344,6 +358,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <p className="mt-2 text-xs text-gray-500">Taux appliqué si la TVA dynamique est désactivée ou si le pays du client est inconnu.</p>
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -387,6 +402,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -489,6 +505,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -526,6 +543,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -584,6 +602,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             Ajouter un lien
           </button>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -676,6 +695,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             Ajouter un lien Top Bar
           </button>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -732,6 +752,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -877,6 +898,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             + Ajouter une colonne
           </button>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -931,6 +953,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
         </div>
+        <SectionSaveButton />
       </div>
 
       <div className="pt-4">
@@ -983,15 +1006,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         </div>
       </div>
 
-      <div className="pt-4 border-t border-gray-200">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
-        >
-          {isLoading ? 'Enregistrement...' : 'Enregistrer les paramètres'}
-        </button>
-      </div>
+      <SectionSaveButton />
     </form>
   );
 }
