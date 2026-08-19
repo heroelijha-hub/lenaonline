@@ -112,7 +112,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
 
     return sendEmail({
       to: userEmail,
-      subject: \`Confirmation de commande #\${order.id.slice(-6).toUpperCase()}\`,
+      subject: `Confirmation de commande #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
@@ -178,7 +178,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
 
     return sendEmail({
       to: adminEmail,
-      subject: \`Nouvelle Commande #\${order.id.slice(-6).toUpperCase()}\`,
+      subject: `Nouvelle Commande #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
@@ -194,20 +194,20 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : '';
 
     let title = "Mise à jour de votre commande";
-    let message = \`Le statut de votre commande <strong>#\${order.id.slice(-6).toUpperCase()}</strong> a été mis à jour.\`;
+    let message = `Le statut de votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été mis à jour.`;
     let color = "#333";
 
     if (status === 'SHIPPED') {
       title = "Bonne nouvelle ! Votre commande est en route 🚚";
-      message = \`Votre commande <strong>#\${order.id.slice(-6).toUpperCase()}</strong> a été expédiée. Vous pouvez suivre la livraison depuis votre espace compte.\`;
+      message = `Votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été expédiée. Vous pouvez suivre la livraison depuis votre espace compte.`;
       color = "#16a34a"; // green
     } else if (status === 'CANCELLED') {
       title = "Information concernant votre commande";
-      message = \`Nous vous informons que votre commande <strong>#\${order.id.slice(-6).toUpperCase()}</strong> a malheureusement été <strong>annulée</strong>. Si un paiement a été effectué, le remboursement est en cours de traitement.\`;
+      message = `Nous vous informons que votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a malheureusement été <strong>annulée</strong>. Si un paiement a été effectué, le remboursement est en cours de traitement.`;
       color = "#dc2626"; // red
     } else if (status === 'DELIVERED') {
       title = "Votre commande a été livrée !";
-      message = \`Votre commande <strong>#\${order.id.slice(-6).toUpperCase()}</strong> est marquée comme livrée. Nous espérons que vous en êtes satisfait !\`;
+      message = `Votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> est marquée comme livrée. Nous espérons que vous en êtes satisfait !`;
     }
 
     const html = `
@@ -229,7 +229,7 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
 
     return sendEmail({
       to: userEmail,
-      subject: \`Mise à jour de la commande #\${order.id.slice(-6).toUpperCase()}\`,
+      subject: `Mise à jour de la commande #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
