@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
 
               {/* Product Actions (Price, Variations, Add to Cart, Wishlist) */}
-              <ProductActions product={product} enableBuyNow={enableBuyNow} />
+              <ProductActions product={product as any} enableBuyNow={enableBuyNow} />
 
               {/* Meta tags */}
               <div className="space-y-2 text-sm">

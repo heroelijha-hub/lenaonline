@@ -42,7 +42,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
     currentVariation = variations.find(v => {
       // Check if this variation matches all selected attributes
       return Object.entries(selectedAttributes).every(([key, value]) => v.attributes[key] === value);
-    });
+    }) || null;
   }
 
   // Prix et stock dynamiques
