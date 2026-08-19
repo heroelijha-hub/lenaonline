@@ -23,21 +23,21 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
   const HoverActions = () => (
     <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 z-20">
       <button 
-        className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 shadow-md"
+        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 shadow-md"
         title="Aperçu rapide"
         onClick={(e) => { e.preventDefault(); /* TODO: Implémenter l'action */ }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
       </button>
       <button 
-        className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75 shadow-md"
+        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75 shadow-md"
         title="Ajouter aux favoris"
         onClick={(e) => { e.preventDefault(); /* TODO: Implémenter l'action */ }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
       </button>
       <button 
-        className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-150 shadow-md"
+        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-150 shadow-md"
         title="Ajouter au panier"
         onClick={(e) => { e.preventDefault(); /* TODO: Implémenter l'action */ }}
       >

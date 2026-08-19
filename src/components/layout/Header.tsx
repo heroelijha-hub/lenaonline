@@ -171,7 +171,7 @@ export default function Header({
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Shopelios Logo" className="h-14 sm:h-16 md:h-20 object-contain scale-125 sm:scale-150 origin-left" />
+              <img src={logoImage} alt="Shopelios Logo" className="h-20 sm:h-24 md:h-28 object-contain scale-[1.75] origin-left ml-4" />
             ) : (
               <span className="text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}

@@ -15,7 +15,7 @@ export default function MaintenanceView({ title, message, image, logoImage }: Ma
       {/* Header simple avec le logo */}
       <header className="w-full bg-white border-b border-gray-200 py-6 px-8 flex justify-center">
         {logoImage ? (
-          <img src={logoImage} alt="Logo" className="h-14 sm:h-20 object-contain scale-125" />
+          <img src={logoImage} alt="Logo" className="h-20 sm:h-28 object-contain scale-150" />
         ) : (
           <span className="text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
         )}
