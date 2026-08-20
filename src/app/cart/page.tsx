@@ -71,7 +71,7 @@ export default function CartPage() {
                       {/* Remove Button */}
                       <div className="col-span-1 flex justify-center w-full md:w-auto mb-2 md:mb-0">
                         <button 
-                          onClick={() => removeItem(item.productId, item.variationId)}
+                          onClick={() => removeItem(item.id)}
                           className="text-red-600 hover:text-red-800"
                           title="Retirer"
                         >
@@ -81,7 +81,7 @@ export default function CartPage() {
 
                       {/* Image */}
                       <div className="col-span-2 flex justify-center">
-                        <Link href={`/product/${item.productSlug}`} className="w-20 h-20 bg-gray-50 border border-gray-200 flex items-center justify-center overflow-hidden">
+                        <Link href={`/product/${item.productId}`} className="w-20 h-20 bg-gray-50 border border-gray-200 flex items-center justify-center overflow-hidden">
                           {item.image ? (
                             <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
                           ) : (
@@ -92,7 +92,7 @@ export default function CartPage() {
 
                       {/* Title */}
                       <div className="col-span-4 text-center md:text-left">
-                        <Link href={`/product/${item.productSlug}`} className="text-gray-800 hover:text-[#ff4500] font-medium text-sm">
+                        <Link href={`/product/${item.productId}`} className="text-gray-800 hover:text-[#ff4500] font-medium text-sm">
                           {item.title}
                         </Link>
                         {item.attributes && Object.keys(item.attributes).length > 0 && (
@@ -111,7 +111,7 @@ export default function CartPage() {
                       <div className="col-span-2 flex justify-center">
                         <div className="flex items-center border border-gray-300">
                           <button 
-                            onClick={() => updateQuantity(item.productId, Math.max(1, item.quantity - 1), item.variationId)}
+                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 transition bg-gray-50"
                           >
                             -
@@ -123,7 +123,7 @@ export default function CartPage() {
                             className="w-10 py-1.5 text-center text-sm font-medium border-x border-gray-300 outline-none"
                           />
                           <button 
-                            onClick={() => updateQuantity(item.productId, item.quantity + 1, item.variationId)}
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 transition bg-gray-50"
                           >
                             +
