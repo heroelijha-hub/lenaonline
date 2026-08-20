@@ -22,6 +22,9 @@ type HeaderProps = {
   searchBtnText?: string;
   searchBtnBgColor?: string;
   searchBtnTextColor?: string;
+  showNew?: boolean;
+  showHot?: boolean;
+  showSale?: boolean;
 };
 
 export default function Header({ 
@@ -39,7 +42,10 @@ export default function Header({
   searchPlaceholder = 'Rechercher un produit...',
   searchBtnText = 'Search',
   searchBtnBgColor = '#f97316',
-  searchBtnTextColor = '#111827'
+  searchBtnTextColor = '#111827',
+  showNew = true,
+  showHot = true,
+  showSale = true,
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -389,7 +395,6 @@ export default function Header({
               {menuLinks.map((link, idx) => (
                 <Link key={idx} href={link.url} className="hover:text-orange-600 flex items-center transition">
                   {link.label}
-                  {/* Optionnel: Icône flèche si nécessaire, on garde simple pour l'instant */}
                 </Link>
               ))}
             </nav>
@@ -397,18 +402,24 @@ export default function Header({
 
           {/* Right side tags */}
           <div className="hidden lg:flex items-center space-x-4 text-sm font-semibold text-gray-800">
-            <Link href="/new" className="flex items-center hover:text-orange-600 transition">
-              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-              New
-            </Link>
-            <Link href="/hot" className="flex items-center hover:text-orange-600 transition">
-              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-              Hot
-            </Link>
-            <Link href="/sale" className="flex items-center hover:text-orange-600 transition">
-              <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-              Sale
-            </Link>
+            {showNew && (
+              <Link href="/new" className="flex items-center hover:text-orange-600 transition">
+                <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                New
+              </Link>
+            )}
+            {showHot && (
+              <Link href="/hot" className="flex items-center hover:text-orange-600 transition">
+                <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                Hot
+              </Link>
+            )}
+            {showSale && (
+              <Link href="/sale" className="flex items-center hover:text-orange-600 transition">
+                <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                Sale
+              </Link>
+            )}
           </div>
 
         </div>
@@ -430,9 +441,9 @@ export default function Header({
             ))}
           </div>
           <div className="pt-3 border-t border-gray-100 flex flex-col space-y-3">
-            <Link href="/new" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>New</Link>
-            <Link href="/hot" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Hot</Link>
-            <Link href="/sale" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Sale</Link>
+            {showNew && <Link href="/new" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>New</Link>}
+            {showHot && <Link href="/hot" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Hot</Link>}
+            {showSale && <Link href="/sale" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Sale</Link>}
             {topBarLinks.map((link, idx) => (
               <Link key={`top-${idx}`} href={link.url} className="font-semibold text-gray-800 flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
                 <span className="mr-2 text-gray-500">{renderIcon(link.icon)}</span>

@@ -38,6 +38,9 @@ type StoreLayoutProps = {
     searchBtnText?: string;
     searchBtnBgColor?: string;
     searchBtnTextColor?: string;
+    showNew?: boolean;
+    showHot?: boolean;
+    showSale?: boolean;
   };
 };
 
@@ -75,6 +78,9 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         searchBtnText={settings.searchBtnText}
         searchBtnBgColor={settings.searchBtnBgColor}
         searchBtnTextColor={settings.searchBtnTextColor}
+        showNew={settings.showNew}
+        showHot={settings.showHot}
+        showSale={settings.showSale}
       />
       <main className="flex-grow">
         {children}

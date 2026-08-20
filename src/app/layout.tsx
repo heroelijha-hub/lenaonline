@@ -108,6 +108,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     searchBtnTextColor: settingsMap.SEARCH_BTN_TEXT_COLOR || '#111827',
   };
 
+  const [newProductsCount, hotProductsCount, saleProductsCount] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.count({ where: { orderItems: { some: {} } } }),
+    prisma.product.count({ where: { compareAtPrice: { not: null } } })
+  ]);
+
+  storeSettings.showNew = newProductsCount > 0;
+  storeSettings.showHot = hotProductsCount >= 3;
+  storeSettings.showSale = saleProductsCount > 0;
+
   return (
     <html
       lang="fr"
