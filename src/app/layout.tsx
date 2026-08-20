@@ -72,6 +72,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     }
   } catch (e) {}
 
+  const [newProductsCount, hotProductsCount, saleProductsCount] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.count({ where: { orderItems: { some: {} } } }),
+    prisma.product.count({ where: { compareAtPrice: { not: null } } })
+  ]);
+
   const storeSettings = {
     announcement: settingsMap.HEADER_ANNOUNCEMENT || 'Welcome to Shopelios',
     logoImage: settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
@@ -106,17 +112,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     searchBtnText: settingsMap.SEARCH_BTN_TEXT || 'Search',
     searchBtnBgColor: settingsMap.SEARCH_BTN_BG_COLOR || '#f97316',
     searchBtnTextColor: settingsMap.SEARCH_BTN_TEXT_COLOR || '#111827',
+    showNew: newProductsCount > 0,
+    showHot: hotProductsCount >= 3,
+    showSale: saleProductsCount > 0,
   };
-
-  const [newProductsCount, hotProductsCount, saleProductsCount] = await Promise.all([
-    prisma.product.count(),
-    prisma.product.count({ where: { orderItems: { some: {} } } }),
-    prisma.product.count({ where: { compareAtPrice: { not: null } } })
-  ]);
-
-  storeSettings.showNew = newProductsCount > 0;
-  storeSettings.showHot = hotProductsCount >= 3;
-  storeSettings.showSale = saleProductsCount > 0;
 
   return (
     <html
