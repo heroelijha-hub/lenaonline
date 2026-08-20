@@ -14,6 +14,7 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
+const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string }) => (
   <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
     <div className="border border-gray-100 rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
       {imageUrl ? (
