@@ -12,6 +12,7 @@ interface CheckoutClientProps {
     ENABLE_STRIPE: string;
     ENABLE_PAYPAL: string;
     ENABLE_BANK_TRANSFER: string;
+    BANK_TRANSFER_CHECKOUT_MESSAGE?: string;
   }
 }
 
@@ -299,8 +300,8 @@ export default function CheckoutClient({ settings }: CheckoutClientProps) {
                   </label>
                   {paymentMethod === 'BANK_TRANSFER' && (
                     <div className="p-4 bg-gray-50 text-sm text-gray-600">
-                      <p className="bg-gray-200/50 p-4 rounded text-gray-600">
-                        Afin de finaliser votre commande, un e-mail contenant nos coordonnées bancaires vous sera envoyé et dès réception de votre règlement, nous procéderons au traitement de votre commande.
+                      <p className="bg-gray-200/50 p-4 rounded text-gray-600 whitespace-pre-wrap">
+                        {settings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Afin de finaliser votre commande, un e-mail contenant nos coordonnées bancaires vous sera envoyé et dès réception de votre règlement, nous procéderons au traitement de votre commande.'}
                       </p>
                     </div>
                   )}
