@@ -185,12 +185,12 @@ export default function Header({
       </div>
 
       {/* Middle Bar */}
-      <div className="py-3 md:py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-4 md:gap-6">
+      <div className="py-3 md:py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-4 md:gap-10 lg:gap-16">
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Shopelios Logo" className="h-16 sm:h-20 md:h-28 object-contain scale-100 md:scale-[1.75] origin-left md:ml-4" />
+              <img src={logoImage} alt="Shopelios Logo" className="h-16 sm:h-20 md:h-24 object-contain" />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
