@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateSetting } from '@/actions/settings';
+import { updateSetting, updateSettingsBatch } from '@/actions/settings';
 import { uploadImage } from '@/actions/admin';
 
 const CURRENCIES = [
@@ -156,17 +156,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
+    const settingsMap: Record<string, string> = {};
     
     const selectedCurr = CURRENCIES.find(c => c.code === currency);
     if (selectedCurr) {
-      await updateSetting('currency', selectedCurr.code);
-      await updateSetting('currencySymbol', selectedCurr.symbol);
+      settingsMap['currency'] = selectedCurr.code;
+      settingsMap['currencySymbol'] = selectedCurr.symbol;
     }
     
-    await updateSetting('currencyPosition', currencyPosition);
-    await updateSetting('thousandSeparator', thousandSeparator);
-    await updateSetting('decimalSeparator', decimalSeparator);
-    await updateSetting('ENABLE_BUY_NOW_BUTTON', enableBuyNow.toString());
+    settingsMap['currencyPosition'] = currencyPosition;
+    settingsMap['thousandSeparator'] = thousandSeparator;
+    settingsMap['decimalSeparator'] = decimalSeparator;
+    settingsMap['ENABLE_BUY_NOW_BUTTON'] = enableBuyNow.toString();
+    
     let finalChatIcon = chatStoreIcon;
     if (chatIconFile) {
       const formData = new FormData();
@@ -174,6 +176,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       const url = await uploadImage(formData);
       if (url) finalChatIcon = url;
     }
+    settingsMap['CHAT_STORE_ICON'] = finalChatIcon;
 
     let finalLogoImage = headerLogoImage;
     if (logoFile) {
@@ -182,75 +185,74 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       const url = await uploadImage(formData);
       if (url) finalLogoImage = url;
     }
+    settingsMap['HEADER_LOGO_IMAGE'] = finalLogoImage;
     
-    await updateSetting('CHAT_ENABLED', chatEnabled.toString());
-    await updateSetting('CHAT_STORE_NAME', chatStoreName);
-    await updateSetting('CHAT_STORE_ICON', finalChatIcon);
+    settingsMap['CHAT_ENABLED'] = chatEnabled.toString();
+    settingsMap['CHAT_STORE_NAME'] = chatStoreName;
     
-    await updateSetting('THEME_COLOR', themeColor);
-    await updateSetting('HEADER_ANNOUNCEMENT', headerAnnouncement);
-    await updateSetting('HEADER_LOGO_IMAGE', finalLogoImage);
-    await updateSetting('HEADER_SUPPORT_PHONE', headerSupportPhone);
-    await updateSetting('HEADER_SUPPORT_EMAIL', headerSupportEmail);
-    await updateSetting('HEADER_MENU_LINKS', JSON.stringify(menuLinks));
+    settingsMap['THEME_COLOR'] = themeColor;
+    settingsMap['HEADER_ANNOUNCEMENT'] = headerAnnouncement;
+    settingsMap['HEADER_SUPPORT_PHONE'] = headerSupportPhone;
+    settingsMap['HEADER_SUPPORT_EMAIL'] = headerSupportEmail;
+    settingsMap['HEADER_MENU_LINKS'] = JSON.stringify(menuLinks);
 
-    await updateSetting('TOP_BAR_BG_COLOR', topBarBgColor);
-    await updateSetting('TOP_BAR_TEXT_COLOR', topBarTextColor);
-    await updateSetting('TOP_BAR_LINKS', JSON.stringify(topBarLinks));
+    settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
+    settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
+    settingsMap['TOP_BAR_LINKS'] = JSON.stringify(topBarLinks);
 
-    await updateSetting('SEARCH_BORDER_COLOR', searchBorderColor);
-    await updateSetting('SEARCH_PLACEHOLDER', searchPlaceholder);
-    await updateSetting('SEARCH_BTN_TEXT', searchBtnText);
-    await updateSetting('SEARCH_BTN_BG_COLOR', searchBtnBgColor);
-    await updateSetting('SEARCH_BTN_TEXT_COLOR', searchBtnTextColor);
+    settingsMap['SEARCH_BORDER_COLOR'] = searchBorderColor;
+    settingsMap['SEARCH_PLACEHOLDER'] = searchPlaceholder;
+    settingsMap['SEARCH_BTN_TEXT'] = searchBtnText;
+    settingsMap['SEARCH_BTN_BG_COLOR'] = searchBtnBgColor;
+    settingsMap['SEARCH_BTN_TEXT_COLOR'] = searchBtnTextColor;
     
-    await updateSetting('TAX_INCLUDED_IN_PRICE', taxIncludedInPrice.toString());
-    await updateSetting('DEFAULT_VAT_RATE', defaultVatRate);
-    await updateSetting('ENABLE_EU_VAT', enableEuVat.toString());
+    settingsMap['TAX_INCLUDED_IN_PRICE'] = taxIncludedInPrice.toString();
+    settingsMap['DEFAULT_VAT_RATE'] = defaultVatRate;
+    settingsMap['ENABLE_EU_VAT'] = enableEuVat.toString();
 
-    await updateSetting('CONTACT_RECEIVER_EMAIL', contactReceiverEmail);
-    await updateSetting('NEWSLETTER_SUCCESS_MESSAGE', newsletterSuccessMessage);
+    settingsMap['CONTACT_RECEIVER_EMAIL'] = contactReceiverEmail;
+    settingsMap['NEWSLETTER_SUCCESS_MESSAGE'] = newsletterSuccessMessage;
 
-    await updateSetting('SMTP_HOST', smtpHost);
-    await updateSetting('SMTP_PORT', smtpPort);
-    await updateSetting('SMTP_USER', smtpUser);
-    await updateSetting('SMTP_PASS', smtpPass);
-    await updateSetting('SMTP_FROM', smtpFrom);
+    settingsMap['SMTP_HOST'] = smtpHost;
+    settingsMap['SMTP_PORT'] = smtpPort;
+    settingsMap['SMTP_USER'] = smtpUser;
+    settingsMap['SMTP_PASS'] = smtpPass;
+    settingsMap['SMTP_FROM'] = smtpFrom;
     
-    await updateSetting('ENABLE_STRIPE', enableStripe.toString());
-    await updateSetting('ENABLE_PAYPAL', enablePaypal.toString());
-    await updateSetting('ENABLE_BANK_TRANSFER', enableBankTransfer.toString());
+    settingsMap['ENABLE_STRIPE'] = enableStripe.toString();
+    settingsMap['ENABLE_PAYPAL'] = enablePaypal.toString();
+    settingsMap['ENABLE_BANK_TRANSFER'] = enableBankTransfer.toString();
     
-    await updateSetting('STRIPE_PUBLIC_KEY', stripePublicKey);
-    await updateSetting('STRIPE_SECRET_KEY', stripeSecretKey);
-    await updateSetting('PAYPAL_CLIENT_ID', paypalClientId);
-    await updateSetting('PAYPAL_SECRET', paypalSecret);
-    await updateSetting('BANK_TRANSFER_IBAN', bankTransferIban);
-    await updateSetting('BANK_TRANSFER_ACCOUNT_HOLDER', bankTransferAccountHolder);
-    await updateSetting('BANK_TRANSFER_BANK_NAME', bankTransferBankName);
-    await updateSetting('BANK_TRANSFER_CHECKOUT_MESSAGE', bankTransferCheckoutMessage);
-    await updateSetting('BANK_TRANSFER_INSTRUCTIONS', bankTransferInstructions);
+    settingsMap['STRIPE_PUBLIC_KEY'] = stripePublicKey;
+    settingsMap['STRIPE_SECRET_KEY'] = stripeSecretKey;
+    settingsMap['PAYPAL_CLIENT_ID'] = paypalClientId;
+    settingsMap['PAYPAL_SECRET'] = paypalSecret;
+    settingsMap['BANK_TRANSFER_IBAN'] = bankTransferIban;
+    settingsMap['BANK_TRANSFER_ACCOUNT_HOLDER'] = bankTransferAccountHolder;
+    settingsMap['BANK_TRANSFER_BANK_NAME'] = bankTransferBankName;
+    settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
+    settingsMap['BANK_TRANSFER_INSTRUCTIONS'] = bankTransferInstructions;
     
-    await updateSetting('FOOTER_BG_COLOR', footerBgColor);
-    await updateSetting('FOOTER_TEXT_COLOR', footerTextColor);
-    await updateSetting('FOOTER_ADDRESS_1', footerAddress1);
-    await updateSetting('FOOTER_ADDRESS_2', footerAddress2);
-    await updateSetting('FOOTER_LOCATIONS_TITLE', footerLocationsTitle);
-    await updateSetting('FOOTER_NEWSLETTER_TITLE', footerNewsletterTitle);
-    await updateSetting('FOOTER_NEWSLETTER_TEXT', footerNewsletterText);
-    await updateSetting('FOOTER_NEWSLETTER_PLACEHOLDER', footerNewsletterPlaceholder);
-    await updateSetting('FOOTER_CALL_US_TEXT', footerCallUsText);
-    await updateSetting('FOOTER_COPYRIGHT', footerCopyright);
-    await updateSetting('FOOTER_SOCIAL_FACEBOOK', footerSocialFacebook);
-    await updateSetting('FOOTER_SOCIAL_TWITTER', footerSocialTwitter);
-    await updateSetting('FOOTER_SOCIAL_INSTAGRAM', footerSocialInstagram);
-    await updateSetting('FOOTER_SOCIAL_LINKEDIN', footerSocialLinkedin);
-    await updateSetting('FOOTER_COLUMNS', JSON.stringify(footerColumns));
+    settingsMap['FOOTER_BG_COLOR'] = footerBgColor;
+    settingsMap['FOOTER_TEXT_COLOR'] = footerTextColor;
+    settingsMap['FOOTER_ADDRESS_1'] = footerAddress1;
+    settingsMap['FOOTER_ADDRESS_2'] = footerAddress2;
+    settingsMap['FOOTER_LOCATIONS_TITLE'] = footerLocationsTitle;
+    settingsMap['FOOTER_NEWSLETTER_TITLE'] = footerNewsletterTitle;
+    settingsMap['FOOTER_NEWSLETTER_TEXT'] = footerNewsletterText;
+    settingsMap['FOOTER_NEWSLETTER_PLACEHOLDER'] = footerNewsletterPlaceholder;
+    settingsMap['FOOTER_CALL_US_TEXT'] = footerCallUsText;
+    settingsMap['FOOTER_COPYRIGHT'] = footerCopyright;
+    settingsMap['FOOTER_SOCIAL_FACEBOOK'] = footerSocialFacebook;
+    settingsMap['FOOTER_SOCIAL_TWITTER'] = footerSocialTwitter;
+    settingsMap['FOOTER_SOCIAL_INSTAGRAM'] = footerSocialInstagram;
+    settingsMap['FOOTER_SOCIAL_LINKEDIN'] = footerSocialLinkedin;
+    settingsMap['FOOTER_COLUMNS'] = JSON.stringify(footerColumns);
     
-    await updateSetting('NOT_FOUND_TITLE', notFoundTitle);
-    await updateSetting('NOT_FOUND_TEXT', notFoundText);
-    await updateSetting('NOT_FOUND_CTA', notFoundCta);
-    await updateSetting('NOT_FOUND_BG_COLOR', notFoundBgColor);
+    settingsMap['NOT_FOUND_TITLE'] = notFoundTitle;
+    settingsMap['NOT_FOUND_TEXT'] = notFoundText;
+    settingsMap['NOT_FOUND_CTA'] = notFoundCta;
+    settingsMap['NOT_FOUND_BG_COLOR'] = notFoundBgColor;
     
     let finalNotFoundBgImage = notFoundBgImage;
     if (notFoundFile) {
@@ -259,7 +261,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       const url = await uploadImage(formData);
       if (url) finalNotFoundBgImage = url;
     }
-    await updateSetting('NOT_FOUND_BG_IMAGE', finalNotFoundBgImage);
+    settingsMap['NOT_FOUND_BG_IMAGE'] = finalNotFoundBgImage;
 
     let finalMaintenanceImage = maintenanceImage;
     if (maintenanceFile) {
@@ -268,10 +270,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       const url = await uploadImage(formData);
       if (url) finalMaintenanceImage = url;
     }
-    await updateSetting('MAINTENANCE_MODE', maintenanceMode.toString());
-    await updateSetting('MAINTENANCE_TITLE', maintenanceTitle);
-    await updateSetting('MAINTENANCE_MESSAGE', maintenanceMessage);
-    await updateSetting('MAINTENANCE_IMAGE', finalMaintenanceImage);
+    settingsMap['MAINTENANCE_MODE'] = maintenanceMode.toString();
+    settingsMap['MAINTENANCE_TITLE'] = maintenanceTitle;
+    settingsMap['MAINTENANCE_MESSAGE'] = maintenanceMessage;
+    settingsMap['MAINTENANCE_IMAGE'] = finalMaintenanceImage;
+
+    await updateSettingsBatch(settingsMap);
 
     setMessage('Paramètres mis à jour avec succès.');
     setIsLoading(false);

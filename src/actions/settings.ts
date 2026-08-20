@@ -25,3 +25,21 @@ export async function updateSetting(key: string, value: string) {
     return { error: error.message };
   }
 }
+
+export async function updateSettingsBatch(settingsMap: Record<string, string>) {
+  try {
+    const transactions = Object.entries(settingsMap).map(([key, value]) => {
+      return prisma.setting.upsert({
+        where: { key },
+        update: { value },
+        create: { key, value }
+      });
+    });
+    
+    await prisma.$transaction(transactions);
+    revalidatePath('/', 'layout');
+    return { success: true };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+}
