@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCategories, createProduct, uploadImage } from '@/actions/admin';
-// import { updateProduct } from '@/actions/admin'; // We will create this action
+import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
@@ -16,6 +19,9 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
   const [title, setTitle] = useState(initialData?.title || '');
   const [slug, setSlug] = useState(initialData?.slug || '');
+  
+  const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
+  const [description, setDescription] = useState(initialData?.description || '');
   
   // Helper to slugify
   const generateSlug = (text: string) => 
@@ -68,6 +74,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       formData.append('attributes', JSON.stringify(formattedAttributes));
       formData.append('variations', JSON.stringify(variations));
       formData.append('tags', JSON.stringify(tags));
+      
+      // Prevent original submit if textareas were still present
+      formData.delete('shortDescription');
+      formData.delete('description');
+      
+      formData.append('shortDescription', shortDescription);
+      formData.append('description', description);
       
       const imageUrls: string[] = [...existingImages];
       if (imageFiles.length > 0) {
@@ -344,14 +357,18 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         </div>
 
         {/* Description Courte & Longue */}
-        <div className="space-y-4">
+        <div className="space-y-8 pb-8">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description Courte</label>
-            <textarea name="shortDescription" defaultValue={initialData?.shortDescription} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description Courte</label>
+            <div className="bg-white">
+              <ReactQuill theme="snow" value={shortDescription} onChange={setShortDescription} className="h-32 mb-10" />
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description Longue</label>
-            <textarea name="description" defaultValue={initialData?.description} rows={4} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"></textarea>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description Longue</label>
+            <div className="bg-white">
+              <ReactQuill theme="snow" value={description} onChange={setDescription} className="h-64 mb-12" />
+            </div>
           </div>
         </div>
 

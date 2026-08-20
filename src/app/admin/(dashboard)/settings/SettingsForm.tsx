@@ -42,6 +42,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [stripeSecretKey, setStripeSecretKey] = useState(initialSettings.STRIPE_SECRET_KEY || '');
   const [paypalClientId, setPaypalClientId] = useState(initialSettings.PAYPAL_CLIENT_ID || '');
   const [paypalSecret, setPaypalSecret] = useState(initialSettings.PAYPAL_SECRET || '');
+  const [bankTransferIban, setBankTransferIban] = useState(initialSettings.BANK_TRANSFER_IBAN || '');
+  const [bankTransferAccountHolder, setBankTransferAccountHolder] = useState(initialSettings.BANK_TRANSFER_ACCOUNT_HOLDER || '');
+  const [bankTransferBankName, setBankTransferBankName] = useState(initialSettings.BANK_TRANSFER_BANK_NAME || '');
+  const [bankTransferCheckoutMessage, setBankTransferCheckoutMessage] = useState(initialSettings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Veuillez effectuer le virement sur le compte ci-dessous.');
+  const [bankTransferInstructions, setBankTransferInstructions] = useState(initialSettings.BANK_TRANSFER_INSTRUCTIONS || 'Votre commande sera traitée dès réception du paiement.');
 
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
@@ -213,6 +218,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('STRIPE_SECRET_KEY', stripeSecretKey);
     await updateSetting('PAYPAL_CLIENT_ID', paypalClientId);
     await updateSetting('PAYPAL_SECRET', paypalSecret);
+    await updateSetting('BANK_TRANSFER_IBAN', bankTransferIban);
+    await updateSetting('BANK_TRANSFER_ACCOUNT_HOLDER', bankTransferAccountHolder);
+    await updateSetting('BANK_TRANSFER_BANK_NAME', bankTransferBankName);
+    await updateSetting('BANK_TRANSFER_CHECKOUT_MESSAGE', bankTransferCheckoutMessage);
+    await updateSetting('BANK_TRANSFER_INSTRUCTIONS', bankTransferInstructions);
     
     await updateSetting('FOOTER_BG_COLOR', footerBgColor);
     await updateSetting('FOOTER_TEXT_COLOR', footerTextColor);
@@ -488,7 +498,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Paiements (Stripe & PayPal)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Paiements (Stripe, PayPal & Virement)</h3>
         <p className="text-sm text-gray-500 mb-4">Laissez vide si vous ne souhaitez pas activer une méthode de paiement spécifique.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2">
@@ -536,6 +546,60 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setPaypalSecret(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="EAsdf..."
+            />
+          </div>
+
+          <div className="md:col-span-2 mt-4">
+            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration Virement Bancaire</h4>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">IBAN</label>
+            <input
+              type="text"
+              value={bankTransferIban}
+              onChange={(e) => setBankTransferIban(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="FR76 1234..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titulaire du compte</label>
+            <input
+              type="text"
+              value={bankTransferAccountHolder}
+              onChange={(e) => setBankTransferAccountHolder(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Nom de l'entreprise ou personne"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la banque</label>
+            <input
+              type="text"
+              value={bankTransferBankName}
+              onChange={(e) => setBankTransferBankName(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Ex: BNP Paribas"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message à afficher sur le checkout</label>
+            <textarea
+              value={bankTransferCheckoutMessage}
+              onChange={(e) => setBankTransferCheckoutMessage(e.target.value)}
+              rows={2}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Veuillez effectuer le virement sur le compte ci-dessous."
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Instructions (envoyées au client)</label>
+            <textarea
+              value={bankTransferInstructions}
+              onChange={(e) => setBankTransferInstructions(e.target.value)}
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Votre commande sera traitée dès réception du paiement..."
             />
           </div>
         </div>
