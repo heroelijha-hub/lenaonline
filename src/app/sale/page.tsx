@@ -6,10 +6,7 @@ export const dynamic = 'force-dynamic';
 export default async function SaleProductsPage() {
   const products = await prisma.product.findMany({
     where: {
-      OR: [
-        { compareAtPrice: { not: null } },
-        { isDealOfTheDay: true }
-      ]
+      compareAtPrice: { not: null }
     },
     include: { category: true },
     orderBy: { updatedAt: 'desc' },

@@ -5,11 +5,12 @@ export const dynamic = 'force-dynamic';
 
 export default async function HotProductsPage() {
   const products = await prisma.product.findMany({
-    where: {
-      isBestSeller: true
-    },
     include: { category: true },
-    orderBy: { updatedAt: 'desc' },
+    orderBy: {
+      orderItems: {
+        _count: 'desc'
+      }
+    },
     take: 40 // Fetch hot products
   });
 

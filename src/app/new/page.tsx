@@ -7,7 +7,7 @@ export default async function NewArrivalsPage() {
   const products = await prisma.product.findMany({
     include: { category: true },
     orderBy: { createdAt: 'desc' },
-    take: 40 // Fetch latest 40 products
+    take: 12 // Fetch latest 12 products
   });
 
   return (
