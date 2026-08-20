@@ -15,7 +15,7 @@ export default async function Hero({ config }: { config?: any }) {
         
         {/* Left Tall Banner (Apple iPhone 17 Pro Max) */}
         <div 
-          className="lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-8 flex flex-col items-center text-center h-full border border-gray-100 group"
+          className="lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-6 sm:p-8 flex flex-col items-center text-center h-full min-h-[450px] lg:min-h-0 border border-gray-100 group"
           style={{
             backgroundColor: settings.HERO_1_BG_COLOR || undefined,
             backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
@@ -68,7 +68,7 @@ export default async function Hero({ config }: { config?: any }) {
             
             {/* Middle Top Banner (Watches) */}
             <div 
-              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group"
+              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center border border-gray-100 group min-h-[300px]"
               style={{
                 backgroundColor: settings.HERO_2_BG_COLOR || undefined,
                 backgroundImage: settings.HERO_2_BG_IMAGE ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
@@ -76,7 +76,7 @@ export default async function Hero({ config }: { config?: any }) {
                 backgroundPosition: 'center',
               }}
             >
-              <div className="z-10 w-2/3">
+              <div className="z-20 w-[65%] sm:w-2/3">
                 <span className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-wide">
                   {settings.HERO_2_SUBTITLE || 'Use Code: SALE35%'}
                 </span>
@@ -96,17 +96,17 @@ export default async function Hero({ config }: { config?: any }) {
               </div>
               {/* Image */}
               {settings.HERO_2_IMAGE ? (
-                <img src={settings.HERO_2_IMAGE} alt="Hero 2" className="absolute -right-4 top-1/2 -translate-y-1/2 w-1/2 object-contain group-hover:scale-105 transition-transform duration-500" />
+                <img src={settings.HERO_2_IMAGE} alt="Hero 2" className="absolute -right-4 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
               ) : (
-                <div className="absolute -right-8 top-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-8 border-gray-200 bg-white shadow-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
-                   <div className="text-center font-bold text-3xl">12<br/>9 3<br/>6</div>
+                <div className="absolute -right-12 sm:-right-8 top-1/2 -translate-y-1/2 w-40 h-40 sm:w-48 sm:h-48 rounded-full border-8 border-gray-200 bg-white shadow-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500 z-10">
+                   <div className="text-center font-bold text-2xl sm:text-3xl">12<br/>9 3<br/>6</div>
                 </div>
               )}
             </div>
 
             {/* Right Top Banner (Speaker) */}
             <div 
-              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center border border-gray-100 group"
+              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center border border-gray-100 group min-h-[300px]"
               style={{
                 backgroundColor: settings.HERO_3_BG_COLOR || undefined,
                 backgroundImage: settings.HERO_3_BG_IMAGE ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
@@ -114,7 +114,7 @@ export default async function Hero({ config }: { config?: any }) {
                 backgroundPosition: 'center',
               }}
             >
-              <div className="z-10 w-2/3">
+              <div className="z-20 w-[65%] sm:w-2/3">
                 <span className="text-red-500 font-bold text-sm tracking-wider uppercase mb-2 block">
                   {settings.HERO_3_SUBTITLE || 'New Product'}
                 </span>
@@ -134,10 +134,10 @@ export default async function Hero({ config }: { config?: any }) {
               </div>
               {/* Image */}
               {settings.HERO_3_IMAGE ? (
-                <img src={settings.HERO_3_IMAGE} alt="Hero 3" className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 object-contain group-hover:scale-105 transition-transform duration-500" />
+                <img src={settings.HERO_3_IMAGE} alt="Hero 3" className="absolute right-0 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
               ) : (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-40 h-40 bg-zinc-800 rounded-3xl translate-x-4 shadow-2xl flex items-center justify-center group-hover:-translate-x-2 transition-transform duration-500">
-                   <span className="text-zinc-600 font-bold text-2xl -rotate-90">XBOOM</span>
+                <div className="absolute -right-4 sm:right-0 top-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40 bg-zinc-800 rounded-3xl sm:translate-x-4 shadow-2xl flex items-center justify-center group-hover:-translate-x-2 transition-transform duration-500 z-10">
+                   <span className="text-zinc-600 font-bold text-xl sm:text-2xl -rotate-90">XBOOM</span>
                 </div>
               )}
             </div>
@@ -146,7 +146,7 @@ export default async function Hero({ config }: { config?: any }) {
 
           {/* Bottom Row Banner (Headphones) */}
           <div 
-            className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-8 flex flex-col justify-center h-full lg:h-[50%] border border-gray-100 group"
+            className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center h-full lg:h-[50%] min-h-[300px] border border-gray-100 group mt-6 lg:mt-0"
             style={{
               backgroundColor: settings.HERO_4_BG_COLOR || undefined,
               backgroundImage: settings.HERO_4_BG_IMAGE ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,
@@ -154,7 +154,7 @@ export default async function Hero({ config }: { config?: any }) {
               backgroundPosition: 'center',
             }}
           >
-            <div className="z-10 w-1/2 lg:pl-4">
+            <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line" style={settings.HERO_4_TEXT_COLOR ? { color: settings.HERO_4_TEXT_COLOR } : undefined}>
                 {settings.HERO_4_TITLE || 'Headphones Listen With\nHeart'}
               </h2>
@@ -174,9 +174,9 @@ export default async function Hero({ config }: { config?: any }) {
             </div>
              {/* Image */}
              {settings.HERO_4_IMAGE ? (
-                <img src={settings.HERO_4_IMAGE} alt="Hero 4" className="absolute right-4 md:right-16 bottom-0 max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-0" />
+                <img src={settings.HERO_4_IMAGE} alt="Hero 4" className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" />
              ) : (
-                <div className="absolute right-4 md:right-16 -bottom-10 w-64 h-64 transition-transform duration-500 group-hover:-translate-y-4">
+                <div className="absolute -right-10 sm:right-4 md:right-16 -bottom-10 w-56 h-56 sm:w-64 sm:h-64 transition-transform duration-500 group-hover:-translate-y-4 z-10 scale-75 sm:scale-100 origin-bottom-right">
                   <div className="absolute inset-x-8 top-0 h-32 border-[12px] border-red-500 rounded-t-[4rem] border-b-0"></div>
                   <div className="absolute bottom-8 left-4 w-20 h-28 bg-pink-300 rounded-[2rem] shadow-lg rotate-12"></div>
                   <div className="absolute bottom-8 right-4 w-20 h-28 bg-pink-300 rounded-[2rem] shadow-lg -rotate-12"></div>

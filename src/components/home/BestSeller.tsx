@@ -14,19 +14,18 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string }) => (
   <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
-    <div className="border border-gray-100 rounded-xl mb-3 aspect-square flex items-center justify-center p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
+    <div className="border border-gray-100 rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       ) : (
-        <div className="text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
+        <div className="text-3xl sm:text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
       )}
     </div>
-    <h3 className="text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
+    <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
       {title}
     </h3>
-    <Price amount={price} className="text-sm font-bold text-gray-900 mt-auto" />
+    <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900 mt-auto" />
   </Link>
 );
 
@@ -118,7 +117,7 @@ export default async function BestSeller({ config }: { config?: any }) {
         </div>
 
         {/* Column 2: 2x2 Small Cards */}
-        <div className="col-span-1 grid grid-cols-2 grid-rows-2 gap-4">
+        <div className="col-span-1 grid grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
           {[0, 1, 2, 3].map((i) => {
             const p = smallProductsGroup1[i];
             return (
@@ -149,7 +148,7 @@ export default async function BestSeller({ config }: { config?: any }) {
         </div>
 
         {/* Column 4: 2x2 Small Cards */}
-        <div className="col-span-1 grid grid-cols-2 grid-rows-2 gap-4">
+        <div className="col-span-1 grid grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
           {[0, 1, 2, 3].map((i) => {
             const p = smallProductsGroup2[i];
             return (

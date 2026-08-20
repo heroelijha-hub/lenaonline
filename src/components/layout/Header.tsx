@@ -48,6 +48,7 @@ export default function Header({
   const wishlistItems = useWishlistStore((state) => state.items.length);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -91,7 +92,19 @@ export default function Header({
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    
+    // Close mobile menu on resize to desktop
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Debounced Search Effect
@@ -166,20 +179,20 @@ export default function Header({
       </div>
 
       {/* Middle Bar */}
-      <div className="py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-6">
+      <div className="py-3 md:py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-4 md:gap-6">
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Shopelios Logo" className="h-20 sm:h-24 md:h-28 object-contain scale-[1.75] origin-left ml-4" />
+              <img src={logoImage} alt="Shopelios Logo" className="h-16 sm:h-20 md:h-28 object-contain scale-100 md:scale-[1.75] origin-left md:ml-4" />
             ) : (
-              <span className="text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
+              <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
           </Link>
         </div>
 
         {/* Search Bar & Quick Links */}
-        <div className="flex-1 w-full max-w-3xl flex flex-col relative" ref={searchContainerRef}>
+        <div className="flex-1 w-full max-w-3xl flex flex-col relative order-last lg:order-none" ref={searchContainerRef}>
           <form onSubmit={handleSearchSubmit} className="flex items-center w-full rounded-md overflow-hidden bg-white h-11 relative z-20" style={{ border: `1px solid ${searchBorderColor}` }}>
             <input 
               type="text" 
@@ -298,8 +311,8 @@ export default function Header({
         </div>
 
         {/* Wishlist & Cart */}
-        <div className="flex items-center flex-shrink-0 space-x-4">
-          <button className="p-2 text-gray-700 hover:text-orange-600 transition relative">
+        <div className="flex items-center flex-shrink-0 space-x-2 md:space-x-4">
+          <button className="hidden sm:block p-2 text-gray-700 hover:text-orange-600 transition relative">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
             {mounted && wishlistItems > 0 && (
               <span className="absolute 0 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
@@ -310,18 +323,25 @@ export default function Header({
           
           <div 
             onClick={() => setIsCartDrawerOpen(true)}
-            className="flex items-center bg-orange-50 rounded-md px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition"
+            className="flex items-center bg-orange-50 rounded-md px-3 md:px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition"
           >
-            <div className="relative mr-3">
-              <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <div className="relative mr-2 md:mr-3">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
               {mounted && (
-                <span className="absolute -top-1 -right-2 bg-emerald-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                <span className="absolute -top-1 -right-2 bg-emerald-600 text-white text-[10px] md:text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
                   {cartItems}
                 </span>
               )}
             </div>
-            <span className="font-bold text-gray-900 ml-2">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
+            <span className="font-bold text-gray-900 text-sm md:text-base ml-1 md:ml-2">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
           </div>
+
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-gray-700 hover:text-orange-600 transition"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
         </div>
       </div>
 
@@ -393,6 +413,39 @@ export default function Header({
 
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-4 shadow-sm w-full absolute z-40 left-0 right-0">
+          <div className="flex flex-col space-y-3">
+            {menuLinks.map((link, idx) => (
+              <Link 
+                key={idx} 
+                href={link.url} 
+                className="block font-semibold text-gray-800 hover:text-orange-600"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="pt-3 border-t border-gray-100 flex flex-col space-y-3">
+            <Link href="/new" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>New</Link>
+            <Link href="/hot" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Hot</Link>
+            <Link href="/sale" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Sale</Link>
+            {topBarLinks.map((link, idx) => (
+              <Link key={`top-${idx}`} href={link.url} className="font-semibold text-gray-800 flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="mr-2 text-gray-500">{renderIcon(link.icon)}</span>
+                {link.label}
+              </Link>
+            ))}
+            <button onClick={() => { setIsMobileMenuOpen(false); setIsLoginModalOpen(true); }} className="text-left font-semibold text-gray-800 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+              Login
+            </button>
+          </div>
+        </div>
+      )}
 
       <LoginModal 
         isOpen={isLoginModalOpen} 

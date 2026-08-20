@@ -1,0 +1,107 @@
+'use server';
+
+import { revalidatePath } from 'next/cache';
+import prisma from '@/lib/prisma';
+
+export async function getPages() {
+  try {
+    const pages = await prisma.page.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    return { success: true, data: pages };
+  } catch (error: any) {
+    console.error("Error fetching pages:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getPage(id: string) {
+  try {
+    const page = await prisma.page.findUnique({
+      where: { id }
+    });
+    if (!page) throw new Error("Page introuvable");
+    return { success: true, data: page };
+  } catch (error: any) {
+    console.error("Error fetching page:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getPageBySlug(slug: string) {
+  try {
+    const page = await prisma.page.findUnique({
+      where: { slug }
+    });
+    if (!page) return { success: true, data: null };
+    return { success: true, data: page };
+  } catch (error: any) {
+    console.error("Error fetching page by slug:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function createPage(data: {
+  title: string;
+  slug: string;
+  desktopContent?: string;
+  mobileContent?: string;
+  isPublished?: boolean;
+}) {
+  try {
+    const newPage = await prisma.page.create({
+      data: {
+        title: data.title,
+        slug: data.slug,
+        desktopContent: data.desktopContent || '',
+        mobileContent: data.mobileContent || '',
+        isPublished: data.isPublished || false,
+      }
+    });
+    revalidatePath('/admin/pages');
+    revalidatePath(`/${data.slug}`);
+    return { success: true, data: newPage };
+  } catch (error: any) {
+    console.error("Error creating page:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updatePage(id: string, data: {
+  title?: string;
+  slug?: string;
+  desktopContent?: string;
+  mobileContent?: string;
+  isPublished?: boolean;
+}) {
+  try {
+    const page = await prisma.page.update({
+      where: { id },
+      data
+    });
+    revalidatePath('/admin/pages');
+    if (page.slug) {
+      revalidatePath(`/${page.slug}`);
+    }
+    return { success: true, data: page };
+  } catch (error: any) {
+    console.error("Error updating page:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deletePage(id: string) {
+  try {
+    const page = await prisma.page.delete({
+      where: { id }
+    });
+    revalidatePath('/admin/pages');
+    if (page.slug) {
+      revalidatePath(`/${page.slug}`);
+    }
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error deleting page:", error);
+    return { success: false, error: error.message };
+  }
+}

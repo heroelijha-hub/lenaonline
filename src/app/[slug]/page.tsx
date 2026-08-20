@@ -1,0 +1,56 @@
+import { notFound } from 'next/navigation';
+import { getPageBySlug } from '@/actions/pages';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const { data: page } = await getPageBySlug(params.slug);
+  
+  if (!page || !page.isPublished) {
+    return {
+      title: 'Page introuvable - Shopelios',
+    };
+  }
+
+  return {
+    title: `${page.title} - Shopelios`,
+  };
+}
+
+export default async function CustomPage({ params }: { params: { slug: string } }) {
+  const { data: page, success } = await getPageBySlug(params.slug);
+
+  if (!success || !page || !page.isPublished) {
+    notFound();
+  }
+
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header />
+      
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8">
+        {/* En-tête basique de page si nécessaire, ou on laisse le contenu libre */}
+        <h1 className="text-3xl font-bold text-gray-900 mb-8 border-b pb-4">{page.title}</h1>
+        
+        {/* Container for the custom page */}
+        <div className="w-full">
+          {/* Desktop Content */}
+          <div 
+            className="hidden md:block w-full prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: page.desktopContent || '' }}
+          />
+          
+          {/* Mobile Content */}
+          <div 
+            className="block md:hidden w-full prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: page.mobileContent || (page.desktopContent || '') }}
+          />
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

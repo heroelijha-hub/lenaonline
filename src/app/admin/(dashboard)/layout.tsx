@@ -57,6 +57,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin/blogs" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
               Blog
             </Link>
+            <Link href="/admin/pages" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
+              Pages
+            </Link>
             <Link href="/admin/settings" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
               Paramètres
             </Link>
