@@ -38,6 +38,9 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [smtpFrom, setSmtpFrom] = useState(initialSettings.SMTP_FROM || '');
 
   // Payment Settings
+  const [enableStripe, setEnableStripe] = useState(initialSettings.ENABLE_STRIPE !== 'false');
+  const [enablePaypal, setEnablePaypal] = useState(initialSettings.ENABLE_PAYPAL !== 'false');
+  const [enableBankTransfer, setEnableBankTransfer] = useState(initialSettings.ENABLE_BANK_TRANSFER !== 'false');
   const [stripePublicKey, setStripePublicKey] = useState(initialSettings.STRIPE_PUBLIC_KEY || '');
   const [stripeSecretKey, setStripeSecretKey] = useState(initialSettings.STRIPE_SECRET_KEY || '');
   const [paypalClientId, setPaypalClientId] = useState(initialSettings.PAYPAL_CLIENT_ID || '');
@@ -213,6 +216,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     await updateSetting('SMTP_USER', smtpUser);
     await updateSetting('SMTP_PASS', smtpPass);
     await updateSetting('SMTP_FROM', smtpFrom);
+    
+    await updateSetting('ENABLE_STRIPE', enableStripe.toString());
+    await updateSetting('ENABLE_PAYPAL', enablePaypal.toString());
+    await updateSetting('ENABLE_BANK_TRANSFER', enableBankTransfer.toString());
     
     await updateSetting('STRIPE_PUBLIC_KEY', stripePublicKey);
     await updateSetting('STRIPE_SECRET_KEY', stripeSecretKey);
@@ -499,10 +506,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">Paiements (Stripe, PayPal & Virement)</h3>
-        <p className="text-sm text-gray-500 mb-4">Laissez vide si vous ne souhaitez pas activer une méthode de paiement spécifique.</p>
+        <p className="text-sm text-gray-500 mb-4">Cochez "Activer ce mode" pour rendre la méthode de paiement visible lors du passage en caisse.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
-          <div className="md:col-span-2">
-            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration Stripe (Cartes Bancaires)</h4>
+          <div className="md:col-span-2 flex items-center justify-between border-b pb-2 mb-4">
+            <h4 className="text-md font-bold text-gray-900">Configuration Stripe (Cartes Bancaires)</h4>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={enableStripe} onChange={(e) => setEnableStripe(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
+              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+            </label>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Clé Publique (Publishable Key)</label>
@@ -525,8 +536,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
 
-          <div className="md:col-span-2 mt-4">
-            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration PayPal</h4>
+          <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
+            <h4 className="text-md font-bold text-gray-900">Configuration PayPal</h4>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={enablePaypal} onChange={(e) => setEnablePaypal(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
+              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+            </label>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Client ID PayPal</label>
@@ -549,8 +564,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
 
-          <div className="md:col-span-2 mt-4">
-            <h4 className="text-md font-bold text-gray-900 border-b pb-2 mb-4">Configuration Virement Bancaire</h4>
+          <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
+            <h4 className="text-md font-bold text-gray-900">Configuration Virement Bancaire</h4>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={enableBankTransfer} onChange={(e) => setEnableBankTransfer(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
+              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+            </label>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">IBAN</label>
