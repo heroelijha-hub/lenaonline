@@ -11,6 +11,7 @@ import { searchProducts } from '@/actions/public';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import MobileSidebar from '@/components/layout/MobileSidebar';
 import MobileSearchOverlay from '@/components/layout/MobileSearchOverlay';
+import NotificationBell from '@/components/layout/NotificationBell';
 
 type HeaderProps = {
   announcement?: string;
@@ -344,8 +345,10 @@ export default function Header({
           )}
         </div>
 
-        {/* Wishlist & Cart */}
+        {/* Notifications, Wishlist & Cart */}
         <div className="flex items-center flex-shrink-0 space-x-2 md:space-x-4">
+          <NotificationBell isAdmin={false} />
+          
           <button 
             onClick={() => router.push('/wishlist')}
             className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"

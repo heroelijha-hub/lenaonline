@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
+import NotificationBell from '@/components/layout/NotificationBell';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   // 1. Check if an admin exists in the database
@@ -74,9 +75,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <main className="flex-1 flex flex-col">
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
           <h1 className="text-xl font-semibold text-gray-800">Tableau de bord</h1>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-500 font-medium">{user.email}</span>
-            <form action={async () => {
+          <div className="flex items-center space-x-6">
+            <NotificationBell isAdmin={true} />
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-500 font-medium">{user.email}</span>
+              <form action={async () => {
               'use server';
               const sb = await createClient();
               await sb.auth.signOut({ scope: 'global' });

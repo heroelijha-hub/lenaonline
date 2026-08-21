@@ -132,18 +132,29 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
 
     try {
       const { sendClientOrderConfirmation, sendAdminOrderNotification } = await import('@/lib/mailer');
+      const { createNotification } = await import('@/actions/notification');
+      
       const fullOrder = await prisma.order.findUnique({
         where: { id: order.id },
         include: { orderItems: { include: { product: true } } }
       });
       if (fullOrder) {
+        // Send emails
         sendClientOrderConfirmation(fullOrder, user.email, firstName + ' ' + lastName).catch(e => console.error('Client email failed', e));
         const adminSetting = await prisma.setting.findFirst({ where: { key: 'CONTACT_RECEIVER_EMAIL' } });
         const adminEmail = adminSetting?.value || 'admin@shopelios.com';
         sendAdminOrderNotification(fullOrder, adminEmail, { name: firstName + ' ' + lastName, email: user.email }).catch(e => console.error('Admin email failed', e));
+        
+        // Push notification in-app
+        createNotification({
+          isAdmin: true,
+          type: 'ORDER',
+          message: `Nouvelle commande de ${firstName} ${lastName} (${finalTotal.toFixed(2)}€)`,
+          link: `/admin/orders/${order.id}`,
+        }).catch(e => console.error('Notification failed', e));
       }
     } catch (e) {
-      console.error('Email sending setup failed', e);
+      console.error('Email/Notification sending setup failed', e);
     }
 
     // Handle payment method specific logic
