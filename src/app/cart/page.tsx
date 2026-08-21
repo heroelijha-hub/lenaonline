@@ -32,8 +32,6 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans">
-      <Header />
-      
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-12">
         <div className="flex flex-col lg:flex-row gap-10">
           
@@ -238,8 +236,6 @@ export default function CartPage() {
           
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

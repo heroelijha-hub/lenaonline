@@ -1,7 +1,5 @@
 import { notFound } from 'next/navigation';
 import { getPageBySlug } from '@/actions/pages';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,8 +26,6 @@ export default async function CustomPage({ params }: { params: { slug: string } 
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header />
-      
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8">
         {/* En-tête basique de page si nécessaire, ou on laisse le contenu libre */}
         <h1 className="text-3xl font-bold text-gray-900 mb-8 border-b pb-4">{page.title}</h1>
@@ -49,8 +45,6 @@ export default async function CustomPage({ params }: { params: { slug: string } 
           />
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
