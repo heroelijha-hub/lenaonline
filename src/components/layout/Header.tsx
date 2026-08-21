@@ -178,7 +178,7 @@ export default function Header({
   }
 
   return (
-    <header className="w-full bg-white border-b border-gray-200 font-sans">
+    <header className="w-full bg-white border-b border-gray-300 lg:border-gray-200 shadow-sm lg:shadow-none font-sans relative z-50">
       {/* Top Bar */}
       <div 
         className="hidden md:flex justify-between items-center px-4 py-2 text-sm border-b border-gray-100 max-w-7xl mx-auto w-full transition-colors"
