@@ -150,8 +150,10 @@ enum ChatSender {
 }
 
 model ChatSession {
-  id        String            @id @default(uuid()) @db.Uuid
-  guestId   String            // Can be a session/localstorage UUID for unauthenticated users
+  id         String            @id @default(uuid()) @db.Uuid
+  guestId    String            // Can be a session/localstorage UUID for unauthenticated users
+  guestName  String?
+  guestEmail String?
   status    ChatSessionStatus @default(OPEN)
   messages  ChatMessage[]
   createdAt DateTime          @default(now())

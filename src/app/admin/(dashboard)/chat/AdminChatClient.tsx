@@ -81,11 +81,16 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
               className={`w-full text-left p-4 border-b border-gray-100 hover:bg-orange-50 transition ${activeSessionId === s.id ? 'bg-orange-100' : ''}`}
             >
               <div className="flex justify-between items-center mb-1">
-                <span className="font-medium text-sm text-gray-900">Guest {s.guestId.substring(0, 6)}</span>
+                <span className="font-medium text-sm text-gray-900">
+                  {s.guestName ? s.guestName : `Guest ${s.guestId.substring(0, 6)}`}
+                </span>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${s.status === 'OPEN' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700'}`}>
                   {s.status}
                 </span>
               </div>
+              {s.guestEmail && (
+                <p className="text-xs text-orange-600 mb-1 truncate">{s.guestEmail}</p>
+              )}
               <p className="text-xs text-gray-500 truncate">
                 {s.messages?.[0]?.content || 'Aucun message'}
               </p>
@@ -102,7 +107,14 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
         {activeSessionId ? (
           <>
             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
-              <h3 className="font-bold text-gray-900">Session ouverte</h3>
+              <div>
+                <h3 className="font-bold text-gray-900">
+                  {sessions.find(s => s.id === activeSessionId)?.guestName || 'Visiteur'}
+                </h3>
+                {sessions.find(s => s.id === activeSessionId)?.guestEmail && (
+                  <p className="text-sm text-gray-500">{sessions.find(s => s.id === activeSessionId)?.guestEmail}</p>
+                )}
+              </div>
               <button onClick={handleClose} className="text-sm text-red-600 hover:text-red-700 font-medium">
                 Fermer la session
               </button>

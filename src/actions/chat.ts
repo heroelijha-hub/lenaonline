@@ -5,7 +5,7 @@ import { ChatSender, ChatSessionStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 // Client actions
-export async function getOrCreateSession(guestId: string) {
+export async function getOrCreateSession(guestId: string, guestName?: string, guestEmail?: string) {
   let session = await prisma.chatSession.findFirst({
     where: { guestId, status: 'OPEN' },
   });
@@ -14,6 +14,8 @@ export async function getOrCreateSession(guestId: string) {
     session = await prisma.chatSession.create({
       data: {
         guestId,
+        guestName,
+        guestEmail,
         status: 'OPEN',
       },
     });

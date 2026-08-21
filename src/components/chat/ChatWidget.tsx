@@ -23,6 +23,9 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [hasRegistered, setHasRegistered] = useState(false);
+  const [guestName, setGuestName] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,22 +37,47 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       localStorage.setItem('chat_guest_id', id);
     }
     
-    // We update state only if it differs, or use a ref if not needed for render
-    // but here we can just update it once
     if (guestId !== id) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setGuestId(id);
     }
 
+    const savedName = localStorage.getItem('chat_guest_name');
+    const savedEmail = localStorage.getItem('chat_guest_email');
+
+    if (savedName && savedEmail) {
+      setHasRegistered(true);
+      setGuestName(savedName);
+      setGuestEmail(savedEmail);
+    }
+
     const initChat = async () => {
-      const session = await getOrCreateSession(id as string);
+      const session = await getOrCreateSession(id as string, savedName || undefined, savedEmail || undefined);
       setSessionId(session.id);
       const msgs = await getSessionMessages(session.id);
       setMessages(msgs);
     };
 
-    initChat();
+    if (savedName && savedEmail) {
+      initChat();
+    }
   }, [enabled, guestId]);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guestName.trim() || !guestEmail.trim()) return;
+    
+    localStorage.setItem('chat_guest_name', guestName);
+    localStorage.setItem('chat_guest_email', guestEmail);
+    setHasRegistered(true);
+    
+    if (guestId) {
+      const session = await getOrCreateSession(guestId, guestName, guestEmail);
+      setSessionId(session.id);
+      const msgs = await getSessionMessages(session.id);
+      setMessages(msgs);
+    }
+  };
 
   // Polling for new messages when open
   useEffect(() => {
@@ -123,50 +151,84 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
             </button>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
-            {messages.length === 0 && (
-              <div className="text-center text-gray-500 text-sm mt-8">
-                Envoyez-nous un message et nous vous répondrons dès que possible !
-              </div>
-            )}
-            {messages.map((msg) => {
-              const isCustomer = msg.sender === ChatSender.CUSTOMER;
-              return (
-                <div key={msg.id} className={`flex flex-col ${isCustomer ? 'items-end' : 'items-start'}`}>
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
-                    isCustomer ? 'bg-orange-600 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
-                  }`}>
-                    {msg.content}
+          {/* Body */}
+          {!hasRegistered ? (
+            <div className="flex-1 p-6 bg-gray-50 flex flex-col justify-center">
+              <h4 className="font-bold text-gray-800 mb-2">Bienvenue !</h4>
+              <p className="text-sm text-gray-600 mb-4">Veuillez renseigner votre nom et adresse e-mail pour démarrer la conversation.</p>
+              <form onSubmit={handleRegister} className="flex flex-col gap-3">
+                <input
+                  type="text"
+                  required
+                  placeholder="Votre nom"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 text-sm"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Votre e-mail"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 text-sm"
+                />
+                <button
+                  type="submit"
+                  className="w-full bg-orange-600 text-white font-semibold py-2 rounded-md hover:bg-orange-700 transition mt-2"
+                >
+                  Démarrer le chat
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
+                {messages.length === 0 && (
+                  <div className="text-center text-gray-500 text-sm mt-8">
+                    Envoyez-nous un message et nous vous répondrons dès que possible !
                   </div>
-                  <span className="text-[10px] text-gray-400 mt-1 px-1">
-                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-              );
-            })}
-            <div ref={messagesEndRef} />
-          </div>
+                )}
+                {messages.map((msg) => {
+                  const isCustomer = msg.sender === ChatSender.CUSTOMER;
+                  return (
+                    <div key={msg.id} className={`flex flex-col ${isCustomer ? 'items-end' : 'items-start'}`}>
+                      <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                        isCustomer ? 'bg-orange-600 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
+                      }`}>
+                        {msg.content}
+                      </div>
+                      <span className="text-[10px] text-gray-400 mt-1 px-1">
+                        {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  );
+                })}
+                <div ref={messagesEndRef} />
+              </div>
 
-          {/* Input */}
-          <div className="p-3 bg-white border-t border-gray-100">
-            <form onSubmit={handleSend} className="flex items-center gap-2">
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Votre message..."
-                className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              <button
-                type="submit"
-                disabled={!newMessage.trim()}
-                className="bg-orange-600 text-white p-2 rounded-full hover:bg-orange-700 disabled:opacity-50 disabled:hover:bg-orange-600 transition"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-              </button>
-            </form>
-          </div>
+              {/* Input */}
+              <div className="p-3 bg-white border-t border-gray-100">
+                <form onSubmit={handleSend} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Votre message..."
+                    className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!newMessage.trim()}
+                    className="bg-orange-600 text-white p-2 rounded-full hover:bg-orange-700 disabled:opacity-50 disabled:hover:bg-orange-600 transition flex items-center justify-center"
+                  >
+                    <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                  </button>
+                </form>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
