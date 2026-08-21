@@ -89,6 +89,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 Se déconnecter
               </button>
             </form>
+            </div>
           </div>
         </header>
         <div className="flex-1 p-8 overflow-auto">
