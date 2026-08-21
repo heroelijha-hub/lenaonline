@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import Price from '@/components/Price';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
+import QuickViewModal from '@/components/product/QuickViewModal';
+import { useState } from 'react';
 
 type ProductGridCardProps = {
   product: any;
@@ -23,6 +25,7 @@ export default function ProductGridCard({
   const router = useRouter();
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const isWishlisted = wishlistStore.hasItem(product.id);
   const image = product.images && product.images.length > 0 ? product.images[0] : '';
 
@@ -49,7 +52,7 @@ export default function ProductGridCard({
   const handleQuickView = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    router.push(`/product/${product.slug}`);
+    setIsQuickViewOpen(true);
   };
 
   const navigateToProduct = () => {
@@ -204,6 +207,12 @@ export default function ProductGridCard({
           </div>
         )}
       </div>
+
+      <QuickViewModal 
+        isOpen={isQuickViewOpen} 
+        onClose={() => setIsQuickViewOpen(false)} 
+        product={product} 
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Price from '@/components/Price';
+import QuickViewModal from '@/components/product/QuickViewModal';
 
 interface ProductCardProps {
   product: {
@@ -49,50 +50,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
     wishlistStore.toggleItem(product.id);
   };
 
-  const QuickViewModal = () => (
-    isQuickViewOpen ? (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" onClick={(e) => { e.preventDefault(); setIsQuickViewOpen(false); }}>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div 
-          className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row z-10" 
-          onClick={e => e.stopPropagation()}
-        >
-          <button onClick={() => setIsQuickViewOpen(false)} className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full transition">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
-          
-          <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8">
-            {image ? (
-              <img src={image} alt={product.title} className="w-full h-full object-contain max-h-[50vh] md:max-h-full" />
-            ) : (
-              <div className="text-8xl text-gray-200">🛍️</div>
-            )}
-          </div>
-          
-          <div className="w-full md:w-1/2 p-8 flex flex-col">
-            <span className="text-sm text-gray-500 mb-2 uppercase tracking-wide font-medium">{product.category?.name || 'Général'}</span>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">{product.title}</h2>
-            <div className="flex items-center gap-3 mb-6">
-              {product.compareAtPrice && <span className="text-lg text-gray-400 line-through"><Price amount={product.compareAtPrice} /></span>}
-              <span className="text-3xl font-bold text-gray-900"><Price amount={product.price} /></span>
-            </div>
-            
-            <p className="text-gray-600 mb-8 flex-grow">Découvrez cet article exceptionnel, conçu pour répondre à vos attentes. Profitez de notre livraison rapide et de notre garantie satisfaction.</p>
-            
-            <div className="flex gap-4 mt-auto">
-              <button onClick={handleAddToCart} className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg shadow-orange-500/30 flex justify-center items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                Ajouter au panier
-              </button>
-              <Link href={`/product/${product.slug}`} className="px-6 py-3 border-2 border-gray-200 hover:border-gray-900 text-gray-900 font-bold rounded-lg transition flex items-center justify-center">
-                Détails
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    ) : null
-  );
+
 
   const HoverActions = () => (
     <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 z-20">
@@ -175,7 +133,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
             </span>
           </div>
         </div>
-        <QuickViewModal />
+        <QuickViewModal isOpen={isQuickViewOpen} onClose={() => setIsQuickViewOpen(false)} product={product} />
       </div>
     );
   }
@@ -233,7 +191,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
           </span>
         </div>
       </div>
-      <QuickViewModal />
+      <QuickViewModal isOpen={isQuickViewOpen} onClose={() => setIsQuickViewOpen(false)} product={product} />
     </div>
   );
 }
