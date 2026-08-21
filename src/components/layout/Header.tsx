@@ -374,7 +374,7 @@ export default function Header({
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-100">
+      <div className="hidden lg:block border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 w-full flex items-center justify-between h-14">
           
           <div className="flex items-center h-full space-x-8">
