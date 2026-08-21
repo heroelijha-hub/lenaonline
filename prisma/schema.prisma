@@ -166,7 +166,26 @@ model ChatMessage {
   session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sender    ChatSender
   content   String      @db.Text
+  isRead    Boolean     @default(false)
   createdAt DateTime    @default(now())
+}
+
+enum NotificationType {
+  CHAT
+  ORDER
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String?          @db.Uuid // Nullable if it's for an admin or unauthenticated guest
+  guestId   String?          // To track notifications for unauthenticated users
+  isAdmin   Boolean          @default(false) // True if this notification is for the admin dashboard
+  type      NotificationType @default(SYSTEM)
+  message   String           @db.Text
+  link      String?          // Optional URL to redirect to when clicked
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
 }
 
 model ShippingZone {
