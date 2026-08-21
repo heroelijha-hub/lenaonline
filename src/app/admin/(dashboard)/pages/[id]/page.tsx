@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import { getPage, createPage, updatePage } from '@/actions/pages';
 
-export default function AdminPageForm({ params }: { params: { id: string } }) {
+export default function AdminPageForm() {
   const router = useRouter();
-  const isNew = params.id === 'new';
+  const params = useParams();
+  const id = params.id as string;
+  const isNew = id === 'new';
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -27,7 +29,7 @@ export default function AdminPageForm({ params }: { params: { id: string } }) {
       return;
     }
     
-    getPage(params.id).then((res) => {
+    getPage(id).then((res) => {
       if (res.success && res.data) {
         setFormData({
           title: res.data.title,
@@ -41,7 +43,7 @@ export default function AdminPageForm({ params }: { params: { id: string } }) {
       }
       setLoading(false);
     });
-  }, [params.id, isNew]);
+  }, [id, isNew]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +54,7 @@ export default function AdminPageForm({ params }: { params: { id: string } }) {
     if (isNew) {
       res = await createPage(formData);
     } else {
-      res = await updatePage(params.id, formData);
+      res = await updatePage(id, formData);
     }
     
     setSaving(false);
