@@ -68,3 +68,16 @@ export async function searchProducts(query: string, categoryId?: string, limit: 
     take: limit,
   });
 }
+
+export async function getProductsByIds(ids: string[]) {
+  if (!ids || ids.length === 0) return [];
+  
+  return await prisma.product.findMany({
+    where: {
+      id: {
+        in: ids
+      }
+    },
+    include: { category: true }
+  });
+}
