@@ -8,6 +8,9 @@ import { useEffect, useState, useRef } from 'react';
 import LoginModal from '@/components/auth/LoginModal';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { searchProducts } from '@/actions/public';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
+import MobileSidebar from '@/components/layout/MobileSidebar';
+import MobileSearchOverlay from '@/components/layout/MobileSearchOverlay';
 
 type HeaderProps = {
   announcement?: string;
@@ -25,6 +28,13 @@ type HeaderProps = {
   showNew?: boolean;
   showHot?: boolean;
   showSale?: boolean;
+  mobileAboutTitle?: string;
+  mobileAboutDesc?: string;
+  mobileMenuLinks?: Array<{ label: string, url: string }>;
+  mobileContactAddress?: string;
+  mobileContactPhone?: string;
+  mobileContactEmail?: string;
+  mobileContactWebsite?: string;
 };
 
 export default function Header({ 
@@ -46,6 +56,13 @@ export default function Header({
   showNew = true,
   showHot = true,
   showSale = true,
+  mobileAboutTitle = '',
+  mobileAboutDesc = '',
+  mobileMenuLinks = [],
+  mobileContactAddress = '',
+  mobileContactPhone = '',
+  mobileContactEmail = '',
+  mobileContactWebsite = '',
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -55,6 +72,7 @@ export default function Header({
   const wishlistItems = useWishlistStore((state) => state.items.length);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -198,7 +216,7 @@ export default function Header({
         </div>
 
         {/* Search Bar & Quick Links */}
-        <div className="flex-1 w-full max-w-3xl flex flex-col relative order-last lg:order-none" ref={searchContainerRef}>
+        <div className="hidden lg:flex flex-1 w-full max-w-3xl flex-col relative order-last lg:order-none" ref={searchContainerRef}>
           <form onSubmit={handleSearchSubmit} className="flex items-center w-full rounded-md overflow-hidden bg-white h-11 relative z-20" style={{ border: `1px solid ${searchBorderColor}` }}>
             <input 
               type="text" 
@@ -320,7 +338,7 @@ export default function Header({
         <div className="flex items-center flex-shrink-0 space-x-2 md:space-x-4">
           <button 
             onClick={() => router.push('/wishlist')}
-            className="hidden sm:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
+            className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
             title="Mes favoris"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -429,38 +447,7 @@ export default function Header({
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-4 shadow-sm w-full absolute z-40 left-0 right-0">
-          <div className="flex flex-col space-y-3">
-            {menuLinks.map((link, idx) => (
-              <Link 
-                key={idx} 
-                href={link.url} 
-                className="block font-semibold text-gray-800 hover:text-orange-600"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="pt-3 border-t border-gray-100 flex flex-col space-y-3">
-            {showNew && <Link href="/new" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>New</Link>}
-            {showHot && <Link href="/hot" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Hot</Link>}
-            {showSale && <Link href="/sale" className="font-semibold text-gray-800" onClick={() => setIsMobileMenuOpen(false)}>Sale</Link>}
-            {topBarLinks.map((link, idx) => (
-              <Link key={`top-${idx}`} href={link.url} className="font-semibold text-gray-800 flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
-                <span className="mr-2 text-gray-500">{renderIcon(link.icon)}</span>
-                {link.label}
-              </Link>
-            ))}
-            <button onClick={() => { setIsMobileMenuOpen(false); setIsLoginModalOpen(true); }} className="text-left font-semibold text-gray-800 flex items-center">
-              <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Login
-            </button>
-          </div>
-        </div>
-      )}
+
 
       <LoginModal 
         isOpen={isLoginModalOpen} 
@@ -470,6 +457,30 @@ export default function Header({
       <CartDrawer 
         isOpen={cartStore.isOpen}
         onClose={() => cartStore.setIsOpen(false)}
+      />
+
+      <MobileBottomNav 
+        onSearchClick={() => setIsMobileSearchOpen(true)}
+        onLoginClick={() => setIsLoginModalOpen(true)}
+      />
+
+      <MobileSearchOverlay 
+        isOpen={isMobileSearchOpen}
+        onClose={() => setIsMobileSearchOpen(false)}
+        placeholder={searchPlaceholder}
+      />
+
+      <MobileSidebar 
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        logoImage={logoImage}
+        aboutTitle={mobileAboutTitle}
+        aboutDesc={mobileAboutDesc}
+        menuLinks={mobileMenuLinks}
+        contactAddress={mobileContactAddress}
+        contactPhone={mobileContactPhone}
+        contactEmail={mobileContactEmail}
+        contactWebsite={mobileContactWebsite}
       />
     </header>
   );

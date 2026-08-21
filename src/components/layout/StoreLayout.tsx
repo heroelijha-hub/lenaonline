@@ -41,6 +41,13 @@ type StoreLayoutProps = {
     showNew?: boolean;
     showHot?: boolean;
     showSale?: boolean;
+    mobileAboutTitle?: string;
+    mobileAboutDesc?: string;
+    mobileMenuLinks?: Array<{ label: string, url: string }>;
+    mobileContactAddress?: string;
+    mobileContactPhone?: string;
+    mobileContactEmail?: string;
+    mobileContactWebsite?: string;
   };
 };
 
@@ -81,6 +88,13 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         showNew={settings.showNew}
         showHot={settings.showHot}
         showSale={settings.showSale}
+        mobileAboutTitle={settings.mobileAboutTitle}
+        mobileAboutDesc={settings.mobileAboutDesc}
+        mobileMenuLinks={settings.mobileMenuLinks}
+        mobileContactAddress={settings.mobileContactAddress}
+        mobileContactPhone={settings.mobileContactPhone}
+        mobileContactEmail={settings.mobileContactEmail}
+        mobileContactWebsite={settings.mobileContactWebsite}
       />
       <main className="flex-grow">
         {children}

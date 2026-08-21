@@ -115,6 +115,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     showNew: newProductsCount > 0,
     showHot: hotProductsCount >= 3,
     showSale: saleProductsCount > 0,
+    mobileAboutTitle: settingsMap.MOBILE_ABOUT_TITLE || 'À propos de nous',
+    mobileAboutDesc: settingsMap.MOBILE_ABOUT_DESC || 'Nous sommes une boutique passionnée par la qualité et l\'excellence.',
+    mobileMenuLinks: (() => {
+      try {
+        return settingsMap.MOBILE_MENU_LINKS ? JSON.parse(settingsMap.MOBILE_MENU_LINKS) : defaultMenuLinks;
+      } catch {
+        return defaultMenuLinks;
+      }
+    })(),
+    mobileContactAddress: settingsMap.MOBILE_CONTACT_ADDRESS || '123 Rue Principale, Paris',
+    mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89',
+    mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com',
+    mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com',
   };
 
   return (

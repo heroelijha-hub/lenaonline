@@ -91,6 +91,21 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     }
   });
 
+  // Mobile Menu Settings
+  const [mobileAboutTitle, setMobileAboutTitle] = useState(initialSettings.MOBILE_ABOUT_TITLE || 'À propos de nous');
+  const [mobileAboutDesc, setMobileAboutDesc] = useState(initialSettings.MOBILE_ABOUT_DESC || 'Nous sommes une boutique passionnée par la qualité et l\'excellence.');
+  const [mobileMenuLinks, setMobileMenuLinks] = useState<Array<{label: string, url: string}>>(() => {
+    try {
+      return initialSettings.MOBILE_MENU_LINKS ? JSON.parse(initialSettings.MOBILE_MENU_LINKS) : defaultMenu;
+    } catch {
+      return defaultMenu;
+    }
+  });
+  const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Rue Principale, Paris');
+  const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
+  const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com');
+  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com');
+
   // Search Bar (Ajax) settings
   const [searchBorderColor, setSearchBorderColor] = useState(initialSettings.SEARCH_BORDER_COLOR || '#d1d5db');
   const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Rechercher un produit...');
@@ -195,6 +210,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['HEADER_SUPPORT_PHONE'] = headerSupportPhone;
     settingsMap['HEADER_SUPPORT_EMAIL'] = headerSupportEmail;
     settingsMap['HEADER_MENU_LINKS'] = JSON.stringify(menuLinks);
+
+    settingsMap['MOBILE_ABOUT_TITLE'] = mobileAboutTitle;
+    settingsMap['MOBILE_ABOUT_DESC'] = mobileAboutDesc;
+    settingsMap['MOBILE_MENU_LINKS'] = JSON.stringify(mobileMenuLinks);
+    settingsMap['MOBILE_CONTACT_ADDRESS'] = mobileContactAddress;
+    settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
+    settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
+    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
 
     settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
     settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
@@ -826,6 +849,105 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             Ajouter un lien
           </button>
         </div>
+        <SectionSaveButton />
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Navigation Mobile (Hamburger)</h3>
+        <p className="text-sm text-gray-500 mb-4">Configurez le menu latéral (Drawer) qui s'ouvre sur téléphone.</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+          <div className="md:col-span-2">
+            <h4 className="font-semibold text-gray-800 mb-2">Section "À propos"</h4>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Titre</label>
+            <input type="text" value={mobileAboutTitle} onChange={e => setMobileAboutTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <textarea value={mobileAboutDesc} onChange={e => setMobileAboutDesc(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <h4 className="font-semibold text-gray-800">Liens du menu mobile</h4>
+          {mobileMenuLinks.map((link, idx) => (
+            <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Nom du lien</label>
+                <input
+                  type="text"
+                  value={link.label}
+                  onChange={(e) => {
+                    const newLinks = [...mobileMenuLinks];
+                    newLinks[idx].label = e.target.value;
+                    setMobileMenuLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <input
+                  type="text"
+                  value={link.url}
+                  onChange={(e) => {
+                    const newLinks = [...mobileMenuLinks];
+                    newLinks[idx].url = e.target.value;
+                    setMobileMenuLinks(newLinks);
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500"
+                />
+              </div>
+              <div className="pt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newLinks = [...mobileMenuLinks];
+                    newLinks.splice(idx, 1);
+                    setMobileMenuLinks(newLinks);
+                  }}
+                  className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
+                  title="Supprimer"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setMobileMenuLinks([...mobileMenuLinks, { label: 'Nouveau Lien', url: '/' }])}
+            className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            Ajouter un lien mobile
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <div className="md:col-span-2">
+            <h4 className="font-semibold text-gray-800 mb-2">Section Contact</h4>
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
+            <input type="text" value={mobileContactAddress} onChange={e => setMobileContactAddress(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+            <input type="text" value={mobileContactPhone} onChange={e => setMobileContactPhone(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input type="text" value={mobileContactEmail} onChange={e => setMobileContactEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Site Web (sans https://)</label>
+            <input type="text" value={mobileContactWebsite} onChange={e => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
+          </div>
+        </div>
+
         <SectionSaveButton />
       </div>
 
