@@ -29,20 +29,24 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
   const { items: cart, getTotalPrice, clearCart } = useCartStore();
   
   const [selectedCountry, setSelectedCountry] = useState(zones.length > 0 ? zones[0].name : '');
-  const activeZone = zones.find(z => z.name === selectedCountry);
+  const [shippingCountry, setShippingCountry] = useState(zones.length > 0 ? zones[0].name : '');
+  const [shipToDifferentAddress, setShipToDifferentAddress] = useState(false);
+
+  const effectiveShippingCountry = shipToDifferentAddress ? shippingCountry : selectedCountry;
+  const activeZone = zones.find(z => z.name === effectiveShippingCountry);
   const activeMethods = activeZone?.methods || [];
 
   const [shippingMethodId, setShippingMethodId] = useState(activeMethods.length > 0 ? activeMethods[0].id : '');
 
   useEffect(() => {
-    const newActiveZone = zones.find(z => z.name === selectedCountry);
+    const newActiveZone = zones.find(z => z.name === effectiveShippingCountry);
     const newMethods = newActiveZone?.methods || [];
     if (newMethods.length > 0) {
       setShippingMethodId(newMethods[0].id);
     } else {
       setShippingMethodId('');
     }
-  }, [selectedCountry, zones]);
+  }, [effectiveShippingCountry, zones]);
   
   const enableBankTransfer = settings.ENABLE_BANK_TRANSFER !== 'false';
   const enableStripe = settings.ENABLE_STRIPE !== 'false';
@@ -226,9 +230,77 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
           </div>
 
           <div className="flex items-center gap-2 pt-4">
-            <input type="checkbox" id="shipToDifferentAddress" name="shipToDifferentAddress" className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500" />
-            <label htmlFor="shipToDifferentAddress" className="text-lg font-bold text-gray-900 cursor-pointer">Expédier à une autre adresse ?</label>
+            <input 
+              type="checkbox" 
+              id="shipToDifferentAddress" 
+              name="shipToDifferentAddress" 
+              checked={shipToDifferentAddress}
+              onChange={(e) => setShipToDifferentAddress(e.target.checked)}
+              className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500" 
+            />
+            <label htmlFor="shipToDifferentAddress" className="text-lg font-bold text-gray-900 cursor-pointer">Expédier à une adresse différente ?</label>
           </div>
+
+          {shipToDifferentAddress && (
+            <div className="space-y-6 mt-4 p-6 border border-gray-200 rounded-lg bg-white">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Prénom(s) <span className="text-red-500">*</span></label>
+                  <input type="text" name="shippingFirstName" placeholder="Prénom(s)" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom de famille <span className="text-red-500">*</span></label>
+                  <input type="text" name="shippingLastName" placeholder="Nom de famille" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nom de l'entreprise <span className="text-red-500">*</span></label>
+                <input type="text" name="shippingCompany" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pays/région <span className="text-red-500">*</span></label>
+                <select 
+                  name="shippingCountry" 
+                  required 
+                  value={shippingCountry}
+                  onChange={(e) => setShippingCountry(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500"
+                >
+                  {zones.map((zone) => (
+                    <option key={zone.name} value={zone.name}>{zone.name}</option>
+                  ))}
+                  {zones.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
+                </select>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Adresse 1 <span className="text-red-500">*</span></label>
+                  <input type="text" name="shippingAddress1" placeholder="Adresse 1" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                </div>
+                <div>
+                  <input type="text" name="shippingAddress2" placeholder="Adresse 2" className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Code postal <span className="text-red-500">*</span></label>
+                <input type="text" name="shippingPostalCode" placeholder="Code postal" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ville <span className="text-red-500">*</span></label>
+                <input type="text" name="shippingCity" placeholder="Ville" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone <span className="text-red-500">*</span></label>
+                <input type="tel" name="shippingPhone" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes de commande (facultatif)</label>

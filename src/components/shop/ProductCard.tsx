@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Price from '@/components/Price';
 
 interface ProductCardProps {
@@ -21,6 +22,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 
 export default function ProductCard({ product, view = 'grid' }: ProductCardProps) {
+  const router = useRouter();
   const image = product.images?.[0] || '';
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const cartStore = useCartStore();
@@ -109,20 +111,27 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
         <svg className="w-5 h-5" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
       </button>
       <button 
-        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-150 shadow-md"
+        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-100 shadow-md"
         title="Ajouter au panier"
         onClick={handleAddToCart}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+      </button>
+      <button 
+        className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-transform transform translate-y-4 group-hover:translate-y-0 duration-300 delay-150 shadow-md"
+        title="Agrandir"
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(`/product/${product.slug}`); }}
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
       </button>
     </div>
   );
 
   if (view === 'list') {
     return (
-      <Link 
-        href={`/product/${product.slug}`} 
-        className="group flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      <div 
+        onClick={() => router.push(`/product/${product.slug}`)}
+        className="group flex flex-col sm:flex-row bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
       >
         <div className="relative h-48 sm:h-auto sm:w-48 flex-shrink-0 bg-gray-50 flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-r border-gray-100 overflow-hidden">
           {product.discountLabel && (
@@ -167,14 +176,14 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
           </div>
         </div>
         <QuickViewModal />
-      </Link>
+      </div>
     );
   }
 
   return (
-    <Link 
-      href={`/product/${product.slug}`} 
-      className="group flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+    <div 
+      onClick={() => router.push(`/product/${product.slug}`)}
+      className="group flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
     >
       {/* Image Container with fixed height and object-contain to prevent overflow/stretching */}
       <div className="relative h-56 w-full bg-gray-50 flex items-center justify-center p-4 overflow-hidden">
@@ -225,6 +234,6 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
         </div>
       </div>
       <QuickViewModal />
-    </Link>
+    </div>
   );
 }

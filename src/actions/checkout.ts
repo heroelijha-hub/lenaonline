@@ -38,6 +38,10 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     const lastName = formData.get('lastName') as string;
     const country = formData.get('country') as string;
     const shippingMethodId = formData.get('shippingMethod') as string;
+    const shipToDifferentAddress = formData.get('shipToDifferentAddress') === 'on';
+    const shippingCountry = formData.get('shippingCountry') as string;
+    
+    const effectiveCountry = shipToDifferentAddress ? shippingCountry : country;
 
     // Validate that shippingMethodId is a valid UUID to prevent Prisma P2023 errors
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -46,7 +50,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     }
 
     const validZone = await prisma.shippingZone.findFirst({
-      where: { name: country, isActive: true },
+      where: { name: effectiveCountry, isActive: true },
       include: { methods: { where: { id: shippingMethodId, isActive: true } } }
     });
 
@@ -78,6 +82,34 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       });
     }
 
+    const orderMetadata = {
+      billing: {
+        firstName,
+        lastName,
+        email,
+        phone: formData.get('phone') as string,
+        address1: formData.get('address1') as string,
+        address2: formData.get('address2') as string,
+        city: formData.get('city') as string,
+        postalCode: formData.get('postalCode') as string,
+        country: country
+      },
+      shipping: shipToDifferentAddress ? {
+        firstName: formData.get('shippingFirstName') as string,
+        lastName: formData.get('shippingLastName') as string,
+        company: formData.get('shippingCompany') as string,
+        phone: formData.get('shippingPhone') as string,
+        address1: formData.get('shippingAddress1') as string,
+        address2: formData.get('shippingAddress2') as string,
+        city: formData.get('shippingCity') as string,
+        postalCode: formData.get('shippingPostalCode') as string,
+        country: shippingCountry
+      } : null,
+      shippingCost: shippingRate,
+      shippingMethodName: validZone.methods[0].type,
+      subTotal: computedCartTotal
+    };
+
     // Create the order
     const order = await prisma.order.create({
       data: {
@@ -93,7 +125,8 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
             variationId: item.variationId || null,
             attributes: item.attributes || null
           }))
-        }
+        },
+        destinationAddress: JSON.stringify(orderMetadata)
       }
     });
 
