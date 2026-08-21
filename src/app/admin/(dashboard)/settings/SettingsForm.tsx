@@ -105,6 +105,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
   const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com');
   const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com');
+  const [mobileHeaderBorderColor, setMobileHeaderBorderColor] = useState(initialSettings.MOBILE_HEADER_BORDER_COLOR || '#d1d5db');
 
   // Search Bar (Ajax) settings
   const [searchBorderColor, setSearchBorderColor] = useState(initialSettings.SEARCH_BORDER_COLOR || '#d1d5db');
@@ -218,6 +219,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
     settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
     settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
+    settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
 
     settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
     settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
@@ -945,6 +947,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Site Web (sans https://)</label>
             <input type="text" value={mobileContactWebsite} onChange={e => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mt-6 mb-6">
+          <div className="md:col-span-2">
+            <h4 className="font-semibold text-gray-800 mb-2">Design</h4>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de bordure (Header Mobile)</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
           </div>
         </div>
 

@@ -176,7 +176,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           </div>
         </div>
         
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2 mb-3">
           <div>
             <label className="block text-xs font-medium mb-1 text-gray-500">Couleur Fond</label>
             <input type="color" value={section.settings[`HERO_${blockNum}_BG_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
@@ -189,6 +189,18 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <label className="block text-xs font-medium mb-1 text-gray-500">Bouton Texte</label>
             <input type="color" value={section.settings[`HERO_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
+        </div>
+        
+        <div className="pt-2 border-t border-gray-100">
+          <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={section.settings[`HERO_${blockNum}_HIDE_MOBILE`] === 'true'} 
+              onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_HIDE_MOBILE`, e.target.checked ? 'true' : 'false')}
+              className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+            />
+            <span className="font-medium text-red-600">Masquer ce bloc sur mobile</span>
+          </label>
         </div>
       </div>
     );

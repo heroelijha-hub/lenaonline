@@ -48,6 +48,7 @@ type StoreLayoutProps = {
     mobileContactPhone?: string;
     mobileContactEmail?: string;
     mobileContactWebsite?: string;
+    mobileHeaderBorderColor?: string;
   };
 };
 
@@ -95,6 +96,7 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         mobileContactPhone={settings.mobileContactPhone}
         mobileContactEmail={settings.mobileContactEmail}
         mobileContactWebsite={settings.mobileContactWebsite}
+        mobileHeaderBorderColor={settings.mobileHeaderBorderColor}
       />
       <main className="flex-grow">
         {children}

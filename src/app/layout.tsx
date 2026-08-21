@@ -128,6 +128,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89',
     mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com',
     mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com',
+    mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
   };
 
   return (

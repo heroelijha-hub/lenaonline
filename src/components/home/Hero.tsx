@@ -15,7 +15,7 @@ export default async function Hero({ config }: { config?: any }) {
         
         {/* Left Tall Banner (Apple iPhone 17 Pro Max) */}
         <div 
-          className="lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-6 sm:p-8 flex flex-col items-center text-center h-full min-h-[450px] lg:min-h-0 border border-gray-100 group"
+          className={`lg:col-span-4 rounded-xl overflow-hidden bg-[#FFF5EE] relative p-6 sm:p-8 flex-col items-center text-center h-full min-h-[450px] lg:min-h-0 border border-gray-100 group ${settings.HERO_1_HIDE_MOBILE === 'true' ? 'hidden lg:flex' : 'flex'}`}
           style={{
             backgroundColor: settings.HERO_1_BG_COLOR || undefined,
             backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
@@ -61,14 +61,14 @@ export default async function Hero({ config }: { config?: any }) {
         </div>
 
         {/* Right Section (Grid of 3 banners) */}
-        <div className="lg:col-span-8 flex flex-col gap-6 h-full">
+        <div className={`lg:col-span-8 flex-col gap-6 h-full ${settings.HERO_2_HIDE_MOBILE === 'true' && settings.HERO_3_HIDE_MOBILE === 'true' && settings.HERO_4_HIDE_MOBILE === 'true' ? 'hidden lg:flex' : 'flex'}`}>
           
           {/* Top Row (Two Banners) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full lg:h-[50%]">
+          <div className={`grid-cols-1 md:grid-cols-2 gap-6 h-full lg:h-[50%] ${settings.HERO_2_HIDE_MOBILE === 'true' && settings.HERO_3_HIDE_MOBILE === 'true' ? 'hidden lg:grid' : 'grid'}`}>
             
             {/* Middle Top Banner (Watches) */}
             <div 
-              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center border border-gray-100 group min-h-[300px]"
+              className={`bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group min-h-[300px] ${settings.HERO_2_HIDE_MOBILE === 'true' ? 'hidden lg:flex' : 'flex'}`}
               style={{
                 backgroundColor: settings.HERO_2_BG_COLOR || undefined,
                 backgroundImage: settings.HERO_2_BG_IMAGE ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
@@ -106,7 +106,7 @@ export default async function Hero({ config }: { config?: any }) {
 
             {/* Right Top Banner (Speaker) */}
             <div 
-              className="bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center border border-gray-100 group min-h-[300px]"
+              className={`bg-[#F8F9FA] rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group min-h-[300px] ${settings.HERO_3_HIDE_MOBILE === 'true' ? 'hidden lg:flex' : 'flex'}`}
               style={{
                 backgroundColor: settings.HERO_3_BG_COLOR || undefined,
                 backgroundImage: settings.HERO_3_BG_IMAGE ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
@@ -146,7 +146,7 @@ export default async function Hero({ config }: { config?: any }) {
 
           {/* Bottom Row Banner (Headphones) */}
           <div 
-            className="bg-[#FFF5EE] rounded-xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-center h-full lg:h-[50%] min-h-[300px] border border-gray-100 group mt-6 lg:mt-0"
+            className={`bg-[#FFF5EE] rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center h-full lg:h-[50%] min-h-[300px] border border-gray-100 group mt-6 lg:mt-0 ${settings.HERO_4_HIDE_MOBILE === 'true' ? 'hidden lg:flex' : 'flex'}`}
             style={{
               backgroundColor: settings.HERO_4_BG_COLOR || undefined,
               backgroundImage: settings.HERO_4_BG_IMAGE ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,

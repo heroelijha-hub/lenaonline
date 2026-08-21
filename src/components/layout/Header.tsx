@@ -35,6 +35,7 @@ type HeaderProps = {
   mobileContactPhone?: string;
   mobileContactEmail?: string;
   mobileContactWebsite?: string;
+  mobileHeaderBorderColor?: string;
 };
 
 export default function Header({ 
@@ -63,6 +64,7 @@ export default function Header({
   mobileContactPhone = '',
   mobileContactEmail = '',
   mobileContactWebsite = '',
+  mobileHeaderBorderColor = '#d1d5db',
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -178,7 +180,15 @@ export default function Header({
   }
 
   return (
-    <header className="w-full bg-white border-b border-gray-300 lg:border-gray-200 shadow-sm lg:shadow-none font-sans relative z-50">
+    <>
+      <style>{`
+        @media (max-width: 1023px) {
+          .mobile-header-border {
+            border-bottom-color: ${mobileHeaderBorderColor} !important;
+          }
+        }
+      `}</style>
+      <header className="mobile-header-border w-full bg-white border-b border-gray-300 lg:border-gray-200 shadow-sm lg:shadow-none font-sans relative z-50">
       {/* Top Bar */}
       <div 
         className="hidden md:flex justify-between items-center px-4 py-2 text-sm border-b border-gray-100 max-w-7xl mx-auto w-full transition-colors"
@@ -483,5 +493,6 @@ export default function Header({
         contactWebsite={mobileContactWebsite}
       />
     </header>
+    </>
   );
 }
