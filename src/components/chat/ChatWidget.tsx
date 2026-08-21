@@ -52,10 +52,16 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     }
 
     const initChat = async () => {
-      const session = await getOrCreateSession(id as string, savedName || undefined, savedEmail || undefined);
-      setSessionId(session.id);
-      const msgs = await getSessionMessages(session.id);
-      setMessages(msgs);
+      try {
+        const session = await getOrCreateSession(id as string, savedName || undefined, savedEmail || undefined);
+        setSessionId(session.id);
+        const msgs = await getSessionMessages(session.id);
+        setMessages(msgs);
+      } catch (err) {
+        console.error("Failed to init chat session:", err);
+        // If it fails (e.g., db schema mismatch), reset so they aren't stuck in an invisible broken state
+        setSessionId(null);
+      }
     };
 
     if (savedName && savedEmail) {
@@ -72,10 +78,16 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     setHasRegistered(true);
     
     if (guestId) {
-      const session = await getOrCreateSession(guestId, guestName, guestEmail);
-      setSessionId(session.id);
-      const msgs = await getSessionMessages(session.id);
-      setMessages(msgs);
+      try {
+        const session = await getOrCreateSession(guestId, guestName, guestEmail);
+        setSessionId(session.id);
+        const msgs = await getSessionMessages(session.id);
+        setMessages(msgs);
+      } catch (err) {
+        console.error("Failed to create session on register:", err);
+        setSessionId(null);
+        alert("Erreur de connexion au chat. Veuillez vérifier que la base de données est à jour.");
+      }
     }
   };
 
