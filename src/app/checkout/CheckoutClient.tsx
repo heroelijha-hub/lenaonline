@@ -13,10 +13,11 @@ interface CheckoutClientProps {
     ENABLE_PAYPAL: string;
     ENABLE_BANK_TRANSFER: string;
     BANK_TRANSFER_CHECKOUT_MESSAGE?: string;
-  }
+  };
+  availableCountries: string[];
 }
 
-export default function CheckoutClient({ settings }: CheckoutClientProps) {
+export default function CheckoutClient({ settings, availableCountries }: CheckoutClientProps) {
   const router = useRouter();
   const { items: cart, getTotalPrice, clearCart } = useCartStore();
   
@@ -159,10 +160,10 @@ export default function CheckoutClient({ settings }: CheckoutClientProps) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Pays/région <span className="text-red-500">*</span></label>
             <select name="country" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500">
-              <option value="Belgique">Belgique</option>
-              <option value="France">France</option>
-              <option value="Suisse">Suisse</option>
-              <option value="Canada">Canada</option>
+              {availableCountries.map((country) => (
+                <option key={country} value={country}>{country}</option>
+              ))}
+              {availableCountries.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
             </select>
           </div>
 

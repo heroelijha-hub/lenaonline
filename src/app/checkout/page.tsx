@@ -1,5 +1,6 @@
 import { getSettings } from '@/actions/settings';
 import CheckoutClient from './CheckoutClient';
+import prisma from '@/lib/prisma';
 
 export default async function CheckoutPage() {
   const settings = await getSettings();
@@ -12,5 +13,11 @@ export default async function CheckoutPage() {
     BANK_TRANSFER_CHECKOUT_MESSAGE: settings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Veuillez effectuer le virement sur le compte ci-dessous.',
   };
 
-  return <CheckoutClient settings={paymentSettings} />;
+  const zones = await prisma.shippingZone.findMany({
+    where: { isActive: true },
+    select: { name: true }
+  });
+  const availableCountries = zones.map(z => z.name);
+
+  return <CheckoutClient settings={paymentSettings} availableCountries={availableCountries} />;
 }

@@ -36,6 +36,16 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     const email = formData.get('email') as string;
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
+    const country = formData.get('country') as string;
+
+    const validZone = await prisma.shippingZone.findFirst({
+      where: { name: country, isActive: true }
+    });
+
+    if (!validZone) {
+      return { error: "Cette zone de livraison n'est pas couverte actuellement." };
+    }
+
     
     // Find or create user
     let user = await prisma.user.findUnique({ where: { email } });
