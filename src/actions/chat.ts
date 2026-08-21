@@ -34,10 +34,30 @@ export async function sendMessage(sessionId: string, sender: ChatSender, content
   });
   
   // Update session updatedAt to bring it to top
-  await prisma.chatSession.update({
+  const updatedSession = await prisma.chatSession.update({
     where: { id: sessionId },
     data: { updatedAt: new Date() },
   });
+
+  // Create notification
+  const { createNotification } = await import('./notification');
+  if (sender === ChatSender.CUSTOMER) {
+    // Notify Admin
+    await createNotification({
+      isAdmin: true,
+      type: 'CHAT',
+      message: `Nouveau message de ${updatedSession.guestName || 'Visiteur'}`,
+      link: '/admin/chat',
+    });
+  } else {
+    // Notify Customer
+    await createNotification({
+      isAdmin: false,
+      guestId: updatedSession.guestId,
+      type: 'CHAT',
+      message: `Nouveau message du support`,
+    });
+  }
 
   revalidatePath('/admin/chat');
   return message;
