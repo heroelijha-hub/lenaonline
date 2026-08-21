@@ -39,6 +39,12 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     const country = formData.get('country') as string;
     const shippingMethodId = formData.get('shippingMethod') as string;
 
+    // Validate that shippingMethodId is a valid UUID to prevent Prisma P2023 errors
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!shippingMethodId || !uuidRegex.test(shippingMethodId)) {
+      return { error: "Méthode de livraison invalide. Veuillez rafraîchir la page." };
+    }
+
     const validZone = await prisma.shippingZone.findFirst({
       where: { name: country, isActive: true },
       include: { methods: { where: { id: shippingMethodId, isActive: true } } }
