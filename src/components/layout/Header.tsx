@@ -318,10 +318,14 @@ export default function Header({
 
         {/* Wishlist & Cart */}
         <div className="flex items-center flex-shrink-0 space-x-2 md:space-x-4">
-          <button className="hidden sm:block p-2 text-gray-700 hover:text-orange-600 transition relative">
+          <button 
+            onClick={() => router.push('/wishlist')}
+            className="hidden sm:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
+            title="Mes favoris"
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
             {mounted && wishlistItems > 0 && (
-              <span className="absolute 0 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+              <span className="absolute -bottom-1 -right-1 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center border-2 border-white shadow-sm">
                 {wishlistItems}
               </span>
             )}
