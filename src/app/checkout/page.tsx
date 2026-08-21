@@ -15,9 +15,8 @@ export default async function CheckoutPage() {
 
   const zones = await prisma.shippingZone.findMany({
     where: { isActive: true },
-    select: { name: true }
+    include: { methods: { where: { isActive: true } } }
   });
-  const availableCountries = zones.map(z => z.name);
 
-  return <CheckoutClient settings={paymentSettings} availableCountries={availableCountries} />;
+  return <CheckoutClient settings={paymentSettings} zones={zones} />;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import Link from 'next/link';
@@ -14,14 +14,35 @@ interface CheckoutClientProps {
     ENABLE_BANK_TRANSFER: string;
     BANK_TRANSFER_CHECKOUT_MESSAGE?: string;
   };
-  availableCountries: string[];
+  zones: Array<{
+    name: string;
+    methods: Array<{
+      id: string;
+      type: string;
+      rate: number;
+    }>;
+  }>;
 }
 
-export default function CheckoutClient({ settings, availableCountries }: CheckoutClientProps) {
+export default function CheckoutClient({ settings, zones }: CheckoutClientProps) {
   const router = useRouter();
   const { items: cart, getTotalPrice, clearCart } = useCartStore();
   
-  const [shippingMethod, setShippingMethod] = useState<'free' | 'standard' | 'express'>('free');
+  const [selectedCountry, setSelectedCountry] = useState(zones.length > 0 ? zones[0].name : '');
+  const activeZone = zones.find(z => z.name === selectedCountry);
+  const activeMethods = activeZone?.methods || [];
+
+  const [shippingMethodId, setShippingMethodId] = useState(activeMethods.length > 0 ? activeMethods[0].id : '');
+
+  useEffect(() => {
+    const newActiveZone = zones.find(z => z.name === selectedCountry);
+    const newMethods = newActiveZone?.methods || [];
+    if (newMethods.length > 0) {
+      setShippingMethodId(newMethods[0].id);
+    } else {
+      setShippingMethodId('');
+    }
+  }, [selectedCountry, zones]);
   
   const enableBankTransfer = settings.ENABLE_BANK_TRANSFER !== 'false';
   const enableStripe = settings.ENABLE_STRIPE !== 'false';
@@ -37,13 +58,6 @@ export default function CheckoutClient({ settings, availableCountries }: Checkou
   const [couponError, setCouponError] = useState('');
   const { formatPrice } = useCurrency();
 
-  // Constants for shipping prices
-  const shippingCosts = {
-    free: 0,
-    standard: 21.87,
-    express: 53.87
-  };
-
   const cartTotal = getTotalPrice();
   
   // Calculate Discount
@@ -56,7 +70,10 @@ export default function CheckoutClient({ settings, availableCountries }: Checkou
     }
   }
 
-  const finalTotal = Math.max(0, cartTotal - discountAmount) + shippingCosts[shippingMethod];
+  const selectedMethod = activeMethods.find(m => m.id === shippingMethodId);
+  const shippingCost = selectedMethod ? selectedMethod.rate : 0;
+
+  const finalTotal = Math.max(0, cartTotal - discountAmount) + shippingCost;
 
   const handleApplyCoupon = async () => {
     setCouponError('');
@@ -159,11 +176,17 @@ export default function CheckoutClient({ settings, availableCountries }: Checkou
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Pays/région <span className="text-red-500">*</span></label>
-            <select name="country" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500">
-              {availableCountries.map((country) => (
-                <option key={country} value={country}>{country}</option>
+            <select 
+              name="country" 
+              required 
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500"
+            >
+              {zones.map((zone) => (
+                <option key={zone.name} value={zone.name}>{zone.name}</option>
               ))}
-              {availableCountries.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
+              {zones.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
             </select>
           </div>
 
@@ -257,18 +280,23 @@ export default function CheckoutClient({ settings, availableCountries }: Checkou
             <div className="border-b border-gray-200 pb-4 mb-4 flex justify-between text-sm text-gray-900">
               <span className="font-bold">Expédition</span>
               <div className="text-right space-y-2">
-                <label className="flex items-center justify-end gap-2 cursor-pointer">
-                  <span className="text-gray-600">Livraison gratuite</span>
-                  <input type="radio" name="shippingMethod" value="free" checked={shippingMethod === 'free'} onChange={() => setShippingMethod('free')} className="text-orange-600 focus:ring-orange-500" />
-                </label>
-                <label className="flex items-center justify-end gap-2 cursor-pointer">
-                  <span className="text-gray-600">Livraison standard: {formatPrice(shippingCosts.standard)}</span>
-                  <input type="radio" name="shippingMethod" value="standard" checked={shippingMethod === 'standard'} onChange={() => setShippingMethod('standard')} className="text-orange-600 focus:ring-orange-500" />
-                </label>
-                <label className="flex items-center justify-end gap-2 cursor-pointer">
-                  <span className="text-gray-600">Livraison expresse: {formatPrice(shippingCosts.express)}</span>
-                  <input type="radio" name="shippingMethod" value="express" checked={shippingMethod === 'express'} onChange={() => setShippingMethod('express')} className="text-orange-600 focus:ring-orange-500" />
-                </label>
+                {activeMethods.length === 0 ? (
+                  <div className="text-gray-500 text-sm">Aucune méthode d'expédition disponible pour ce pays.</div>
+                ) : (
+                  activeMethods.map((method) => (
+                    <label key={method.id} className="flex items-center justify-end gap-2 cursor-pointer">
+                      <span className="text-gray-600">{method.type}: {formatPrice(method.rate)}</span>
+                      <input 
+                        type="radio" 
+                        name="shippingMethod" 
+                        value={method.id} 
+                        checked={shippingMethodId === method.id} 
+                        onChange={() => setShippingMethodId(method.id)} 
+                        className="text-orange-600 focus:ring-orange-500" 
+                      />
+                    </label>
+                  ))
+                )}
               </div>
             </div>
 
