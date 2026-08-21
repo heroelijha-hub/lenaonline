@@ -100,6 +100,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10">
+          <div id="cart-notification-portal"></div>
           <div className="flex flex-col lg:flex-row gap-12">
             
             {/* Left Column: Gallery */}

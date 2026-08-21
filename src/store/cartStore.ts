@@ -20,11 +20,15 @@ interface CartStore {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
+      isOpen: false,
+      setIsOpen: (isOpen) => set({ isOpen }),
       items: [],
       addItem: (item) => {
         const items = get().items;
@@ -53,6 +57,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'shopelios-cart',
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

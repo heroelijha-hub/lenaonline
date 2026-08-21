@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useCurrency } from '@/components/CurrencyProvider';
@@ -26,6 +28,12 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   const router = useRouter();
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
   const { formatPrice } = useCurrency();
+  const [addedItemName, setAddedItemName] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
@@ -68,8 +76,10 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       attributes: currentVariation ? selectedAttributes : undefined,
     });
     
-    // Optional: show a mini toast or alert
-    alert('Produit ajouté au panier !');
+    setAddedItemName(product.title);
+    setTimeout(() => {
+      setAddedItemName(null);
+    }, 5000);
   };
 
   const handleBuyNow = () => {
@@ -92,8 +102,23 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
     router.push('/checkout');
   };
 
+  const notificationPortal = isClient ? document.getElementById('cart-notification-portal') : null;
+
   return (
     <div>
+      {addedItemName && notificationPortal && createPortal(
+        <div className="bg-[#1b8448] text-white px-6 py-4 mb-8 flex flex-col sm:flex-row items-center justify-between shadow-sm rounded-sm">
+          <div className="flex items-center gap-3 text-sm font-medium">
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+            <span>« {addedItemName} » a été ajouté à votre panier.</span>
+          </div>
+          <Link href="/cart" className="mt-4 sm:mt-0 text-xs font-bold tracking-wider hover:underline whitespace-nowrap bg-black/10 hover:bg-black/20 transition-colors px-6 py-3 rounded-sm">
+            VOIR LE PANIER
+          </Link>
+        </div>,
+        notificationPortal
+      )}
+
       {/* Price Display */}
       <div className="mb-6">
         {product.compareAtPrice && !currentVariation && (

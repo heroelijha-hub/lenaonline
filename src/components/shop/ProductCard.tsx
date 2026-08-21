@@ -40,7 +40,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
       image: image,
       quantity: 1
     });
-    alert('Produit ajouté au panier !');
+    cartStore.setIsOpen(true);
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {

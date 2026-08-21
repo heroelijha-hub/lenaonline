@@ -49,11 +49,11 @@ export default function Header({
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const cartStore = useCartStore();
   const cartItems = useCartStore((state) => state.getTotalItems());
   const cartTotal = useCartStore((state) => state.getTotalPrice());
   const wishlistItems = useWishlistStore((state) => state.items.length);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Search state
@@ -328,7 +328,7 @@ export default function Header({
           </button>
           
           <div 
-            onClick={() => setIsCartDrawerOpen(true)}
+            onClick={() => cartStore.setIsOpen(true)}
             className="flex items-center bg-orange-50 rounded-md px-3 md:px-4 py-2 border border-orange-100 cursor-pointer hover:bg-orange-100 transition"
           >
             <div className="relative mr-2 md:mr-3">
@@ -464,8 +464,8 @@ export default function Header({
       />
       
       <CartDrawer 
-        isOpen={isCartDrawerOpen}
-        onClose={() => setIsCartDrawerOpen(false)}
+        isOpen={cartStore.isOpen}
+        onClose={() => cartStore.setIsOpen(false)}
       />
     </header>
   );
