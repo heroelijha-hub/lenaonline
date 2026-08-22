@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createArticle, updateArticle } from '@/actions/blog';
 import { uploadImage } from '@/actions/admin';
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function BlogForm({ article }: { article?: any }) {
   const router = useRouter();
@@ -84,7 +88,7 @@ export default function BlogForm({ article }: { article?: any }) {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Titre de l'article *</label>
+              <label className="block text-sm font-medium mb-1">Titre de l&apos;article *</label>
               <input 
                 type="text" 
                 value={formData.title} 
@@ -95,7 +99,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Slug (URL de l'article) *</label>
+              <label className="block text-sm font-medium mb-1">Slug (URL de l&apos;article) *</label>
               <input 
                 type="text" 
                 value={formData.slug} 
@@ -117,15 +121,15 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Contenu Complet (HTML autorisé)</label>
-              <textarea 
-                value={formData.content} 
-                onChange={e => setFormData({ ...formData, content: e.target.value })}
-                rows={15}
-                required
-                className="w-full border px-4 py-2 rounded text-sm font-mono"
-              />
-              <p className="text-xs text-gray-500 mt-1">Utilisez des balises HTML pour la mise en forme (ex: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;...).</p>
+              <label className="block text-sm font-medium mb-1">Contenu Complet</label>
+              <div className="bg-white">
+                <ReactQuill 
+                  theme="snow" 
+                  value={formData.content} 
+                  onChange={content => setFormData({ ...formData, content })} 
+                  className="h-96 mb-12"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -142,7 +146,7 @@ export default function BlogForm({ article }: { article?: any }) {
                 onChange={e => setFormData({ ...formData, isPublished: e.target.checked })}
               />
               <label htmlFor="isPublished" className="text-sm font-medium text-gray-700">
-                L'article est publié (visible)
+                L&apos;article est publié (visible)
               </label>
             </div>
 
@@ -169,7 +173,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Nom de l'auteur</label>
+              <label className="block text-sm font-medium mb-1">Nom de l&apos;auteur</label>
               <input 
                 type="text" 
                 value={formData.authorName} 
