@@ -20,14 +20,14 @@ export async function middleware(request: NextRequest) {
   // 1. Rate Limiting Check (Protection anti-DDoS / Brute force)
   if (ratelimit) {
     // Get IP address from headers (Vercel sets x-forwarded-for)
-    const ip = request.headers.get('x-forwarded-for') ?? request.ip ?? '127.0.0.1';
+    const ip = request.headers.get('x-forwarded-for') ?? (request as any).ip ?? '127.0.0.1';
     
     // Check limit for this IP
     const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
     
     if (!success) {
       return new NextResponse(
-        `<!DOCTYPE html><html><head><title>429 Too Many Requests</title><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family: system-ui; text-align: center; padding: 2rem; background: #f9fafb;"><h1 style="color: #ef4444;">Accès temporairement bloqué</h1><p>Vous avez envoyé trop de requêtes en peu de temps.</p><p>Par mesure de sécurité, merci de patienter quelques secondes avant de réessayer.</p></body></html>`,
+        `<!DOCTYPE html><html><head><title>429 Too Many Requests</title><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family: system-ui; text-align: center; padding: 2rem; background: #f9fafb;"><h1 style="color: #ef4444;">Access temporarily blocked</h1><p>You have sent too many requests in a short time.</p><p>For security reasons, please wait a few seconds before trying again.</p></body></html>`,
         { 
           status: 429, 
           headers: {
