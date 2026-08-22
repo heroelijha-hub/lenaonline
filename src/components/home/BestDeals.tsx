@@ -30,6 +30,18 @@ export default async function BestDeals({ config }: { config?: any }) {
   const settingsDb = await prisma.setting.findMany();
   const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
+  if (config) {
+    Object.assign(settings, config);
+  }
+
+  const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
+    return {
+      '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
+      '--sz-t': settings[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
+      '--sz-d': settings[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
+    } as React.CSSProperties;
+  };
+  
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
     id: p.id,
@@ -50,7 +62,12 @@ export default async function BestDeals({ config }: { config?: any }) {
       {/* Header Section */}
       <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-6">
-          <h2 className="text-2xl font-bold text-gray-900">{config?.title || "Today's Best Deals"}</h2>
+          <h2 
+            className="font-bold text-gray-900 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+            style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
+          >
+            {config?.title || "Today's Best Deals"}
+          </h2>
           
           {/* Countdown Timer */}
           <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold" data-countdown={config?.countdown}>

@@ -66,6 +66,20 @@ export default async function BestSeller({ config }: { config?: any }) {
   const categoryId = config?.categoryId || undefined;
 
   const dbProducts = await getFilteredProducts(filterType, categoryId, 10);
+  const settingsDb = await prisma.setting.findMany();
+  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  
+  if (config) {
+    Object.assign(settings, config);
+  }
+
+  const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
+    return {
+      '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
+      '--sz-t': settings[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
+      '--sz-d': settings[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
+    } as React.CSSProperties;
+  };
 
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
     id: p.id,
@@ -91,7 +105,12 @@ export default async function BestSeller({ config }: { config?: any }) {
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">{config?.title || "Our Best Seller"}</h2>
+        <h2 
+          className="font-bold text-gray-900 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
+        >
+          {config?.title || "Our Best Seller"}
+        </h2>
         <Link href="/best-seller" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
           See All
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

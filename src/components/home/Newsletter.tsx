@@ -7,6 +7,14 @@ export default function Newsletter({ config }: { config?: any }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
+  const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
+    return {
+      '--sz-m': config?.[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
+      '--sz-t': config?.[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
+      '--sz-d': config?.[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
+    } as React.CSSProperties;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
@@ -30,9 +38,11 @@ export default function Newsletter({ config }: { config?: any }) {
         
         {/* Left Side: Text */}
         <div className="flex-1">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Join Our <span className="text-gray-900">Newsletter</span> For <span className="text-gray-900">$10</span> Offer
-          </h2>
+          <h2 
+            className="font-bold text-gray-900 mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+            style={getResponsiveVars('title', {m: '24px', t: '24px', d: '24px'})}
+            dangerouslySetInnerHTML={{ __html: config?.title || "Join Our <span>Newsletter</span> For <span>$10</span> Offer" }}
+          />
           <p className="text-gray-500 text-sm">
             Register Now To Get Latest Updates On Promotions & Coupons.
           </p>

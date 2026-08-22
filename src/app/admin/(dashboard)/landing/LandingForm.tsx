@@ -406,15 +406,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'LatestBlogs') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Titre de la section Blog</label>
-            <input 
-              type="text" 
-              value={section.settings.title || 'Latest Blogs'} 
-              onChange={e => updateSectionSettings(section.id, 'title', e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm"
-            />
-          </div>
+          {renderResponsiveInput(section, 'Titre de la section Blog', 'title', 'Latest Blogs')}
           
           <div>
             <label className="block text-sm font-medium mb-1">Ordre d'affichage des articles</label>
@@ -455,16 +447,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.BANNER_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartwatch" />
+              {renderResponsiveInput(section, 'Titre', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
               <label className="block text-xs font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_1_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 1)}
             </div>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Droite</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.BANNER_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Ex: Smartphones" />
+              {renderResponsiveInput(section, 'Titre', 'BANNER_2_TITLE', 'Ex: Smartphones')}
               <label className="block text-xs font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_2_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 2)}
@@ -477,15 +467,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'BestDeals' || section.type === 'BestSeller') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Titre de la section</label>
-            <input 
-              type="text" 
-              value={section.settings.title || ''} 
-              onChange={e => updateSectionSettings(section.id, 'title', e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm"
-            />
-          </div>
+          {renderResponsiveInput(section, 'Titre de la section', 'title', 'Titre...')}
           {section.type === 'BestDeals' && (
             <div>
               <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>

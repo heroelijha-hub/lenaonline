@@ -27,12 +27,32 @@ export default async function LatestBlogs({ config }: { config?: any }) {
 
   if (articles.length === 0) return null;
 
+  const settingsDb = await prisma.setting.findMany();
+  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  
+  if (config) {
+    Object.assign(settings, config);
+  }
+
+  const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
+    return {
+      '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
+      '--sz-t': settings[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
+      '--sz-d': settings[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
+    } as React.CSSProperties;
+  };
+
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">{config?.title || 'Our Latest Blogs'}</h2>
+        <h2 
+          className="font-bold text-gray-900 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
+        >
+          {config?.title || 'Our Latest Blogs'}
+        </h2>
         <Link href="/blog" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
           Voir tout
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

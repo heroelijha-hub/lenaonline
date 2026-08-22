@@ -1,10 +1,27 @@
 import Link from 'next/link';
 
-export default function PromoBanners({ config }: { config?: any }) {
+import prisma from '@/lib/prisma';
+
+export default async function PromoBanners({ config }: { config?: any }) {
   // Only render if at least one title is configured
   if (!config?.BANNER_1_TITLE && !config?.BANNER_2_TITLE) {
     return null;
   }
+
+  const settingsDb = await prisma.setting.findMany();
+  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  
+  if (config) {
+    Object.assign(settings, config);
+  }
+
+  const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
+    return {
+      '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
+      '--sz-t': settings[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
+      '--sz-d': settings[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
+    } as React.CSSProperties;
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-8 font-sans">
@@ -22,7 +39,10 @@ export default function PromoBanners({ config }: { config?: any }) {
             }}
           >
             <div className="z-10 relative">
-              <h3 className="text-2xl font-bold mb-2" style={{ color: config.BANNER_1_TEXT_COLOR || '#111827' }}>
+              <h3 
+                className="font-bold mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+                style={{ ...getResponsiveVars('BANNER_1_TITLE', {m: '24px', t: '24px', d: '24px'}), color: config.BANNER_1_TEXT_COLOR || '#111827' }}
+              >
                 {config.BANNER_1_TITLE}
               </h3>
               <Link 
@@ -51,7 +71,10 @@ export default function PromoBanners({ config }: { config?: any }) {
             }}
           >
             <div className="z-10 relative">
-              <h3 className="text-2xl font-bold mb-2" style={{ color: config.BANNER_2_TEXT_COLOR || '#111827' }}>
+              <h3 
+                className="font-bold mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+                style={{ ...getResponsiveVars('BANNER_2_TITLE', {m: '24px', t: '24px', d: '24px'}), color: config.BANNER_2_TEXT_COLOR || '#111827' }}
+              >
                 {config.BANNER_2_TITLE}
               </h3>
               <Link 
