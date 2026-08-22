@@ -40,7 +40,7 @@ export default async function PromoBanners({ config }: { config?: any }) {
           >
             <div className="z-10 relative">
               <h3 
-                className="font-bold mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+                className="font-bold mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
                 style={{ ...getResponsiveVars('BANNER_1_TITLE', {m: '24px', t: '24px', d: '24px'}), color: config.BANNER_1_TEXT_COLOR || '#111827' }}
               >
                 {config.BANNER_1_TITLE}
@@ -72,7 +72,7 @@ export default async function PromoBanners({ config }: { config?: any }) {
           >
             <div className="z-10 relative">
               <h3 
-                className="font-bold mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+                className="font-bold mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
                 style={{ ...getResponsiveVars('BANNER_2_TITLE', {m: '24px', t: '24px', d: '24px'}), color: config.BANNER_2_TEXT_COLOR || '#111827' }}
               >
                 {config.BANNER_2_TITLE}

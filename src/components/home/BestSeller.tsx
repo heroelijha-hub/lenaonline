@@ -107,7 +107,7 @@ export default async function BestSeller({ config }: { config?: any }) {
       {/* Header Section */}
       <div className="flex items-center justify-between mb-6">
         <h2 
-          className="font-bold text-gray-900 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          className="font-bold text-gray-900 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
         >
           {config?.title || "Our Best Seller"}

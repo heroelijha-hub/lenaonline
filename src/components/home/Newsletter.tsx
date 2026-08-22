@@ -39,7 +39,7 @@ export default function Newsletter({ config }: { config?: any }) {
         {/* Left Side: Text */}
         <div className="flex-1">
           <h2 
-            className="font-bold text-gray-900 mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+            className="font-bold text-gray-900 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
             style={getResponsiveVars('title', {m: '24px', t: '24px', d: '24px'})}
             dangerouslySetInnerHTML={{ __html: config?.title || "Join Our <span>Newsletter</span> For <span>$10</span> Offer" }}
           />

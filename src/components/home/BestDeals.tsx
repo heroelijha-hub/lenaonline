@@ -60,17 +60,11 @@ export default async function BestDeals({ config }: { config?: any }) {
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
       {/* Header Section */}
-      <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
-        <div className="flex items-center gap-6">
-          <h2 
-            className="font-bold text-gray-900 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
-            style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
-          >
-            {config?.title || "Today's Best Deals"}
-          </h2>
-          
-          {/* Countdown Timer */}
-          <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold" data-countdown={config?.countdown}>
+      <div className="flex flex-col gap-3 mb-6">
+        
+        {/* Mobile Timer (visible only on mobile) */}
+        <div className="block md:hidden">
+          <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold w-fit" data-countdown={config?.countdown}>
             <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Days</span></span>
             <span className="text-gray-300">:</span>
             <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Hrs</span></span>
@@ -81,12 +75,34 @@ export default async function BestDeals({ config }: { config?: any }) {
           </div>
         </div>
 
-        <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition">
-          See All
-          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </Link>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <h2 
+              className="font-bold text-gray-900 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+              style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
+            >
+              {config?.title || "Today's Best Deals"}
+            </h2>
+            
+            {/* Desktop Timer (visible only on md+) */}
+            <div className="hidden md:flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold" data-countdown={config?.countdown}>
+              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Days</span></span>
+              <span className="text-gray-300">:</span>
+              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Hrs</span></span>
+              <span className="text-gray-300">:</span>
+              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Mins</span></span>
+              <span className="text-gray-300">:</span>
+              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Secs</span></span>
+            </div>
+          </div>
+
+          <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap">
+            See All
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
 
       {/* Products Grid */}

@@ -30,19 +30,19 @@ export default async function Hero({ config }: { config?: any }) {
     >
       <div className="z-10 relative mt-4">
         <span 
-          className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
           {settings.HERO_1_SUBTITLE || 'Supper Discount'}
         </span>
         <h2 
-          className="font-bold text-slate-800 mb-2 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '32px', d: '36px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
         >
           {settings.HERO_1_TITLE || 'Apple Iphone 17 Pro Max'}
         </h2>
         <p 
-          className="text-gray-600 mb-6 text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
         >
           {settings.HERO_1_PRICE || 'from $349.99'}
@@ -86,13 +86,13 @@ export default async function Hero({ config }: { config?: any }) {
     >
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="text-gray-500 font-semibold mb-2 block uppercase tracking-wide text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          className="text-gray-500 font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_2_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
           {settings.HERO_2_SUBTITLE || 'Use Code: SALE35%'}
         </span>
         <h2 
-          className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_2_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_2_TEXT_COLOR || undefined}}
         >
           {settings.HERO_2_TITLE || 'Heavy On Features\nLight On Price'}
@@ -130,13 +130,13 @@ export default async function Hero({ config }: { config?: any }) {
     >
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="text-red-500 font-bold tracking-wider uppercase mb-2 block text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]"
+          className="text-red-500 font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_3_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
           {settings.HERO_3_SUBTITLE || 'New Product'}
         </span>
         <h2 
-          className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_3_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_3_TEXT_COLOR || undefined}}
         >
           {settings.HERO_3_TITLE || 'Sale 10%\nOff Speaker'}
@@ -174,13 +174,13 @@ export default async function Hero({ config }: { config?: any }) {
     >
       <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
         <h2 
-          className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '22px', t: '26px', d: '30px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
         >
           {settings.HERO_4_TITLE || 'Headphones Listen With\nHeart'}
         </h2>
         <p 
-          className="text-slate-600 mb-6 font-medium text-[var(--sz-m)] md:text-[var(--sz-t)] lg:text-[var(--sz-d)]" 
+          className="text-slate-600 mb-6 font-medium text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
         >
           {settings.HERO_4_SUBTITLE || 'Last call for up to 25% off'}
