@@ -13,5 +13,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     return notFound();
   }
 
-  return <ProductForm initialData={product} />;
+  // Serialize to prevent Date object hydration issues in Client Component
+  const serializedProduct = JSON.parse(JSON.stringify(product));
+
+  return <ProductForm initialData={serializedProduct} />;
 }

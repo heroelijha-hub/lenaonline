@@ -45,7 +45,10 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [productType, setProductType] = useState<'SIMPLE' | 'VARIABLE'>(initialData?.type || 'SIMPLE');
   const [attributes, setAttributes] = useState<Array<{ name: string, options: string }>>(
     initialData?.attributes 
-      ? (initialData.attributes as any[]).map(a => ({ name: a.name, options: a.options.join(' | ') })) 
+      ? (initialData.attributes as any[]).map(a => ({ 
+          name: a.name, 
+          options: Array.isArray(a.options) ? a.options.join(' | ') : (a.options || '') 
+        })) 
       : []
   );
   const [variations, setVariations] = useState<Array<any>>(initialData?.variations || []);
