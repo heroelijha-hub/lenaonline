@@ -6,6 +6,7 @@ import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
 import ProductGrid from '@/components/home/ProductGrid';
 import { SectionConfig, SectionType } from '@/app/admin/(dashboard)/landing/LandingForm';
+import PreviewSectionWrapper from '@/components/admin/PreviewSectionWrapper';
 import { cookies } from 'next/headers';
 import { getSettings } from '@/actions/settings';
 
@@ -32,24 +33,38 @@ export default async function PreviewPage() {
   const activeSections = layout.filter(s => s.enabled);
 
   const renderSection = (section: SectionConfig) => {
+    let content = null;
     switch (section.type) {
       case 'Hero':
-        return <Hero key={section.id} config={section.settings} />;
+        content = <Hero config={section.settings} />;
+        break;
       case 'BestDeals':
-        return <BestDeals key={section.id} config={section.settings} />;
+        content = <BestDeals config={section.settings} />;
+        break;
       case 'BestSeller':
-        return <BestSeller key={section.id} config={section.settings} />;
+        content = <BestSeller config={section.settings} />;
+        break;
       case 'LatestBlogs':
-        return <LatestBlogs key={section.id} config={section.settings} />;
+        content = <LatestBlogs config={section.settings} />;
+        break;
       case 'Newsletter':
-        return <Newsletter key={section.id} config={section.settings} />;
+        content = <Newsletter config={section.settings} />;
+        break;
       case 'PromoBanners':
-        return <PromoBanners key={section.id} config={section.settings} />;
+        content = <PromoBanners config={section.settings} />;
+        break;
       case 'ProductGrid':
-        return <ProductGrid key={section.id} config={section.settings} />;
+        content = <ProductGrid config={section.settings} />;
+        break;
       default:
         return null;
     }
+
+    return (
+      <PreviewSectionWrapper key={section.id} sectionId={section.id} sectionName={section.name || section.type}>
+        {content}
+      </PreviewSectionWrapper>
+    );
   };
 
   return (
