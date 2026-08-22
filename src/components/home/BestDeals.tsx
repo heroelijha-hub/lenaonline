@@ -1,6 +1,7 @@
 import { getFilteredProducts } from '@/actions/public';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import CountdownTimer from './CountdownTimer';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -64,14 +65,8 @@ export default async function BestDeals({ config }: { config?: any }) {
         
         {/* Mobile Timer (visible only on mobile) */}
         <div className="block md:hidden">
-          <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold w-fit" data-countdown={config?.countdown}>
-            <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Days</span></span>
-            <span className="text-gray-300">:</span>
-            <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Hrs</span></span>
-            <span className="text-gray-300">:</span>
-            <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Mins</span></span>
-            <span className="text-gray-300">:</span>
-            <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Secs</span></span>
+          <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold w-fit">
+            <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
           </div>
         </div>
 
@@ -85,14 +80,8 @@ export default async function BestDeals({ config }: { config?: any }) {
             </h2>
             
             {/* Desktop Timer (visible only on md+) */}
-            <div className="hidden md:flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold" data-countdown={config?.countdown}>
-              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Days</span></span>
-              <span className="text-gray-300">:</span>
-              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Hrs</span></span>
-              <span className="text-gray-300">:</span>
-              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Mins</span></span>
-              <span className="text-gray-300">:</span>
-              <span>00 <span className="text-[10px] sm:text-xs text-gray-500 font-normal">Secs</span></span>
+            <div className="hidden md:flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold">
+              <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
             </div>
           </div>
 
