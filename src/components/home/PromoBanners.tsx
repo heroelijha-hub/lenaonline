@@ -9,7 +9,7 @@ export default async function PromoBanners({ config }: { config?: any }) {
   }
 
   const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
   if (config) {
     Object.assign(settings, config);

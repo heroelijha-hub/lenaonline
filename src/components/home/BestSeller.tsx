@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import prisma from '@/lib/prisma';
 
 import { getFilteredProducts } from '@/actions/public';
 import Price from '@/components/Price';
@@ -67,7 +68,7 @@ export default async function BestSeller({ config }: { config?: any }) {
 
   const dbProducts = await getFilteredProducts(filterType, categoryId, 10);
   const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
   if (config) {
     Object.assign(settings, config);
