@@ -49,14 +49,16 @@ const BigCard = ({
       <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
         {title}
       </h3>
-      <div className="flex items-center gap-1 mb-2">
-        <div className="flex">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <Star key={star} filled={star <= rating} />
-          ))}
+      {ratingText && (
+        <div className="flex items-center gap-1 mb-2">
+          <div className="flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} filled={star <= rating} />
+            ))}
+          </div>
+          <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
         </div>
-        <span className="text-xs text-gray-500">{ratingText}</span>
-      </div>
+      )}
       <Price amount={price} className="font-bold text-gray-900" />
     </div>
   </Link>
@@ -82,18 +84,24 @@ export default async function BestSeller({ config }: { config?: any }) {
     } as React.CSSProperties;
   };
 
-  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
-    id: p.id,
-    slug: p.slug,
-    imageUrl: p.images[0],
-    category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
-    title: p.title,
-    rating: 5,
-    ratingText: '(5.00)',
-    price: p.price,
-    oldPrice: p.compareAtPrice ? p.compareAtPrice : undefined,
-    imagePlaceholder: '🛍️'
-  })) : [];
+  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => {
+    const approvedReviews = (p as any).reviews || [];
+    const ratingCount = approvedReviews.length;
+    const avgRating = ratingCount > 0 ? approvedReviews.reduce((sum: number, r: any) => sum + r.rating, 0) / ratingCount : 0;
+    
+    return {
+      id: p.id,
+      slug: p.slug,
+      imageUrl: p.images[0],
+      category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
+      title: p.title,
+      rating: ratingCount > 0 ? Math.round(avgRating) : 0,
+      ratingText: ratingCount > 0 ? `(${avgRating.toFixed(2)})` : '',
+      price: p.price,
+      oldPrice: p.compareAtPrice ? p.compareAtPrice : undefined,
+      imagePlaceholder: '🛍️'
+    };
+  }) : [];
 
   const bigProduct1 = displayProducts[0];
   const bigProduct2 = displayProducts[5];
@@ -130,8 +138,8 @@ export default async function BestSeller({ config }: { config?: any }) {
             category={bigProduct1?.category || "Cosmetics"} 
             title={bigProduct1?.title || "Comfortable Regular Comfort Sports Sneakers"} 
             price={bigProduct1?.price || 33.00} 
-            rating={5} 
-            ratingText="(5.00)" 
+            rating={bigProduct1?.rating || 0} 
+            ratingText={bigProduct1?.ratingText || ''} 
             imageUrl={bigProduct1?.imageUrl}
             linkUrl={bigProduct1 ? `/product/${bigProduct1.slug}` : '#'}
           />
@@ -161,8 +169,8 @@ export default async function BestSeller({ config }: { config?: any }) {
             category={bigProduct2?.category || "Cosmetics"} 
             title={bigProduct2?.title || "Comfortable Regular Comfort Sports Sneakers"} 
             price={bigProduct2 ? bigProduct2.price : 35.00} 
-            rating={3} 
-            ratingText="(3.00)" 
+            rating={bigProduct2?.rating || 0} 
+            ratingText={bigProduct2?.ratingText || ''} 
             imageUrl={bigProduct2?.imageUrl}
             linkUrl={bigProduct2 ? `/product/${bigProduct2.slug}` : '#'}
           />

@@ -44,18 +44,24 @@ export default async function BestDeals({ config }: { config?: any }) {
   };
   
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
-  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => ({
-    id: p.id,
-    slug: p.slug,
-    imageUrl: p.images[0],
-    category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
-    title: p.title,
-    rating: 5, // Rating statique pour l'instant
-    ratingText: '(5.00)',
-    price: `$${p.price.toFixed(2)}`,
-    discount: p.discountLabel || undefined,
-    imagePlaceholder: '🛍️'
-  })) : staticProducts;
+  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => {
+    const approvedReviews = (p as any).reviews || [];
+    const ratingCount = approvedReviews.length;
+    const avgRating = ratingCount > 0 ? approvedReviews.reduce((sum: number, r: any) => sum + r.rating, 0) / ratingCount : 0;
+    
+    return {
+      id: p.id,
+      slug: p.slug,
+      imageUrl: p.images[0],
+      category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
+      title: p.title,
+      rating: ratingCount > 0 ? Math.round(avgRating) : 0,
+      ratingText: ratingCount > 0 ? `(${avgRating.toFixed(2)})` : '',
+      price: `$${p.price.toFixed(2)}`,
+      discount: p.discountLabel || undefined,
+      imagePlaceholder: '🛍️'
+    };
+  }) : staticProducts;
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
@@ -124,14 +130,18 @@ export default async function BestDeals({ config }: { config?: any }) {
                 </h3>
                 
                 {/* Rating */}
-                <div className="flex items-center gap-1 mb-2">
-                  <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} filled={star <= product.rating} />
-                    ))}
+                {product.ratingText && (
+                  <div className="flex items-center gap-1 mb-2">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} filled={i < product.rating} />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-500 font-medium">
+                      {product.ratingText}
+                    </span>
                   </div>
-                  <span className="text-xs text-gray-500">{product.ratingText}</span>
-                </div>
+                )}
                 
                 <p className="font-bold text-gray-900">{product.price}</p>
               </div>

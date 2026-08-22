@@ -150,13 +150,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               
               {/* Reviews & Sold */}
               <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <div className="flex">
-                    {[1,2,3,4,5].map(i => <Star key={i} filled={i <= Math.round(avgRating)} />)}
-                  </div>
-                  <span className="ml-1 text-gray-600">{product.reviews.length} customer review{product.reviews.length > 1 ? 's' : ''}</span>
-                </div>
-                <span className="border-l border-gray-300 h-4"></span>
+                {product.reviews.length > 0 && (
+                  <>
+                    <div className="flex items-center gap-1">
+                      <div className="flex">
+                        {[1,2,3,4,5].map(i => <Star key={i} filled={i <= Math.round(avgRating)} />)}
+                      </div>
+                      <span className="ml-1 text-gray-600">{product.reviews.length} customer review{product.reviews.length > 1 ? 's' : ''}</span>
+                    </div>
+                    <span className="border-l border-gray-300 h-4"></span>
+                  </>
+                )}
                 <span>Sold: <span className="font-semibold text-gray-900">24</span></span>
               </div>
 

@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 export async function getBestDeals() {
   return await prisma.product.findMany({
     where: { isDealOfTheDay: true },
-    include: { categories: true },
+    include: { categories: true, reviews: { where: { isApproved: true } } },
     take: 4,
     orderBy: { createdAt: 'desc' }
   });
@@ -14,7 +14,7 @@ export async function getBestDeals() {
 export async function getBestSellers() {
   return await prisma.product.findMany({
     where: { isBestSeller: true },
-    include: { categories: true },
+    include: { categories: true, reviews: { where: { isApproved: true } } },
     take: 10,
     orderBy: { createdAt: 'desc' }
   });
@@ -35,7 +35,7 @@ export async function getFilteredProducts(filterType: string, categoryId?: strin
 
   return await prisma.product.findMany({
     where,
-    include: { categories: true },
+    include: { categories: true, reviews: { where: { isApproved: true } } },
     take: limit,
     orderBy
   });
@@ -78,6 +78,6 @@ export async function getProductsByIds(ids: string[]) {
         in: ids
       }
     },
-    include: { categories: true }
+    include: { categories: true, reviews: { where: { isApproved: true } } }
   });
 }
