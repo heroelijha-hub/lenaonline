@@ -64,7 +64,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -129,7 +129,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                   {editingId === cat.id ? (
                     <div className="flex justify-end gap-2">
                       <button onClick={() => handleSaveEdit(cat.id)} className="text-green-600 hover:text-green-900">Sauver</button>
-                      <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-900">Annuler</button>
+                      <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-900">Cancel</button>
                     </div>
                   ) : (
                     <div className="flex justify-end gap-3">
@@ -139,7 +139,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                         disabled={isDeleting === cat.id}
                         className="text-red-600 hover:text-red-900 disabled:opacity-50"
                       >
-                        {isDeleting === cat.id ? 'Suppr...' : 'Supprimer'}
+                        {isDeleting === cat.id ? 'Suppr...' : 'Delete'}
                       </button>
                     </div>
                   )}

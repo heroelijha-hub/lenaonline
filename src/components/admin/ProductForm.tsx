@@ -136,7 +136,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   return (
     <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-100">
       <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        {isEditing ? `Modifier : ${initialData.title}` : 'Ajouter un Nouveau Produit'}
+        {isEditing ? `Edit : ${initialData.title}` : 'Add un New Produit'}
       </h1>
       
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -157,7 +157,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Titre du produit *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title du produit *</label>
             <input 
               type="text" 
               name="title" 
@@ -182,7 +182,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-1 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Catégories *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Categories *</label>
             <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-gray-50 flex flex-col gap-2">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
@@ -205,14 +205,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
         </div>
 
-        {/* Prix & Stock (Pour Simple Produit ou prix de base) */}
+        {/* Price & Stock (Pour Simple Produit ou prix de base) */}
         <div className="grid grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Prix de base ($) *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Price de base ($) *</label>
             <input type="number" step="0.01" name="price" defaultValue={initialData?.price} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Prix barré ($)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Price barré ($)</label>
             <input type="number" step="0.01" name="compareAtPrice" defaultValue={initialData?.compareAtPrice} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           {productType === 'SIMPLE' && (
@@ -231,14 +231,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Attributs</h3>
                 <button type="button" onClick={addAttribute} className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">
-                  + Ajouter un attribut
+                  + Add un attribut
                 </button>
               </div>
               <div className="space-y-3">
                 {attributes.map((attr, idx) => (
                   <div key={idx} className="flex gap-4 items-start bg-white p-3 border border-gray-200 rounded">
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Nom (ex: Couleur)</label>
+                      <label className="block text-xs text-gray-500 mb-1">Name (ex: Couleur)</label>
                       <input 
                         type="text" 
                         value={attr.name} 
@@ -271,7 +271,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Variations</h3>
                 <button type="button" onClick={addVariation} disabled={attributes.length === 0} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 disabled:opacity-50">
-                  + Ajouter une variation
+                  + Add une variation
                 </button>
               </div>
               <div className="space-y-3">
@@ -303,7 +303,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     </div>
                     <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-3">
                       <div>
-                        <label className="block text-xs text-gray-500 mb-1">Prix de la variation ($)</label>
+                        <label className="block text-xs text-gray-500 mb-1">Price de la variation ($)</label>
                         <input 
                           type="number" step="0.01" 
                           value={v.price} 
@@ -431,7 +431,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               }}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition"
             >
-              Ajouter
+              Add
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -473,14 +473,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             onClick={() => router.back()}
             className="bg-white border border-gray-300 text-gray-700 px-6 py-2 rounded-md font-medium mr-4 hover:bg-gray-50 transition"
           >
-            Annuler
+            Cancel
           </button>
           <button 
             type="submit" 
             disabled={isLoading}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
           >
-            {isLoading ? 'Enregistrement...' : (isEditing ? 'Mettre à jour le Produit' : 'Enregistrer le Produit')}
+            {isLoading ? 'Enregistrement...' : (isEditing ? 'Update le Produit' : 'Save le Produit')}
           </button>
         </div>
 

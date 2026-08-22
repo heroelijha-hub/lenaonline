@@ -30,14 +30,14 @@ export default async function AccountReviewsPage() {
             <nav className="space-y-3">
               <Link href="/account" className="block text-gray-600 hover:text-orange-500">Tableau de bord</Link>
               <Link href="/account/orders" className="block text-gray-600 hover:text-orange-500">Mes Commandes</Link>
-              <Link href="/account/reviews" className="block font-bold text-orange-500">Mes Avis</Link>
+              <Link href="/account/reviews" className="block font-bold text-orange-500">Mes Reviews</Link>
             </nav>
           </div>
         </aside>
 
         {/* Content */}
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900 mb-8">Mes Avis</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-8">Mes Reviews</h1>
 
           {reviews.length === 0 ? (
             <div className="bg-white p-8 border border-gray-200 rounded-lg text-center">

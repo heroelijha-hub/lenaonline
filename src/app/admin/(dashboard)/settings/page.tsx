@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import SettingsForm from './SettingsForm';
 
 export const metadata = {
-  title: 'Paramètres | Shopelios Admin',
+  title: 'Settings | Shopelios Admin',
 };
 
 export default async function SettingsPage() {
@@ -11,7 +11,7 @@ export default async function SettingsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Paramètres de la boutique</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Settings de la boutique</h1>
         <p className="text-gray-500 mt-2">Configurez la devise, la langue et d'autres options globales.</p>
       </div>
 

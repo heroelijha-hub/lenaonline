@@ -54,14 +54,14 @@ export default async function OrdersPage() {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900">Commandes</h2>
+        <h2 className="text-xl font-bold text-gray-900">Orders</h2>
       </div>
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commande</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">État</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
@@ -72,7 +72,7 @@ export default async function OrdersPage() {
             {orders.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                  Vous n'avez passé aucune commande pour le moment.
+                  You have not placed any orders yet.
                 </td>
               </tr>
             ) : (
@@ -99,14 +99,14 @@ export default async function OrdersPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <span className="font-medium text-gray-900">{order.total.toFixed(2)}€</span>
                       <span className="text-gray-400 text-xs ml-1">
-                        pour {totalItems} produit{totalItems > 1 ? 's' : ''}
+                        for {totalItems} produit{totalItems > 1 ? 's' : ''}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link 
                         href={`/account/orders/${order.id}`} 
                         className="inline-flex items-center justify-center p-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md transition-colors"
-                        title="Voir la commande"
+                        title="View la commande"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

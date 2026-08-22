@@ -307,7 +307,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-4">
-              {renderResponsiveInput(section, 'Titre de la section', 'title', 'ex: Tondeuses Autoportées')}
+              {renderResponsiveInput(section, 'Title de la section', 'title', 'ex: Tondeuses Autoportées')}
               {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'Voir Tout')}
             </div>
             
@@ -324,7 +324,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <select value={section.settings.filterType || 'LATEST'} onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
                 <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
                 <option value="LATEST">Les plus récents</option>
-                <option value="ON_SALE">En promotion (Prix réduit)</option>
+                <option value="ON_SALE">En promotion (Price réduit)</option>
               </select>
             </div>
             
@@ -418,9 +418,9 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
-              {renderResponsiveInput(section, 'Titre', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
+              {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_1_SUBTITLE', 'Supper Discount')}
-              {renderResponsiveInput(section, 'Prix/Texte', 'HERO_1_PRICE', 'from $349.99')}
+              {renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 1)}
@@ -428,7 +428,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Haut Centre)</h4>
-              {renderResponsiveInput(section, 'Titre', 'HERO_2_TITLE', 'Heavy On Features...')}
+              {renderResponsiveInput(section, 'Title', 'HERO_2_TITLE', 'Heavy On Features...')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_2_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
@@ -437,7 +437,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Haut Droite)</h4>
-              {renderResponsiveInput(section, 'Titre', 'HERO_3_TITLE', 'Sale 10% Off')}
+              {renderResponsiveInput(section, 'Title', 'HERO_3_TITLE', 'Sale 10% Off')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_3_SUBTITLE', 'New Product')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_3_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
@@ -446,7 +446,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bas Droite)</h4>
-              {renderResponsiveInput(section, 'Titre', 'HERO_4_TITLE', 'Headphones Listen...')}
+              {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_4_SUBTITLE', 'Last call...')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
@@ -460,7 +460,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'LatestBlogs') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          {renderResponsiveInput(section, 'Titre de la section Blog', 'title', 'Latest Blogs')}
+          {renderResponsiveInput(section, 'Title de la section Blog', 'title', 'Latest Blogs')}
           {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           
           <div>
@@ -502,14 +502,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
-              {renderResponsiveInput(section, 'Titre', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
+              {renderResponsiveInput(section, 'Title', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
               <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_1_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 1)}
             </div>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Droite</h4>
-              {renderResponsiveInput(section, 'Titre', 'BANNER_2_TITLE', 'Ex: Smartphones')}
+              {renderResponsiveInput(section, 'Title', 'BANNER_2_TITLE', 'Ex: Smartphones')}
               <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_2_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 2)}
@@ -522,7 +522,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'BestDeals' || section.type === 'BestSeller') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          {renderResponsiveInput(section, 'Titre de la section', 'title', 'Titre...')}
+          {renderResponsiveInput(section, 'Title de la section', 'title', 'Title...')}
           {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           {section.type === 'BestDeals' && (
             <>
@@ -539,7 +539,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {/* Promo Banners within BestDeals */}
               <div className="mt-6 border-t pt-4">
                 <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 1 (Haut)</h4>
-                {renderResponsiveInput(section, 'Titre Promo 1', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
+                {renderResponsiveInput(section, 'Title Promo 1', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
                 {renderResponsiveInput(section, 'Sous-titre Promo 1', 'PROMO_1_SUBTITLE', 'Price Start $69')}
                 {renderResponsiveInput(section, 'Bouton Promo 1', 'PROMO_1_CTA', 'Shop Now')}
                 {renderPromoBannerConfig(section, 1, 'PROMO')}
@@ -547,7 +547,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               
               <div className="mt-6 border-t pt-4">
                 <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 2 (Bas)</h4>
-                {renderResponsiveInput(section, 'Titre Promo 2', 'PROMO_2_TITLE', 'Get 20% Off')}
+                {renderResponsiveInput(section, 'Title Promo 2', 'PROMO_2_TITLE', 'Get 20% Off')}
                 {renderResponsiveInput(section, 'Sous-titre Promo 2', 'PROMO_2_SUBTITLE', 'Women Store')}
                 {renderResponsiveInput(section, 'Bouton Promo 2', 'PROMO_2_CTA', 'Shop Now')}
                 {renderPromoBannerConfig(section, 2, 'PROMO')}
@@ -556,7 +556,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           )}
 
           <div className="mt-4 border-t pt-4">
-            <h4 className="font-bold text-gray-800 mb-2">Apparence des Produits</h4>
+            <h4 className="font-bold text-gray-800 mb-2">Apparence des Products</h4>
             <label className="block text-sm font-medium mb-1">Couleur de bordure des cartes produit</label>
             <div className="flex gap-2">
               <input 
@@ -583,7 +583,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             >
               <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
               <option value="LATEST">Les plus récents</option>
-              <option value="ON_SALE">En promotion (Prix réduit)</option>
+              <option value="ON_SALE">En promotion (Price réduit)</option>
               <option value="CATEGORY">Par Catégorie Spécifique</option>
             </select>
           </div>
@@ -623,7 +623,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           </div>
           <button onClick={handleSave} disabled={isLoading} className="bg-orange-600 hover:bg-orange-500 text-white px-3 py-1 rounded text-xs font-medium transition disabled:opacity-50 flex items-center gap-1">
             {isLoading && <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
-            {isLoading ? '...' : 'Enregistrer'}
+            {isLoading ? '...' : 'Save'}
           </button>
         </div>
         {message && <div className="px-4 py-2 bg-green-50 text-green-600 text-xs text-center border-b border-green-100 font-medium shrink-0">{message}</div>}
@@ -635,7 +635,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="p-3">
               {/* Global Settings */}
               <div className="mb-6 bg-white p-3 border rounded shadow-sm">
-                <h4 className="font-bold text-xs text-gray-800 mb-2 border-b pb-1">Paramètres Globaux</h4>
+                <h4 className="font-bold text-xs text-gray-800 mb-2 border-b pb-1">Settings Globaux</h4>
                 <label className="block text-xs font-medium mb-1">Police de Caractères</label>
                 <select 
                   value={globalFont} 
@@ -677,7 +677,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                           <button disabled={index === 0} onClick={(e) => { e.stopPropagation(); moveSection(index, 'UP'); }} className="p-0.5 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg></button>
                           <button disabled={index === sections.length - 1} onClick={(e) => { e.stopPropagation(); moveSection(index, 'DOWN'); }} className="p-0.5 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></button>
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); removeSection(index); }} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded ml-1" title="Supprimer"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                        <button onClick={(e) => { e.stopPropagation(); removeSection(index); }} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded ml-1" title="Delete"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                       </div>
                     </div>
                   </div>
@@ -685,7 +685,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               </div>
 
               <div className="border-t pt-3">
-                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Ajouter un widget</h4>
+                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Add un widget</h4>
                 <div className="grid grid-cols-3 gap-1.5">
                   <button onClick={() => addSection('Hero')} className="border rounded bg-gray-50 hover:bg-gray-100 p-1.5 text-center text-[10px] flex flex-col items-center gap-1 transition text-gray-600 hover:text-gray-900 hover:border-gray-300">
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -731,7 +731,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                         value={section.name} 
                         onChange={e => updateSectionName(section.id, e.target.value)}
                         className="text-xs font-bold border-b border-transparent hover:border-gray-200 focus:border-orange-500 outline-none bg-transparent w-full truncate transition-colors py-0.5"
-                        placeholder="Nom..."
+                        placeholder="Name..."
                       />
                     </div>
                     <button onClick={() => toggleSection(index)} className={`p-1 rounded-full transition-colors shrink-0 ${section.enabled ? 'text-green-600 bg-green-50 hover:bg-green-100' : 'text-gray-400 bg-gray-100 hover:bg-gray-200'}`} title={section.enabled ? 'Masquer' : 'Afficher'}>
@@ -745,7 +745,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   <div className="p-3 bg-gray-50 border-t flex justify-center">
                     <button onClick={() => { removeSection(index); setEditingId(null); }} className="text-red-500 hover:text-red-700 text-xs font-medium flex items-center gap-1 p-1.5 rounded hover:bg-red-50 transition">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                      Supprimer la section
+                      Delete la section
                     </button>
                   </div>
                 </div>

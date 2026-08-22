@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
               />
             </div>
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
               disabled={isPending}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-50 transition-colors"
             >
-              {isPending ? 'Connexion...' : 'Se connecter'}
+              {isPending ? 'Connexion...' : 'Login'}
             </button>
           </div>
         </form>

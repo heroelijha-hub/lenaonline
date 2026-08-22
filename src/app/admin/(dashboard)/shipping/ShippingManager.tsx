@@ -159,7 +159,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
   };
 
   const handleDeleteMethod = async (zoneId: string, methodId: string) => {
-    if (!confirm('Supprimer cette méthode ?')) return;
+    if (!confirm('Delete cette méthode ?')) return;
     setLoading(true);
     const res = await deleteShippingMethod(methodId);
     if (res.success) {
@@ -182,7 +182,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
             onClick={() => setIsAddingZone(true)}
             className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 font-medium text-sm"
           >
-            + Ajouter une destination
+            + Add une destination
           </button>
         )}
       </div>
@@ -224,14 +224,14 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
               disabled={loading}
               className="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 font-medium text-sm disabled:opacity-50"
             >
-              Créer la zone
+              Create la zone
             </button>
             <button
               onClick={() => { setIsAddingZone(false); setError(''); }}
               disabled={loading}
               className="bg-white border border-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-50 font-medium text-sm"
             >
-              Annuler
+              Cancel
             </button>
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                     {zone.isActive ? 'Désactiver' : 'Activer'}
                   </button>
                   <button onClick={() => handleDeleteZone(zone.id)} className="text-sm text-red-600 hover:text-red-800">
-                    Supprimer
+                    Delete
                   </button>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                         <th className="px-3 py-2">Intitulé</th>
                         <th className="px-3 py-2">Tarif</th>
                         <th className="px-3 py-2">Conditions</th>
-                        <th className="px-3 py-2">Statut</th>
+                        <th className="px-3 py-2">Status</th>
                         <th className="px-3 py-2 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -290,12 +290,12 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                           </td>
                           <td className="px-3 py-2">
                             <span className={method.isActive ? 'text-green-600' : 'text-gray-400'}>
-                              {method.isActive ? 'Actif' : 'Inactif'}
+                              {method.isActive ? 'Active' : 'Inactive'}
                             </span>
                           </td>
                           <td className="px-3 py-2 text-right">
-                             <button onClick={() => startEditMethod(method)} className="text-blue-600 hover:underline mr-3">Modifier</button>
-                             <button onClick={() => handleDeleteMethod(zone.id, method.id)} className="text-red-600 hover:underline">Supprimer</button>
+                             <button onClick={() => startEditMethod(method)} className="text-blue-600 hover:underline mr-3">Edit</button>
+                             <button onClick={() => handleDeleteMethod(zone.id, method.id)} className="text-red-600 hover:underline">Delete</button>
                           </td>
                         </tr>
                       ))}
@@ -308,7 +308,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                 {addingMethodForZone === zone.id ? (
                   <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
                     <h5 className="font-semibold text-sm mb-3 text-blue-900">
-                      {editingMethod ? 'Modifier la méthode' : 'Ajouter une méthode'}
+                      {editingMethod ? 'Edit la méthode' : 'Add une méthode'}
                     </h5>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
@@ -354,16 +354,16 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                           onChange={(e) => setMethodIsActive(e.target.checked)}
                           className="w-4 h-4 text-orange-600 rounded"
                         />
-                        <label className="ml-2 text-sm text-gray-700">Actif</label>
+                        <label className="ml-2 text-sm text-gray-700">Active</label>
                       </div>
                     </div>
                     {error && <p className="text-red-500 text-xs mb-3">{error}</p>}
                     <div className="flex gap-2">
                       <button onClick={handleSaveMethod} disabled={loading} className="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 text-sm">
-                        Enregistrer
+                        Save
                       </button>
                       <button onClick={resetMethodForm} disabled={loading} className="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded hover:bg-gray-50 text-sm">
-                        Annuler
+                        Cancel
                       </button>
                     </div>
                   </div>
@@ -372,7 +372,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                     onClick={() => { resetMethodForm(); setAddingMethodForZone(zone.id); }}
                     className="text-sm font-medium text-orange-600 hover:text-orange-800"
                   >
-                    + Ajouter une méthode pour {zone.name}
+                    + Add une méthode pour {zone.name}
                   </button>
                 )}
               </div>

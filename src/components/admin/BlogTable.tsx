@@ -29,7 +29,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
           <tr>
             <th className="px-6 py-4">Article</th>
             <th className="px-6 py-4">Catégorie</th>
-            <th className="px-6 py-4">Statut</th>
+            <th className="px-6 py-4">Status</th>
             <th className="px-6 py-4">Date</th>
             <th className="px-6 py-4 text-right">Actions</th>
           </tr>
@@ -62,7 +62,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                 <td className="px-6 py-4">{article.category || '-'}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${article.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                    {article.isPublished ? 'Publié' : 'Brouillon'}
+                    {article.isPublished ? 'Publié' : 'Draft'}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -73,14 +73,14 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                     href={`/admin/blogs/edit/${article.id}`}
                     className="text-orange-600 hover:text-orange-800 font-medium mr-4"
                   >
-                    Modifier
+                    Edit
                   </Link>
                   <button 
                     onClick={() => handleDelete(article.id)}
                     disabled={loadingId === article.id}
                     className="text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
                   >
-                    {loadingId === article.id ? '...' : 'Supprimer'}
+                    {loadingId === article.id ? '...' : 'Delete'}
                   </button>
                 </td>
               </tr>

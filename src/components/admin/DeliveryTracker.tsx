@@ -74,7 +74,7 @@ export default function DeliveryTracker({
   };
 
   const handleDeletePos = async (posId: string) => {
-    if (confirm('Supprimer cette position ?')) {
+    if (confirm('Delete cette position ?')) {
       await deleteDeliveryPosition(posId, orderId);
     }
   };
@@ -127,7 +127,7 @@ export default function DeliveryTracker({
           </div>
 
           <button type="submit" disabled={loadingBase} className="bg-orange-600 text-white px-4 py-2 rounded font-medium disabled:opacity-50">
-            {loadingBase ? 'Enregistrement...' : 'Enregistrer'}
+            {loadingBase ? 'Enregistrement...' : 'Save'}
           </button>
         </form>
       </div>
@@ -148,7 +148,7 @@ export default function DeliveryTracker({
                       <p className="text-xs text-gray-500">{new Date(pos.createdAt).toLocaleString()}</p>
                       {pos.note && <p className="text-sm text-gray-700 italic mt-1">{pos.note}</p>}
                     </div>
-                    <button onClick={() => handleDeletePos(pos.id)} className="text-red-500 text-xs hover:underline">Supprimer</button>
+                    <button onClick={() => handleDeletePos(pos.id)} className="text-red-500 text-xs hover:underline">Delete</button>
                   </div>
                 </li>
               ))}
@@ -159,7 +159,7 @@ export default function DeliveryTracker({
         )}
 
         <form onSubmit={handleAddPos} className="bg-gray-50 p-4 rounded border">
-          <h3 className="font-semibold text-sm mb-3">Ajouter une nouvelle position</h3>
+          <h3 className="font-semibold text-sm mb-3">Add une nouvelle position</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
               <input type="text" required value={posForm.city} onChange={e => setPosForm({...posForm, city: e.target.value})} placeholder="Ville actuelle" className="w-full px-3 py-1.5 text-sm border rounded" />
@@ -172,7 +172,7 @@ export default function DeliveryTracker({
             </div>
           </div>
           <button type="submit" disabled={loadingPos} className="bg-gray-900 text-white px-3 py-1.5 rounded text-sm font-medium disabled:opacity-50">
-            {loadingPos ? 'Ajout...' : '+ Ajouter la position'}
+            {loadingPos ? 'Ajout...' : '+ Add la position'}
           </button>
         </form>
       </div>

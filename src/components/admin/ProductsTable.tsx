@@ -54,7 +54,7 @@ export default function ProductsTable({ products, categories }: { products: any[
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit & Actions</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
           </tr>
         </thead>
@@ -62,7 +62,7 @@ export default function ProductsTable({ products, categories }: { products: any[
           {products.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
-                Aucun produit dans le catalogue. Cliquez sur "Ajouter un produit" pour commencer.
+                Aucun produit dans le catalogue. Cliquez sur "Add un produit" pour commencer.
               </td>
             </tr>
           ) : (
@@ -82,7 +82,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                     {isEditing ? (
                       <div className="space-y-3 bg-white p-4 border border-gray-200 rounded-md shadow-sm">
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Titre</label>
+                          <label className="text-xs font-semibold text-gray-600">Title</label>
                           <input type="text" value={editData.title} onChange={e => setEditData({...editData, title: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
                         </div>
                         <div className="flex flex-col gap-1">
@@ -91,16 +91,16 @@ export default function ProductsTable({ products, categories }: { products: any[
                         </div>
                         <div className="flex gap-4">
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">Prix de base ($)</label>
+                            <label className="text-xs font-semibold text-gray-600">Price de base ($)</label>
                             <input type="number" step="0.01" value={editData.price} onChange={e => setEditData({...editData, price: parseFloat(e.target.value) || 0})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">Prix promo ($)</label>
+                            <label className="text-xs font-semibold text-gray-600">Price promo ($)</label>
                             <input type="number" step="0.01" value={editData.compareAtPrice} onChange={e => setEditData({...editData, compareAtPrice: e.target.value ? parseFloat(e.target.value) : ''})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Catégories</label>
+                          <label className="text-xs font-semibold text-gray-600">Categories</label>
                           <div className="border rounded p-2 max-h-32 overflow-y-auto bg-gray-50 flex flex-col gap-1 text-sm">
                             {categories.map(c => (
                               <label key={c.id} className="flex items-center gap-2 cursor-pointer">
@@ -122,8 +122,8 @@ export default function ProductsTable({ products, categories }: { products: any[
                           </div>
                         </div>
                         <div className="flex items-center gap-2 pt-2">
-                          <button onClick={() => setEditingId(null)} className="text-sm px-3 py-1 text-gray-500 border border-gray-300 rounded hover:bg-gray-50">Annuler</button>
-                          <button onClick={() => handleQuickEditSubmit(product.id)} disabled={isLoading} className="text-sm px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600">Enregistrer</button>
+                          <button onClick={() => setEditingId(null)} className="text-sm px-3 py-1 text-gray-500 border border-gray-300 rounded hover:bg-gray-50">Cancel</button>
+                          <button onClick={() => handleQuickEditSubmit(product.id)} disabled={isLoading} className="text-sm px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600">Save</button>
                         </div>
                       </div>
                     ) : (
@@ -137,7 +137,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         
                         {/* Woo-style Row Actions */}
                         <div className="flex items-center gap-3 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Link href={`/admin/products/edit/${product.id}`} className="text-blue-600 hover:underline">Modifier</Link>
+                          <Link href={`/admin/products/edit/${product.id}`} className="text-blue-600 hover:underline">Edit</Link>
                           <span className="text-gray-300">|</span>
                           <button onClick={() => startEdit(product)} className="text-blue-600 hover:underline">Modification rapide</button>
                           <span className="text-gray-300">|</span>

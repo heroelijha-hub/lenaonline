@@ -48,10 +48,10 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
             <th className="px-6 py-3">Produit</th>
-            <th className="px-6 py-3">Client</th>
+            <th className="px-6 py-3">Customer</th>
             <th className="px-6 py-3">Note & Commentaire</th>
             <th className="px-6 py-3">Date</th>
-            <th className="px-6 py-3">Statut</th>
+            <th className="px-6 py-3">Status</th>
             <th className="px-6 py-3 text-right">Actions</th>
           </tr>
         </thead>
@@ -107,19 +107,19 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                     review.isApproved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
-                  {review.isApproved ? 'Approuvé' : 'En attente'}
+                  {review.isApproved ? 'Approuvé' : 'Pending'}
                 </button>
               </td>
               <td className="px-6 py-4 text-right space-x-2">
                 {editingId === review.id ? (
                   <>
                     <button onClick={() => handleSave(review.id)} className="text-green-600 font-bold hover:underline">Sauver</button>
-                    <button onClick={() => setEditingId(null)} className="text-gray-500 hover:underline">Annuler</button>
+                    <button onClick={() => setEditingId(null)} className="text-gray-500 hover:underline">Cancel</button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => startEdit(review)} className="text-blue-600 font-bold hover:underline">Modifier</button>
-                    <button onClick={() => handleDelete(review.id)} className="text-red-600 font-bold hover:underline">Supprimer</button>
+                    <button onClick={() => startEdit(review)} className="text-blue-600 font-bold hover:underline">Edit</button>
+                    <button onClick={() => handleDelete(review.id)} className="text-red-600 font-bold hover:underline">Delete</button>
                   </>
                 )}
               </td>

@@ -26,9 +26,9 @@ export default function OrderTable({ orders }: { orders: any[] }) {
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commande</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
           </tr>
         </thead>
@@ -51,7 +51,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                     disabled={loading === order.id}
                     className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50"
                   >
-                    <option value="PENDING">En attente</option>
+                    <option value="PENDING">Pending</option>
                     <option value="PAID">Paiement reçu</option>
                     <option value="PROCESSING">En cours de préparation</option>
                     <option value="SHIPPED">Expédié</option>
@@ -63,7 +63,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                   <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Détails</a>
-                  <button onClick={() => handleDelete(order.id)} disabled={loading === order.id} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1.5 rounded text-xs font-semibold disabled:opacity-50">Supprimer</button>
+                  <button onClick={() => handleDelete(order.id)} disabled={loading === order.id} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1.5 rounded text-xs font-semibold disabled:opacity-50">Delete</button>
                 </td>
               </tr>
             ))

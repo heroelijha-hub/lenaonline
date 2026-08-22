@@ -88,7 +88,7 @@ export default function BlogForm({ article }: { article?: any }) {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Titre de l&apos;article *</label>
+              <label className="block text-sm font-medium mb-1">Title de l&apos;article *</label>
               <input 
                 type="text" 
                 value={formData.title} 
@@ -173,7 +173,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Nom de l&apos;auteur</label>
+              <label className="block text-sm font-medium mb-1">Name de l&apos;auteur</label>
               <input 
                 type="text" 
                 value={formData.authorName} 
@@ -202,7 +202,7 @@ export default function BlogForm({ article }: { article?: any }) {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
           >
-            {loading ? 'Enregistrement...' : (article ? 'Mettre à jour' : 'Publier l\'article')}
+            {loading ? 'Enregistrement...' : (article ? 'Update' : 'Publier l\'article')}
           </button>
         </div>
       </div>

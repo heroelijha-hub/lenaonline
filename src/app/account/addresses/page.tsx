@@ -23,12 +23,12 @@ export default async function AddressesPage() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {/* Adresse de facturation */}
+          {/* Billing address */}
           <div>
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
-              <h3 className="text-xl font-bold text-gray-900">Adresse de facturation</h3>
+              <h3 className="text-xl font-bold text-gray-900">Billing address</h3>
               <Link href="#" className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors">
-                Ajouter
+                Add
               </Link>
             </div>
             {billingAddress ? (
@@ -38,17 +38,17 @@ export default async function AddressesPage() {
               </address>
             ) : (
               <p className="text-gray-500 text-sm italic">
-                Vous n'avez pas encore configuré ce type d'adresse.
+                You have not set up this type of address yet.
               </p>
             )}
           </div>
 
-          {/* Adresse de livraison */}
+          {/* Shipping address */}
           <div>
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
-              <h3 className="text-xl font-bold text-gray-900">Adresse de livraison</h3>
+              <h3 className="text-xl font-bold text-gray-900">Shipping address</h3>
               <Link href="#" className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors">
-                Ajouter
+                Add
               </Link>
             </div>
             {shippingAddress ? (
@@ -58,7 +58,7 @@ export default async function AddressesPage() {
               </address>
             ) : (
               <p className="text-gray-500 text-sm italic">
-                Vous n'avez pas encore configuré ce type d'adresse.
+                You have not set up this type of address yet.
               </p>
             )}
           </div>

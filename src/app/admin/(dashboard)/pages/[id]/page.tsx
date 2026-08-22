@@ -72,7 +72,7 @@ export default function AdminPageForm() {
     <div className="max-w-4xl mx-auto pb-12">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">
-          {isNew ? 'Créer une page' : 'Éditer la page'}
+          {isNew ? 'Create une page' : 'Éditer la page'}
         </h1>
         <button
           onClick={() => router.push('/admin/pages')}
@@ -94,7 +94,7 @@ export default function AdminPageForm() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Titre de la page</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Title de la page</label>
               <input
                 type="text"
                 required
@@ -165,7 +165,7 @@ export default function AdminPageForm() {
             disabled={saving}
             className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-8 rounded-md transition shadow-sm disabled:opacity-50"
           >
-            {saving ? 'Enregistrement...' : 'Enregistrer la page'}
+            {saving ? 'Enregistrement...' : 'Save la page'}
           </button>
         </div>
       </form>

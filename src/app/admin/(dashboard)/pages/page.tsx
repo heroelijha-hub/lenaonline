@@ -14,7 +14,7 @@ export default async function AdminPagesList() {
           href="/admin/pages/new" 
           className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition"
         >
-          Créer une page
+          Create une page
         </Link>
       </div>
 
@@ -28,9 +28,9 @@ export default async function AdminPagesList() {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Titre</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Title</th>
               <th className="px-6 py-3 text-sm font-semibold text-gray-600">URL / Slug</th>
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Statut</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Status</th>
               <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-right">Actions</th>
             </tr>
           </thead>
@@ -44,7 +44,7 @@ export default async function AdminPagesList() {
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       page.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {page.isPublished ? 'Publiée' : 'Brouillon'}
+                      {page.isPublished ? 'Publishede' : 'Draft'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-3">
@@ -59,7 +59,7 @@ export default async function AdminPagesList() {
                       await deletePage(page.id);
                     }} className="inline-block">
                       <button type="submit" className="text-red-600 hover:text-red-900 font-medium text-sm">
-                        Supprimer
+                        Delete
                       </button>
                     </form>
                   </td>
@@ -68,7 +68,7 @@ export default async function AdminPagesList() {
             ) : (
               <tr>
                 <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                  Aucune page trouvée. Cliquez sur "Créer une page" pour commencer.
+                  Aucune page trouvée. Cliquez sur "Create une page" pour commencer.
                 </td>
               </tr>
             )}

@@ -10,7 +10,7 @@ export default async function CouponsPage() {
     <div className="max-w-6xl mx-auto flex gap-8 items-start">
       {/* Colonne gauche: Formulaire */}
       <div className="w-1/3 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-        <h2 className="text-lg font-bold text-gray-900 mb-6">Nouveau Coupon</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-6">New Coupon</h2>
         {/* @ts-expect-error Server Action typing */}
         <form action={createCoupon} className="space-y-4">
           <div>
@@ -30,10 +30,10 @@ export default async function CouponsPage() {
           </div>
           <div className="flex items-center">
             <input type="checkbox" name="isActive" id="isActive" defaultChecked className="w-4 h-4 text-orange-600 border-gray-300 rounded" />
-            <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">Actif immédiatement</label>
+            <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">Active immédiatement</label>
           </div>
           <button type="submit" className="w-full bg-orange-500 text-white font-medium py-2 rounded hover:bg-orange-600 transition">
-            Créer le Coupon
+            Create le Coupon
           </button>
         </form>
       </div>

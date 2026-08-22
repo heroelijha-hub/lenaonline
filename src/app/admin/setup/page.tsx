@@ -46,13 +46,13 @@ export default function AdminSetupPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
                 name="password"
                 type="password"
                 required
                 className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
-                placeholder="Mot de passe sécurisé"
+                placeholder="Password sécurisé"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function AdminSetupPage() {
               disabled={isPending}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 transition-colors"
             >
-              {isPending ? 'Création en cours...' : 'Créer le compte Administrateur'}
+              {isPending ? 'Création en cours...' : 'Create le compte Administrateur'}
             </button>
           </div>
         </form>

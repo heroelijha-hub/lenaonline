@@ -302,7 +302,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     await updateSettingsBatch(settingsMap);
 
-    setMessage('Paramètres mis à jour avec succès.');
+    setMessage('Settings mis à jour avec succès.');
     setIsLoading(false);
     router.refresh();
   };
@@ -315,7 +315,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         disabled={isLoading}
         className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-orange-300 text-sm font-semibold"
       >
-        {isLoading ? 'Enregistrement...' : 'Enregistrer cette section'}
+        {isLoading ? 'Enregistrement...' : 'Save cette section'}
       </button>
     </div>
   );
@@ -329,7 +329,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       )}
 
       <div>
-        <h3 className="text-lg font-bold text-red-600 mb-4">Paramètres Régionaux</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Settings Régionaux</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Devise principale</label>
@@ -573,7 +573,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Client ID PayPal</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Customer ID PayPal</label>
             <input
               type="text"
               value={paypalClientId}
@@ -617,11 +617,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               value={bankTransferAccountHolder}
               onChange={(e) => setBankTransferAccountHolder(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Nom de l'entreprise ou personne"
+              placeholder="Name de l'entreprise ou personne"
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la banque</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Name de la banque</label>
             <input
               type="text"
               value={bankTransferBankName}
@@ -700,14 +700,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="px-3 py-1.5 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
                 >
-                  Supprimer le logo
+                  Delete le logo
                 </button>
               </div>
             )}
             
             {logoFile && (
               <div className="flex items-center gap-3 mb-3 p-2 bg-blue-50 border border-blue-100 rounded text-sm text-blue-700">
-                <span>Nouveau fichier : <strong>{logoFile.name}</strong></span>
+                <span>New fichier : <strong>{logoFile.name}</strong></span>
                 <button 
                   type="button"
                   onClick={() => {
@@ -718,7 +718,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="text-red-500 hover:text-red-700 underline text-xs font-semibold"
                 >
-                  Annuler
+                  Cancel
                 </button>
               </div>
             )}
@@ -801,7 +801,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           {menuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Nom du lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Name du lien</label>
                 <input
                   type="text"
                   value={link.label}
@@ -835,7 +835,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setMenuLinks(newLinks);
                   }}
                   className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
-                  title="Supprimer ce lien"
+                  title="Delete ce lien"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -844,11 +844,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           ))}
           <button
             type="button"
-            onClick={() => setMenuLinks([...menuLinks, { label: 'Nouveau Lien', url: '/' }])}
+            onClick={() => setMenuLinks([...menuLinks, { label: 'New Lien', url: '/' }])}
             className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Ajouter un lien
+            Add un lien
           </button>
         </div>
         <SectionSaveButton />
@@ -863,7 +863,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <h4 className="font-semibold text-gray-800 mb-2">Section "À propos"</h4>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titre</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
             <input type="text" value={mobileAboutTitle} onChange={e => setMobileAboutTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="md:col-span-2">
@@ -877,7 +877,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           {mobileMenuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Nom du lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Name du lien</label>
                 <input
                   type="text"
                   value={link.label}
@@ -911,7 +911,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setMobileMenuLinks(newLinks);
                   }}
                   className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
-                  title="Supprimer"
+                  title="Delete"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -920,11 +920,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           ))}
           <button
             type="button"
-            onClick={() => setMobileMenuLinks([...mobileMenuLinks, { label: 'Nouveau Lien', url: '/' }])}
+            onClick={() => setMobileMenuLinks([...mobileMenuLinks, { label: 'New Lien', url: '/' }])}
             className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Ajouter un lien mobile
+            Add un lien mobile
           </button>
         </div>
 
@@ -1040,7 +1040,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setTopBarLinks(newLinks);
                   }}
                   className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
-                  title="Supprimer ce lien"
+                  title="Delete ce lien"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -1049,18 +1049,18 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           ))}
           <button
             type="button"
-            onClick={() => setTopBarLinks([...topBarLinks, { label: 'Nouveau Lien', icon: 'star', url: '#' }])}
+            onClick={() => setTopBarLinks([...topBarLinks, { label: 'New Lien', icon: 'star', url: '#' }])}
             className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Ajouter un lien Top Bar
+            Add un lien Top Bar
           </button>
         </div>
         <SectionSaveButton />
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Paramètres du Chat</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Settings du Chat</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -1076,7 +1076,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la boutique (Chat)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Name de la boutique (Chat)</label>
               <input
                 type="text"
                 value={chatStoreName}
@@ -1152,11 +1152,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <h4 className="text-md font-medium text-gray-800 mb-4">Textes d&apos;interface (Titres et Labels)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Titre Adresses (ex: Our Locations)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Title Adresses (ex: Our Locations)</label>
                 <input type="text" value={footerLocationsTitle} onChange={e => setFooterLocationsTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Titre Newsletter (ex: Newsletter)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Title Newsletter (ex: Newsletter)</label>
                 <input type="text" value={footerNewsletterTitle} onChange={e => setFooterNewsletterTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
@@ -1210,7 +1210,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setFooterColumns(newCols);
                   }}
                   className="font-bold px-3 py-1.5 border border-gray-300 rounded focus:ring-orange-500 w-1/2"
-                  placeholder="Titre de la colonne (ex: Contact Us)"
+                  placeholder="Title de la colonne (ex: Contact Us)"
                 />
                 <button 
                   type="button" 
@@ -1221,14 +1221,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="text-red-500 hover:text-red-700 text-sm"
                 >
-                  Supprimer la colonne
+                  Delete la colonne
                 </button>
               </div>
               
               <div className="space-y-2 pl-4 border-l-2 border-gray-200">
                 {col.links.map((link, lIdx) => (
                   <div key={lIdx} className="flex gap-2 items-center">
-                    <input type="text" value={link.label} placeholder="Nom du lien" onChange={e => {
+                    <input type="text" value={link.label} placeholder="Name du lien" onChange={e => {
                       const newCols = [...footerColumns];
                       newCols[cIdx].links[lIdx].label = e.target.value;
                       setFooterColumns(newCols);
@@ -1247,16 +1247,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 ))}
                 <button type="button" onClick={() => {
                   const newCols = [...footerColumns];
-                  newCols[cIdx].links.push({ label: 'Nouveau lien', url: '#' });
+                  newCols[cIdx].links.push({ label: 'New lien', url: '#' });
                   setFooterColumns(newCols);
-                }} className="text-orange-600 text-xs mt-2">+ Ajouter un lien</button>
+                }} className="text-orange-600 text-xs mt-2">+ Add un lien</button>
               </div>
             </div>
           ))}
           <button type="button" onClick={() => {
             setFooterColumns([...footerColumns, { title: 'Nouvelle Colonne', links: [] }]);
           }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
-            + Ajouter une colonne
+            + Add une colonne
           </button>
         </div>
         <SectionSaveButton />
@@ -1279,7 +1279,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titre de la page</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title de la page</label>
             <input type="text" value={maintenanceTitle} onChange={e => setMaintenanceTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           
@@ -1321,7 +1321,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         <h3 className="text-lg font-bold text-red-600 mb-4">Page 404 (Introuvable)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titre de la page</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title de la page</label>
             <input type="text" value={notFoundTitle} onChange={e => setNotFoundTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2">

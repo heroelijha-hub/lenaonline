@@ -38,16 +38,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
           <nav className="flex-1 px-4 py-6 space-y-2">
             <Link href="/admin" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Tableau de bord
+              Dashboard
             </Link>
             <Link href="/admin/products" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Produits
+              Products
             </Link>
             <Link href="/admin/categories" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Catégories
+              Categories
             </Link>
             <Link href="/admin/orders" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Commandes
+              Orders
             </Link>
             <Link href="/admin/coupons" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
               Coupons
@@ -56,7 +56,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               Landing Page
             </Link>
             <Link href="/admin/chat" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Chat Client
+              Customer Chat
             </Link>
             <Link href="/admin/blogs" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
               Blog
@@ -65,10 +65,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               Pages
             </Link>
             <Link href="/admin/settings" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              Paramètres
+              Settings
             </Link>
             <Link href="/admin/shipping" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              Expéditions
+              Shipping
             </Link>
           </nav>
         </div>
@@ -77,7 +77,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-          <h1 className="text-xl font-semibold text-gray-800">Tableau de bord</h1>
+          <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
           <div className="flex items-center space-x-6">
             <NotificationBell isAdmin={true} />
             <div className="flex items-center space-x-4">
@@ -89,7 +89,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               redirect('/');
             }}>
               <button type="submit" className="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition-colors font-medium">
-                Se déconnecter
+                Sign out
               </button>
             </form>
             </div>

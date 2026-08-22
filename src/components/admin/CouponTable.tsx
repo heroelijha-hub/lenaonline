@@ -26,7 +26,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réduction</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -50,7 +50,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
                       coupon.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     } hover:opacity-80 transition disabled:opacity-50`}
                   >
-                    {coupon.isActive ? 'Actif' : 'Inactif'}
+                    {coupon.isActive ? 'Active' : 'Inactive'}
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -59,7 +59,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
                     disabled={loadingId === coupon.id}
                     className="text-red-600 hover:text-red-900 disabled:opacity-50"
                   >
-                    Supprimer
+                    Delete
                   </button>
                 </td>
               </tr>
