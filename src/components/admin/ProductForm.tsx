@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-// react-quill removed due to React 19 incompatibility
+import { getCategories, createProduct, uploadImage } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
