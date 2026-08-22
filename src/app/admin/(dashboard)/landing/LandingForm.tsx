@@ -407,6 +407,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           {renderResponsiveInput(section, 'Titre de la section Blog', 'title', 'Latest Blogs')}
+          {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           
           <div>
             <label className="block text-sm font-medium mb-1">Ordre d'affichage des articles</label>
@@ -468,6 +469,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           {renderResponsiveInput(section, 'Titre de la section', 'title', 'Titre...')}
+          {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           {section.type === 'BestDeals' && (
             <div>
               <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>
@@ -553,6 +555,13 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   <option value="Playfair Display">Playfair Display (Sérif)</option>
                   <option value="Montserrat">Montserrat</option>
                   <option value="Poppins">Poppins</option>
+                  <option value="Open Sans">Open Sans</option>
+                  <option value="Lora">Lora</option>
+                  <option value="Oswald">Oswald</option>
+                  <option value="Raleway">Raleway</option>
+                  <option value="Nunito">Nunito</option>
+                  <option value="Ubuntu">Ubuntu</option>
+                  <option value="Merriweather">Merriweather</option>
                 </select>
               </div>
 

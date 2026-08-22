@@ -96,8 +96,8 @@ export default async function BestDeals({ config }: { config?: any }) {
             </div>
           </div>
 
-          <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap">
-            See All
+          <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
+            {config?.SEE_ALL_TEXT || "See All"}
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
