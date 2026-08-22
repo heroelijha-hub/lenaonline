@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { useState } from 'react';
 
 type FooterProps = {
   supportPhone?: string;
@@ -41,6 +42,12 @@ export default function Footer({
   footerSocialLinkedin = '#',
   footerColumns = []
 }: FooterProps) {
+  const [openCols, setOpenCols] = useState<number[]>([]);
+
+  const toggleCol = (idx: number) => {
+    setOpenCols(prev => prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]);
+  };
+
   return (
     <footer 
       className="font-sans pt-16 pb-24 lg:pb-6 relative" 
@@ -107,16 +114,25 @@ export default function Footer({
 
           </div>
 
-          <div className="w-full lg:w-[65%] grid grid-cols-2 md:grid-cols-3 gap-y-12 gap-x-8">
+          <div className="w-full lg:w-[65%] flex flex-col md:grid md:grid-cols-3 gap-y-4 md:gap-y-12 gap-x-8 mt-10 lg:mt-0">
             
             {footerColumns.map((col, idx) => (
-              <div key={idx}>
-                <h3 className="font-bold text-base mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{col.title}</h3>
-                <ul className="space-y-3 text-sm opacity-80">
-                  {col.links.map((link, lIdx) => (
-                    <li key={lIdx}><Link href={link.url} className="hover:text-orange-500 transition">{link.label}</Link></li>
-                  ))}
-                </ul>
+              <div key={idx} className="border-b border-gray-700/30 md:border-none pb-4 md:pb-0">
+                <button 
+                  onClick={() => toggleCol(idx)}
+                  className="w-full flex items-center justify-between font-bold text-base md:mb-4 outline-none md:pointer-events-none"
+                  style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}
+                >
+                  <span>{col.title}</span>
+                  <svg className={`w-5 h-5 md:hidden transition-transform duration-300 ${openCols.includes(idx) ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 md:!max-h-none ${openCols.includes(idx) ? 'max-h-96 mt-4' : 'max-h-0 md:mt-0'}`}>
+                  <ul className="space-y-3 text-sm opacity-80">
+                    {col.links.map((link, lIdx) => (
+                      <li key={lIdx}><Link href={link.url} className="hover:text-orange-500 transition block py-1 md:py-0">{link.label}</Link></li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
 
