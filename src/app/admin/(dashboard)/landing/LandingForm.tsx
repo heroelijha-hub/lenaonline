@@ -173,18 +173,6 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <input type="color" value={section.settings[`HERO_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
-        
-        <div className="pt-2 border-t border-gray-100">
-          <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-            <input 
-              type="checkbox" 
-              checked={section.settings[`HERO_${blockNum}_HIDE_MOBILE`] === 'true'} 
-              onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_HIDE_MOBILE`, e.target.checked ? 'true' : 'false')}
-              className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
-            />
-            <span className="font-medium text-red-600">Masquer ce bloc sur mobile</span>
-          </label>
-        </div>
       </div>
     );
   };
@@ -319,6 +307,24 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'Hero') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <div className="mb-4 bg-white p-3 border rounded shadow-sm">
+            <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">📱 Affichage sur Mobile</h4>
+            <p className="text-xs text-gray-500 mb-3">Sélectionnez les blocs que vous souhaitez <strong>afficher</strong> sur la version mobile :</p>
+            <div className="grid grid-cols-2 gap-3">
+              {[1, 2, 3, 4].map(num => (
+                <label key={num} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-2 rounded border hover:bg-gray-100 transition">
+                  <input 
+                    type="checkbox" 
+                    checked={section.settings[`HERO_${num}_HIDE_MOBILE`] !== 'true'} 
+                    onChange={e => updateSectionSettings(section.id, `HERO_${num}_HIDE_MOBILE`, e.target.checked ? 'false' : 'true')}
+                    className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                  />
+                  <span className="font-medium">Afficher le Bloc {num}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
           <p className="text-sm text-gray-500 mb-4">L'en-tête principal contient 4 blocs. Modifiez les textes principaux ci-dessous.</p>
           
           <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
