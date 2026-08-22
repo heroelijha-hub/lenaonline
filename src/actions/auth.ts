@@ -20,7 +20,7 @@ export async function loginUser(formData: FormData) {
   })
 
   if (error) {
-    return { error: 'Identifiants incorrects.' }
+    return { error: 'Incorrect credentials.' }
   }
 
   revalidatePath('/', 'layout')
@@ -33,7 +33,7 @@ export async function registerUser(formData: FormData) {
   const password = formData.get('password') as string
 
   if (!email || !password || !username) {
-    return { error: 'Tous les champs sont requis.' }
+    return { error: 'All fields are required.' }
   }
 
   const supabase = await createClient()
@@ -69,7 +69,7 @@ export async function registerUser(formData: FormData) {
         })
       }
     } catch (e) {
-      console.error("Erreur lors de la synchronisation Prisma de l'utilisateur:", e)
+      console.error("Error syncing Prisma user:", e)
       // On ne retourne pas d'erreur critique ici, l'utilisateur est quand même créé dans Supabase Auth
     }
   }
@@ -77,7 +77,7 @@ export async function registerUser(formData: FormData) {
   revalidatePath('/', 'layout')
   
   if (!data.session) {
-    return { success: true, message: "Inscription réussie ! Veuillez vérifier votre boîte mail pour confirmer votre compte avant de vous connecter." }
+    return { success: true, message: "Registration successful! Please check your email to confirm your account before logging in." }
   }
   
   return { success: true }
@@ -85,7 +85,7 @@ export async function registerUser(formData: FormData) {
 
 export async function logoutUser() {
   const supabase = await createClient()
-  // Déconnecte l'utilisateur de tous les appareils et invalide les tokens côté serveur
+  // Logs user out from all devices and invalidates server-side tokens
   await supabase.auth.signOut({ scope: 'global' })
   revalidatePath('/', 'layout')
   return { success: true }
@@ -96,7 +96,7 @@ export async function setupAdmin(formData: FormData) {
   const password = formData.get('password') as string;
 
   if (!email || !password) {
-    return { error: 'Tous les champs sont requis.' };
+    return { error: 'All fields are required.' };
   }
 
   // Vérifier qu'il n'y a pas déjà d'admin
@@ -150,7 +150,7 @@ export async function loginAdmin(formData: FormData) {
   });
 
   if (error) {
-    return { error: 'Identifiants incorrects.' };
+    return { error: 'Incorrect credentials.' };
   }
 
   if (data.user) {

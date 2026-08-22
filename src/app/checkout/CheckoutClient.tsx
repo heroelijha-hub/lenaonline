@@ -97,7 +97,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     e.preventDefault();
     
     if (!paymentMethod) {
-      alert("Veuillez sélectionner un moyen de paiement.");
+      alert("Please select a payment method.");
       return;
     }
     
@@ -118,7 +118,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
       router.push(res.redirectUrl);
     } else if (paymentMethod === 'PAYPAL') {
       clearCart();
-      alert('Ouverture de PayPal (Simulation)... Commande ' + res.orderId);
+      alert('Opening PayPal (Simulation)... Order ' + res.orderId);
       router.push('/checkout/success?orderId=' + res.orderId);
     }
     
@@ -133,7 +133,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
         <div className="lg:col-span-7 space-y-8">
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
-            Vous avez un coupon? <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">Cliquez ici pour saisir votre code</button>
+            Have a coupon? <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">Click here to enter your code</button>
           </div>
           
           {showCouponInput && !appliedCoupon && (
@@ -143,11 +143,11 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                   type="text" 
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="Code promo" 
+                  placeholder="Coupon code" 
                   className="flex-grow px-4 py-2 border border-gray-200 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
                 />
                 <button type="button" onClick={handleApplyCoupon} className="bg-gray-900 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
-                  Appliquer
+                  Apply
                 </button>
               </div>
               {couponError && <p className="text-red-500 text-xs mt-2">{couponError}</p>}
@@ -156,30 +156,30 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
           
           {appliedCoupon && (
             <div className="bg-green-50 p-4 rounded text-sm text-green-700 flex justify-between items-center border border-green-200">
-              <span>Code promo <strong>{appliedCoupon.code}</strong> appliqué avec succès !</span>
-              <button type="button" onClick={() => setAppliedCoupon(null)} className="text-red-500 hover:underline font-medium text-xs">Retirer</button>
+              <span>Coupon code <strong>{appliedCoupon.code}</strong> applied successfully!</span>
+              <button type="button" onClick={() => setAppliedCoupon(null)} className="text-red-500 hover:underline font-medium text-xs">Remove</button>
             </div>
           )}
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
-            Déjà client? <Link href="/login" className="text-orange-600 hover:underline font-medium">Cliquez ici pour vous connecter</Link>
+            Already a customer? <Link href="/login" className="text-orange-600 hover:underline font-medium">Click here to login</Link>
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Détails De Facturation</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Billing Details</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Prénom <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">First Name <span className="text-red-500">*</span></label>
               <input type="text" name="firstName" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nom <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Last Name <span className="text-red-500">*</span></label>
               <input type="text" name="lastName" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pays/région <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Country/Region <span className="text-red-500">*</span></label>
             <select 
               name="country" 
               required 
@@ -190,32 +190,32 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               {zones.map((zone) => (
                 <option key={zone.name} value={zone.name}>{zone.name}</option>
               ))}
-              {zones.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
+              {zones.length === 0 && <option value="">No shipping zones available</option>}
             </select>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Numéro et nom de rue <span className="text-red-500">*</span></label>
-              <input type="text" name="address1" placeholder="Numéro de voie et nom de la rue" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Street address <span className="text-red-500">*</span></label>
+              <input type="text" name="address1" placeholder="House number and street name" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
             </div>
             <div>
-              <input type="text" name="address2" placeholder="Bâtiment, appartement, lot, etc. (facultatif)" className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+              <input type="text" name="address2" placeholder="Apartment, suite, unit, etc. (optional)" className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Code postal <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Postcode / ZIP <span className="text-red-500">*</span></label>
             <input type="text" name="postalCode" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ville <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">City <span className="text-red-500">*</span></label>
             <input type="text" name="city" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone (facultatif)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Phone (facultatif)</label>
             <input type="tel" name="phone" className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
           </div>
 
@@ -238,15 +238,15 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               onChange={(e) => setShipToDifferentAddress(e.target.checked)}
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500" 
             />
-            <label htmlFor="shipToDifferentAddress" className="text-lg font-bold text-gray-900 cursor-pointer">Expédier à une adresse différente ?</label>
+            <label htmlFor="shipToDifferentAddress" className="text-lg font-bold text-gray-900 cursor-pointer">Ship to a different address?</label>
           </div>
 
           {shipToDifferentAddress && (
             <div className="space-y-6 mt-4 p-6 border border-gray-200 rounded-lg bg-white">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Prénom(s) <span className="text-red-500">*</span></label>
-                  <input type="text" name="shippingFirstName" placeholder="Prénom(s)" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name(s) <span className="text-red-500">*</span></label>
+                  <input type="text" name="shippingFirstName" placeholder="First Name(s)" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nom de famille <span className="text-red-500">*</span></label>
@@ -260,7 +260,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pays/région <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Country/Region <span className="text-red-500">*</span></label>
                 <select 
                   name="shippingCountry" 
                   required 
@@ -271,7 +271,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                   {zones.map((zone) => (
                     <option key={zone.name} value={zone.name}>{zone.name}</option>
                   ))}
-                  {zones.length === 0 && <option value="">Aucune zone de livraison disponible</option>}
+                  {zones.length === 0 && <option value="">No shipping zones available</option>}
                 </select>
               </div>
 
@@ -286,24 +286,24 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Code postal <span className="text-red-500">*</span></label>
-                <input type="text" name="shippingPostalCode" placeholder="Code postal" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Postcode / ZIP <span className="text-red-500">*</span></label>
+                <input type="text" name="shippingPostalCode" placeholder="Postcode / ZIP" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Ville <span className="text-red-500">*</span></label>
-                <input type="text" name="shippingCity" placeholder="Ville" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">City <span className="text-red-500">*</span></label>
+                <input type="text" name="shippingCity" placeholder="City" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone <span className="text-red-500">*</span></label>
                 <input type="tel" name="shippingPhone" required className="w-full px-4 py-2 border border-gray-200 bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500" />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes de commande (facultatif)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Order notes (optional)</label>
             <textarea 
               name="orderNotes" 
               rows={3} 
@@ -317,12 +317,12 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
         {/* Colonne de Droite : Récapitulatif et Paiement */}
         <div className="lg:col-span-5">
           <div className="bg-gray-50 p-6 sm:p-8 rounded-lg border border-gray-100 sticky top-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Votre Commande</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Order</h2>
             
             <div className="border-b border-gray-200 pb-4 mb-4">
               <div className="flex justify-between font-bold text-sm text-gray-900 mb-4">
-                <span>Produit</span>
-                <span>Sous-total</span>
+                <span>Product</span>
+                <span>Subtotal</span>
               </div>
               
               {cart.map((item, index) => (
@@ -338,7 +338,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
             </div>
 
             <div className="border-b border-gray-200 pb-4 mb-4 flex justify-between text-sm font-bold text-gray-900">
-              <span>Sous-total</span>
+              <span>Subtotal</span>
               <span>{formatPrice(cartTotal)}</span>
             </div>
 
@@ -381,7 +381,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
             <div className="space-y-4 mb-8">
               {!enableBankTransfer && !enableStripe && !enablePaypal && (
                 <div className="p-4 bg-red-50 text-red-600 rounded text-sm text-center font-medium">
-                  Aucun moyen de paiement n'est actuellement disponible.
+                  No payment method is currently available.
                 </div>
               )}
 
@@ -397,7 +397,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                       onChange={() => setPaymentMethod('BANK_TRANSFER')}
                       className="w-4 h-4 text-orange-600 mr-3 focus:ring-orange-500" 
                     />
-                    <span className="font-medium text-gray-900">Virement bancaire</span>
+                    <span className="font-medium text-gray-900">Direct Bank Transfer</span>
                   </label>
                   {paymentMethod === 'BANK_TRANSFER' && (
                     <div className="p-4 bg-gray-50 text-sm text-gray-600">
@@ -467,7 +467,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               disabled={isProcessing || cart.length === 0 || !paymentMethod}
               className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-6 rounded transition-colors flex justify-center items-center disabled:opacity-50"
             >
-              {isProcessing ? 'Traitement...' : 'Commander'}
+              {isProcessing ? 'Processing...' : 'Place Order'}
             </button>
           </div>
         </div>

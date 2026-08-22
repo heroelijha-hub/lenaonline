@@ -110,7 +110,7 @@ export default function LoginPage() {
                   disabled={isPendingLogin}
                   className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  {isPendingLogin ? 'Connexion...' : 'Log In'}
+                  {isPendingLogin ? 'Login...' : 'Log In'}
                 </button>
               </div>
             </form>
@@ -196,7 +196,7 @@ export default function LoginPage() {
                   disabled={isPendingRegister}
                   className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  {isPendingRegister ? 'Création...' : 'Register'}
+                  {isPendingRegister ? 'Registering...' : 'Register'}
                 </button>
               </div>
             </form>

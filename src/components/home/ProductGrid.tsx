@@ -22,7 +22,7 @@ type ProductGridProps = {
 
 export default async function ProductGrid({ config }: ProductGridProps) {
   const { 
-    title = 'Produits', 
+    title = 'Products', 
     filterType = 'LATEST', 
     categoryId,
     variant = '1',
@@ -73,7 +73,7 @@ export default async function ProductGrid({ config }: ProductGridProps) {
           className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}
         >
-          {settings.SEE_ALL_TEXT || 'Voir Tout'}
+          {settings.SEE_ALL_TEXT || 'View All'}
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>

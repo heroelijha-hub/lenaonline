@@ -51,7 +51,7 @@ export default function Header({
   topBarTextColor = '#4b5563',
   categories = [],
   searchBorderColor = '#d1d5db',
-  searchPlaceholder = 'Rechercher un produit...',
+  searchPlaceholder = 'Search products...',
   searchBtnText = 'Search',
   searchBtnBgColor = '#f97316',
   searchBtnTextColor = '#111827',
@@ -144,7 +144,7 @@ export default function Header({
           const results = await searchProducts(searchQuery, selectedCategory, 5);
           setSearchResults(results);
         } catch (error) {
-          console.error("Erreur de recherche", error);
+          console.error("Search error", error);
           setSearchResults([]);
         } finally {
           setIsSearching(false);
@@ -246,8 +246,8 @@ export default function Header({
             >
               <span className="truncate max-w-[100px] md:max-w-[150px]">
                 {selectedCategory === 'all' 
-                  ? 'Toutes les catégories' 
-                  : categories.find(c => c.id === selectedCategory)?.name || 'Toutes les catégories'}
+                  ? 'All categories' 
+                  : categories.find(c => c.id === selectedCategory)?.name || 'All categories'}
               </span>
               <svg className="w-4 h-4 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               
@@ -256,15 +256,15 @@ export default function Header({
                 <div className="absolute top-full right-0 mt-1 w-48 bg-white border border-gray-200 shadow-lg rounded-md z-30 max-h-60 overflow-y-auto">
                   <div 
                     className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-gray-700"
-                    onClick={() => setSelectedCategory('all')}
+                    onClick={() => { setSelectedCategory('all'); setIsCategoryDropdownOpen(false); }}
                   >
-                    Toutes les catégories
+                    All categories
                   </div>
                   {categories.map(cat => (
                     <div 
                       key={cat.id} 
                       className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-gray-700 truncate"
-                      onClick={() => setSelectedCategory(cat.id)}
+                      onClick={() => { setSelectedCategory(cat.id); setIsCategoryDropdownOpen(false); }}
                     >
                       {cat.name}
                     </div>
@@ -290,7 +290,7 @@ export default function Header({
           {showSearchResults && searchQuery.length > 1 && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 shadow-xl rounded-lg z-50 overflow-hidden">
               {isSearching && searchResults.length === 0 ? (
-                <div className="p-4 text-center text-gray-500">Recherche en cours...</div>
+                <div className="p-4 text-center text-gray-500">Searching...</div>
               ) : searchResults.length > 0 ? (
                 <div>
                   <ul className="max-h-80 overflow-y-auto py-2 custom-scrollbar">
@@ -331,14 +331,13 @@ export default function Header({
                       onClick={handleSearchSubmit}
                       className="text-sm text-orange-600 font-semibold hover:text-orange-700 w-full py-2"
                     >
-                      Voir tous les résultats pour &quot;{searchQuery}&quot;
+                      View all results for &quot;{searchQuery}&quot;
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="p-6 text-center text-gray-500">
-                  <p>Aucun produit trouvé pour &quot;{searchQuery}&quot;</p>
-                  {selectedCategory !== 'all' && <p className="text-xs mt-1">dans la catégorie sélectionnée.</p>}
+                <div className="p-4 text-center text-sm text-gray-500 bg-white">
+                  No results for &quot;<span className="font-semibold">{searchQuery}</span>&quot;
                 </div>
               )}
             </div>
@@ -352,7 +351,7 @@ export default function Header({
           <button 
             onClick={() => router.push('/wishlist')}
             className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
-            title="Mes favoris"
+            title="My favorites"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
             {mounted && wishlistItems > 0 && (
@@ -374,7 +373,10 @@ export default function Header({
                 </span>
               )}
             </div>
-            <span className="font-bold text-gray-900 text-sm md:text-base ml-1 md:ml-2">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
+            <div className="flex flex-col">
+              <span className="font-bold text-gray-900 text-sm md:text-base">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
+              <span className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">Cart</span>
+            </div>
           </div>
 
           <button 
@@ -395,10 +397,10 @@ export default function Header({
             <div className="relative h-full" ref={bottomCategoryRef}>
               <button 
                 onClick={() => setIsBottomCategoryOpen(!isBottomCategoryOpen)}
-                className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 h-full flex items-center space-x-2 rounded-t-md mt-0.5"
+                className="flex items-center text-white bg-gray-900 px-4 py-2 rounded-t-md font-semibold hover:bg-gray-800 transition h-full"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
-                <span>Toutes les catégories</span>
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+                All categories
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </button>
               
@@ -409,7 +411,7 @@ export default function Header({
                     className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 font-medium"
                     onClick={() => setIsBottomCategoryOpen(false)}
                   >
-                    Toutes les catégories
+                    All categories
                   </Link>
                   {categories.map((cat) => (
                     <Link 

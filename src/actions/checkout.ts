@@ -9,11 +9,11 @@ export async function validateCoupon(code: string) {
     });
 
     if (!coupon) {
-      return { error: "Code promo invalide." };
+      return { error: "Invalid coupon code." };
     }
 
     if (!coupon.isActive) {
-      return { error: "Ce code promo n'est plus actif." };
+      return { error: "This coupon code is no longer active." };
     }
 
     return { 
@@ -26,7 +26,7 @@ export async function validateCoupon(code: string) {
     };
   } catch (error) {
     console.error("Coupon validation error:", error);
-    return { error: "Erreur lors de la validation du code promo." };
+    return { error: "Error validating the coupon code." };
   }
 }
 
@@ -46,7 +46,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     // Validate that shippingMethodId is a valid UUID to prevent Prisma P2023 errors
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!shippingMethodId || !uuidRegex.test(shippingMethodId)) {
-      return { error: "Méthode de livraison invalide. Veuillez rafraîchir la page." };
+      return { error: "Invalid shipping method. Please refresh the page." };
     }
 
     const validZone = await prisma.shippingZone.findFirst({
@@ -55,11 +55,11 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     });
 
     if (!validZone) {
-      return { error: "Cette zone de livraison n'est pas couverte actuellement." };
+      return { error: "This shipping zone is not currently covered." };
     }
 
     if (!validZone.methods || validZone.methods.length === 0) {
-      return { error: "Méthode de livraison invalide." };
+      return { error: "Invalid shipping method." };
     }
 
     const shippingRate = validZone.methods[0].rate;

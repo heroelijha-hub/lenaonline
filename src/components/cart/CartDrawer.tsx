@@ -49,7 +49,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 {getTotalItems()}
               </span>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">Panier</h2>
+            <h2 className="text-xl font-bold text-gray-900">Cart</h2>
           </div>
           
           <div className="flex items-center space-x-3">
@@ -58,7 +58,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 onClick={clearCart}
                 className="text-sm text-gray-500 hover:text-gray-800"
               >
-                Tout effacer
+                Clear all
               </button>
             )}
             <button 
@@ -84,12 +84,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                    <circle cx="115" cy="100" r="4" fill="currentColor"/>
                 </svg>
               </div>
-              <p className="text-gray-800 font-medium mb-6">Aucun produit dans le panier.</p>
+              <p className="text-gray-800 font-medium mb-6">No products in the cart.</p>
               <button 
                 onClick={onClose}
                 className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-md transition"
               >
-                Continuez mes achats
+                Continue shopping
               </button>
             </div>
           ) : (
@@ -142,7 +142,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       className="text-xs text-gray-500 hover:text-red-500 flex items-center mt-3 self-end"
                     >
                       <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                      Retirer
+                      Remove
                     </button>
                   </div>
                 </div>
@@ -160,12 +160,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               className="flex items-center text-sm text-gray-700 hover:text-orange-600 transition"
             >
               <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" /></svg>
-              <span className="font-semibold text-orange-600 mr-1">Cliquez ici</span> Appliquer le coupon
+              <span className="font-semibold text-orange-600 mr-1">Click here</span> Apply le coupon
             </button>
             {showCoupon && (
               <div className="mt-3 flex gap-2">
                 <input type="text" placeholder="Code coupon" className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500" />
-                <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">Appliquer</button>
+                <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">Apply</button>
               </div>
             )}
           </div>
@@ -194,7 +194,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               onClick={onClose}
               className="flex-1 flex justify-center items-center py-3 px-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md transition"
             >
-              Commander
+              Checkout
             </Link>
           </div>
         </div>

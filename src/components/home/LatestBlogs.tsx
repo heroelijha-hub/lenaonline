@@ -90,7 +90,7 @@ export default async function LatestBlogs({ config }: { config?: any }) {
             
             {/* Metadata */}
             <div className="flex items-center text-sm text-gray-500 mt-auto">
-              <span>{new Date(blog.createdAt).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               <span className="mx-2">/</span>
               <span>{blog._count.comments} Comments</span>
             </div>
