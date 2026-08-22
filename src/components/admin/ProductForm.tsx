@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCategories, createProduct, uploadImage } from '@/actions/admin';
 // react-quill removed due to React 19 incompatibility
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
@@ -372,23 +375,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Description Courte</label>
             <div className="bg-white">
-              <textarea 
-                name="shortDescription"
-                value={shortDescription} 
-                onChange={(e) => setShortDescription(e.target.value)} 
-                className="w-full h-32 p-3 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
-              />
+              <ReactQuill theme="snow" value={shortDescription} onChange={setShortDescription} className="h-32 mb-10" />
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Description Longue</label>
             <div className="bg-white">
-              <textarea 
-                name="description"
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)} 
-                className="w-full h-64 p-3 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
-              />
+              <ReactQuill theme="snow" value={description} onChange={setDescription} className="h-64 mb-12" />
             </div>
           </div>
         </div>
