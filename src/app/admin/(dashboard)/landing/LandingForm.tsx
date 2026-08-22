@@ -289,9 +289,9 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <p className="text-sm text-gray-500">Affiche une grille de produits personnalisée (bordures et boutons modifiables).</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">Titre de la section</label>
-              <input type="text" value={section.settings.title || ''} onChange={e => updateSectionSettings(section.id, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500" placeholder="ex: Tondeuses Autoportées" />
+            <div className="col-span-1 md:col-span-2">
+              {renderResponsiveInput(section, 'Titre de la section', 'title', 'ex: Tondeuses Autoportées')}
+              {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'Voir Tout')}
             </div>
             
             <div>
