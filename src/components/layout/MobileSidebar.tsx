@@ -26,6 +26,7 @@ export default function MobileSidebar({
   menuLinks,
   contactAddress,
   contactPhone,
+  contactEmail,
   contactWebsite,
   categories = [],
 }: MobileSidebarProps) {
