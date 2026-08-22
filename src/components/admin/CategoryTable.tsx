@@ -7,12 +7,15 @@ type Category = {
   id: string;
   name: string;
   slug?: string | null;
+  parentId?: string | null;
+  parent?: { name: string } | null;
 };
 
 export default function CategoryTable({ categories }: { categories: Category[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editSlug, setEditSlug] = useState('');
+  const [editParentId, setEditParentId] = useState('');
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const generateSlug = (text: string) => 
@@ -25,17 +28,19 @@ export default function CategoryTable({ categories }: { categories: Category[] }
     setEditingId(cat.id);
     setEditName(cat.name);
     setEditSlug(cat.slug || '');
+    setEditParentId(cat.parentId || '');
   };
 
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditName('');
     setEditSlug('');
+    setEditParentId('');
   };
 
   const handleSaveEdit = async (id: string) => {
     if (!editName.trim()) return;
-    const res = await updateCategory(id, editName, editSlug);
+    const res = await updateCategory(id, editName, editSlug, editParentId || null);
     if (res.error) {
       alert(res.error);
     } else {
@@ -61,6 +66,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -101,6 +107,22 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                     />
                   ) : (
                     cat.slug
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {editingId === cat.id ? (
+                    <select
+                      value={editParentId}
+                      onChange={(e) => setEditParentId(e.target.value)}
+                      className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm bg-white"
+                    >
+                      <option value="">Aucun</option>
+                      {categories.filter(c => c.id !== cat.id).map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    cat.parent ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">{cat.parent.name}</span> : <span className="text-gray-400 italic">Principale</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

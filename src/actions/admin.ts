@@ -36,6 +36,7 @@ export async function uploadImage(formData: FormData) {
 // --- CATEGORIES ---
 export async function getCategories() {
   return await prisma.category.findMany({
+    include: { parent: true, children: true },
     orderBy: { name: 'asc' }
   });
 }
@@ -43,6 +44,7 @@ export async function getCategories() {
 export async function createCategory(formData: FormData) {
   const name = formData.get('name') as string;
   let slug = formData.get('slug') as string;
+  const parentId = formData.get('parentId') as string || null;
   if (!name) return { error: "Nom requis" };
 
   if (!slug) {
@@ -52,7 +54,7 @@ export async function createCategory(formData: FormData) {
   }
 
   try {
-    await prisma.category.create({ data: { name, slug } });
+    await prisma.category.create({ data: { name, slug, parentId } });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');
     return { success: true };
@@ -61,7 +63,7 @@ export async function createCategory(formData: FormData) {
   }
 }
 
-export async function updateCategory(id: string, name: string, slug?: string) {
+export async function updateCategory(id: string, name: string, slug?: string, parentId?: string | null) {
   try {
     let finalSlug = slug;
     if (!finalSlug) {
@@ -71,7 +73,7 @@ export async function updateCategory(id: string, name: string, slug?: string) {
     }
     await prisma.category.update({
       where: { id },
-      data: { name, slug: finalSlug }
+      data: { name, slug: finalSlug, parentId: parentId || null }
     });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');
@@ -95,7 +97,7 @@ export async function deleteCategory(id: string) {
 // --- PRODUCTS ---
 export async function getProducts() {
   return await prisma.product.findMany({
-    include: { category: true },
+    include: { categories: true },
     orderBy: { createdAt: 'desc' }
   });
 }
@@ -116,7 +118,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const stockRaw = formData.get('stock') as string;
   const stock = stockRaw ? parseInt(stockRaw, 10) : null; // Si vide -> null (En stock)
 
-  const categoryId = formData.get('categoryId') as string;
+  const categoryIdsRaw = formData.get('categoryIds') as string;
+  const categoryIds = categoryIdsRaw ? JSON.parse(categoryIdsRaw) : [];
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
@@ -126,8 +129,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
 
   const providedSlug = formData.get('slug') as string;
 
-  if (!title || !price || !categoryId) {
-    return { error: "Le titre, le prix et la catégorie sont obligatoires." };
+  if (!title || !price || categoryIds.length === 0) {
+    return { error: "Le titre, le prix et au moins une catégorie sont obligatoires." };
   }
 
   // Generate slug
@@ -153,7 +156,9 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         price,
         compareAtPrice,
         stock,
-        categoryId,
+        categories: {
+          connect: categoryIds.map((id: string) => ({ id }))
+        },
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
@@ -188,7 +193,8 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const stockRaw = formData.get('stock') as string;
   const stock = stockRaw ? parseInt(stockRaw, 10) : null;
 
-  const categoryId = formData.get('categoryId') as string;
+  const categoryIdsRaw = formData.get('categoryIds') as string;
+  const categoryIds = categoryIdsRaw ? JSON.parse(categoryIdsRaw) : [];
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
@@ -198,8 +204,8 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
 
   const providedSlug = formData.get('slug') as string;
 
-  if (!id || !title || !price || !categoryId) {
-    return { error: "L'ID, le titre, le prix et la catégorie sont obligatoires." };
+  if (!id || !title || !price || categoryIds.length === 0) {
+    return { error: "L'ID, le titre, le prix et au moins une catégorie sont obligatoires." };
   }
 
   let finalSlug = providedSlug;
@@ -221,7 +227,9 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
         price,
         compareAtPrice,
         stock,
-        categoryId,
+        categories: {
+          set: categoryIds.map((id: string) => ({ id }))
+        },
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
@@ -252,7 +260,7 @@ export async function deleteProduct(id: string) {
 
 export async function duplicateProduct(id: string) {
   try {
-    const existing = await prisma.product.findUnique({ where: { id } });
+    const existing = await prisma.product.findUnique({ where: { id }, include: { categories: true } });
     if (!existing) return { error: "Produit introuvable." };
 
     const newTitle = existing.title + " (Copie)";
@@ -271,7 +279,9 @@ export async function duplicateProduct(id: string) {
         price: existing.price,
         compareAtPrice: existing.compareAtPrice,
         stock: existing.stock,
-        categoryId: existing.categoryId,
+        categories: {
+          connect: existing.categories.map((c: any) => ({ id: c.id }))
+        },
         isBestSeller: existing.isBestSeller,
         isDealOfTheDay: existing.isDealOfTheDay,
         discountLabel: existing.discountLabel,
@@ -288,14 +298,18 @@ export async function duplicateProduct(id: string) {
   }
 }
 
-export async function quickEditProduct(id: string, data: { title: string, categoryId: string, slug: string }) {
+export async function quickEditProduct(id: string, data: { title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | '' }) {
   try {
     await prisma.product.update({
       where: { id },
       data: {
         title: data.title,
-        categoryId: data.categoryId,
+        categories: {
+          set: data.categoryIds.map(id => ({ id }))
+        },
         slug: data.slug,
+        price: data.price,
+        compareAtPrice: data.compareAtPrice === '' ? null : data.compareAtPrice,
       }
     });
     revalidatePath('/admin/products');

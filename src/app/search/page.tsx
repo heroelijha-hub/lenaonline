@@ -22,12 +22,12 @@ export default async function SearchPage({
   }
 
   if (category && category !== 'all') {
-    where.categoryId = category;
+    where.categories = { some: { id: category } };
   }
 
   const products = await prisma.product.findMany({
     where,
-    include: { category: true },
+    include: { categories: true },
     orderBy: { createdAt: 'desc' }
   });
 
@@ -72,8 +72,8 @@ export default async function SearchPage({
                   )}
                 </Link>
                 <div className="p-4 flex-grow flex flex-col">
-                  {product.category && (
-                    <span className="text-xs text-gray-500 mb-1">{product.category.name}</span>
+                  {product.categories && product.categories.length > 0 && (
+                    <span className="text-xs text-gray-500 mb-1">{product.categories[0].name}</span>
                   )}
                   <Link href={`/product/${product.slug}`} className="text-sm font-medium text-gray-900 hover:text-orange-600 transition line-clamp-2 mb-2 flex-grow">
                     {product.title}

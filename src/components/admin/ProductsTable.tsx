@@ -6,12 +6,18 @@ import { deleteProduct, duplicateProduct, quickEditProduct } from '@/actions/adm
 
 export default function ProductsTable({ products, categories }: { products: any[], categories: any[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editData, setEditData] = useState({ title: '', categoryId: '', slug: '' });
+  const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
   const [isLoading, setIsLoading] = useState(false);
 
   const startEdit = (p: any) => {
     setEditingId(p.id);
-    setEditData({ title: p.title, categoryId: p.categoryId, slug: p.slug });
+    setEditData({ 
+      title: p.title, 
+      categoryIds: p.categories?.map((c: any) => c.id) || [], 
+      slug: p.slug,
+      price: p.price || 0,
+      compareAtPrice: p.compareAtPrice || ''
+    });
   };
 
   const handleQuickEditSubmit = async (id: string) => {
@@ -83,11 +89,37 @@ export default function ProductsTable({ products, categories }: { products: any[
                           <label className="text-xs font-semibold text-gray-600">Slug</label>
                           <input type="text" value={editData.slug} onChange={e => setEditData({...editData, slug: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
                         </div>
+                        <div className="flex gap-4">
+                          <div className="flex flex-col gap-1 flex-1">
+                            <label className="text-xs font-semibold text-gray-600">Prix de base ($)</label>
+                            <input type="number" step="0.01" value={editData.price} onChange={e => setEditData({...editData, price: parseFloat(e.target.value) || 0})} className="border px-2 py-1 rounded text-sm w-full" />
+                          </div>
+                          <div className="flex flex-col gap-1 flex-1">
+                            <label className="text-xs font-semibold text-gray-600">Prix promo ($)</label>
+                            <input type="number" step="0.01" value={editData.compareAtPrice} onChange={e => setEditData({...editData, compareAtPrice: e.target.value ? parseFloat(e.target.value) : ''})} className="border px-2 py-1 rounded text-sm w-full" />
+                          </div>
+                        </div>
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Catégorie</label>
-                          <select value={editData.categoryId} onChange={e => setEditData({...editData, categoryId: e.target.value})} className="border px-2 py-1 rounded text-sm w-full">
-                            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                          </select>
+                          <label className="text-xs font-semibold text-gray-600">Catégories</label>
+                          <div className="border rounded p-2 max-h-32 overflow-y-auto bg-gray-50 flex flex-col gap-1 text-sm">
+                            {categories.map(c => (
+                              <label key={c.id} className="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={editData.categoryIds.includes(c.id)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setEditData({...editData, categoryIds: [...editData.categoryIds, c.id]});
+                                    } else {
+                                      setEditData({...editData, categoryIds: editData.categoryIds.filter(id => id !== c.id)});
+                                    }
+                                  }}
+                                  className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                                />
+                                {c.name}
+                              </label>
+                            ))}
+                          </div>
                         </div>
                         <div className="flex items-center gap-2 pt-2">
                           <button onClick={() => setEditingId(null)} className="text-sm px-3 py-1 text-gray-500 border border-gray-300 rounded hover:bg-gray-50">Annuler</button>
@@ -100,7 +132,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                           <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-[10px]">ID: {product.id.substring(0,8)}</span>
                           <span>•</span>
-                          <span className="text-orange-600 font-medium">{product.category?.name || 'Sans catégorie'}</span>
+                          <span className="text-orange-600 font-medium">{product.categories?.map((c: any) => c.name).join(', ') || 'Sans catégorie'}</span>
                         </div>
                         
                         {/* Woo-style Row Actions */}

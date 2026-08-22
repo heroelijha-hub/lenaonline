@@ -35,7 +35,7 @@ export default async function BestDeals({ config }: { config?: any }) {
     id: p.id,
     slug: p.slug,
     imageUrl: p.images[0],
-    category: p.category?.name || 'N/A',
+    category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
     title: p.title,
     rating: 5, // Rating statique pour l'instant
     ratingText: '(5.00)',

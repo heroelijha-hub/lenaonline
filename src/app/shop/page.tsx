@@ -35,7 +35,7 @@ export default async function ShopPage({
   const where: any = {};
   
   if (categories.length > 0) {
-    where.category = { slug: { in: categories } };
+    where.categories = { some: { slug: { in: categories } } };
   }
   
   if (minPrice !== undefined || maxPrice !== undefined) {
@@ -65,7 +65,7 @@ export default async function ShopPage({
   const products = await prisma.product.findMany({
     where,
     include: {
-      category: { select: { name: true, slug: true } },
+      categories: { select: { name: true, slug: true } },
       reviews: { select: { rating: true } }
     },
     orderBy

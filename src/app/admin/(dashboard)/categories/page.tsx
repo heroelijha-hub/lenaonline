@@ -15,7 +15,7 @@ export default async function CategoriesPage() {
 
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h2 className="text-lg font-semibold mb-4 text-gray-800">Ajouter une catégorie</h2>
-        <CategoryCreateForm />
+        <CategoryCreateForm categories={categories} />
       </div>
 
       <CategoryTable categories={categories} />

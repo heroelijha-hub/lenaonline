@@ -46,7 +46,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = await prisma.product.findUnique({
     where: { slug },
     include: { 
-      category: true,
+      categories: true,
       reviews: {
         where: { isApproved: true },
         orderBy: { createdAt: 'desc' },
@@ -66,8 +66,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   // Related products (same category)
   const relatedProducts = await prisma.product.findMany({
-    where: { categoryId: product.categoryId, id: { not: product.id } },
-    include: { category: true },
+    where: { 
+      categories: { some: { id: { in: product.categories.map((c: any) => c.id) } } }, 
+      id: { not: product.id } 
+    },
+    include: { categories: true },
     take: 4,
   });
 
@@ -93,7 +96,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="max-w-7xl mx-auto text-sm text-gray-500">
             <Link href="/" className="hover:text-orange-500">Home</Link>
             <span className="mx-2">/</span>
-            <span className="hover:text-orange-500 cursor-pointer">{product.category?.name || 'Category'}</span>
+            <span className="hover:text-orange-500 cursor-pointer">{product.categories && product.categories.length > 0 ? product.categories[0].name : 'Category'}</span>
             <span className="mx-2">/</span>
             <span className="text-gray-900 font-medium">{product.title}</span>
           </div>
@@ -163,7 +166,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               {/* Meta tags */}
               <div className="space-y-2 text-sm">
                 <p><span className="font-semibold text-gray-900">SKU:</span> {product.id.split('-')[0].toUpperCase()}</p>
-                <p><span className="font-semibold text-gray-900">Categories:</span> {product.category?.name || 'Uncategorized'}</p>
+                <p><span className="font-semibold text-gray-900">Categories:</span> {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'Uncategorized'}</p>
                 <p><span className="font-semibold text-gray-900">Tags:</span> Shopelios, Featured</p>
               </div>
 
@@ -196,7 +199,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                       )}
                     </div>
                     <div className="mt-auto">
-                      <p className="text-xs text-blue-500 font-semibold mb-1">{rp.category?.name}</p>
+                      <p className="text-xs text-blue-500 font-semibold mb-1">{rp.categories && rp.categories.length > 0 ? rp.categories[0].name : 'Général'}</p>
                       <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">{rp.title}</h3>
                       <Price amount={rp.price} className="font-bold text-red-600" />
                     </div>

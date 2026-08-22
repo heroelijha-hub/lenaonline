@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 export async function getBestDeals() {
   return await prisma.product.findMany({
     where: { isDealOfTheDay: true },
-    include: { category: true },
+    include: { categories: true },
     take: 4,
     orderBy: { createdAt: 'desc' }
   });
@@ -14,7 +14,7 @@ export async function getBestDeals() {
 export async function getBestSellers() {
   return await prisma.product.findMany({
     where: { isBestSeller: true },
-    include: { category: true },
+    include: { categories: true },
     take: 10,
     orderBy: { createdAt: 'desc' }
   });
@@ -29,13 +29,13 @@ export async function getFilteredProducts(filterType: string, categoryId?: strin
   } else if (filterType === 'POPULAR') {
     where.isBestSeller = true;
   } else if (filterType === 'CATEGORY' && categoryId) {
-    where.categoryId = categoryId;
+    where.categories = { some: { id: categoryId } };
   }
   // NEWEST is the default (empty where, order by createdAt desc)
 
   return await prisma.product.findMany({
     where,
-    include: { category: true },
+    include: { categories: true },
     take: limit,
     orderBy
   });
@@ -52,7 +52,7 @@ export async function searchProducts(query: string, categoryId?: string, limit: 
   };
 
   if (categoryId && categoryId !== 'all') {
-    where.categoryId = categoryId;
+    where.categories = { some: { id: categoryId } };
   }
 
   return await prisma.product.findMany({
@@ -78,6 +78,6 @@ export async function getProductsByIds(ids: string[]) {
         in: ids
       }
     },
-    include: { category: true }
+    include: { categories: true }
   });
 }

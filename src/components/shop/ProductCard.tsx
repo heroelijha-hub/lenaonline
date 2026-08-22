@@ -14,7 +14,7 @@ interface ProductCardProps {
     compareAtPrice?: number | null;
     images: string[];
     discountLabel?: string | null;
-    category?: { name: string } | null;
+    categories?: { name: string, slug?: string | null }[] | null;
   };
   view?: 'grid' | 'list';
 }
@@ -113,7 +113,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
 
         <div className="p-6 flex flex-col flex-grow">
           <span className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium">
-            {product.category?.name || 'Général'}
+            {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'Général'}
           </span>
           
           <h3 
@@ -168,7 +168,7 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
       <div className="p-4 flex flex-col flex-grow">
         {/* Category */}
         <span className="text-xs text-gray-500 mb-1">
-          {product.category?.name || 'Général'}
+          {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'Général'}
         </span>
         
         {/* Title constrained to 2 lines max with ellipsis */}

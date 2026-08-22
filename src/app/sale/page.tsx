@@ -8,7 +8,7 @@ export default async function SaleProductsPage() {
     where: {
       compareAtPrice: { not: null }
     },
-    include: { category: true },
+    include: { categories: true },
     orderBy: { updatedAt: 'desc' },
     take: 50 // Fetch sale products
   });
@@ -55,8 +55,8 @@ export default async function SaleProductsPage() {
                   ) : null}
                 </Link>
                 <div className="p-3 sm:p-4 flex-grow flex flex-col">
-                  {product.category && (
-                    <span className="text-[10px] sm:text-xs text-gray-500 mb-1">{product.category.name}</span>
+                  {product.categories && product.categories.length > 0 && (
+                    <span className="text-[10px] sm:text-xs text-gray-500 mb-1">{product.categories[0].name}</span>
                   )}
                   <Link href={`/product/${product.slug}`} className="text-xs sm:text-sm font-medium text-gray-900 hover:text-orange-600 transition line-clamp-2 mb-2 flex-grow">
                     {product.title}

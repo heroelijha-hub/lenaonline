@@ -86,7 +86,7 @@ export default function WishlistClient() {
           </Link>
           <div className="p-4 flex flex-col flex-1">
             <Link href={`/product/${p.slug}`}>
-              <p className="text-xs text-blue-500 font-semibold mb-1">{p.category?.name || 'Général'}</p>
+              <p className="text-xs text-blue-500 font-semibold mb-1">{p.categories && p.categories.length > 0 ? p.categories[0].name : 'Général'}</p>
               <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2 hover:text-orange-500">{p.title}</h3>
             </Link>
             <div className="mt-auto mb-4">

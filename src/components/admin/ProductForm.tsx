@@ -24,6 +24,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const initialTags = parseJSON(initialData?.tags);
 
   const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialData?.categories?.map((c: any) => c.id) || []);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
@@ -108,6 +109,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       }
 
       formData.append('slug', slug);
+      formData.append('categoryIds', JSON.stringify(selectedCategories));
 
       // If editing, we will call updateProduct (to be created), otherwise createProduct
       if (isEditing) {
@@ -180,13 +182,26 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-1 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie *</label>
-            <select name="categoryId" defaultValue={initialData?.categoryId} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500">
-              <option value="">Sélectionnez une catégorie...</option>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Catégories *</label>
+            <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-gray-50 flex flex-col gap-2">
               {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedCategories.includes(cat.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCategories([...selectedCategories, cat.id]);
+                      } else {
+                        setSelectedCategories(selectedCategories.filter(id => id !== cat.id));
+                      }
+                    }}
+                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                  />
+                  {cat.parent ? `${cat.parent.name} > ${cat.name}` : cat.name}
+                </label>
               ))}
-            </select>
+            </div>
           </div>
         </div>
 
