@@ -2,6 +2,7 @@ import { getFilteredProducts } from '@/actions/public';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import CountdownTimer from './CountdownTimer';
+import ProductSliderWrapper from './ProductSliderWrapper';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -100,14 +101,14 @@ export default async function BestDeals({ config }: { config?: any }) {
         </div>
       </div>
 
-      {/* Products Grid */}
-      <div className="mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex min-w-[1000px] gap-4">
+      {/* Products Slider */}
+      <div className="mb-8 relative">
+        <ProductSliderWrapper>
           {displayProducts.map((product) => (
             <Link 
               href={`/product/${(product as any).slug || product.id}`} 
               key={product.id} 
-              className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition bg-white border rounded-lg"
+              className="flex-none w-[250px] md:w-[300px] p-5 flex flex-col group cursor-pointer hover:shadow-lg transition bg-white border rounded-lg snap-start"
               style={{ borderColor: settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb' }}
             >
               {/* Product Image Area */}
@@ -152,7 +153,7 @@ export default async function BestDeals({ config }: { config?: any }) {
               </div>
             </Link>
           ))}
-        </div>
+        </ProductSliderWrapper>
       </div>
 
       {/* Promo Banners */}
