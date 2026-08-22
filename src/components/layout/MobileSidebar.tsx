@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type MobileSidebarProps = {
   isOpen: boolean;
@@ -14,6 +14,7 @@ type MobileSidebarProps = {
   contactPhone: string;
   contactEmail: string;
   contactWebsite: string;
+  categories?: Array<{ id: string, name: string, slug: string | null }>;
 };
 
 export default function MobileSidebar({
@@ -25,9 +26,10 @@ export default function MobileSidebar({
   menuLinks,
   contactAddress,
   contactPhone,
-  contactEmail,
   contactWebsite,
+  categories = [],
 }: MobileSidebarProps) {
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
   // Lock body scroll when sidebar is open
   useEffect(() => {
@@ -83,7 +85,7 @@ export default function MobileSidebar({
           </div>
         )}
 
-        {/* Menu Links */}
+        {/* Menu Links & Categories */}
         <nav className="p-4 border-b border-gray-100 flex-1">
           <ul className="space-y-1">
             {menuLinks.map((link, idx) => (
@@ -97,6 +99,43 @@ export default function MobileSidebar({
                 </Link>
               </li>
             ))}
+            
+            {/* Categories Accordion */}
+            {categories && categories.length > 0 && (
+              <li>
+                <button 
+                  onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                  className="w-full flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-800 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                >
+                  Catégories
+                  <svg className={`w-5 h-5 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                {isCategoriesOpen && (
+                  <ul className="mt-1 ml-4 space-y-1 border-l-2 border-orange-100 pl-2">
+                    <li>
+                      <Link 
+                        href="/search"
+                        onClick={onClose}
+                        className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-orange-600 rounded-lg transition-colors"
+                      >
+                        Toutes les catégories
+                      </Link>
+                    </li>
+                    {categories.map((cat) => (
+                      <li key={cat.id}>
+                        <Link 
+                          href={`/search?category=${cat.id}`}
+                          onClick={onClose}
+                          className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-orange-600 rounded-lg transition-colors"
+                        >
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            )}
           </ul>
         </nav>
 

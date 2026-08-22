@@ -43,7 +43,7 @@ export default function Footer({
 }: FooterProps) {
   return (
     <footer 
-      className="font-sans pt-16 pb-6 relative" 
+      className="font-sans pt-16 pb-24 lg:pb-6 relative" 
       style={{ backgroundColor: footerBgColor, color: footerTextColor }}
     >
       <div className="max-w-7xl mx-auto px-4 w-full">
@@ -151,7 +151,7 @@ export default function Footer({
 
         {/* Scroll to Top Button */}
         <button 
-          className="absolute bottom-6 right-6 bg-yellow-400 hover:bg-yellow-500 text-gray-900 w-10 h-10 flex items-center justify-center rounded shadow-lg transition"
+          className="absolute bottom-24 lg:bottom-6 right-6 bg-yellow-400 hover:bg-yellow-500 text-gray-900 w-10 h-10 flex items-center justify-center rounded shadow-lg transition"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>

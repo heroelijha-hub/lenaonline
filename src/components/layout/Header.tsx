@@ -494,6 +494,7 @@ export default function Header({
         contactPhone={mobileContactPhone}
         contactEmail={mobileContactEmail}
         contactWebsite={mobileContactWebsite}
+        categories={categories}
       />
     </header>
     </>
