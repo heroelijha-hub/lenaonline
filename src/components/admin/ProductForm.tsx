@@ -10,10 +10,23 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
+  const parseJSON = (data: any, fallback: any = []) => {
+    if (!data) return fallback;
+    if (typeof data === 'string') {
+      try { return JSON.parse(data); } catch { return fallback; }
+    }
+    if (Array.isArray(data)) return data;
+    return fallback;
+  };
+
+  const initialAttributes = parseJSON(initialData?.attributes);
+  const initialVariations = parseJSON(initialData?.variations);
+  const initialTags = parseJSON(initialData?.tags);
+
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<string[]>(initialData?.images || []);
+  const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
   const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
   const isEditing = !!initialData;
 
@@ -44,15 +57,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
   const [productType, setProductType] = useState<'SIMPLE' | 'VARIABLE'>(initialData?.type || 'SIMPLE');
   const [attributes, setAttributes] = useState<Array<{ name: string, options: string }>>(
-    initialData?.attributes 
-      ? (initialData.attributes as any[]).map(a => ({ 
-          name: a.name, 
-          options: Array.isArray(a.options) ? a.options.join(' | ') : (a.options || '') 
-        })) 
-      : []
+    initialAttributes.map((a: any) => ({ 
+      name: a?.name || '', 
+      options: Array.isArray(a?.options) ? a.options.join(' | ') : (a?.options || '') 
+    }))
   );
-  const [variations, setVariations] = useState<Array<any>>(initialData?.variations || []);
-  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [variations, setVariations] = useState<Array<any>>(initialVariations);
+  const [tags, setTags] = useState<string[]>(initialTags);
   const [tagInput, setTagInput] = useState('');
 
   const addAttribute = () => setAttributes([...attributes, { name: '', options: '' }]);
@@ -308,7 +319,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d'images (Cloudinary - max 20)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d&apos;images (Cloudinary - max 20)</label>
           <p className="text-xs text-gray-500 mb-2">Glissez-déposez les images existantes pour modifier leur ordre. Cliquez sur la croix pour supprimer.</p>
           {existingImages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
@@ -429,11 +440,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-3 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
           <div className="flex items-center">
             <input type="checkbox" name="isBestSeller" id="isBestSeller" defaultChecked={initialData?.isBestSeller} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">Mettre en "Best Seller"</label>
+            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">Mettre en &quot;Best Seller&quot;</label>
           </div>
           <div className="flex items-center">
             <input type="checkbox" name="isDealOfTheDay" id="isDealOfTheDay" defaultChecked={initialData?.isDealOfTheDay} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">Mettre en "Deal of the Day"</label>
+            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">Mettre en &quot;Deal of the Day&quot;</label>
           </div>
           <div>
             <input type="text" name="discountLabel" defaultValue={initialData?.discountLabel} placeholder="Label (ex: -14%)" className="w-full px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
