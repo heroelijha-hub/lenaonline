@@ -142,7 +142,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     return (
       <div className="mb-2">
         <div className="flex items-center justify-between mb-1">
-          <label className="block text-xs font-medium">{label}</label>
+          <label className="block text-[11px] font-medium">{label}</label>
           <div className="flex items-center gap-1">
             <span className="text-[9px] text-gray-500 font-medium bg-gray-100 px-1 rounded uppercase tracking-wider" title={`Taille pour ${previewMode}`}>
               {previewMode}
@@ -171,21 +171,21 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
         <h5 className="font-bold text-sm mb-2 text-red-600">Design, Liens & Médias</h5>
-        <label className="block text-xs font-medium mb-1">Lien de redirection (URL)</label>
+        <label className="block text-[11px] font-medium mb-1">Lien de redirection (URL)</label>
         <input type="text" value={section.settings[`HERO_${blockNum}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_LINK`, e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-3" placeholder="/product/..." />
         
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="flex flex-col gap-3 mb-3">
           <div>
-            <label className="block text-xs font-bold mb-1 text-red-600">Image Principale</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+            <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
               <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
             {section.settings[`HERO_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`HERO_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `HERO_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
-            <label className="block text-xs font-bold mb-1 text-red-600">Image de Fond (BG)</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+            <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
               <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
@@ -195,15 +195,15 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         
         <div className="grid grid-cols-3 gap-2 mb-3">
           <div>
-            <label className="block text-xs font-medium mb-1 text-gray-500">Couleur Fond</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Fond</label>
             <input type="color" value={section.settings[`HERO_${blockNum}_BG_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1 text-gray-500">Bouton Fond</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Bouton Fond</label>
             <input type="color" value={section.settings[`HERO_${blockNum}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1 text-gray-500">Bouton Texte</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Bouton Texte</label>
             <input type="color" value={section.settings[`HERO_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
@@ -215,18 +215,18 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
         <h5 className="font-bold text-sm mb-2 text-red-600">Design & Médias</h5>
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="flex flex-col gap-3 mb-3">
           <div>
-            <label className="block text-xs font-bold mb-1 text-red-600">Image Principale</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+            <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
               <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
             {section.settings[`BANNER_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`BANNER_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `BANNER_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
-            <label className="block text-xs font-bold mb-1 text-red-600">Image de Fond (BG)</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-xs font-semibold block text-center mt-1 transition">
+            <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
+            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
               <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
@@ -236,11 +236,11 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-xs font-medium mb-1 text-gray-500">Couleur Fond</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Fond</label>
             <input type="color" value={section.settings[`BANNER_${blockNum}_BG_COLOR`] || (blockNum === 1 ? '#ffedd5' : '#f3f4f6')} onChange={e => updateSectionSettings(section.id, `BANNER_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1 text-gray-500">Couleur Texte</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Texte</label>
             <input type="color" value={section.settings[`BANNER_${blockNum}_TEXT_COLOR`] || '#111827'} onChange={e => updateSectionSettings(section.id, `BANNER_${blockNum}_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
@@ -367,7 +367,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {renderResponsiveInput(section, 'Titre', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_1_SUBTITLE', 'Supper Discount')}
               {renderResponsiveInput(section, 'Prix/Texte', 'HERO_1_PRICE', 'from $349.99')}
-              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 1)}
             </div>
@@ -376,7 +376,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Haut Centre)</h4>
               {renderResponsiveInput(section, 'Titre', 'HERO_2_TITLE', 'Heavy On Features...')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
-              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_2_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 2)}
             </div>
@@ -385,7 +385,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Haut Droite)</h4>
               {renderResponsiveInput(section, 'Titre', 'HERO_3_TITLE', 'Sale 10% Off')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_3_SUBTITLE', 'New Product')}
-              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_3_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 3)}
             </div>
@@ -394,7 +394,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bas Droite)</h4>
               {renderResponsiveInput(section, 'Titre', 'HERO_4_TITLE', 'Headphones Listen...')}
               {renderResponsiveInput(section, 'Sous-titre', 'HERO_4_SUBTITLE', 'Last call...')}
-              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 4)}
             </div>
@@ -448,14 +448,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
               {renderResponsiveInput(section, 'Titre', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
-              <label className="block text-xs font-medium mb-1">Lien cible</label>
+              <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_1_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 1)}
             </div>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Droite</h4>
               {renderResponsiveInput(section, 'Titre', 'BANNER_2_TITLE', 'Ex: Smartphones')}
-              <label className="block text-xs font-medium mb-1">Lien cible</label>
+              <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_2_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 2)}
             </div>
