@@ -36,7 +36,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row flex-wrap gap-4">
       <input 
         type="text" 
         value={name}

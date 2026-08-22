@@ -41,38 +41,6 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [editingId, setEditingId] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Popup Mode State
-  const [isPopupMode, setIsPopupMode] = useState(true);
-  const [position, setPosition] = useState({ x: 20, y: 20 });
-  const [isDragging, setIsDragging] = useState(false);
-  const dragRef = useRef<{ startX: number, startY: number, initialX: number, initialY: number } | null>(null);
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    setIsDragging(true);
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    dragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      initialX: position.x,
-      initialY: position.y
-    };
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (isDragging && dragRef.current) {
-      const dx = e.clientX - dragRef.current.startX;
-      const dy = e.clientY - dragRef.current.startY;
-      setPosition({
-        x: dragRef.current.initialX + dx,
-        y: Math.max(0, dragRef.current.initialY + dy)
-      });
-    }
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    setIsDragging(false);
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-  };
 
   // Sync to cookie for preview iframe
   useEffect(() => {
@@ -512,181 +480,105 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     return null;
   };
 
-  const renderFormContent = (inPopup: boolean) => (
-    <div className={`space-y-6 overflow-y-auto pr-2 custom-scrollbar ${inPopup ? 'h-[75vh] p-4' : 'h-[calc(100vh-120px)]'}`}>
-      {message && (
-        <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-          {message}
+  return (
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-gray-100 relative -m-4 sm:-m-6 lg:-m-8">
+      {/* Top Navbar */}
+      <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center justify-between gap-4 z-20 shrink-0 shadow-sm relative">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar flex-grow">
+          {sections.map((section, index) => (
+            <div 
+              key={section.id} 
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-md border transition cursor-pointer select-none ${editingId === section.id ? 'border-orange-500 bg-orange-50 text-orange-700 shadow-inner' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-gray-300'}`} 
+              onClick={() => setEditingId(editingId === section.id ? null : section.id)}
+            >
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${section.enabled ? 'bg-green-500' : 'bg-gray-300'}`}></span>
+              <span className="text-sm font-medium whitespace-nowrap">{section.name || section.type}</span>
+              <svg className={`w-4 h-4 ml-1 flex-shrink-0 ${editingId === section.id ? 'text-orange-500' : 'text-gray-400 hover:text-gray-700'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+            </div>
+          ))}
+          {/* Add section dropdown */}
+          <div className="relative group">
+            <button className="px-3 py-1.5 bg-slate-800 text-white hover:bg-slate-700 text-sm font-medium rounded-md flex items-center gap-1 whitespace-nowrap transition">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+              Ajouter section
+            </button>
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block w-48 z-50">
+              <button onClick={() => addSection('Hero')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">En-tête Principal (Hero)</button>
+              <button onClick={() => addSection('BestDeals')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Promotions du Jour</button>
+              <button onClick={() => addSection('BestSeller')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meilleures Ventes</button>
+              <button onClick={() => addSection('ProductGrid')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Grille de Produits</button>
+              <button onClick={() => addSection('PromoBanners')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Bannières Promo</button>
+              <button onClick={() => addSection('LatestBlogs')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Derniers Articles</button>
+              <button onClick={() => addSection('Newsletter')} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Newsletter</button>
+            </div>
+          </div>
         </div>
-      )}
 
-      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${!inPopup && 'p-6'}`}>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Constructeur de Page</h2>
-          <button 
-            onClick={handleSave} 
-            disabled={isLoading}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition"
-          >
+        <div className="flex items-center gap-3 ml-auto">
+          {message && <span className="text-sm text-green-600 font-medium px-2 bg-green-50 py-1 rounded">{message}</span>}
+          <button onClick={handleSave} disabled={isLoading} className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-1.5 rounded-md font-medium disabled:opacity-50 transition shadow-sm whitespace-nowrap flex items-center gap-2">
+            {isLoading && <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
             {isLoading ? 'Sauvegarde...' : 'Enregistrer'}
           </button>
         </div>
+      </div>
 
-        {!inPopup && (
-          <p className="text-sm text-gray-500 mb-6">
-            Réorganisez les sections de votre page d'accueil en les montant ou descendant. L'aperçu en direct se trouve sur la droite.
-          </p>
-        )}
-
-        <div className="space-y-4">
-          {sections.map((section, index) => (
-            <div key={section.id} className={`border rounded-lg overflow-hidden ${!section.enabled ? 'opacity-60 bg-gray-50' : 'bg-white'}`}>
-              <div className="flex items-center p-3 gap-3">
-                {/* Actions */}
-                <div className="flex flex-col gap-1">
-                  <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
-                  </button>
-                  <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 rounded disabled:opacity-30">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </button>
+      {/* Dropdown Editor Panel */}
+      {editingId && (
+        <div className="absolute top-[60px] left-0 right-0 max-w-4xl mx-auto bg-white rounded-b-xl shadow-2xl border border-gray-200 z-30 max-h-[75vh] overflow-y-auto custom-scrollbar flex flex-col">
+          {sections.map((section, index) => section.id === editingId && (
+            <div key={section.id} className="p-6">
+              {/* Dropdown Header with Actions */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-100 pb-4 gap-4">
+                <div className="flex items-center gap-3 flex-grow">
+                  <span className="px-2 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded">{section.type}</span>
+                  <input 
+                    type="text" 
+                    value={section.name} 
+                    onChange={e => updateSectionName(section.id, e.target.value)} 
+                    className="font-bold text-xl border-b-2 border-transparent hover:border-gray-200 focus:border-orange-500 outline-none px-1 py-0.5 w-full max-w-md transition" 
+                    placeholder="Nom de la section" 
+                  />
                 </div>
                 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-col mb-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded self-start mb-1">{section.type}</span>
-                    <input 
-                      type="text" 
-                      value={section.name} 
-                      onChange={e => updateSectionName(section.id, e.target.value)}
-                      className="font-bold text-sm md:text-base border-b border-transparent hover:border-gray-300 focus:border-orange-500 outline-none bg-transparent w-full truncate"
-                    />
-                  </div>
-                </div>
-
-                {/* Toggles */}
-                <div className="flex flex-col md:flex-row items-end md:items-center gap-1.5">
-                  <button 
-                    onClick={() => setEditingId(editingId === section.id ? null : section.id)}
-                    className="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-50 transition whitespace-nowrap"
-                  >
-                    {editingId === section.id ? 'Fermer' : 'Éditer'}
-                  </button>
-                  <div className="flex gap-1.5">
-                    <button 
-                      onClick={() => toggleSection(index)}
-                      className={`text-[10px] px-1.5 py-1 rounded transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                      title={section.enabled ? 'Visible' : 'Masqué'}
-                    >
-                      {section.enabled ? 'Vis' : 'Masq'}
-                    </button>
-                    <button onClick={() => removeSection(index)} className="text-red-500 hover:text-red-700 p-1 bg-red-50 rounded">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                    </button>
-                  </div>
+                <div className="flex items-center gap-2 shrink-0 bg-gray-50 p-1.5 rounded-lg border border-gray-200">
+                   <button 
+                     onClick={() => toggleSection(index)} 
+                     className={`text-xs px-3 py-1.5 rounded font-medium transition ${section.enabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                   >
+                     {section.enabled ? 'Section Visible' : 'Section Masquée'}
+                   </button>
+                   <div className="w-px h-6 bg-gray-300 mx-1"></div>
+                   <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1.5 hover:bg-white text-gray-600 rounded disabled:opacity-30 transition border border-transparent hover:border-gray-300 shadow-sm" title="Déplacer vers la gauche / Monter"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg></button>
+                   <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1.5 hover:bg-white text-gray-600 rounded disabled:opacity-30 transition border border-transparent hover:border-gray-300 shadow-sm" title="Déplacer vers la droite / Descendre"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
+                   <div className="w-px h-6 bg-gray-300 mx-1"></div>
+                   <button onClick={() => { removeSection(index); setEditingId(null); }} className="p-1.5 text-red-500 hover:bg-red-50 rounded transition border border-transparent hover:border-red-200 shadow-sm" title="Supprimer la section"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                   <button onClick={() => setEditingId(null)} className="ml-2 p-1.5 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-full transition" title="Fermer le panneau"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
               </div>
               
-              {/* Config Panel */}
-              {editingId === section.id && (
-                <div className="border-t border-gray-100 bg-white p-3">
-                  {renderConfig(section, inPopup)}
-                </div>
-              )}
+              {/* Form Config */}
+              <div className="mt-2">
+                {renderConfig(section, false)}
+              </div>
             </div>
           ))}
         </div>
+      )}
 
-        <div className="mt-6 border-t pt-4">
-          <h3 className="font-semibold mb-2 text-sm">Ajouter une section</h3>
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => addSection('BestDeals')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Promo</button>
-            <button onClick={() => addSection('BestSeller')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Grille Simple</button>
-            <button onClick={() => addSection('ProductGrid')} className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs rounded transition">+ Produits (Grille Hover)</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className={`grid grid-cols-1 ${!isPopupMode ? 'xl:grid-cols-2' : ''} gap-6 relative`}>
-      
-      {/* Left side: Form (Inline Mode) */}
-      <div className={`${isPopupMode ? 'xl:hidden' : 'block'}`}>
-        {renderFormContent(false)}
-      </div>
-      
-      {/* Right side: Live Preview */}
-      <div className={`hidden xl:block h-[calc(100vh-120px)] bg-gray-100 rounded-lg overflow-hidden border border-gray-300 relative shadow-inner ${isPopupMode ? 'col-span-1' : ''}`}>
-        <div className="absolute top-0 w-full bg-slate-800 text-white py-1 px-4 text-xs font-semibold flex justify-between items-center z-10 opacity-90">
-          <div className="flex items-center gap-4">
-            <span>Aperçu en direct</span>
-            <button 
-              onClick={() => setIsPopupMode(!isPopupMode)} 
-              className="bg-slate-600 hover:bg-slate-500 px-2 py-0.5 rounded border border-slate-500 transition flex items-center gap-1"
-            >
-              {isPopupMode ? (
-                <>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                  Figer à gauche (Mode Tablette)
-                </>
-              ) : (
-                <>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" /></svg>
-                  Détacher (Mode Pop-up)
-                </>
-              )}
-            </button>
-          </div>
-          <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-            En temps réel
-          </span>
-        </div>
+      {/* Full-screen Preview Iframe */}
+      <div className="flex-grow w-full relative z-10 bg-gray-200">
         <iframe 
           ref={iframeRef} 
           src="/preview" 
-          className="w-full h-full pt-6 bg-white" 
-          title="Live Preview"
+          className="w-full h-full bg-white shadow-inner" 
+          title="Live Preview" 
         />
+        {/* Helper overlay when editing */}
+        {editingId && (
+          <div className="absolute inset-0 bg-black bg-opacity-20 pointer-events-none transition-opacity duration-300"></div>
+        )}
       </div>
-
-      {/* Floating Popup (Desktop Only) */}
-      {isPopupMode && (
-        <div 
-          className="hidden xl:flex absolute z-50 bg-white rounded-xl shadow-2xl border border-gray-300 flex-col overflow-hidden w-[450px]"
-          style={{ left: `${position.x}px`, top: `${position.y}px`, maxHeight: '85vh' }}
-        >
-          {/* Draggable Header */}
-          <div 
-            className="bg-slate-800 text-white px-4 py-2 cursor-move flex justify-between items-center select-none"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
-          >
-            <span className="font-semibold text-sm flex items-center gap-2">
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
-              Éditeur de Page
-            </span>
-            <button 
-              onClick={() => setIsPopupMode(false)}
-              className="text-slate-300 hover:text-white p-1 rounded-md hover:bg-slate-700 transition"
-              title="Fermer le pop-up (retour au mode fixe)"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-          </div>
-          
-          {/* Form Content */}
-          <div className="bg-gray-50">
-            {renderFormContent(true)}
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }
