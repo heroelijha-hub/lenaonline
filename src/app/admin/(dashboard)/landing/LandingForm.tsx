@@ -111,6 +111,19 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     setSections(newSections);
   };
 
+  const duplicateSection = (index: number) => {
+    const original = sections[index];
+    const newSec: SectionConfig = {
+      ...original,
+      id: 'sec_' + Date.now(),
+      name: `${original.name || original.type} (Copie)`,
+      settings: JSON.parse(JSON.stringify(original.settings)) // Deep copy settings
+    };
+    const newSections = [...sections];
+    newSections.splice(index + 1, 0, newSec);
+    setSections(newSections);
+  };
+
   const updateSectionSettings = (id: string, key: string, value: any) => {
     setSections(sections.map(s => {
       if (s.id === id) {
@@ -616,9 +629,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                         <svg className="w-3 h-3 text-gray-300 group-hover:text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
-                        <button disabled={index === 0} onClick={() => moveSection(index, 'UP')} className="p-1 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg></button>
-                        <button disabled={index === sections.length - 1} onClick={() => moveSection(index, 'DOWN')} className="p-1 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></button>
-                        <button onClick={() => removeSection(index)} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded ml-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                        <button onClick={(e) => { e.stopPropagation(); duplicateSection(index); }} className="p-1 text-blue-500 hover:bg-blue-50 hover:text-blue-700 rounded" title="Dupliquer">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
+                        </button>
+                        <div className="flex flex-col -space-y-1">
+                          <button disabled={index === 0} onClick={(e) => { e.stopPropagation(); moveSection(index, 'UP'); }} className="p-0.5 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg></button>
+                          <button disabled={index === sections.length - 1} onClick={(e) => { e.stopPropagation(); moveSection(index, 'DOWN'); }} className="p-0.5 hover:bg-gray-100 text-gray-400 hover:text-gray-600 rounded disabled:opacity-30"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></button>
+                        </div>
+                        <button onClick={(e) => { e.stopPropagation(); removeSection(index); }} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded ml-1" title="Supprimer"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                       </div>
                     </div>
                   </div>
