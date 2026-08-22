@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import HeroMobileSliderWrapper from './HeroMobileSliderWrapper';
 
 export default async function Hero({ config }: { config?: any }) {
   const settingsDb = await prisma.setting.findMany();
@@ -8,7 +9,6 @@ export default async function Hero({ config }: { config?: any }) {
   if (config) {
     settings = { ...settings, ...config };
   }
-  import HeroMobileSliderWrapper from './HeroMobileSliderWrapper';
 
   const block1 = (
     <div 
