@@ -101,10 +101,15 @@ export default async function BestDeals({ config }: { config?: any }) {
       </div>
 
       {/* Products Grid */}
-      <div className="border border-gray-200 rounded-lg bg-white mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex min-w-[1000px] divide-x divide-gray-200">
+      <div className="mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="flex min-w-[1000px] gap-4">
           {displayProducts.map((product) => (
-            <Link href={`/product/${(product as any).slug || product.id}`} key={product.id} className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition">
+            <Link 
+              href={`/product/${(product as any).slug || product.id}`} 
+              key={product.id} 
+              className="flex-1 p-5 flex flex-col group cursor-pointer hover:shadow-lg transition bg-white border rounded-lg"
+              style={{ borderColor: settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb' }}
+            >
               {/* Product Image Area */}
               <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
                 {product.discount && (
