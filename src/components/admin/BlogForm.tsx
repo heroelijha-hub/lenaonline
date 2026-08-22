@@ -126,7 +126,7 @@ export default function BlogForm({ article }: { article?: any }) {
                 <ReactQuill 
                   theme="snow" 
                   value={formData.content} 
-                  onChange={content => setFormData({ ...formData, content })} 
+                  onChange={(content: string) => setFormData({ ...formData, content })} 
                   className="h-96 mb-12"
                 />
               </div>
