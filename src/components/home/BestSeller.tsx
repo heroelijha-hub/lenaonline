@@ -15,9 +15,9 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string }) => (
+const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#', borderColor }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
   <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
-    <div className="border border-gray-100 rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
+    <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       ) : (
@@ -32,11 +32,11 @@ const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#' }: { icon: stri
 );
 
 const BigCard = ({ 
-  icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#' 
+  icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor 
 }: { 
-  icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string 
+  icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string, borderColor?: string 
 }) => (
-  <Link href={linkUrl} className="border border-gray-200 rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white">
+  <Link href={linkUrl} className="border rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white" style={{ borderColor: borderColor || '#e5e7eb' }}>
     <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
@@ -142,6 +142,7 @@ export default async function BestSeller({ config }: { config?: any }) {
             ratingText={bigProduct1?.ratingText || ''} 
             imageUrl={bigProduct1?.imageUrl}
             linkUrl={bigProduct1 ? `/product/${bigProduct1.slug}` : '#'}
+            borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}
           />
         </div>
 
@@ -157,6 +158,7 @@ export default async function BestSeller({ config }: { config?: any }) {
                 price={p ? p.price : 18.00} 
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
+                borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}
               />
             );
           })}
@@ -173,6 +175,7 @@ export default async function BestSeller({ config }: { config?: any }) {
             ratingText={bigProduct2?.ratingText || ''} 
             imageUrl={bigProduct2?.imageUrl}
             linkUrl={bigProduct2 ? `/product/${bigProduct2.slug}` : '#'}
+            borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}
           />
         </div>
 
@@ -188,6 +191,7 @@ export default async function BestSeller({ config }: { config?: any }) {
                 price={p ? p.price : 35.00} 
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
+                borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}
               />
             );
           })}
