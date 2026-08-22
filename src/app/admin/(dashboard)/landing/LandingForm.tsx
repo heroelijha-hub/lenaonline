@@ -39,6 +39,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
 
@@ -618,13 +619,46 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       </div>
 
       {/* Right Side: Iframe Preview */}
-      <div className="flex-grow w-full relative z-10 bg-gray-300">
-        <iframe 
-          ref={iframeRef} 
-          src="/preview" 
-          className="w-full h-full bg-white shadow-inner" 
-          title="Live Preview" 
-        />
+      <div className="flex-grow w-full relative z-10 bg-gray-200 flex flex-col items-center">
+        {/* Device Toggle Bar */}
+        <div className="w-full bg-white border-b flex justify-center items-center py-2 gap-2 shadow-sm z-20">
+          <button 
+            onClick={() => setPreviewMode('desktop')} 
+            className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'desktop' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
+            title="Aperçu Ordinateur"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </button>
+          <button 
+            onClick={() => setPreviewMode('tablet')} 
+            className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'tablet' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
+            title="Aperçu Tablette"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+          </button>
+          <button 
+            onClick={() => setPreviewMode('mobile')} 
+            className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'mobile' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
+            title="Aperçu Mobile"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+          </button>
+        </div>
+
+        {/* Iframe Container */}
+        <div className={`flex-grow relative transition-all duration-500 ease-in-out ${previewMode === 'desktop' ? 'w-full' : previewMode === 'tablet' ? 'w-[768px] shadow-2xl my-4 rounded-xl overflow-hidden border-8 border-gray-800' : 'w-[375px] shadow-2xl my-4 rounded-3xl overflow-hidden border-[12px] border-gray-800'}`}>
+          {previewMode === 'mobile' && (
+            <div className="absolute top-0 inset-x-0 h-6 bg-gray-800 z-30 flex justify-center rounded-b-xl">
+               <div className="w-24 h-4 bg-black rounded-b-xl"></div>
+            </div>
+          )}
+          <iframe 
+            ref={iframeRef} 
+            src="/preview" 
+            className="w-full h-full bg-white" 
+            title="Live Preview" 
+          />
+        </div>
       </div>
     </div>
   );
