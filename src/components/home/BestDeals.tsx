@@ -154,10 +154,16 @@ export default async function BestDeals({ config }: { config?: any }) {
           }}
         >
           <div className="z-20 w-[60%] sm:w-1/2">
-            <span className="text-orange-600 font-bold text-sm block mb-2">
+            <span 
+              className="text-orange-600 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+              style={getResponsiveVars('PROMO_1_SUBTITLE', {m: '14px', t: '14px', d: '14px'})}
+            >
               {settings.PROMO_1_SUBTITLE || 'Price Start $69'}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line" style={settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : undefined}>
+            <h2 
+              className="font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+              style={{ ...getResponsiveVars('PROMO_1_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : {}) }}
+            >
               {settings.PROMO_1_TITLE || 'NOTHING\nWATCH PRO 2'}
             </h2>
             <Link 
@@ -168,7 +174,7 @@ export default async function BestDeals({ config }: { config?: any }) {
                 color: settings.PROMO_1_BTN_TEXT_COLOR || undefined
               }}
             >
-              Shop Now
+              {settings.PROMO_1_CTA || 'Shop Now'}
             </Link>
           </div>
           {/* Image */}
@@ -197,10 +203,16 @@ export default async function BestDeals({ config }: { config?: any }) {
           }}
         >
           <div className="z-20 w-[60%] sm:w-1/2">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line" style={settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : undefined}>
+            <h2 
+              className="font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+              style={{ ...getResponsiveVars('PROMO_2_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
+            >
               {settings.PROMO_2_TITLE || 'Get 20% Off'}
             </h2>
-            <p className="font-bold text-gray-800 mb-6 text-lg" style={settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : undefined}>
+            <p 
+              className="font-bold text-gray-800 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+              style={{ ...getResponsiveVars('PROMO_2_SUBTITLE', {m: '18px', t: '18px', d: '18px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
+            >
               {settings.PROMO_2_SUBTITLE || 'Women Store'}
             </p>
             <Link 
@@ -211,7 +223,7 @@ export default async function BestDeals({ config }: { config?: any }) {
                 color: settings.PROMO_2_BTN_TEXT_COLOR || undefined
               }}
             >
-              Shop Now
+              {settings.PROMO_2_CTA || 'Shop Now'}
             </Link>
           </div>
           {/* Image */}

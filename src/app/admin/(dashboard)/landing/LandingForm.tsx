@@ -211,7 +211,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     );
   };
 
-  const renderPromoBannerConfig = (section: SectionConfig, blockNum: number) => {
+  const renderPromoBannerConfig = (section: SectionConfig, blockNum: number, prefix: string = 'BANNER') => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
         <h5 className="font-bold text-sm mb-2 text-red-600">Design & Médias</h5>
@@ -220,28 +220,28 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
             <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
-            {section.settings[`BANNER_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`BANNER_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `BANNER_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
+            {section.settings[`${prefix}_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
             <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `BANNER_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
-            {section.settings[`BANNER_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`BANNER_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `BANNER_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
+            {section.settings[`${prefix}_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
         
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Fond</label>
-            <input type="color" value={section.settings[`BANNER_${blockNum}_BG_COLOR`] || (blockNum === 1 ? '#ffedd5' : '#f3f4f6')} onChange={e => updateSectionSettings(section.id, `BANNER_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+            <input type="color" value={section.settings[`${prefix}_${blockNum}_BG_COLOR`] || (blockNum === 1 ? '#ffedd5' : '#f3f4f6')} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Texte</label>
-            <input type="color" value={section.settings[`BANNER_${blockNum}_TEXT_COLOR`] || '#111827'} onChange={e => updateSectionSettings(section.id, `BANNER_${blockNum}_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+            <input type="color" value={section.settings[`${prefix}_${blockNum}_TEXT_COLOR`] || '#111827'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
       </div>
@@ -471,26 +471,46 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           {renderResponsiveInput(section, 'Titre de la section', 'title', 'Titre...')}
           {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           {section.type === 'BestDeals' && (
-            <div>
-              <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>
-              <input 
-                type="datetime-local" 
-                value={section.settings.countdown ? section.settings.countdown.substring(0,16) : ''} 
-                onChange={e => updateSectionSettings(section.id, 'countdown', e.target.value + ':00Z')}
-                className="w-full border rounded px-3 py-2 text-sm"
-              />
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>
+                <input 
+                  type="datetime-local" 
+                  value={section.settings.countdown ? section.settings.countdown.substring(0,16) : ''} 
+                  onChange={e => updateSectionSettings(section.id, 'countdown', e.target.value + ':00Z')}
+                  className="w-full border rounded px-3 py-2 text-sm"
+                />
+              </div>
+
+              {/* Promo Banners within BestDeals */}
+              <div className="mt-6 border-t pt-4">
+                <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 1 (Haut)</h4>
+                {renderResponsiveInput(section, 'Titre Promo 1', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
+                {renderResponsiveInput(section, 'Sous-titre Promo 1', 'PROMO_1_SUBTITLE', 'Price Start $69')}
+                {renderResponsiveInput(section, 'Bouton Promo 1', 'PROMO_1_CTA', 'Shop Now')}
+                {renderPromoBannerConfig(section, 1, 'PROMO')}
+              </div>
+              
+              <div className="mt-6 border-t pt-4">
+                <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 2 (Bas)</h4>
+                {renderResponsiveInput(section, 'Titre Promo 2', 'PROMO_2_TITLE', 'Get 20% Off')}
+                {renderResponsiveInput(section, 'Sous-titre Promo 2', 'PROMO_2_SUBTITLE', 'Women Store')}
+                {renderResponsiveInput(section, 'Bouton Promo 2', 'PROMO_2_CTA', 'Shop Now')}
+                {renderPromoBannerConfig(section, 2, 'PROMO')}
+              </div>
+            </>
           )}
+
           <div>
-            <label className="block text-sm font-medium mb-1">Critère d'affichage des produits</label>
+            <label className="block text-sm font-medium mb-1 mt-4 border-t pt-4">Critère d'affichage des produits</label>
             <select 
-              value={section.settings.filterType || 'NEWEST'}
+              value={section.settings.filterType || (section.type === 'BestDeals' ? 'ON_SALE' : 'POPULAR')} 
               onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)}
               className="w-full border rounded px-3 py-2 text-sm"
             >
-              <option value="NEWEST">Les Plus Récents</option>
-              <option value="ON_SALE">En Promotion (On Sale)</option>
-              <option value="POPULAR">Les Plus Populaires (Best Sellers)</option>
+              <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
+              <option value="LATEST">Les plus récents</option>
+              <option value="ON_SALE">En promotion (Prix réduit)</option>
               <option value="CATEGORY">Par Catégorie Spécifique</option>
             </select>
           </div>
