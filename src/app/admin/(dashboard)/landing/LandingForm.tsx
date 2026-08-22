@@ -361,7 +361,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           
           <p className="text-sm text-gray-500 mb-4">L'en-tête principal contient 4 blocs. Modifiez les textes principaux ci-dessous.</p>
           
-          <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+          <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
               {renderResponsiveInput(section, 'Titre', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
@@ -444,7 +444,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           <p className="text-sm text-gray-500">Configurer les 2 bannières promotionnelles côte à côte.</p>
-          <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+          <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
               {renderResponsiveInput(section, 'Titre', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
