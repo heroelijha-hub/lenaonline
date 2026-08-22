@@ -281,7 +281,11 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         variant: '1',
         cardBorderColor: '#ea580c',
         btnBgColor: '#ea580c',
-        btnTextColor: '#ffffff'
+        btnTextColor: '#ffffff',
+        maxProducts: '12',
+        colsDesktop: '5',
+        colsTablet: '3',
+        colsMobile: '1'
       };
     }
     setSections([...sections, newSec]);
@@ -330,6 +334,43 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 <option value="1">Variante 1 (Bouton en bas de carte)</option>
                 <option value="2">Variante 2 (Bouton sur l'image au survol)</option>
               </select>
+            </div>
+            
+            <div className="border-t pt-4 mt-2">
+              <h4 className="font-bold text-xs text-gray-800 mb-3">Grille & Affichage</h4>
+              
+              <div className="mb-3">
+                <label className="block text-sm font-medium mb-1 text-gray-700">Nombre total de produits à afficher</label>
+                <input 
+                  type="number" 
+                  min="1" max="50"
+                  value={section.settings.maxProducts || '12'} 
+                  onChange={e => updateSectionSettings(section.id, 'maxProducts', e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-gray-700 text-center">Colonnes<br/>(Desktop)</label>
+                  <select value={section.settings.colsDesktop || '5'} onChange={e => updateSectionSettings(section.id, 'colsDesktop', e.target.value)} className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:ring-orange-500">
+                    <option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-gray-700 text-center">Colonnes<br/>(Tablette)</label>
+                  <select value={section.settings.colsTablet || '3'} onChange={e => updateSectionSettings(section.id, 'colsTablet', e.target.value)} className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:ring-orange-500">
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-gray-700 text-center">Colonnes<br/>(Mobile)</label>
+                  <select value={section.settings.colsMobile || '1'} onChange={e => updateSectionSettings(section.id, 'colsMobile', e.target.value)} className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:ring-orange-500">
+                    <option value="1">1</option><option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-2 italic">Note : Si le nombre total de produits dépasse le nombre de colonnes, un carrousel (autoslide) s'activera automatiquement.</p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 border-t pt-4 mt-2">

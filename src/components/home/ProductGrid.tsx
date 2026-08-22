@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getFilteredProducts } from '@/actions/public';
 import ProductGridCard from './ProductGridCard';
+import DynamicProductGrid from './DynamicProductGrid';
 import prisma from '@/lib/prisma';
 
 type ProductGridProps = {
@@ -12,6 +13,10 @@ type ProductGridProps = {
     cardBorderColor?: string;
     btnBgColor?: string;
     btnTextColor?: string;
+    maxProducts?: string;
+    colsMobile?: string;
+    colsTablet?: string;
+    colsDesktop?: string;
   };
 };
 
@@ -23,11 +28,15 @@ export default async function ProductGrid({ config }: ProductGridProps) {
     variant = '1',
     cardBorderColor = '#ea580c',
     btnBgColor = '#ea580c',
-    btnTextColor = '#ffffff'
+    btnTextColor = '#ffffff',
+    maxProducts = '12',
+    colsMobile = '1',
+    colsTablet = '3',
+    colsDesktop = '5'
   } = config;
 
-  // Fetch exactly 5 products to match the 5-column layout in the screenshot
-  const products = await getFilteredProducts(filterType, categoryId, 5);
+  const maxNum = parseInt(maxProducts, 10) || 12;
+  const products = await getFilteredProducts(filterType, categoryId, maxNum);
 
   if (products.length === 0) {
     return null; // Do not render section if no products
@@ -71,18 +80,23 @@ export default async function ProductGrid({ config }: ProductGridProps) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <DynamicProductGrid 
+        colsMobile={parseInt(colsMobile, 10) || 1}
+        colsTablet={parseInt(colsTablet, 10) || 3}
+        colsDesktop={parseInt(colsDesktop, 10) || 5}
+      >
         {products.map(p => (
-          <ProductGridCard 
-            key={p.id}
-            product={p}
-            variant={variant}
-            cardBorderColor={cardBorderColor}
-            btnBgColor={btnBgColor}
-            btnTextColor={btnTextColor}
-          />
+          <div key={p.id} className="h-full">
+            <ProductGridCard 
+              product={p}
+              variant={variant}
+              cardBorderColor={cardBorderColor}
+              btnBgColor={btnBgColor}
+              btnTextColor={btnTextColor}
+            />
+          </div>
         ))}
-      </div>
+      </DynamicProductGrid>
     </section>
   );
 }
