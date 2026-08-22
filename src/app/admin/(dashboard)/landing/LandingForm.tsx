@@ -40,12 +40,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [message, setMessage] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [globalFont, setGlobalFont] = useState(initialSettings.GLOBAL_FONT_FAMILY || 'Inter');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
 
   // Sync to cookie for preview iframe
   useEffect(() => {
     Cookies.set('preview_layout', JSON.stringify(sections), { path: '/' });
+    Cookies.set('preview_font', globalFont, { path: '/' });
     
     // Debounce iframe reload
     const timer = setTimeout(() => {
@@ -55,7 +57,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     }, 1000); // 1 second debounce
     
     return () => clearTimeout(timer);
-  }, [sections]);
+  }, [sections, globalFont]);
 
   // Listen for messages from iframe (PreviewSectionWrapper)
   useEffect(() => {
@@ -77,6 +79,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     setMessage('');
     try {
       await updateSetting('HOMEPAGE_LAYOUT', JSON.stringify(sections));
+      await updateSetting('GLOBAL_FONT_FAMILY', globalFont);
       setMessage('Mise à jour réussie !');
     } catch (e) {
       setMessage('Erreur lors de la mise à jour.');
@@ -132,6 +135,36 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     } catch (e) {
       console.error("Upload error", e);
     }
+  };
+
+  const renderResponsiveInput = (section: SectionConfig, label: string, baseKey: string, placeholder: string) => {
+    const sizeKey = `${baseKey}_SIZE_${previewMode.toUpperCase()}`;
+    return (
+      <div className="mb-2">
+        <div className="flex items-center justify-between mb-1">
+          <label className="block text-xs font-medium">{label}</label>
+          <div className="flex items-center gap-1">
+            <span className="text-[9px] text-gray-500 font-medium bg-gray-100 px-1 rounded uppercase tracking-wider" title={`Taille pour ${previewMode}`}>
+              {previewMode}
+            </span>
+            <input 
+              type="text" 
+              value={section.settings[sizeKey] || ''} 
+              onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value)} 
+              className="w-14 border rounded px-1 py-[1px] text-[10px] text-center focus:ring-1 focus:ring-orange-500" 
+              placeholder="ex: 32px" 
+            />
+          </div>
+        </div>
+        <input 
+          type="text" 
+          value={section.settings[baseKey] || ''} 
+          onChange={e => updateSectionSettings(section.id, baseKey, e.target.value)} 
+          className="w-full border rounded px-2 py-1 text-sm focus:border-orange-500 outline-none" 
+          placeholder={placeholder} 
+        />
+      </div>
+    );
   };
 
   const renderHeroBlockConfig = (section: SectionConfig, blockNum: number) => {
@@ -331,41 +364,38 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className={`grid gap-4 ${inPopup ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.HERO_1_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Apple Iphone 17 Pro Max" />
-              <label className="block text-xs font-medium mb-1">Sous-titre</label>
-              <input type="text" value={section.settings.HERO_1_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Supper Discount" />
-              <label className="block text-xs font-medium mb-1">Prix/Texte</label>
-              <input type="text" value={section.settings.HERO_1_PRICE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_PRICE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="from $349.99" />
+              {renderResponsiveInput(section, 'Titre', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
+              {renderResponsiveInput(section, 'Sous-titre', 'HERO_1_SUBTITLE', 'Supper Discount')}
+              {renderResponsiveInput(section, 'Prix/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-xs font-medium mb-1">Bouton</label>
-              <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Shop Now" />
+              <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 1)}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Haut Centre)</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.HERO_2_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_2_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Heavy On Features..." />
-              <label className="block text-xs font-medium mb-1">Sous-titre</label>
-              <input type="text" value={section.settings.HERO_2_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_2_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Use Code: SALE35%" />
+              {renderResponsiveInput(section, 'Titre', 'HERO_2_TITLE', 'Heavy On Features...')}
+              {renderResponsiveInput(section, 'Sous-titre', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
+              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <input type="text" value={section.settings.HERO_2_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 2)}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Haut Droite)</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.HERO_3_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_3_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Sale 10% Off" />
-              <label className="block text-xs font-medium mb-1">Sous-titre</label>
-              <input type="text" value={section.settings.HERO_3_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_3_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="New Product" />
+              {renderResponsiveInput(section, 'Titre', 'HERO_3_TITLE', 'Sale 10% Off')}
+              {renderResponsiveInput(section, 'Sous-titre', 'HERO_3_SUBTITLE', 'New Product')}
+              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <input type="text" value={section.settings.HERO_3_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 3)}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bas Droite)</h4>
-              <label className="block text-xs font-medium mb-1">Titre</label>
-              <input type="text" value={section.settings.HERO_4_TITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_4_TITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Headphones Listen..." />
-              <label className="block text-xs font-medium mb-1">Sous-titre</label>
-              <input type="text" value={section.settings.HERO_4_SUBTITLE || ''} onChange={e => updateSectionSettings(section.id, 'HERO_4_SUBTITLE', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="Last call..." />
+              {renderResponsiveInput(section, 'Titre', 'HERO_4_TITLE', 'Headphones Listen...')}
+              {renderResponsiveInput(section, 'Sous-titre', 'HERO_4_SUBTITLE', 'Last call...')}
+              <label className="block text-xs font-medium mb-1">Bouton</label>
+              <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 4)}
             </div>
           </div>
@@ -526,6 +556,24 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           {!editingId ? (
             // LIST VIEW
             <div className="p-3">
+              {/* Global Settings */}
+              <div className="mb-6 bg-white p-3 border rounded shadow-sm">
+                <h4 className="font-bold text-xs text-gray-800 mb-2 border-b pb-1">Paramètres Globaux</h4>
+                <label className="block text-xs font-medium mb-1">Police de Caractères</label>
+                <select 
+                  value={globalFont} 
+                  onChange={e => setGlobalFont(e.target.value)} 
+                  className="w-full border rounded px-2 py-1 text-sm focus:border-orange-500 outline-none"
+                >
+                  <option value="Inter">Inter (Défaut)</option>
+                  <option value="Roboto">Roboto</option>
+                  <option value="Outfit">Outfit</option>
+                  <option value="Playfair Display">Playfair Display (Sérif)</option>
+                  <option value="Montserrat">Montserrat</option>
+                  <option value="Poppins">Poppins</option>
+                </select>
+              </div>
+
               <p className="text-[11px] leading-tight text-gray-500 mb-4">Cliquez sur une section dans l'aperçu ou sélectionnez-la ici.</p>
               
               <div className="space-y-3 mb-6">

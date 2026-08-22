@@ -8,6 +8,7 @@ import ChatWidget from "@/components/chat/ChatWidget";
 import BackToTop from "@/components/BackToTop";
 import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
+import { cookies } from 'next/headers';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -131,11 +132,33 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
   };
 
+  const cookieStore = await cookies();
+  const previewFontCookie = cookieStore.get('preview_font');
+  const globalFont = previewFontCookie?.value || settingsMap.GLOBAL_FONT_FAMILY || 'Inter';
+  const fontUrl = `https://fonts.googleapis.com/css2?family=${globalFont.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
+
   return (
     <html
       lang="fr"
       className={`${inter.variable} h-full antialiased`}
     >
+      <head>
+        {globalFont !== 'Inter' && (
+          <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link href={fontUrl} rel="stylesheet" />
+            <style>{`
+              :root {
+                --font-inter: '${globalFont}', sans-serif;
+              }
+              body, .font-sans {
+                font-family: '${globalFont}', sans-serif !important;
+              }
+            `}</style>
+          </>
+        )}
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
         <CurrencyProvider options={currencyOptions}>
