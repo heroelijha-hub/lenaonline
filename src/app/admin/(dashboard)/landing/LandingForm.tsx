@@ -288,8 +288,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           <p className="text-sm text-gray-500">Affiche une grille de produits personnalisée (bordures et boutons modifiables).</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="col-span-1 md:col-span-2">
+          <div className="grid grid-cols-1 gap-4">
+            <div className="space-y-4">
               {renderResponsiveInput(section, 'Titre de la section', 'title', 'ex: Tondeuses Autoportées')}
               {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'Voir Tout')}
             </div>
@@ -319,7 +319,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               </select>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 col-span-1 md:col-span-2 border-t pt-4 mt-2">
+            <div className="grid grid-cols-3 gap-2 border-t pt-4 mt-2">
               <div>
                 <label className="block text-xs font-medium mb-1 text-gray-700">Couleur Bordure (Carte)</label>
                 <input type="color" value={section.settings.cardBorderColor || '#ea580c'} onChange={e => updateSectionSettings(section.id, 'cardBorderColor', e.target.value)} className="w-full h-8 cursor-pointer rounded" />
