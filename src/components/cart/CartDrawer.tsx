@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import Price from '@/components/Price';
 import { useTranslations } from 'next-intl';
+import { validateCoupon } from '@/actions/checkout';
 
 type CartDrawerProps = {
   isOpen: boolean;
@@ -13,9 +14,39 @@ type CartDrawerProps = {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [mounted, setMounted] = useState(false);
-  const { items, removeItem, updateQuantity, clearCart, getTotalPrice, getTotalItems } = useCartStore();
+  const { items, removeItem, updateQuantity, clearCart, getTotalPrice, getTotalItems, coupon, setCoupon } = useCartStore();
   const [showCoupon, setShowCoupon] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [isApplying, setIsApplying] = useState(false);
   const t = useTranslations('CartDrawer');
+
+  const cartTotal = getTotalPrice();
+  let discountAmount = 0;
+  if (coupon) {
+    if (coupon.type === 'PERCENTAGE') {
+      discountAmount = cartTotal * (coupon.value / 100);
+    } else {
+      discountAmount = coupon.value;
+    }
+  }
+  const finalTotal = Math.max(0, cartTotal - discountAmount);
+
+  const handleApplyCoupon = async () => {
+    setCouponError('');
+    if (!couponCode) return;
+    
+    setIsApplying(true);
+    const res = await validateCoupon(couponCode);
+    if (res.error) {
+      setCouponError(res.error);
+      setCoupon(null);
+    } else if (res.coupon) {
+      setCoupon(res.coupon as any);
+      setShowCoupon(false);
+    }
+    setIsApplying(false);
+  };
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -165,9 +196,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <span className="font-semibold text-orange-600 mr-1">{t('click_here')}</span> {t('apply_coupon_text')}
               </button>
               {showCoupon && (
-                <div className="mt-3 flex gap-2">
-                  <input type="text" placeholder={t('coupon_placeholder')} className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500" />
-                  <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">{t('apply_btn')}</button>
+                <div className="mt-3 flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder={t('coupon_placeholder')} className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500 uppercase" />
+                    <button onClick={handleApplyCoupon} disabled={isApplying} className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition disabled:opacity-50">{isApplying ? '...' : t('apply_btn')}</button>
+                  </div>
+                  {couponError && <p className="text-xs text-red-500">{couponError}</p>}
                 </div>
               )}
             </div>
@@ -175,11 +209,20 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="border border-orange-500 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-900 font-medium">{t('subtotal')}</span>
-                <Price amount={getTotalPrice()} className="text-gray-900" />
+                <Price amount={cartTotal} className={coupon ? 'text-gray-400 line-through' : 'text-gray-900'} />
               </div>
-              <div className="flex justify-between items-center text-lg font-bold">
+              {coupon && (
+                <div className="flex justify-between items-center mb-2 text-green-600">
+                  <span className="font-medium flex items-center gap-1">
+                    Coupon ({coupon.code})
+                    <button onClick={() => setCoupon(null)} className="text-red-500 hover:text-red-700 ml-2 text-xs">Remove</button>
+                  </span>
+                  <Price amount={-discountAmount} />
+                </div>
+              )}
+              <div className="flex justify-between items-center text-lg font-bold border-t border-gray-100 mt-2 pt-2">
                 <span className="text-gray-900">{t('total')}</span>
-                <Price amount={getTotalPrice()} className="text-gray-900" />
+                <Price amount={finalTotal} className="text-gray-900" />
               </div>
           </div>
 

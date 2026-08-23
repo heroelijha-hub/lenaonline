@@ -22,6 +22,8 @@ interface CartStore {
   getTotalPrice: () => number;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  coupon: { code: string; type: 'PERCENTAGE' | 'FIXED_AMOUNT'; value: number } | null;
+  setCoupon: (coupon: { code: string; type: 'PERCENTAGE' | 'FIXED_AMOUNT'; value: number } | null) => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -29,6 +31,8 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       isOpen: false,
       setIsOpen: (isOpen) => set({ isOpen }),
+      coupon: null,
+      setCoupon: (coupon) => set({ coupon }),
       items: [],
       addItem: (item) => {
         const items = get().items;
@@ -57,7 +61,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'shopelios-cart',
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => ({ items: state.items, coupon: state.coupon }),
     }
   )
 );

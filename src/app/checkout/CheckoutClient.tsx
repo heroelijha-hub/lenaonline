@@ -27,7 +27,7 @@ interface CheckoutClientProps {
 
 export default function CheckoutClient({ settings, zones }: CheckoutClientProps) {
   const router = useRouter();
-  const { items: cart, getTotalPrice, clearCart } = useCartStore();
+  const { items: cart, getTotalPrice, clearCart, coupon, setCoupon } = useCartStore();
   
   const [selectedCountry, setSelectedCountry] = useState(zones.length > 0 ? zones[0].name : '');
   const [shippingCountry, setShippingCountry] = useState(zones.length > 0 ? zones[0].name : '');
@@ -59,7 +59,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
   const [isProcessing, setIsProcessing] = useState(false);
   const [showCouponInput, setShowCouponInput] = useState(false);
   const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, type: 'PERCENTAGE' | 'FIXED_AMOUNT', value: number} | null>(null);
+  // appliedCoupon state removed, using coupon from cartStore
   const [couponError, setCouponError] = useState('');
   const { formatPrice } = useCurrency();
   const t = useTranslations('Checkout');
@@ -68,11 +68,11 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
   
   // Calculate Discount
   let discountAmount = 0;
-  if (appliedCoupon) {
-    if (appliedCoupon.type === 'PERCENTAGE') {
-      discountAmount = cartTotal * (appliedCoupon.value / 100);
+  if (coupon) {
+    if (coupon.type === 'PERCENTAGE') {
+      discountAmount = cartTotal * (coupon.value / 100);
     } else {
-      discountAmount = appliedCoupon.value;
+      discountAmount = coupon.value;
     }
   }
 
@@ -88,9 +88,9 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     const res = await validateCoupon(couponCode);
     if (res.error) {
       setCouponError(res.error);
-      setAppliedCoupon(null);
+      setCoupon(null);
     } else if (res.coupon) {
-      setAppliedCoupon(res.coupon as any);
+      setCoupon(res.coupon as any);
       setShowCouponInput(false);
     }
   };
@@ -156,10 +156,15 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
             </div>
           )}
           
-          {appliedCoupon && (
-            <div className="bg-green-50 p-4 rounded text-sm text-green-700 flex justify-between items-center border border-green-200">
-              <span>{t('coupon_applied', { code: appliedCoupon.code })}</span>
-              <button type="button" onClick={() => setAppliedCoupon(null)} className="text-red-500 hover:underline font-medium text-xs">{t('remove_btn')}</button>
+          {coupon && (
+            <div className="bg-green-50 text-green-800 px-4 py-3 rounded-md flex justify-between items-center">
+              <div>
+                <span className="font-medium mr-2">{coupon.code}</span>
+                <span className="text-sm opacity-90">{t('coupon_applied')}</span>
+              </div>
+              <button type="button" onClick={() => setCoupon(null)} className="text-sm font-medium text-green-700 hover:text-green-900">
+                {t('remove_btn')}
+              </button>
             </div>
           )}
           
