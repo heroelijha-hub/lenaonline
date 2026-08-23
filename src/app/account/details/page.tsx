@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import AccountDetailsForm from './AccountDetailsForm';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AccountDetailsPage() {
   const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();

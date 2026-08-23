@@ -8,7 +8,6 @@ export default getRequestConfig(async () => {
     const headersList = await headers();
     pathname = headersList.get('x-pathname') || '/';
   } catch (error) {
-    // This happens during static generation where headers() is not available
     pathname = '/';
   }
 
@@ -40,8 +39,8 @@ export default getRequestConfig(async () => {
   }
 
   const messages = locale === 'fr' 
-    ? (await import('../messages/fr.json')).default
-    : (await import('../messages/en.json')).default;
+    ? (await import('../../messages/fr.json')).default
+    : (await import('../../messages/en.json')).default;
 
   return {
     locale,

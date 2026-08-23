@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations, getLocale } from 'next-intl/server';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DownloadsPage() {
   const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
