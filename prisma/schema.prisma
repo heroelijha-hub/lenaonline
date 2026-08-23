@@ -273,3 +273,23 @@ model Page {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+enum AbandonedCartStatus {
+  ABANDONED
+  RECOVERED
+}
+
+model AbandonedCart {
+  id               String   @id @default(uuid()) @db.Uuid
+  email            String   @unique
+  firstName        String?
+  lastName         String?
+  phone            String?
+  cartData         Json
+  totalAmount      Float
+  status           AbandonedCartStatus @default(ABANDONED)
+  recoveredOrderId String?  @db.Uuid
+  lastActive       DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

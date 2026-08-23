@@ -467,6 +467,13 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           {renderResponsiveInput(section, 'Blog Section Title', 'title', 'Latest Blogs')}
           {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           
+          <div>
+            <label className="block text-sm font-medium mb-1">Display Mode</label>
+            <select
+              value={section.settings.displayMode || 'DATE_DESC'}
+              onChange={e => updateSectionSettings(section.id, 'displayMode', e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+            >
               <option value="DATE_DESC">Newest first</option>
               <option value="DATE_ASC">Plus Anciens d'abord</option>
               <option value="MANUAL">Manual selection (by ID)</option>

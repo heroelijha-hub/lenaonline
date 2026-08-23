@@ -429,8 +429,6 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
         </div>
-
-        </div>
         <SectionSaveButton />
       </div>
 

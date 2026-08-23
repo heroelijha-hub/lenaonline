@@ -425,3 +425,38 @@ export async function deleteOrder(id: string) {
     return { error: "Erreur lors de la suppression de la commande." };
   }
 }
+
+// --- ABANDONED CARTS ---
+export async function getAbandonedCarts() {
+  return await prisma.abandonedCart.findMany({
+    orderBy: { lastActive: 'desc' }
+  });
+}
+
+export async function sendRecoveryEmail(id: string) {
+  try {
+    const cart = await prisma.abandonedCart.findUnique({ where: { id } });
+    if (!cart) return { error: "Panier introuvable." };
+    if (!cart.email) return { error: "Email non fourni pour ce panier." };
+
+    const { sendAbandonedCartRecoveryEmail } = await import('@/lib/mailer');
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
+    const checkoutUrl = \`\${baseUrl}/checkout\`;
+
+    const name = cart.firstName ? \`\${cart.firstName} \${cart.lastName || ''}\`.trim() : '';
+    
+    await sendAbandonedCartRecoveryEmail(cart, cart.email, name, checkoutUrl);
+    
+    // We update the lastActive to prevent spamming too fast
+    await prisma.abandonedCart.update({
+      where: { id },
+      data: { lastActive: new Date() }
+    });
+
+    revalidatePath('/admin/abandoned-carts');
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { error: "Erreur lors de l'envoi de l'email de relance." };
+  }
+}

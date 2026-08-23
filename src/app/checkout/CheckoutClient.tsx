@@ -127,9 +127,35 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     setIsProcessing(false);
   };
 
+  const captureAbandonedCart = (e: React.FocusEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+    setTimeout(async () => {
+      const formData = new FormData(form);
+      const email = formData.get('email') as string;
+      if (email && email.includes('@') && cart.length > 0) {
+        try {
+          await fetch('/api/abandoned-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              firstName: formData.get('firstName') as string,
+              lastName: formData.get('lastName') as string,
+              phone: formData.get('phone') as string,
+              cartData: cart,
+              totalAmount: finalTotal
+            })
+          });
+        } catch (err) {
+          // Silent fail
+        }
+      }
+    }, 100);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <form onSubmit={handleCheckout} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <form onSubmit={handleCheckout} onBlurCapture={captureAbandonedCart} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
         {/* Colonne de Gauche : Formulaire de Facturation */}
         <div className="lg:col-span-7 space-y-8">

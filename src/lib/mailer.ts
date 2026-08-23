@@ -236,3 +236,61 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     console.error(e);
   }
 }
+
+// 4. Abandoned Cart Recovery Email
+export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: string, userName: string, checkoutUrl: string) {
+  try {
+    const { logo } = await getTransporter().catch(() => ({ logo: '' }));
+    
+    const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : '';
+
+    // USER TODO: Add your coupon code here! For example: "Use code COMEBACK10 for 10% off!"
+    const couponMessage = ""; 
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
+        ${logoHtml}
+        <h1 style="font-size: 24px; color: #1a1a1a;">Did you forget something?</h1>
+        <p>Hello ${userName || 'there'},</p>
+        <p>We noticed that you left some items in your cart. They are waiting for you!</p>
+        
+        <div style="margin: 20px 0;">
+          ${couponMessage ? `<p style="font-size: 16px; font-weight: bold; color: #d97706;">${couponMessage}</p>` : ''}
+        </div>
+
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Your Cart Summary</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+          ${cart.cartData?.map((item: any) => `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 15px 0;">
+                <strong>${item.title || 'Product'}</strong>
+              </td>
+              <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
+              <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
+            </tr>
+          `).join('') || ''}
+        </table>
+        
+        <div style="margin-top: 30px; text-align: center;">
+          <a href="${checkoutUrl}" style="background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
+            Complete my purchase
+          </a>
+        </div>
+        
+        <p style="margin-top: 40px; color: #666; font-size: 14px;">
+          If you have any questions, feel free to contact us.
+        </p>
+      </div>
+    `;
+
+    return sendEmail({
+      to: userEmail,
+      subject: \`Complete your purchase\`,
+      html
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+

@@ -139,7 +139,7 @@ export default async function ShopPage({
               <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100">
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
-                <p className="text-gray-500">Essayez de modifier vos filtres pour trouver ce que vous cherchez.</p>
+                <p className="text-gray-500">Try modifying your filters to find what you are looking for.</p>
               </div>
             )}
 

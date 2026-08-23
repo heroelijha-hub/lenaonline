@@ -130,6 +130,20 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       }
     });
 
+    // Check and recover abandoned cart if it exists
+    try {
+      await prisma.abandonedCart.updateMany({
+        where: { email: user.email, status: 'ABANDONED' },
+        data: {
+          status: 'RECOVERED',
+          recoveredOrderId: order.id,
+          updatedAt: new Date()
+        }
+      });
+    } catch (e) {
+      console.error('Failed to mark abandoned cart as recovered', e);
+    }
+
     try {
       const { sendClientOrderConfirmation, sendAdminOrderNotification } = await import('@/lib/mailer');
       const { createNotification } = await import('@/actions/notification');
