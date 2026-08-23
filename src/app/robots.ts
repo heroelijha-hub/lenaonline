@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com'; // À remplacer par le vrai domaine
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com'; // Replace with the real domain
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/account/', '/checkout/', '/api/'], // On interdit à Google d'indexer les pages privées
+      disallow: ['/admin/', '/account/', '/checkout/', '/api/'], // Blocking Google from indexing private pages
     },
-    sitemap: `${baseUrl}/sitemap.xml`, // On indique à Google où trouver le sitemap
+    sitemap: `${baseUrl}/sitemap.xml`, // Tell Google where to find the sitemap
   };
 }

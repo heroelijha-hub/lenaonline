@@ -46,8 +46,8 @@ export function formatPriceNumber(
 }
 
 /**
- * Calcule le prix TTC si le prix de base est HT, et formate la chaîne complète.
- * Si le paramètre 'taxIncludedInPrice' est vrai : affiche simplement "Prix TTC" (ex: 120€ TTC)
+ * Calculates the tax-inclusive price if the base price is tax-exclusive, and formats the complete string.
+ * If 'taxIncludedInPrice' is true: simply displays the price (ex: 120€ incl. tax)
  * S'il est faux : le prix en base est HT, on affiche "Prix HT (Prix TTC TTC)" (ex: 100€ HT (120€ TTC))
  */
 export function formatPriceWithTax(

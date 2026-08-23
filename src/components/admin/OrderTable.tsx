@@ -15,7 +15,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
   };
 
   const handleDelete = async (orderId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) return;
+    if (!confirm('Are you sure you want to delete this order?')) return;
     setLoading(orderId);
     await deleteOrder(orderId);
     setLoading(null);
@@ -64,7 +64,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                   </select>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                  <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Détails</a>
+                  <a href={`/admin/orders/${order.id}`} className="text-orange-600 hover:text-orange-900 bg-orange-50 px-3 py-1.5 rounded text-xs font-semibold">Details</a>
                   <button onClick={() => handleDelete(order.id)} disabled={loading === order.id} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1.5 rounded text-xs font-semibold disabled:opacity-50">Delete</button>
                 </td>
               </tr>

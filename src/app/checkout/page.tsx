@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 export default async function CheckoutPage() {
   const settings = await getSettings();
   
-  // N'envoyer au client QUE les paramètres nécessaires, pour des raisons de sécurité
+  // Send to the client ONLY the necessary settings, for security reasons
   const paymentSettings = {
     ENABLE_STRIPE: settings.ENABLE_STRIPE !== undefined ? settings.ENABLE_STRIPE : 'true',
     ENABLE_PAYPAL: settings.ENABLE_PAYPAL !== undefined ? settings.ENABLE_PAYPAL : 'true',

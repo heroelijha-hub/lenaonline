@@ -73,10 +73,10 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Merci pour votre commande</h1>
         <p>Bonjour ${userName || 'Client'},</p>
-        <p>Nous avons bien reçu votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
-        <p>Elle est actuellement en attente jusqu'à confirmation du traitement de votre paiement (si applicable) ou sera expédiée très prochainement.</p>
+        <p>We have received your order <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
+        <p>It is currently pending confirmation of your payment processing (if applicable) or will be shipped very soon.</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Résumé de la commande</h3>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
         <p style="color: #666; font-size: 13px;">Commande n°${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -131,17 +131,17 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Nouvelle Commande : Nr. ${order.id.slice(-6).toUpperCase()}</h1>
-        <p>Vous avez reçu une nouvelle commande de <strong>${customerDetails.name || 'un client'}</strong> :</p>
+        <p>You have received a new order from <strong>${customerDetails.name || 'a customer'}</strong> :</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Bestellübersicht (Résumé)</h3>
-        <p style="color: #666; font-size: 13px;">Numéro de commande ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
+        <p style="color: #666; font-size: 13px;">Order number ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px;">Produit</th>
-              <th style="padding-bottom: 10px; text-align: center;">Quantité</th>
-              <th style="padding-bottom: 10px; text-align: right;">Prix</th>
+              <th style="padding-bottom: 10px;">Product</th>
+              <th style="padding-bottom: 10px; text-align: center;">Quantity</th>
+              <th style="padding-bottom: 10px; text-align: right;">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -168,7 +168,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
             </td>
             <td style="vertical-align: top; width: 50%;">
               <strong>Paiement</strong><br/>
-              Méthode : ${order.paymentMethod}<br/>
+              Payment Method: ${order.paymentMethod}<br/>
               Statut : ${order.status}
             </td>
           </tr>
@@ -193,43 +193,43 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : '';
 
-    let title = "Mise à jour de votre commande";
-    let message = `Le statut de votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été mis à jour.`;
+    let title = "Your order has been updated";
+    let message = `The status of your order <strong>#${order.id.slice(-6).toUpperCase()}</strong> has been updated.`;
     let color = "#333";
 
     if (status === 'SHIPPED') {
-      title = "Bonne nouvelle ! Votre commande est en route 🚚";
-      message = `Votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été expédiée. Vous pouvez suivre la livraison depuis votre espace compte.`;
+      title = "Great news! Your order is on its way 🚚";
+      message = `Your order <strong>#${order.id.slice(-6).toUpperCase()}</strong> has been shipped. You can track the delivery from your account.`;
       color = "#16a34a"; // green
     } else if (status === 'CANCELLED') {
-      title = "Information concernant votre commande";
-      message = `Nous vous informons que votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a malheureusement été <strong>annulée</strong>. Si un paiement a été effectué, le remboursement est en cours de traitement.`;
+      title = "Information about your order";
+      message = `We inform you that your order <strong>#${order.id.slice(-6).toUpperCase()}</strong> has unfortunately been <strong>cancelled</strong>. If a payment was made, the refund is being processed.`;
       color = "#dc2626"; // red
     } else if (status === 'DELIVERED') {
-      title = "Votre commande a été livrée !";
-      message = `Votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> est marquée comme livrée. Nous espérons que vous en êtes satisfait !`;
+      title = "Your order has been delivered!";
+      message = `Your order <strong>#${order.id.slice(-6).toUpperCase()}</strong> is marked as delivered. We hope you are satisfied!`;
     }
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: ${color};">${title}</h1>
-        <p>Bonjour,</p>
+        <p>Hello,</p>
         <p>${message}</p>
         
         <p style="margin-top: 30px;">
-          N'hésitez pas à nous contacter pour toute question supplémentaire.
+          Do not hesitate to contact us for any additional questions.
         </p>
         
         <p style="margin-top: 40px; color: #666; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px;">
-          L'équipe de votre boutique.
+          Your store team.
         </p>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Mise à jour de la commande #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Order update #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {

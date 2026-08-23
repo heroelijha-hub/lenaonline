@@ -29,7 +29,7 @@ export default function AdminSetupPage() {
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900">Bienvenue !</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Configurez votre compte administrateur principal pour commencer à gérer votre boutique.
+            Configure your main administrator account to start managing your store.
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -52,7 +52,7 @@ export default function AdminSetupPage() {
                 type="password"
                 required
                 className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
-                placeholder="Password sécurisé"
+                placeholder="Secure password"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function AdminSetupPage() {
               disabled={isPending}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 transition-colors"
             >
-              {isPending ? 'Création en cours...' : 'Create le compte Administrateur'}
+              {isPending ? 'Creating...' : 'Create Administrator Account'}
             </button>
           </div>
         </form>

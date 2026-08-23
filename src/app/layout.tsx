@@ -111,7 +111,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     categories: await prisma.category.findMany({ select: { id: true, name: true, slug: true } }),
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
     maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Site en maintenance',
-    maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !',
+    maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!',
     maintenanceImage: settingsMap.MAINTENANCE_IMAGE || '',
     searchBorderColor: settingsMap.SEARCH_BORDER_COLOR || '#d1d5db',
     searchPlaceholder: settingsMap.SEARCH_PLACEHOLDER || 'Rechercher un produit...',
@@ -121,8 +121,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     showNew: newProductsCount > 0,
     showHot: hotProductsCount >= 3,
     showSale: saleProductsCount > 0,
-    mobileAboutTitle: settingsMap.MOBILE_ABOUT_TITLE || 'À propos de nous',
-    mobileAboutDesc: settingsMap.MOBILE_ABOUT_DESC || 'Nous sommes une boutique passionnée par la qualité et l\'excellence.',
+    mobileAboutTitle: settingsMap.MOBILE_ABOUT_TITLE || 'About Us',
+    mobileAboutDesc: settingsMap.MOBILE_ABOUT_DESC || 'We are a store passionate about quality and excellence.',
     mobileMenuLinks: (() => {
       try {
         return settingsMap.MOBILE_MENU_LINKS ? JSON.parse(settingsMap.MOBILE_MENU_LINKS) : defaultMenuLinks;

@@ -15,7 +15,7 @@ export default function CommentForm({ articleId }: { articleId: string }) {
 
     const res = await addComment(articleId, formData);
     if (res.success) {
-      setMessage('Votre commentaire a été envoyé avec succès !');
+      setMessage('Your comment was submitted successfully!');
       setFormData({ author: '', email: '', content: '' });
     } else {
       setMessage(res.error || 'Erreur lors de l\'envoi du commentaire.');
@@ -25,11 +25,11 @@ export default function CommentForm({ articleId }: { articleId: string }) {
 
   return (
     <div className="bg-gray-50 p-8 rounded-lg mt-12 border border-gray-100">
-      <h3 className="text-xl font-bold text-gray-900 mb-2">Écrire un avis</h3>
-      <p className="text-sm text-gray-600 mb-6">Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués avec *</p>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">Write a review</h3>
+      <p className="text-sm text-gray-600 mb-6">Your email address will not be published. Required fields are marked with *</p>
       
       {message && (
-        <div className={`p-4 rounded-md mb-6 ${message.includes('succès') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+        <div className={`p-4 rounded-md mb-6 ${message.includes('successfully') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
           {message}
         </div>
       )}

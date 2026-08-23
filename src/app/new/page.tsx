@@ -15,18 +15,18 @@ export default async function NewArrivalsPage() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Nouveautés</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">New Arrivals</h1>
             <p className="text-gray-600">
-              Découvrez nos tous derniers produits fraîchement arrivés.
+              Discover our latest freshly arrived products.
             </p>
           </div>
         </div>
 
         {products.length === 0 ? (
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
-            <h2 className="text-xl font-medium text-gray-900 mb-2">Aucun produit récent</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">No recent products</h2>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
-              Retour à l'accueil
+              Back to Home
             </Link>
           </div>
         ) : (

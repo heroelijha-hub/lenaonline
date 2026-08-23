@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Mes Favoris | Shopelios',
-  description: 'Gérez vos produits favoris sur Shopelios',
+  description: 'Manage your favorite products on Shopelios',
 };
 
 export default function WishlistPage() {

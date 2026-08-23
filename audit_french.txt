@@ -1,0 +1,20 @@
+
+=== src\app\checkout\success\page.tsx (2 lines) ===
+  L103: <span className="text-orange-600 font-medium">{item.product.title}</span> <strong className="text-gray-900 ml-1">× {item
+  L142: <strong className="text-gray-900 block mt-1">× {item.quantity}</strong>
+
+=== src\lib\mailer.ts (2 lines) ===
+  L97: <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
+  L151: <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
+
+=== src\app\admin\(dashboard)\settings\SettingsForm.tsx (1 lines) ===
+  L409: <option value="fr">French (Français)</option>
+
+=== src\app\checkout\CheckoutClient.tsx (1 lines) ===
+  L333: {item.title} <strong className="text-gray-900">× {item.quantity}</strong>
+
+=== src\app\contact\page.tsx (1 lines) ===
+  L46: Chaussée de Tirlemont 110, 5030 Gembloux, BELGIQUE<br />
+
+=== src\components\admin\DeliveryTracker.tsx (1 lines) ===
+  L171: <input type="text" value={posForm.note} onChange={e => setPosForm({...posForm, note: e.target.value})} placeholder="Note

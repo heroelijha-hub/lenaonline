@@ -89,7 +89,7 @@ export default function Header({
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Helper pour rendre les icônes
+  // Helper to render icons
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case 'location':

@@ -33,7 +33,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Détails Commande */}
+        {/* Order Details */}
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-lg font-bold text-gray-900 mb-4">Articles</h2>
@@ -58,7 +58,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                           })()}
                         </p>
                       )}
-                      <p className="text-xs text-gray-500 mt-0.5">Qté: {item.quantity}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
                     </div>
                   </div>
                   <p className="font-medium text-sm">${(item.price * item.quantity).toFixed(2)}</p>

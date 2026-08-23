@@ -11,7 +11,7 @@ let ratelimit: Ratelimit | null = null;
 if (redisUrl && redisToken) {
   ratelimit = new Ratelimit({
     redis: new Redis({ url: redisUrl, token: redisToken }),
-    limiter: Ratelimit.slidingWindow(30, '10 s'), // 30 requêtes max par 10 secondes par IP
+    limiter: Ratelimit.slidingWindow(30, '10 s'), // 30 max requests per 10 seconds per IP
     analytics: true,
   });
 }

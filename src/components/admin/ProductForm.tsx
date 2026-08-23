@@ -219,7 +219,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
           {productType === 'SIMPLE' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Stock (Laisser vide = illimité)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Stock (Leave empty = unlimited)</label>
               <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder="En stock" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
             </div>
           )}
@@ -250,7 +250,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       />
                     </div>
                     <div className="flex-[2]">
-                      <label className="block text-xs text-gray-500 mb-1">Valeurs (séparées par des |)</label>
+                      <label className="block text-xs text-gray-500 mb-1">Values (separated by |)</label>
                       <input 
                         type="text" 
                         value={attr.options} 
@@ -295,7 +295,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                             }}
                             className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
                           >
-                            <option value="">Sélectionnez...</option>
+                            <option value="">Select...</option>
                             {attr.options.split('|').map(o => o.trim()).filter(Boolean).map(o => (
                               <option key={o} value={o}>{o}</option>
                             ))}
@@ -322,7 +322,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                           value={v.stock} 
                           onChange={e => { const newV = [...variations]; newV[idx].stock = e.target.value; setVariations(newV); }}
                           className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-                          placeholder="Laisser vide = illimité"
+                          placeholder="Leave empty = unlimited"
                         />
                       </div>
                     </div>
@@ -383,7 +383,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             className="w-full px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
           />
           {imageFiles.length > 0 && (
-            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} nouveau(x) fichier(s) sélectionné(s)</p>
+            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} new file(s) selected</p>
           )}
         </div>
 
@@ -482,7 +482,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             disabled={isLoading}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
           >
-            {isLoading ? 'Enregistrement...' : (isEditing ? 'Update le Produit' : 'Save le Produit')}
+            {isLoading ? 'Saving...' : (isEditing ? 'Update le Produit' : 'Save le Produit')}
           </button>
         </div>
 

@@ -20,7 +20,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
   if (!data || data.length === 0) {
     return (
       <div className="w-full h-full flex items-center justify-center text-gray-400">
-        Pas de données disponibles
+        No data available
       </div>
     );
   }

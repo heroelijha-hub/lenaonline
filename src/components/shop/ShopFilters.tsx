@@ -111,7 +111,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     <div className="w-full">
       {/* Categories */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filtrer les catégories</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter categories</h3>
         <div className="space-y-3">
           {categories.map((cat) => (
             <label key={cat.id} className="flex items-center cursor-pointer group">

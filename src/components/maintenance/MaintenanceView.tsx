@@ -49,14 +49,14 @@ export default function MaintenanceView({ title, message, image, logoImage }: Ma
               onClick={() => window.location.reload()}
               className="bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all"
             >
-              Rafraîchir la page
+              Refresh page
             </button>
           </div>
         </div>
       </main>
       
       <footer className="w-full text-center py-6 text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} Shopelios. Tous droits réservés.
+        &copy; {new Date().getFullYear()} Shopelios. All rights reserved.
       </footer>
     </div>
   );

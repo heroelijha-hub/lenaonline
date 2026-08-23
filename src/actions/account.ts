@@ -16,7 +16,7 @@ export async function updateAccountDetails(formData: FormData) {
   const { data: { session } } = await supabase.auth.getSession()
 
   if (!session) {
-    return { error: 'Vous devez être connecté.' }
+    return { error: 'You must be logged in.' }
   }
 
   const updates: any = {
@@ -35,11 +35,11 @@ export async function updateAccountDetails(formData: FormData) {
     if (newPassword !== confirmPassword) {
       return { error: 'Les nouveaux mots de passe ne correspondent pas.' }
     }
-    // Note: Pour des raisons de sécurité, une vérification du mot de passe actuel 
-    // peut être requise côté API selon la config Supabase. Mais updateUser() 
+    // Note: For security reasons, current password verification 
+    // may be required on the API side depending on the Supabase config. But updateUser() 
     // permet de modifier le mot de passe si on a une session valide.
     if (!newPassword || newPassword.length < 6) {
-      return { error: 'Le mot de passe doit contenir au moins 6 caractères.' }
+      return { error: 'Password must be at least 6 characters long.' }
     }
     updates.password = newPassword
   }
@@ -51,5 +51,5 @@ export async function updateAccountDetails(formData: FormData) {
   }
 
   revalidatePath('/account/details')
-  return { success: true, message: 'Détails du compte mis à jour avec succès.' }
+  return { success: true, message: 'Account details updated successfully.' }
 }

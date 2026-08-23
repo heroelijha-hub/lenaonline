@@ -161,7 +161,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     if (paymentMethod === 'STRIPE') {
       const stripeSecret = await prisma.setting.findUnique({ where: { key: 'STRIPE_SECRET_KEY' } });
       if (!stripeSecret?.value) {
-        return { error: "Le paiement par carte (Stripe) n'est pas encore configuré par l'administrateur." };
+        return { error: "Card payment (Stripe) has not been configured by the administrator yet." };
       }
 
       const Stripe = require('stripe');
@@ -200,7 +200,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       const secret = await prisma.setting.findUnique({ where: { key: 'PAYPAL_SECRET' } });
       
       if (!clientId?.value || !secret?.value) {
-        return { error: "Le paiement PayPal n'est pas encore configuré par l'administrateur." };
+        return { error: "PayPal payment has not been configured by the administrator yet." };
       }
       
       const auth = Buffer.from(`${clientId.value}:${secret.value}`).toString('base64');
@@ -215,7 +215,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       
       const tokenData = await tokenRes.json();
       if (!tokenData.access_token) {
-        return { error: "Erreur d'authentification avec PayPal. Vérifiez les clés dans l'Admin." };
+        return { error: "PayPal authentication error. Check the keys in Admin." };
       }
       
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
@@ -247,7 +247,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       if (approveLink) {
         return { success: true, orderId: order.id, redirectUrl: approveLink.href };
       } else {
-        return { error: "Impossible de créer la session de paiement PayPal." };
+        return { error: "Unable to create PayPal payment session." };
       }
     } 
     else {

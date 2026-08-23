@@ -51,7 +51,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) return;
+    if (!confirm('Are you sure you want to delete this category?')) return;
     setIsDeleting(id);
     const res = await deleteCategory(id);
     if (res.error) {
@@ -75,7 +75,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
         <tbody className="bg-white divide-y divide-gray-200">
           {categories.length === 0 ? (
             <tr>
-              <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">Aucune catégorie existante.</td>
+              <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">No existing categories.</td>
             </tr>
           ) : (
             categories.map((cat) => (

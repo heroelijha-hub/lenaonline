@@ -62,12 +62,12 @@ export default function WishlistClient() {
       <div className="bg-white rounded-lg p-10 text-center shadow-sm border border-gray-200">
         <div className="text-6xl mb-4">🤍</div>
         <h2 className="text-xl font-bold text-gray-900 mb-2">Votre liste de favoris est vide</h2>
-        <p className="text-gray-500 mb-6">Explorez notre catalogue et ajoutez des produits à vos favoris.</p>
+        <p className="text-gray-500 mb-6">Explore our catalog and add products to your wishlist.</p>
         <Link 
           href="/search" 
           className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-md transition"
         >
-          Découvrir les produits
+          Discover products
         </Link>
       </div>
     );
@@ -86,7 +86,7 @@ export default function WishlistClient() {
           </Link>
           <div className="p-4 flex flex-col flex-1">
             <Link href={`/product/${p.slug}`}>
-              <p className="text-xs text-blue-500 font-semibold mb-1">{p.categories && p.categories.length > 0 ? p.categories[0].name : 'Général'}</p>
+              <p className="text-xs text-blue-500 font-semibold mb-1">{p.categories && p.categories.length > 0 ? p.categories[0].name : 'General'}</p>
               <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2 hover:text-orange-500">{p.title}</h3>
             </Link>
             <div className="mt-auto mb-4">

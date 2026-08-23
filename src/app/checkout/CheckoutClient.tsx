@@ -316,7 +316,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
 
         </div>
 
-        {/* Colonne de Droite : Récapitulatif et Paiement */}
+        {/* Right Column: Summary and Payment */}
         <div className="lg:col-span-5">
           <div className="bg-gray-50 p-6 sm:p-8 rounded-lg border border-gray-100 sticky top-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('your_order')}</h2>
@@ -379,7 +379,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               <span>{formatPrice(finalTotal)}</span>
             </div>
 
-            {/* Accordéon de méthodes de paiement */}
+            {/* Payment method accordion */}
             <div className="space-y-4 mb-8">
               {!enableBankTransfer && !enableStripe && !enablePaypal && (
                 <div className="p-4 bg-red-50 text-red-600 rounded text-sm text-center font-medium">

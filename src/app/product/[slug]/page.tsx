@@ -9,7 +9,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { Metadata } from 'next';
 
-// Composant interne pour l'étoile
+// Internal star component
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
     className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 

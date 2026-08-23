@@ -21,7 +21,7 @@ export default function LogoutLink() {
       disabled={isPending}
       className="text-orange-500 hover:text-orange-600 font-medium transition-colors disabled:opacity-50 inline"
     >
-      {isPending ? 'Déconnexion...' : 'Déconnexion'}
+      {isPending ? 'Logging out...' : 'Log out'}
     </button>
   );
 }

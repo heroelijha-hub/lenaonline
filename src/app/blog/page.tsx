@@ -41,7 +41,7 @@ export default async function BlogIndexPage({
           <div className="lg:col-span-8 space-y-8">
             {articles.length === 0 ? (
               <div className="bg-white p-8 rounded-lg border border-gray-200 text-center text-gray-500">
-                Aucun article trouvé{query ? ` pour "${query}"` : ''}.
+                No articles found{query ? ` for "${query}"` : ''}.
               </div>
             ) : (
               articles.map(article => (

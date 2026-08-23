@@ -86,7 +86,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       } catch (err) {
         console.error("Failed to create session on register:", err);
         setSessionId(null);
-        alert("Erreur de connexion au chat. Veuillez vérifier que la base de données est à jour.");
+        alert("Chat connection error. Please ensure the database is up to date.");
       }
     }
   };
@@ -155,7 +155,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
               </div>
               <div>
                 <h3 className="font-bold leading-tight">{storeName}</h3>
-                <p className="text-xs text-orange-200">Nous vous répondons rapidement</p>
+                <p className="text-xs text-orange-200">We reply quickly</p>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-orange-100 hover:text-white transition">
@@ -167,7 +167,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
           {!hasRegistered ? (
             <div className="flex-1 p-6 bg-gray-50 flex flex-col justify-center">
               <h4 className="font-bold text-gray-800 mb-2">Bienvenue !</h4>
-              <p className="text-sm text-gray-600 mb-4">Veuillez renseigner votre nom et adresse e-mail pour démarrer la conversation.</p>
+              <p className="text-sm text-gray-600 mb-4">Please enter your name and email address to start the conversation.</p>
               <form onSubmit={handleRegister} className="flex flex-col gap-3">
                 <input
                   type="text"
@@ -189,7 +189,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                   type="submit"
                   className="w-full bg-orange-600 text-white font-semibold py-2 rounded-md hover:bg-orange-700 transition mt-2"
                 >
-                  Démarrer le chat
+                  Start chat
                 </button>
               </form>
             </div>
@@ -199,7 +199,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
               <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
                 {messages.length === 0 && (
                   <div className="text-center text-gray-500 text-sm mt-8">
-                    Envoyez-nous un message et nous vous répondrons dès que possible !
+                    Send us a message and we will reply as soon as possible!
                   </div>
                 )}
                 {messages.map((msg) => {

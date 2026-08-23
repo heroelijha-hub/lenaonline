@@ -16,9 +16,9 @@ export interface SectionConfig {
 }
 
 const DEFAULT_SECTIONS: SectionConfig[] = [
-  { id: 'sec_1', type: 'Hero', name: 'En-tête Principal (Hero)', enabled: true, settings: {} },
+  { id: 'sec_1', type: 'Hero', name: 'Main Header (Hero)', enabled: true, settings: {} },
   { id: 'sec_2', type: 'BestDeals', name: 'Promotions du Jour (Best Deals)', enabled: true, settings: { title: "Today's Best Deals", countdown: '2026-12-31T23:59:59', filterType: 'ON_SALE', categoryId: '' } },
-  { id: 'sec_3', type: 'PromoBanners', name: 'Bannières Promo', enabled: true, settings: {} },
+  { id: 'sec_3', type: 'PromoBanners', name: 'Promo Banners', enabled: true, settings: {} },
   { id: 'sec_4', type: 'BestSeller', name: 'Meilleures Ventes', enabled: true, settings: { title: "Best Seller", filterType: 'POPULAR', categoryId: '' } },
   { id: 'sec_5', type: 'LatestBlogs', name: 'Derniers Articles de Blog', enabled: true, settings: { title: "Latest Blogs" } },
   { id: 'sec_6', type: 'Newsletter', name: 'Inscription Newsletter', enabled: true, settings: {} }
@@ -82,9 +82,9 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     try {
       await updateSetting('HOMEPAGE_LAYOUT', JSON.stringify(sections));
       await updateSetting('GLOBAL_FONT_FAMILY', globalFont);
-      setMessage('Mise à jour réussie !');
+      setMessage('Update successful!');
     } catch (e) {
-      setMessage('Erreur lors de la mise à jour.');
+      setMessage('Update failed.');
     } finally {
       setIsLoading(false);
       setTimeout(() => setMessage(''), 3000);
@@ -185,7 +185,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const renderHeroBlockConfig = (section: SectionConfig, blockNum: number) => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
-        <h5 className="font-bold text-sm mb-2 text-red-600">Design, Liens & Médias</h5>
+        <h5 className="font-bold text-sm mb-2 text-red-600">Design, Links & Media</h5>
         <label className="block text-[11px] font-medium mb-1">Lien de redirection (URL)</label>
         <input type="text" value={section.settings[`HERO_${blockNum}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_LINK`, e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-3" placeholder="/product/..." />
         
@@ -229,7 +229,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const renderPromoBannerConfig = (section: SectionConfig, blockNum: number, prefix: string = 'BANNER') => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
-        <h5 className="font-bold text-sm mb-2 text-red-600">Design & Médias</h5>
+        <h5 className="font-bold text-sm mb-2 text-red-600">Design & Media</h5>
         <div className="flex flex-col gap-3 mb-3">
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
@@ -277,7 +277,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       newSec.settings = { title: "New Selection", filterType: 'POPULAR', categoryId: '' };
     } else if (type === 'ProductGrid') {
       newSec.settings = { 
-        title: "Tondeuses Autoportées", 
+        title: "Ride-on Mowers", 
         filterType: 'LATEST', 
         categoryId: '',
         variant: '1',
@@ -297,7 +297,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'Newsletter') {
       return (
         <div className="p-4 bg-gray-50 border rounded text-sm text-gray-500">
-          Les paramètres de cette section sont gérés ailleurs. Vous pouvez cependant la déplacer ou la désactiver.
+          The settings for this section are managed elsewhere. You can however move or disable it.
         </div>
       );
     }
@@ -305,18 +305,18 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'ProductGrid') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          <p className="text-sm text-gray-500">Affiche une grille de produits personnalisée (bordures et boutons modifiables).</p>
+          <p className="text-sm text-gray-500">Displays a customized product grid (editable borders and buttons).</p>
           
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-4">
-              {renderResponsiveInput(section, 'Title de la section', 'title', 'ex: Tondeuses Autoportées')}
+              {renderResponsiveInput(section, 'Section Title', 'title', 'ex: Ride-on Mowers')}
               {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'Voir Tout')}
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">Catégorie des produits</label>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Product category</label>
               <select value={section.settings.categoryId || ''} onChange={e => updateSectionSettings(section.id, 'categoryId', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
-                <option value="">Toutes les catégories</option>
+                <option value="">All categories</option>
                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
@@ -325,8 +325,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <label className="block text-sm font-medium mb-1 text-gray-700">Filtre (Tri)</label>
               <select value={section.settings.filterType || 'LATEST'} onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
                 <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
-                <option value="LATEST">Les plus récents</option>
-                <option value="ON_SALE">En promotion (Price réduit)</option>
+                <option value="LATEST">Most recent</option>
+                <option value="ON_SALE">On sale (Reduced price)</option>
               </select>
             </div>
             
@@ -342,7 +342,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               <h4 className="font-bold text-xs text-gray-800 mb-3">Grille & Affichage</h4>
               
               <div className="mb-3">
-                <label className="block text-sm font-medium mb-1 text-gray-700">Nombre total de produits à afficher</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Total number of products to display</label>
                 <input 
                   type="number" 
                   min="1" max="50"
@@ -372,7 +372,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   </select>
                 </div>
               </div>
-              <p className="text-[10px] text-gray-500 mt-2 italic">Note : Si le nombre total de produits dépasse le nombre de colonnes, un carrousel (autoslide) s'activera automatiquement.</p>
+              <p className="text-[10px] text-gray-500 mt-2 italic">Note: If the total number of products exceeds the number of columns, un carrousel (autoslide) s'activera automatiquement.</p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 border-t pt-4 mt-2">
@@ -399,7 +399,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         <div className="p-4 bg-gray-50 border rounded space-y-4">
           <div className="mb-4 bg-white p-3 border rounded shadow-sm">
             <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">📱 Affichage sur Mobile</h4>
-            <p className="text-xs text-gray-500 mb-3">Sélectionnez les blocs que vous souhaitez <strong>afficher</strong> sur la version mobile :</p>
+            <p className="text-xs text-gray-500 mb-3">Select the blocks you want to <strong>display</strong> sur la version mobile :</p>
             <div className="grid grid-cols-2 gap-3">
               {[1, 2, 3, 4].map(num => (
                 <label key={num} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-2 rounded border hover:bg-gray-100 transition">
@@ -415,13 +415,13 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             </div>
           </div>
           
-          <p className="text-sm text-gray-500 mb-4">L'en-tête principal contient 4 blocs. Modifiez les textes principaux ci-dessous.</p>
+          <p className="text-sm text-gray-500 mb-4">The main header contains 4 blocks. Edit the main texts below.</p>
           
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Gauche)</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
-              {renderResponsiveInput(section, 'Sous-titre', 'HERO_1_SUBTITLE', 'Supper Discount')}
+              {renderResponsiveInput(section, 'Subtitle', 'HERO_1_SUBTITLE', 'Supper Discount')}
               {renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
@@ -431,7 +431,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Haut Centre)</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_2_TITLE', 'Heavy On Features...')}
-              {renderResponsiveInput(section, 'Sous-titre', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
+              {renderResponsiveInput(section, 'Subtitle', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_2_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 2)}
@@ -440,7 +440,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Haut Droite)</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_3_TITLE', 'Sale 10% Off')}
-              {renderResponsiveInput(section, 'Sous-titre', 'HERO_3_SUBTITLE', 'New Product')}
+              {renderResponsiveInput(section, 'Subtitle', 'HERO_3_SUBTITLE', 'New Product')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_3_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 3)}
@@ -449,7 +449,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bas Droite)</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...')}
-              {renderResponsiveInput(section, 'Sous-titre', 'HERO_4_SUBTITLE', 'Last call...')}
+              {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...')}
               <label className="block text-[11px] font-medium mb-1">Bouton</label>
               <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 4)}
@@ -472,15 +472,15 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               onChange={e => updateSectionSettings(section.id, 'displayMode', e.target.value)}
               className="w-full border rounded px-3 py-2 text-sm"
             >
-              <option value="DATE_DESC">Plus Récents d'abord</option>
+              <option value="DATE_DESC">Newest first</option>
               <option value="DATE_ASC">Plus Anciens d'abord</option>
-              <option value="MANUAL">Sélection Manuelle (par ID)</option>
+              <option value="MANUAL">Manual selection (by ID)</option>
             </select>
           </div>
 
           {section.settings.displayMode === 'MANUAL' && (
             <div>
-              <label className="block text-sm font-medium mb-1">IDs des articles (séparés par virgule)</label>
+              <label className="block text-sm font-medium mb-1">Article IDs (comma-separated)</label>
               <input 
                 type="text" 
                 value={section.settings.manualIds || ''} 
@@ -488,11 +488,11 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 className="w-full border rounded px-3 py-2 text-sm"
                 placeholder="Ex: id1, id2, id3"
               />
-              <p className="text-xs text-gray-500 mt-1">Saisissez les IDs exacts des articles que vous souhaitez afficher sur l'accueil.</p>
+              <p className="text-xs text-gray-500 mt-1">Enter the exact IDs of the articles you want to display on the homepage.</p>
             </div>
           )}
           
-          <p className="text-xs text-gray-500">Les articles sont affichés dynamiquement depuis la base de données. Si aucun article n'existe, la section n'apparaîtra pas.</p>
+          <p className="text-xs text-gray-500">Articles are displayed dynamically from the database. If no article exists, the section will not appear.</p>
         </div>
       );
     }
@@ -500,17 +500,17 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     if (section.type === 'PromoBanners') {
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
-          <p className="text-sm text-gray-500">Configurer les 2 bannières promotionnelles côte à côte.</p>
+          <p className="text-sm text-gray-500">Configure the 2 promotional banners side by side.</p>
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Gauche</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Left Banner</h4>
               {renderResponsiveInput(section, 'Title', 'BANNER_1_TITLE', 'Ex: Smartwatch')}
               <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_1_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_1_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
               {renderPromoBannerConfig(section, 1)}
             </div>
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bannière Droite</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">Right Banner</h4>
               {renderResponsiveInput(section, 'Title', 'BANNER_2_TITLE', 'Ex: Smartphones')}
               <label className="block text-[11px] font-medium mb-1">Lien cible</label>
               <input type="text" value={section.settings.BANNER_2_LINK || ''} onChange={e => updateSectionSettings(section.id, 'BANNER_2_LINK', e.target.value)} className="w-full border rounded px-2 py-1 text-sm" placeholder="/category/..." />
@@ -529,7 +529,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           {section.type === 'BestDeals' && (
             <>
               <div>
-                <label className="block text-sm font-medium mb-1">Fin de l'offre (Compte à rebours)</label>
+                <label className="block text-sm font-medium mb-1">Offer end (Countdown)</label>
                 <input 
                   type="datetime-local" 
                   value={section.settings.countdown ? section.settings.countdown.substring(0,16) : ''} 
@@ -577,27 +577,27 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 mt-4 border-t pt-4">Critère d'affichage des produits</label>
+            <label className="block text-sm font-medium mb-1 mt-4 border-t pt-4">Product display criteria</label>
             <select 
               value={section.settings.filterType || (section.type === 'BestDeals' ? 'ON_SALE' : 'POPULAR')} 
               onChange={e => updateSectionSettings(section.id, 'filterType', e.target.value)}
               className="w-full border rounded px-3 py-2 text-sm"
             >
-              <option value="POPULAR">Les plus populaires (Meilleures Ventes)</option>
-              <option value="LATEST">Les plus récents</option>
-              <option value="ON_SALE">En promotion (Price réduit)</option>
-              <option value="CATEGORY">Par Catégorie Spécifique</option>
+              <option value="POPULAR">Most popular (Best Sellers)</option>
+              <option value="LATEST">Most recent</option>
+              <option value="ON_SALE">On sale (Reduced price)</option>
+              <option value="CATEGORY">By Specific Category</option>
             </select>
           </div>
           {section.settings.filterType === 'CATEGORY' && (
             <div>
-              <label className="block text-sm font-medium mb-1">Sélectionner la Catégorie</label>
+              <label className="block text-sm font-medium mb-1">Select Category</label>
               <select 
                 value={section.settings.categoryId || ''}
                 onChange={e => updateSectionSettings(section.id, 'categoryId', e.target.value)}
                 className="w-full border rounded px-3 py-2 text-sm"
               >
-                <option value="">-- Choisissez --</option>
+                <option value="">-- Choose --</option>
                 {categories.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
@@ -618,10 +618,10 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         {/* Sidebar Header */}
         <div className="bg-slate-800 text-white px-3 py-2.5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <a href="/admin" className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition" title="Quitter l'éditeur">
+            <a href="/admin" className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition" title="Exit editor">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </a>
-            <span className="font-semibold text-xs tracking-wide">Éditeur de Page</span>
+            <span className="font-semibold text-xs tracking-wide">Page Editor</span>
           </div>
           <button onClick={handleSave} disabled={isLoading} className="bg-orange-600 hover:bg-orange-500 text-white px-3 py-1 rounded text-xs font-medium transition disabled:opacity-50 flex items-center gap-1">
             {isLoading && <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
@@ -644,10 +644,10 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   onChange={e => setGlobalFont(e.target.value)} 
                   className="w-full border rounded px-2 py-1 text-sm focus:border-orange-500 outline-none"
                 >
-                  <option value="Inter">Inter (Défaut)</option>
+                  <option value="Inter">Inter (Default)</option>
                   <option value="Roboto">Roboto</option>
                   <option value="Outfit">Outfit</option>
-                  <option value="Playfair Display">Playfair Display (Sérif)</option>
+                  <option value="Playfair Display">Playfair Display (Serif)</option>
                   <option value="Montserrat">Montserrat</option>
                   <option value="Poppins">Poppins</option>
                   <option value="Open Sans">Open Sans</option>
@@ -695,7 +695,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   </button>
                   <button onClick={() => addSection('PromoBanners')} className="border rounded bg-gray-50 hover:bg-gray-100 p-1.5 text-center text-[10px] flex flex-col items-center gap-1 transition text-gray-600 hover:text-gray-900 hover:border-gray-300">
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>
-                    Bannières
+                    Banners
                   </button>
                   <button onClick={() => addSection('BestDeals')} className="border rounded bg-gray-50 hover:bg-gray-100 p-1.5 text-center text-[10px] flex flex-col items-center gap-1 transition text-gray-600 hover:text-gray-900 hover:border-gray-300">
                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -723,7 +723,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 <div key={section.id}>
                   {/* Edit Header */}
                   <div className="bg-white px-3 py-2 border-b flex items-center gap-1.5 sticky top-0 z-10 shadow-sm">
-                    <button onClick={() => setEditingId(null)} className="p-1 hover:bg-gray-100 hover:text-gray-900 rounded-full text-gray-500 transition-colors shrink-0" title="Retour à la liste">
+                    <button onClick={() => setEditingId(null)} className="p-1 hover:bg-gray-100 hover:text-gray-900 rounded-full text-gray-500 transition-colors shrink-0" title="Back to list">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                     </button>
                     <div className="flex-grow min-w-0 flex items-center gap-1.5">
@@ -736,7 +736,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                         placeholder="Name..."
                       />
                     </div>
-                    <button onClick={() => toggleSection(index)} className={`p-1 rounded-full transition-colors shrink-0 ${section.enabled ? 'text-green-600 bg-green-50 hover:bg-green-100' : 'text-gray-400 bg-gray-100 hover:bg-gray-200'}`} title={section.enabled ? 'Masquer' : 'Afficher'}>
+                    <button onClick={() => toggleSection(index)} className={`p-1 rounded-full transition-colors shrink-0 ${section.enabled ? 'text-green-600 bg-green-50 hover:bg-green-100' : 'text-gray-400 bg-gray-100 hover:bg-gray-200'}`} title={section.enabled ? 'Hide' : 'Show'}>
                       {section.enabled ? <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>}
                     </button>
                   </div>
@@ -747,7 +747,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                   <div className="p-3 bg-gray-50 border-t flex justify-center">
                     <button onClick={() => { removeSection(index); setEditingId(null); }} className="text-red-500 hover:text-red-700 text-xs font-medium flex items-center gap-1 p-1.5 rounded hover:bg-red-50 transition">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                      Delete la section
+                      Delete section
                     </button>
                   </div>
                 </div>
@@ -764,21 +764,21 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <button 
             onClick={() => setPreviewMode('desktop')} 
             className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'desktop' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
-            title="Aperçu Ordinateur"
+            title="Desktop Preview"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
           </button>
           <button 
             onClick={() => setPreviewMode('tablet')} 
             className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'tablet' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
-            title="Aperçu Tablette"
+            title="Tablet Preview"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
           </button>
           <button 
             onClick={() => setPreviewMode('mobile')} 
             className={`p-2 rounded transition-colors flex items-center justify-center ${previewMode === 'mobile' ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100'}`}
-            title="Aperçu Mobile"
+            title="Mobile Preview"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
           </button>

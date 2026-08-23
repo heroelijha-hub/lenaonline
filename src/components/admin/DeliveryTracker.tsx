@@ -58,7 +58,7 @@ export default function DeliveryTracker({
       baseForm.destinationCountry
     );
     setLoadingBase(false);
-    alert('Informations de livraison enregistrées.');
+    alert('Delivery information saved.');
   };
 
   const handleAddPos = async (e: React.FormEvent) => {
@@ -83,10 +83,10 @@ export default function DeliveryTracker({
     <div className="space-y-8">
       {/* Configuration de Base */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Informations d'Expédition</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Shipping Information</h2>
         <form onSubmit={handleUpdateBase} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Numéro de suivi (Tracking Number)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
             <input 
               type="text" 
               value={baseForm.trackingNumber} 
@@ -98,7 +98,7 @@ export default function DeliveryTracker({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border p-4 rounded bg-gray-50">
-              <h3 className="font-semibold text-sm mb-3">Origine (Départ)</h3>
+              <h3 className="font-semibold text-sm mb-3">Origin (Departure)</h3>
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Ville</label>
@@ -112,7 +112,7 @@ export default function DeliveryTracker({
             </div>
 
             <div className="border p-4 rounded bg-gray-50">
-              <h3 className="font-semibold text-sm mb-3">Destination (Arrivée)</h3>
+              <h3 className="font-semibold text-sm mb-3">Destination (Arrival)</h3>
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Adresse / Ville</label>
@@ -127,7 +127,7 @@ export default function DeliveryTracker({
           </div>
 
           <button type="submit" disabled={loadingBase} className="bg-orange-600 text-white px-4 py-2 rounded font-medium disabled:opacity-50">
-            {loadingBase ? 'Enregistrement...' : 'Save'}
+            {loadingBase ? 'Saving...' : 'Save'}
           </button>
         </form>
       </div>
@@ -155,7 +155,7 @@ export default function DeliveryTracker({
             </ul>
           </div>
         ) : (
-          <p className="text-sm text-gray-500 mb-6">Aucune position enregistrée.</p>
+          <p className="text-sm text-gray-500 mb-6">No position recorded.</p>
         )}
 
         <form onSubmit={handleAddPos} className="bg-gray-50 p-4 rounded border">

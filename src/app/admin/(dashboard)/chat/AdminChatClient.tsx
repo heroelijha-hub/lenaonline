@@ -59,7 +59,7 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
 
   const handleClose = async () => {
     if (!activeSessionId) return;
-    if (confirm("Êtes-vous sûr de vouloir fermer cette conversation ?")) {
+    if (confirm("Are you sure you want to close this conversation?")) {
       await closeSession(activeSessionId);
       setActiveSessionId(null);
       setSessions(await getAdminSessions());
@@ -145,7 +145,7 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Écrire une réponse..."
+                  placeholder="Write a reply..."
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 />
                 <button
@@ -161,7 +161,7 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
         ) : (
           <div className="flex-1 flex items-center justify-center text-gray-400 flex-col">
             <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-            <p>Sélectionnez une conversation pour commencer</p>
+            <p>Select a conversation to start</p>
           </div>
         )}
       </div>

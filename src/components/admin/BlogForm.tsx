@@ -111,7 +111,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Extrait (Résumé pour les grilles)</label>
+              <label className="block text-sm font-medium mb-1">Excerpt (Summary for grids)</label>
               <textarea 
                 value={formData.excerpt} 
                 onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
@@ -136,7 +136,7 @@ export default function BlogForm({ article }: { article?: any }) {
 
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
-            <h3 className="font-semibold text-gray-800">Organisation & Visibilité</h3>
+            <h3 className="font-semibold text-gray-800">Organization & Visibility</h3>
             
             <div className="flex items-center gap-2 mb-4">
               <input 
@@ -146,12 +146,12 @@ export default function BlogForm({ article }: { article?: any }) {
                 onChange={e => setFormData({ ...formData, isPublished: e.target.checked })}
               />
               <label htmlFor="isPublished" className="text-sm font-medium text-gray-700">
-                L&apos;article est publié (visible)
+                Article is published (visible)
               </label>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Catégorie</label>
+              <label className="block text-sm font-medium mb-1">Category</label>
               <input 
                 type="text" 
                 value={formData.category} 
@@ -162,7 +162,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Mots-clés (séparés par virgule)</label>
+              <label className="block text-sm font-medium mb-1">Keywords (comma-separated)</label>
               <input 
                 type="text" 
                 value={formData.tags} 
@@ -202,7 +202,7 @@ export default function BlogForm({ article }: { article?: any }) {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
           >
-            {loading ? 'Enregistrement...' : (article ? 'Update' : 'Publier l\'article')}
+            {loading ? 'Saving...' : (article ? 'Update' : 'Publier l\'article')}
           </button>
         </div>
       </div>

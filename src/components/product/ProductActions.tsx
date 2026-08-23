@@ -42,7 +42,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   
   const isWishlisted = wishlistStore.hasItem(product.id);
 
-  // Pour les produits variables, on vérifie si une variation correspond aux attributs sélectionnés
+  // For variable products, we check if a variation matches the selected attributes
   const isVariable = product.type === 'VARIABLE';
   const attributes = product.attributes || [];
   const variations = product.variations || [];

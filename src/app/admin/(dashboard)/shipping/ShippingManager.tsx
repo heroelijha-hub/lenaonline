@@ -51,7 +51,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
 
   // --- ZONES ---
   const handleSaveZone = async () => {
-    if (!zoneName) return setError('Veuillez sélectionner un pays.');
+    if (!zoneName) return setError('Please select a country.');
     setLoading(true);
     setError('');
     
@@ -62,7 +62,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
       setZoneName('');
       setZoneIsActive(true);
     } else {
-      setError(res.error || 'Erreur lors de la création de la zone.');
+      setError(res.error || 'Error creating shipping zone.');
     }
     setLoading(false);
   };
@@ -77,7 +77,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
   };
 
   const handleDeleteZone = async (id: string) => {
-    if (!confirm('Voulez-vous supprimer cette zone et toutes ses méthodes ?')) return;
+    if (!confirm('Delete this zone and all its methods?')) return;
     setLoading(true);
     const res = await deleteShippingZone(id);
     if (res.success) {
@@ -111,7 +111,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
     
     const isFreeOrCollect = methodType === 'Livraison Gratuite' || methodType === 'Collecte au magasin';
     const rateToSave = isFreeOrCollect ? 0 : Number(methodRate);
-    if (!isFreeOrCollect && methodRate === '') return setError('Le tarif est requis pour cette méthode.');
+    if (!isFreeOrCollect && methodRate === '') return setError('Rate is required for this method.');
 
     const minAmountToSave = methodType === 'Livraison Gratuite' && methodMinAmount !== '' ? Number(methodMinAmount) : undefined;
 
@@ -159,7 +159,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
   };
 
   const handleDeleteMethod = async (zoneId: string, methodId: string) => {
-    if (!confirm('Delete cette méthode ?')) return;
+    if (!confirm('Delete this method?')) return;
     setLoading(true);
     const res = await deleteShippingMethod(methodId);
     if (res.success) {
@@ -198,7 +198,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                 onChange={(e) => setZoneName(e.target.value)}
                 className="w-full border border-gray-300 px-3 py-2 rounded-md"
               >
-                <option value="">Sélectionnez un pays...</option>
+                <option value="">Select a country...</option>
                 {COUNTRIES.map((c) => (
                   <option key={c} value={c}>{c}</option>
                 ))}
@@ -238,7 +238,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
       )}
 
       {zones.length === 0 ? (
-        <p className="text-gray-500 text-sm italic">Aucune zone d'expédition définie.</p>
+        <p className="text-gray-500 text-sm italic">No shipping zone defined.</p>
       ) : (
         <div className="space-y-6">
           {zones.map(zone => (
@@ -252,7 +252,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                 </div>
                 <div className="flex items-center gap-3">
                   <button onClick={() => handleToggleZone(zone)} className="text-sm text-gray-600 hover:text-gray-900">
-                    {zone.isActive ? 'Désactiver' : 'Activer'}
+                    {zone.isActive ? 'Disable' : 'Enable'}
                   </button>
                   <button onClick={() => handleDeleteZone(zone.id)} className="text-sm text-red-600 hover:text-red-800">
                     Delete
@@ -261,14 +261,14 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
               </div>
               
               <div className="p-4">
-                <h4 className="font-semibold text-sm text-gray-700 mb-3">Méthodes d'expédition</h4>
+                <h4 className="font-semibold text-sm text-gray-700 mb-3">Shipping Methods</h4>
                 
                 {zone.methods.length > 0 ? (
                   <table className="w-full text-left text-sm mb-4">
                     <thead className="bg-gray-50 text-gray-600 font-medium">
                       <tr>
-                        <th className="px-3 py-2">Intitulé</th>
-                        <th className="px-3 py-2">Tarif</th>
+                        <th className="px-3 py-2">Label</th>
+                        <th className="px-3 py-2">Rate</th>
                         <th className="px-3 py-2">Conditions</th>
                         <th className="px-3 py-2">Status</th>
                         <th className="px-3 py-2 text-right">Actions</th>
@@ -285,7 +285,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                           </td>
                           <td className="px-3 py-2 text-gray-500">
                             {method.type === 'Livraison Gratuite' && method.minOrderAmount 
-                              ? `Dès $${method.minOrderAmount.toFixed(2)}` 
+                              ? `From ${method.minOrderAmount.toFixed(2)}` 
                               : '-'}
                           </td>
                           <td className="px-3 py-2">
@@ -302,17 +302,17 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                     </tbody>
                   </table>
                 ) : (
-                  <p className="text-sm text-gray-500 mb-4 italic">Aucune méthode définie pour cette zone.</p>
+                  <p className="text-sm text-gray-500 mb-4 italic">No method defined for this zone.</p>
                 )}
 
                 {addingMethodForZone === zone.id ? (
                   <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
                     <h5 className="font-semibold text-sm mb-3 text-blue-900">
-                      {editingMethod ? 'Edit la méthode' : 'Add une méthode'}
+                      {editingMethod ? 'Edit method' : 'Add method'}
                     </h5>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Intitulé</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Label</label>
                         <select 
                           value={methodType} 
                           onChange={(e) => setMethodType(e.target.value)}
@@ -372,7 +372,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                     onClick={() => { resetMethodForm(); setAddingMethodForZone(zone.id); }}
                     className="text-sm font-medium text-orange-600 hover:text-orange-800"
                   >
-                    + Add une méthode pour {zone.name}
+                    + Add a method for {zone.name}
                   </button>
                 )}
               </div>

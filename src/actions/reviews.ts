@@ -19,11 +19,11 @@ async function getCurrentUser() {
 export async function submitReview(productId: string, rating: number, comment: string) {
   const user = await getCurrentUser();
   if (!user) {
-    return { error: "Vous devez être connecté pour laisser un avis." };
+    return { error: "You must be logged in to leave a review." };
   }
 
   if (rating < 1 || rating > 5) {
-    return { error: "La note doit être comprise entre 1 et 5." };
+    return { error: "Rating must be between 1 and 5." };
   }
 
   try {
@@ -52,7 +52,7 @@ export async function submitReview(productId: string, rating: number, comment: s
 export async function toggleReviewApproval(reviewId: string, isApproved: boolean) {
   const user = await getCurrentUser();
   if (!user || user.role !== 'ADMIN') {
-    throw new Error("Non autorisé.");
+    throw new Error("Unauthorized.");
   }
 
   await prisma.review.update({
@@ -67,7 +67,7 @@ export async function toggleReviewApproval(reviewId: string, isApproved: boolean
 export async function updateReview(reviewId: string, rating: number, comment: string, createdAtStr: string) {
   const user = await getCurrentUser();
   if (!user || user.role !== 'ADMIN') {
-    throw new Error("Non autorisé.");
+    throw new Error("Unauthorized.");
   }
 
   await prisma.review.update({
@@ -86,7 +86,7 @@ export async function updateReview(reviewId: string, rating: number, comment: st
 export async function deleteReview(reviewId: string) {
   const user = await getCurrentUser();
   if (!user || user.role !== 'ADMIN') {
-    throw new Error("Non autorisé.");
+    throw new Error("Unauthorized.");
   }
 
   await prisma.review.delete({

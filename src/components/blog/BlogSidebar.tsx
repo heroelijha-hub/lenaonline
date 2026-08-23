@@ -27,10 +27,10 @@ export default function BlogSidebar({
 
       {/* Recent Articles */}
       <div className="border border-gray-200 rounded-lg p-6 bg-white">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Articles Récents</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Recent Articles</h3>
         <ul className="space-y-4">
           {recentArticles.length === 0 ? (
-            <li className="text-sm text-gray-500">Aucun article récent.</li>
+            <li className="text-sm text-gray-500">No recent articles.</li>
           ) : (
             recentArticles.map(article => (
               <li key={article.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
@@ -45,10 +45,10 @@ export default function BlogSidebar({
 
       {/* Recent Comments */}
       <div className="border border-gray-200 rounded-lg p-6 bg-white">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Commentaires Récents</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Recent Comments</h3>
         <ul className="space-y-4">
           {recentComments.length === 0 ? (
-            <li className="text-sm text-gray-500 italic">Aucun commentaire à afficher.</li>
+            <li className="text-sm text-gray-500 italic">No comments to display.</li>
           ) : (
             recentComments.map(comment => (
               <li key={comment.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0 text-sm text-gray-600">

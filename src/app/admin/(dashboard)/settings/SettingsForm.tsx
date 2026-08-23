@@ -35,7 +35,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   // Contact & Newsletter settings
   const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com');
-  const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !');
+  const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!');
 
   // SMTP Settings
   const [smtpHost, setSmtpHost] = useState(initialSettings.SMTP_HOST || '');
@@ -56,7 +56,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [bankTransferAccountHolder, setBankTransferAccountHolder] = useState(initialSettings.BANK_TRANSFER_ACCOUNT_HOLDER || '');
   const [bankTransferBankName, setBankTransferBankName] = useState(initialSettings.BANK_TRANSFER_BANK_NAME || '');
   const [bankTransferCheckoutMessage, setBankTransferCheckoutMessage] = useState(initialSettings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Veuillez effectuer le virement sur le compte ci-dessous.');
-  const [bankTransferInstructions, setBankTransferInstructions] = useState(initialSettings.BANK_TRANSFER_INSTRUCTIONS || 'Votre commande sera traitée dès réception du paiement.');
+  const [bankTransferInstructions, setBankTransferInstructions] = useState(initialSettings.BANK_TRANSFER_INSTRUCTIONS || 'Your order will be processed upon payment receipt.');
 
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
@@ -99,8 +99,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   });
 
   // Mobile Menu Settings
-  const [mobileAboutTitle, setMobileAboutTitle] = useState(initialSettings.MOBILE_ABOUT_TITLE || 'À propos de nous');
-  const [mobileAboutDesc, setMobileAboutDesc] = useState(initialSettings.MOBILE_ABOUT_DESC || 'Nous sommes une boutique passionnée par la qualité et l\'excellence.');
+  const [mobileAboutTitle, setMobileAboutTitle] = useState(initialSettings.MOBILE_ABOUT_TITLE || 'About Us');
+  const [mobileAboutDesc, setMobileAboutDesc] = useState(initialSettings.MOBILE_ABOUT_DESC || 'We are a store passionate about quality and excellence.');
   const [mobileMenuLinks, setMobileMenuLinks] = useState<Array<{label: string, url: string}>>(() => {
     try {
       return initialSettings.MOBILE_MENU_LINKS ? JSON.parse(initialSettings.MOBILE_MENU_LINKS) : defaultMenu;
@@ -159,8 +159,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   // 404 Page settings
   const [notFoundTitle, setNotFoundTitle] = useState(initialSettings.NOT_FOUND_TITLE || 'Oops! Cette page est introuvable.');
-  const [notFoundText, setNotFoundText] = useState(initialSettings.NOT_FOUND_TEXT || 'Il semble que nous ne puissions pas trouver la page que vous cherchez. Elle a peut-être été déplacée ou supprimée.');
-  const [notFoundCta, setNotFoundCta] = useState(initialSettings.NOT_FOUND_CTA || 'Retour à l\'accueil');
+  const [notFoundText, setNotFoundText] = useState(initialSettings.NOT_FOUND_TEXT || 'It seems we cannot find the page you are looking for. It may have been moved or deleted.');
+  const [notFoundCta, setNotFoundCta] = useState(initialSettings.NOT_FOUND_CTA || 'Back to Home');
   const [notFoundBgColor, setNotFoundBgColor] = useState(initialSettings.NOT_FOUND_BG_COLOR || '#000000');
   const [notFoundBgImage, setNotFoundBgImage] = useState(initialSettings.NOT_FOUND_BG_IMAGE || '');
   const [notFoundFile, setNotFoundFile] = useState<File | null>(null);
@@ -168,7 +168,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   // Maintenance Page Settings
   const [maintenanceMode, setMaintenanceMode] = useState(initialSettings.MAINTENANCE_MODE === 'true');
   const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site en maintenance');
-  const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !');
+  const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!');
   const [maintenanceImage, setMaintenanceImage] = useState(initialSettings.MAINTENANCE_IMAGE || '');
   const [maintenanceFile, setMaintenanceFile] = useState<File | null>(null);
 
@@ -313,7 +313,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     await updateSettingsBatch(settingsMap);
 
-    setMessage('Settings mis à jour avec succès.');
+    setMessage('Settings updated successfully.');
     setIsLoading(false);
     router.refresh();
   };
@@ -326,7 +326,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         disabled={isLoading}
         className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-orange-300 text-sm font-semibold"
       >
-        {isLoading ? 'Enregistrement...' : 'Save cette section'}
+        {isLoading ? 'Saving...' : 'Save cette section'}
       </button>
     </div>
   );
@@ -355,7 +355,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-xs text-gray-500">C'est la devise par défaut utilisée pour afficher les prix.</p>
+            <p className="mt-2 text-xs text-gray-500">This is the default currency used to display prices.</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{t("symbol_position")}</label>
@@ -371,7 +371,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Séparateur des milliers</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Thousands separator</label>
             <select
               value={thousandSeparator}
               onChange={(e) => setThousandSeparator(e.target.value)}
@@ -384,7 +384,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Séparateur décimal</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Decimal separator</label>
             <select
               value={decimalSeparator}
               onChange={(e) => setDecimalSeparator(e.target.value)}
@@ -396,29 +396,29 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-red-600 mb-4 mt-8">Langues & Traduction</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4 mt-8">Languages & Translation</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Langue active (Site)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Active Language (Site)</label>
             <select
               value={activeLanguage}
               onChange={(e) => setActiveLanguage(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value="en">Anglais (English)</option>
-              <option value="fr">Français (French)</option>
+              <option value="en">English</option>
+              <option value="fr">French (Français)</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Portée de la traduction</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Translation scope</label>
             <select
               value={translationScope}
               onChange={(e) => setTranslationScope(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value="frontend_only">Option 1: Seulement Espace Client (Admin reste en Anglais)</option>
-              <option value="admin_only">Option 2: Seulement Admin (Client reste en Anglais)</option>
-              <option value="all">Option 3: Tout est traduit</option>
+              <option value="frontend_only">Option 1: Client side only (Admin stays in English)</option>
+              <option value="admin_only">Option 2: Admin only (Client stays in English)</option>
+              <option value="all">Option 3: Everything is translated</option>
             </select>
           </div>
         </div>
@@ -426,7 +426,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Taxes & TVA</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Taxes & VAT</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -437,7 +437,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="taxIncludedInPrice" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Les prix saisis dans le catalogue sont Toutes Taxes Comprises (TTC)
+              Catalog prices include all taxes (VAT-inclusive)
             </label>
           </div>
           <div className="flex items-center gap-3">
@@ -449,11 +449,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="enableEuVat" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Appliquer la TVA dynamique selon les pays de l&apos;Union Européenne (à venir au Checkout)
+              Apply dynamic VAT based on EU country (coming soon at Checkout)
             </label>
           </div>
           <div className="w-full md:w-1/2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Taux de TVA par défaut (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Default VAT rate (%)</label>
             <input
               type="number"
               step="0.1"
@@ -463,14 +463,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="Ex: 20"
             />
-            <p className="mt-2 text-xs text-gray-500">Taux appliqué si la TVA dynamique est désactivée ou si le pays du client est inconnu.</p>
+            <p className="mt-2 text-xs text-gray-500">Rate applied if dynamic VAT is disabled or client country is unknown.</p>
           </div>
         </div>
         <SectionSaveButton />
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Fonctionnalités Boutique</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Store Features</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -481,13 +481,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="enableBuyNow" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Activer le bouton "Buy Now" (Achat rapide) sur les pages produits
+              Enable the "Buy Now" button (Quick purchase) on product pages
             </label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email de réception (Contact & Newsletter)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Receiving Email (Contact & Newsletter)</label>
               <input
                 type="email"
                 value={contactReceiverEmail}
@@ -495,18 +495,18 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="admin@shopelios.com"
               />
-              <p className="mt-2 text-xs text-gray-500">L'adresse e-mail qui recevra les messages du formulaire de contact et les notifications d'inscription.</p>
+              <p className="mt-2 text-xs text-gray-500">The e-mail address that will receive contact form messages and registration notifications.</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Message de succès (Newsletter)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Success Message (Newsletter)</label>
               <textarea
                 value={newsletterSuccessMessage}
                 onChange={(e) => setNewsletterSuccessMessage(e.target.value)}
                 rows={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                placeholder="Merci pour votre inscription !"
+                placeholder="Thank you for subscribing!"
               />
-              <p className="mt-2 text-xs text-gray-500">Message affiché à l'utilisateur après une inscription réussie.</p>
+              <p className="mt-2 text-xs text-gray-500">Message displayed to the user after a successful subscription.</p>
             </div>
           </div>
         </div>
@@ -514,11 +514,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Serveur E-mail (SMTP) - E-mails Transactionnels</h3>
-        <p className="text-sm text-gray-500 mb-4">Configurez ces paramètres pour que la boutique puisse envoyer automatiquement des e-mails (Confirmation de commande, Expédition, Annulation).</p>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Email Server (SMTP) - Transactional Emails</h3>
+        <p className="text-sm text-gray-500 mb-4">Configure these settings so the store can automatically send emails (Order confirmation, Shipping, Cancellation).</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Hôte SMTP (ex: smtp.gmail.com)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">SMTP Host (ex: smtp.gmail.com)</label>
             <input
               type="text"
               value={smtpHost}
@@ -528,7 +528,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Port SMTP (ex: 587 ou 465)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">SMTP Port (ex: 587 or 465)</label>
             <input
               type="text"
               value={smtpPort}
@@ -538,17 +538,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Utilisateur (Email de connexion)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Username (Login Email)</label>
             <input
               type="text"
               value={smtpUser}
               onChange={(e) => setSmtpUser(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="votre-email@gmail.com"
+              placeholder="your-email@gmail.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe (App Password)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password (App Password)</label>
             <input
               type="password"
               value={smtpPass}
@@ -558,7 +558,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email d'expédition (De : ...)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Sender Email (From: ...)</label>
             <input
               type="text"
               value={smtpFrom}
@@ -572,18 +572,18 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Paiements (Stripe, PayPal & Virement)</h3>
-        <p className="text-sm text-gray-500 mb-4">Cochez "Activer ce mode" pour rendre la méthode de paiement visible lors du passage en caisse.</p>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Payments (Stripe, PayPal & Bank Transfer)</h3>
+        <p className="text-sm text-gray-500 mb-4">Check "Enable this mode" to make the payment method visible at checkout.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">Configuration Stripe (Cartes Bancaires)</h4>
+            <h4 className="text-md font-bold text-gray-900">Stripe Configuration (Credit Cards)</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enableStripe} onChange={(e) => setEnableStripe(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Clé Publique (Publishable Key)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Public Key (Publishable Key)</label>
             <input
               type="text"
               value={stripePublicKey}
@@ -593,7 +593,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Clé Secrète (Secret Key)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Secret Key</label>
             <input
               type="password"
               value={stripeSecretKey}
@@ -604,14 +604,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
 
           <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">Configuration PayPal</h4>
+            <h4 className="text-md font-bold text-gray-900">PayPal Configuration</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enablePaypal} onChange={(e) => setEnablePaypal(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Customer ID PayPal</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">PayPal Client ID</label>
             <input
               type="text"
               value={paypalClientId}
@@ -621,7 +621,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Secret PayPal</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">PayPal Secret</label>
             <input
               type="password"
               value={paypalSecret}
@@ -632,10 +632,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
 
           <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">Configuration Virement Bancaire</h4>
+            <h4 className="text-md font-bold text-gray-900">Bank Transfer Configuration</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enableBankTransfer} onChange={(e) => setEnableBankTransfer(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Activer ce mode</span>
+              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
             </label>
           </div>
           <div>
@@ -649,17 +649,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Titulaire du compte</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Account Holder</label>
             <input
               type="text"
               value={bankTransferAccountHolder}
               onChange={(e) => setBankTransferAccountHolder(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Name de l'entreprise ou personne"
+              placeholder="Company or person name"
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Name de la banque</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
             <input
               type="text"
               value={bankTransferBankName}
@@ -669,23 +669,23 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Message à afficher sur le checkout</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message to display at checkout</label>
             <textarea
               value={bankTransferCheckoutMessage}
               onChange={(e) => setBankTransferCheckoutMessage(e.target.value)}
               rows={2}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Veuillez effectuer le virement sur le compte ci-dessous."
+              placeholder="Please make the transfer to the account below."
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Instructions (envoyées au client)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Instructions (sent to the client)</label>
             <textarea
               value={bankTransferInstructions}
               onChange={(e) => setBankTransferInstructions(e.target.value)}
               rows={3}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Votre commande sera traitée dès réception du paiement..."
+              placeholder="Your order will be processed upon payment receipt..."
             />
           </div>
         </div>
@@ -693,10 +693,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Design & En-tête (Header)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Design & Header</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur principale de la boutique (Thème)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Main Store Color (Theme)</label>
             <div className="flex items-center gap-3">
               <input
                 type="color"
@@ -714,7 +714,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Message du bandeau supérieur</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Top Banner Message</label>
             <input
               type="text"
               value={headerAnnouncement}
@@ -723,8 +723,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Logo de la Boutique (Upload)</label>
-            <p className="text-xs text-gray-500 mb-2">Taille recommandée: 150x50 pixels (PNG transparent).</p>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Store Logo (Upload)</label>
+            <p className="text-xs text-gray-500 mb-2">Recommended size: 150x50 pixels (transparent PNG).</p>
             {headerLogoImage && !logoFile && (
               <div className="flex items-center gap-4 mb-3">
                 <div className="relative inline-block">
@@ -774,7 +774,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone Support (En-tête)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Support Phone (Header)</label>
             <input
               type="text"
               value={headerSupportPhone}
@@ -783,7 +783,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email Support (En-tête)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Support Email (Header)</label>
             <input
               type="email"
               value={headerSupportEmail}
@@ -796,10 +796,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Barre de Recherche (Ajax)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Search Bar (Ajax)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de la bordure</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Border color</label>
             <div className="flex items-center gap-3">
               <input type="color" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -810,7 +810,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <input type="text" value={searchPlaceholder} onChange={e => setSearchPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du bouton</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Button text</label>
             <input type="text" value={searchBtnText} onChange={e => setSearchBtnText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -894,11 +894,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">Navigation Mobile (Hamburger)</h3>
-        <p className="text-sm text-gray-500 mb-4">Configurez le menu latéral (Drawer) qui s'ouvre sur téléphone.</p>
+        <p className="text-sm text-gray-500 mb-4">Configure the side menu (Drawer) that opens on mobile.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-gray-800 mb-2">Section "À propos"</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">"About" Section</h4>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
@@ -911,7 +911,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         </div>
 
         <div className="space-y-4 mb-6">
-          <h4 className="font-semibold text-gray-800">Liens du menu mobile</h4>
+          <h4 className="font-semibold text-gray-800">Mobile menu links</h4>
           {mobileMenuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
@@ -975,7 +975,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <input type="text" value={mobileContactAddress} onChange={e => setMobileContactAddress(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
             <input type="text" value={mobileContactPhone} onChange={e => setMobileContactPhone(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
@@ -1026,7 +1026,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           {topBarLinks.map((link, idx) => (
             <div key={idx} className="flex flex-wrap items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1 min-w-[120px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Icône</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Icon</label>
                 <select
                   value={link.icon}
                   onChange={(e) => {
@@ -1038,8 +1038,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 >
                   <option value="location">Localisation</option>
                   <option value="truck">Camion de livraison</option>
-                  <option value="phone">Téléphone</option>
-                  <option value="star">Étoile</option>
+                  <option value="phone">Phone</option>
+                  <option value="star">Star</option>
                   <option value="mail">Email</option>
                 </select>
               </div>
@@ -1124,8 +1124,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Icône du Chat (Upload)</label>
-              <p className="text-xs text-gray-500 mb-2">Taille recommandée: 64x64 pixels (Carré).</p>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Chat Icon (Upload)</label>
+              <p className="text-xs text-gray-500 mb-2">Recommended size: 64x64 pixels (Square).</p>
               {chatStoreIcon && !chatIconFile && (
                 <div className="relative inline-block mb-2">
                   <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 object-cover rounded-full border" />
@@ -1214,7 +1214,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
-        <h4 className="text-md font-medium text-gray-800 mb-3">Réseaux Sociaux (URL)</h4>
+        <h4 className="text-md font-medium text-gray-800 mb-3">Social Networks (URL)</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
@@ -1301,7 +1301,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Mode Maintenance</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Maintenance Mode</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-orange-50 p-6 rounded-lg border border-orange-100 mb-6">
           <div className="md:col-span-2 flex items-center mb-2">
             <input
@@ -1312,7 +1312,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="maintenanceMode" className="ml-3 text-base font-bold text-orange-900 cursor-pointer">
-              Activer le mode maintenance (Bloque l'accès public au site)
+              Enable maintenance mode (Blocks public access to the site)
             </label>
           </div>
           
@@ -1367,7 +1367,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <textarea value={notFoundText} onChange={e => setNotFoundText(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du bouton retour (CTA)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Button text retour (CTA)</label>
             <input type="text" value={notFoundCta} onChange={e => setNotFoundCta(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
@@ -1378,7 +1378,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Image de fond (Upload)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Background image (Upload)</label>
             {notFoundBgImage && !notFoundFile && (
               <div className="relative inline-block mb-2">
                 <img src={notFoundBgImage} alt="404 BG" className="h-20 object-cover border bg-gray-50 p-1" />

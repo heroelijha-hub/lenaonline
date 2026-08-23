@@ -14,8 +14,8 @@ export default async function AddressesPage() {
 
   const t = await getTranslations();
 
-  // Pour l'instant, les adresses ne sont pas gérées dans la base de données.
-  // Nous affichons l'interface par défaut (vide).
+  // For now, addresses are not managed in the database.
+  // We display the default (empty) interface.
   const billingAddress = null;
   const shippingAddress = null;
 

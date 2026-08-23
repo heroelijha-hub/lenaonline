@@ -25,7 +25,7 @@ export async function submitContactMessage(formData: FormData) {
     console.log(`[CONTACT] Subject: ${subject}`);
     console.log(`[CONTACT] Message: ${message}`);
 
-    return { success: true, message: 'Votre message a été envoyé avec succès !' };
+    return { success: true, message: 'Your message has been sent successfully!' };
   } catch (error) {
     console.error('Contact submission error:', error);
     return { error: "Une erreur est survenue lors de l'envoi du message." };
@@ -42,7 +42,7 @@ export async function submitNewsletter(formData: FormData) {
 
     const settings = await getSettings();
     const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com';
-    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !';
+    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!';
 
     console.log(`[NEWSLETTER] New subscription: ${email}`);
     console.log(`[NEWSLETTER] Notification sent to: ${receiverEmail}`);

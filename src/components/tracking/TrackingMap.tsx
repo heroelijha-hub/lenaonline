@@ -54,14 +54,14 @@ export default function TrackingMap({
       if (originLat && originLng) {
         L.marker([originLat, originLng], {
           icon: L.divIcon({ className: '', html: '<div style="font-size:28px;line-height:1;">🏭</div>', iconSize: [32,32], iconAnchor: [16,32] })
-        }).addTo(mapInstance.current).bindPopup(`Départ : ${originName}`);
+        }).addTo(mapInstance.current).bindPopup(`Departure: ${originName}`);
       }
 
       // Destination
       if (destinationLat && destinationLng) {
         L.marker([destinationLat, destinationLng], {
           icon: L.divIcon({ className: '', html: '<div style="font-size:28px;line-height:1;">🏁</div>', iconSize: [32,32], iconAnchor: [16,32] })
-        }).addTo(mapInstance.current).bindPopup(`Arrivée : ${destinationName}`);
+        }).addTo(mapInstance.current).bindPopup(`Arrival: ${destinationName}`);
       }
 
       // History Positions

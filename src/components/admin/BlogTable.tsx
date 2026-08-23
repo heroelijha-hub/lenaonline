@@ -9,7 +9,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
+    if (!confirm('Are you sure you want to delete this article?')) return;
     
     setLoadingId(id);
     const res = await deleteArticle(id);
@@ -28,7 +28,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
         <thead className="bg-gray-50 border-b border-gray-200 text-gray-800 font-semibold">
           <tr>
             <th className="px-6 py-4">Article</th>
-            <th className="px-6 py-4">Catégorie</th>
+            <th className="px-6 py-4">Category</th>
             <th className="px-6 py-4">Status</th>
             <th className="px-6 py-4">Date</th>
             <th className="px-6 py-4 text-right">Actions</th>
@@ -38,7 +38,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
           {articles.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                Aucun article trouvé.
+                No articles found.
               </td>
             </tr>
           ) : (
@@ -62,7 +62,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                 <td className="px-6 py-4">{article.category || '-'}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${article.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                    {article.isPublished ? 'Publié' : 'Draft'}
+                    {article.isPublished ? 'Published' : 'Draft'}
                   </span>
                 </td>
                 <td className="px-6 py-4">

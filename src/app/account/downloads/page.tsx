@@ -16,9 +16,9 @@ export default async function DownloadsPage() {
   const t = await getTranslations('AccountDownloads');
   const locale = await getLocale();
 
-  // Pour le moment, nous n'avons pas de modèle de téléchargement dans la base de données.
+  // For now, we have no download model in the database.
   // Nous simulons un tableau vide. 
-  // Quand la fonctionnalité sera ajoutée, il suffira de requêter les produits téléchargeables achetés par l'utilisateur.
+  // When the feature is added, it will be enough to query downloadable products purchased by the user.
   const downloads: any[] = []; 
 
   return (

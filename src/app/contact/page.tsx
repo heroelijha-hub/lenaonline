@@ -12,21 +12,21 @@ export default function ContactPage() {
             {/* Left Column: Legal text & Contact Info */}
             <div className="space-y-12">
               <div>
-                <h2 className="text-2xl font-bold mb-6">Responsabilité relative au contenu</h2>
+                <h2 className="text-2xl font-bold mb-6">Content Responsibility</h2>
                 <div className="space-y-4 text-sm text-gray-600 leading-relaxed">
                   <p>
                     En Tant Que Prestataire De Services, Nous Sommes Responsables De Nos Propres
-                    Contenus Sur Ces Pages Conformément À L'article 7, Paragraphe 1, De La Loi
-                    Allemande Sur La Protection Des Données (DDG).
+                    Content on these pages in accordance with Section 7, Paragraph 1 of the
+                    German Telemedia Act (TMG).
                   </p>
                   <p>
-                    Cependant, Conformément Aux Articles 8 À 10 De La DDG, Nous Ne Sommes Pas
-                    Tenus De Surveiller Les Informations Transmises Ou Stockées Par Des Tiers Ni De
-                    Rechercher Des Faits Ou Circonstances Révélant Une Activité Illégale.
+                    However, under Sections 8 to 10 of the TMG, we are not
+                    obligated to monitor transmitted or stored third-party information or
+                    investigate circumstances indicating illegal activity.
                   </p>
                   <p>
                     Les Obligations De Retrait Ou De Blocage De L'utilisation D'informations En Vertu
-                    Des Lois Générales Restent Inchangées.
+                    General legal obligations remain unchanged.
                   </p>
                 </div>
               </div>
@@ -49,7 +49,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* Téléphone */}
+                {/* Phone */}
                 <div className="flex items-start gap-4">
                   <div className="bg-gray-50 p-4 rounded-lg flex-shrink-0">
                     <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Téléphone</h3>
+                    <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
                     <p className="text-sm text-gray-600">
                       +32456761781
                     </p>

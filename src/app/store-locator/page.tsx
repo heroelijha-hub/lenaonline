@@ -29,7 +29,7 @@ export default function StoreLocatorPage() {
       address: 'Quai des Belges, 13001 Marseille, France',
       phone: '+33 4 91 23 45 67',
       hours: 'Lun-Sam: 10h00 - 19h00',
-      status: 'Fermé bientôt',
+      status: 'Closing soon',
     }
   ];
 
@@ -39,8 +39,8 @@ export default function StoreLocatorPage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Trouver un Magasin</h1>
           <p className="text-gray-600 text-lg">
-            Découvrez nos boutiques physiques et venez tester nos produits en direct.
-            Notre équipe se fera un plaisir de vous conseiller.
+            Discover our physical stores and come test our products in person.
+            Our team will be happy to advise you.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function StoreLocatorPage() {
                     </p>
                   </div>
                   <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 rounded-lg transition text-sm">
-                    Itinéraire
+                    Directions
                   </button>
                 </div>
               ))}
@@ -91,7 +91,7 @@ export default function StoreLocatorPage() {
 
           {/* Carte */}
           <div className="lg:col-span-2 bg-gray-200 rounded-xl border border-gray-300 overflow-hidden h-[400px] lg:h-[700px] relative">
-            {/* Embed Google Maps générique (Paris par défaut) */}
+            {/* Generic Google Maps embed (Paris by default) */}
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1m3!1d83998.95410651817!2d2.2770200870366666!3d48.85883773942006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1f06e2b70f%3A0x40b82c3688c9460!2sParis%2C%20France!5e0!3m2!1sen!2sus!4v1693245028475!5m2!1sen!2sus" 
               className="w-full h-full border-0" 

@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import prisma from '@/lib/prisma';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com'; // À remplacer par le vrai domaine
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com'; // Replace with the real domain
 
   // 1. Pages statiques
   const staticPages = [
@@ -57,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // 4. Catégories dynamiques
+  // 4. Dynamic categories
   const categories = await prisma.category.findMany({
     select: { slug: true },
   });

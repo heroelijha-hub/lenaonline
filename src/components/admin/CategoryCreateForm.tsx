@@ -41,7 +41,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         type="text" 
         value={name}
         onChange={handleNameChange}
-        placeholder="Name de la catégorie (ex: Smartphones)"
+        placeholder="Category name (ex: Smartphones)"
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800"
         required
       />
@@ -58,7 +58,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         onChange={(e) => setParentId(e.target.value)}
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 bg-white"
       >
-        <option value="">Aucun parent (Catégorie Principale)</option>
+        <option value="">No parent (Main Category)</option>
         {categories.map(c => (
           <option key={c.id} value={c.id}>{c.name}</option>
         ))}

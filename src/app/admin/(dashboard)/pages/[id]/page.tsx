@@ -72,7 +72,7 @@ export default function AdminPageForm() {
     <div className="max-w-4xl mx-auto pb-12">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">
-          {isNew ? 'Create une page' : 'Éditer la page'}
+          {isNew ? 'Create a page' : 'Edit page'}
         </h1>
         <button
           onClick={() => router.push('/admin/pages')}
@@ -90,7 +90,7 @@ export default function AdminPageForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
-          <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2">Informations Générales</h2>
+          <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2">General Information</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -138,7 +138,7 @@ export default function AdminPageForm() {
             <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             Version Desktop (PC & Tablette)
           </h2>
-          <p className="text-xs text-gray-500 mb-2">Ce contenu s'affichera sur les écrans larges.</p>
+          <p className="text-xs text-gray-500 mb-2">This content will be displayed on large screens.</p>
           <RichTextEditor 
             value={formData.desktopContent} 
             onChange={(val) => setFormData({...formData, desktopContent: val})}
@@ -151,11 +151,11 @@ export default function AdminPageForm() {
             <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
             Version Mobile (Smartphone)
           </h2>
-          <p className="text-xs text-gray-500 mb-2">Ce contenu s'affichera uniquement sur les petits écrans.</p>
+          <p className="text-xs text-gray-500 mb-2">This content will be displayed only on small screens.</p>
           <RichTextEditor 
             value={formData.mobileContent} 
             onChange={(val) => setFormData({...formData, mobileContent: val})}
-            placeholder="Saisissez le contenu spécifique pour mobile..."
+            placeholder="Enter mobile-specific content..."
           />
         </div>
 
@@ -165,7 +165,7 @@ export default function AdminPageForm() {
             disabled={saving}
             className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-8 rounded-md transition shadow-sm disabled:opacity-50"
           >
-            {saving ? 'Enregistrement...' : 'Save la page'}
+            {saving ? 'Saving...' : 'Save la page'}
           </button>
         </div>
       </form>

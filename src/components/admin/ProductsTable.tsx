@@ -34,7 +34,7 @@ export default function ProductsTable({ products, categories }: { products: any[
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
+    if (confirm("Are you sure you want to delete this product?")) {
       setIsLoading(true);
       const res = await deleteProduct(id);
       if (res.error) alert(res.error);
@@ -134,7 +134,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                           <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-[10px]">ID: {product.id.substring(0,8)}</span>
                           <span>•</span>
-                          <span className="text-orange-600 font-medium">{product.categories?.map((c: any) => c.name).join(', ') || 'Sans catégorie'}</span>
+                          <span className="text-orange-600 font-medium">{product.categories?.map((c: any) => c.name).join(', ') || 'Uncategorized'}</span>
                         </div>
                         
                         {/* Woo-style Row Actions */}
@@ -161,7 +161,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                     ) : product.stock > 0 ? (
                       <span className="text-teal-600 font-medium">{product.stock} restants</span>
                     ) : (
-                      <span className="text-red-600 font-medium">Épuisé</span>
+                      <span className="text-red-600 font-medium">Out of stock</span>
                     )}
                   </td>
                 </tr>
@@ -170,7 +170,7 @@ export default function ProductsTable({ products, categories }: { products: any[
           )}
         </tbody>
       </table>
-      {/* Astuce CSS pour afficher les actions au survol de la ligne entière */}
+      {/* CSS trick to show actions on full row hover */}
       <style dangerouslySetInnerHTML={{__html: `
         tr { cursor: default; }
         tr:hover .opacity-0 { opacity: 1 !important; }

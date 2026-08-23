@@ -47,7 +47,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th className="px-6 py-3">Produit</th>
+            <th className="px-6 py-3">Product</th>
             <th className="px-6 py-3">Customer</th>
             <th className="px-6 py-3">Note & Commentaire</th>
             <th className="px-6 py-3">Date</th>
@@ -107,7 +107,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                     review.isApproved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
-                  {review.isApproved ? 'Approuvé' : 'Pending'}
+                  {review.isApproved ? 'Approved' : 'Pending'}
                 </button>
               </td>
               <td className="px-6 py-4 text-right space-x-2">

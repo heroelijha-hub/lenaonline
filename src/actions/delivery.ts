@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
-// Helper pour géocoder (Ville, Pays) -> Lat, Lng via Nominatim
+// Helper to geocode (City, Country) -> Lat, Lng via Nominatim
 export async function geocodeCity(city: string, country: string): Promise<{ lat: number, lng: number } | null> {
   const query = encodeURIComponent(`${city}, ${country}`);
   const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
@@ -26,12 +26,12 @@ export async function geocodeCity(city: string, country: string): Promise<{ lat:
     }
     return null;
   } catch (error) {
-    console.error("Erreur géocodage:", error);
+    console.error("Geocoding error:", error);
     return null;
   }
 }
 
-// Mettre à jour les informations de base de livraison (Origine, Destination, Tracking)
+// Update basic delivery information (Origin, Destination, Tracking)
 export async function updateOrderTracking(
   orderId: string, 
   trackingNumber: string, 
@@ -82,12 +82,12 @@ export async function updateOrderTracking(
   revalidatePath('/tracking');
 }
 
-// Ajouter une nouvelle position de livraison à l'historique
+// Add a new delivery position to the history
 export async function addDeliveryPosition(orderId: string, city: string, country: string, note?: string) {
   const coords = await geocodeCity(city, country);
   
   if (!coords) {
-    throw new Error(`Impossible de trouver les coordonnées pour ${city}, ${country}`);
+    throw new Error(`Unable to find coordinates for ${city}, ${country}`);
   }
 
   await prisma.deliveryPosition.create({

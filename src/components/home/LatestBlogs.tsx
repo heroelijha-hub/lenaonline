@@ -14,7 +14,7 @@ export default async function LatestBlogs({ config }: { config?: any }) {
         where: { id: { in: ids }, isPublished: true },
         include: { _count: { select: { comments: { where: { isApproved: true } } } } }
       });
-      // Réordonner selon l'ordre manuel
+      // Reorder according to manual order
       articles = ids.map((id: string) => fetched.find(a => a.id === id)).filter(Boolean);
     }
   } else {

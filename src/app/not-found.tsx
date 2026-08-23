@@ -6,8 +6,8 @@ export default async function NotFound() {
   const settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
   const title = settings.NOT_FOUND_TITLE || "Oops! Cette page est introuvable.";
-  const text = settings.NOT_FOUND_TEXT || "Il semble que nous ne puissions pas trouver la page que vous cherchez. Elle a peut-être été déplacée ou supprimée.";
-  const cta = settings.NOT_FOUND_CTA || "Retour à l'accueil";
+  const text = settings.NOT_FOUND_TEXT || "It seems we cannot find the page you are looking for. It may have been moved or deleted.";
+  const cta = settings.NOT_FOUND_CTA || "Back to Home";
   const bgImage = settings.NOT_FOUND_BG_IMAGE || '';
   const bgColor = settings.NOT_FOUND_BG_COLOR || '#000000';
 

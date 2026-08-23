@@ -70,7 +70,7 @@ export async function registerUser(formData: FormData) {
       }
     } catch (e) {
       console.error("Error syncing Prisma user:", e)
-      // On ne retourne pas d'erreur critique ici, l'utilisateur est quand même créé dans Supabase Auth
+      // We don't return a critical error here, the user is still created in Supabase Auth
     }
   }
 
@@ -99,10 +99,10 @@ export async function setupAdmin(formData: FormData) {
     return { error: 'All fields are required.' };
   }
 
-  // Vérifier qu'il n'y a pas déjà d'admin
+  // Check that there is no existing admin
   const adminCount = await prisma.user.count({ where: { role: 'ADMIN' } });
   if (adminCount > 0) {
-    return { error: 'Un administrateur existe déjà. Configuration verrouillée.' };
+    return { error: 'An administrator already exists. Setup is locked.' };
   }
 
   const supabase = await createClient();
@@ -158,7 +158,7 @@ export async function loginAdmin(formData: FormData) {
     const user = await prisma.user.findUnique({ where: { id: data.user.id } });
     if (!user || user.role !== 'ADMIN') {
       await supabase.auth.signOut({ scope: 'global' });
-      return { error: 'Accès refusé. Vous n\'êtes pas administrateur.' };
+      return { error: 'Access denied. You are not an administrator.' };
     }
   }
 

@@ -27,7 +27,7 @@ export default async function CustomPage({ params }: { params: { slug: string } 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-8">
-        {/* En-tête basique de page si nécessaire, ou on laisse le contenu libre */}
+        {/* Basic page header if needed, otherwise leave content free */}
         <h1 className="text-3xl font-bold text-gray-900 mb-8 border-b pb-4">{page.title}</h1>
         
         {/* Container for the custom page */}

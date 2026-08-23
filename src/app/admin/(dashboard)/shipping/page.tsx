@@ -2,7 +2,7 @@ import { getShippingZones } from '@/actions/shipping';
 import ShippingManager from './ShippingManager';
 
 export const metadata = {
-  title: 'Settings d\'expédition | Shopelios Admin',
+  title: 'Shipping Settings | Shopelios Admin',
 };
 
 export default async function ShippingPage() {
@@ -11,8 +11,8 @@ export default async function ShippingPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Settings d'expédition</h1>
-        <p className="text-gray-500 mt-2">Configurez les zones desservies (pays) et les coûts de livraison.</p>
+        <h1 className="text-3xl font-bold text-gray-900">Shipping Settings</h1>
+        <p className="text-gray-500 mt-2">Configure the zones served (countries) and shipping costs.</p>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

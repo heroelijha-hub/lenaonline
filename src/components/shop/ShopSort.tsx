@@ -35,7 +35,7 @@ export default function ShopSort({ totalResults, currentRange }: { totalResults:
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between bg-white py-3 border-b border-gray-100 mb-6">
       <div className="text-sm text-gray-500 mb-4 sm:mb-0">
-        Affichage de {currentRange} sur {totalResults} résultats
+        Showing {currentRange} of {totalResults} results
       </div>
       
       <div className="flex items-center gap-4">
@@ -44,10 +44,10 @@ export default function ShopSort({ totalResults, currentRange }: { totalResults:
           onChange={handleSortChange}
           className="border-none bg-transparent text-sm font-semibold text-gray-700 focus:ring-0 cursor-pointer"
         >
-          <option value="">Tri Par Défaut</option>
+          <option value="">Default Sort</option>
           <option value="price_asc">Prix croissant</option>
-          <option value="price_desc">Prix décroissant</option>
-          <option value="newest">Nouveautés</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="newest">New Arrivals</option>
         </select>
         
         <div className="flex items-center gap-1 border-l border-gray-200 pl-4">

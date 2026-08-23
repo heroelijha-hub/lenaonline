@@ -152,7 +152,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
                             }}
                             className="text-xs text-orange-600 hover:underline mt-2 inline-block font-medium"
                           >
-                            Voir les détails &rarr;
+                            View details &rarr;
                           </Link>
                         )}
                       </div>

@@ -67,7 +67,7 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
     return (
       <MaintenanceView 
         title={settings.maintenanceTitle || 'Site en maintenance'} 
-        message={settings.maintenanceMessage || 'Nous mettons actuellement à jour notre boutique. Revenez très bientôt !'} 
+        message={settings.maintenanceMessage || 'We are currently updating our store. Come back very soon!'} 
         image={settings.maintenanceImage} 
         logoImage={settings.logoImage} 
       />

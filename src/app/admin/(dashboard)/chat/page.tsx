@@ -8,7 +8,7 @@ export default async function AdminChatPage() {
     <>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Support Chat</h1>
-        <p className="text-gray-500">Répondez aux questions de vos clients en direct.</p>
+        <p className="text-gray-500">Reply to your customers' questions live.</p>
       </div>
 
       <AdminChatClient initialSessions={initialSessions} />

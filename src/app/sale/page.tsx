@@ -20,7 +20,7 @@ export default async function SaleProductsPage() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Promotions (Sale)</h1>
             <p className="text-gray-600">
-              Profitez de nos meilleures offres et réductions exclusives.
+              Enjoy our best deals and exclusive discounts.
             </p>
           </div>
         </div>
@@ -29,7 +29,7 @@ export default async function SaleProductsPage() {
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Aucune promotion en cours</h2>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
-              Retour à l'accueil
+              Back to Home
             </Link>
           </div>
         ) : (

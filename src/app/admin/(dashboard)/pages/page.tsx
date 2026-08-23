@@ -9,7 +9,7 @@ export default async function AdminPagesList() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Pages Personnalisées</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Custom Pages</h1>
         <Link 
           href="/admin/pages/new" 
           className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition"
@@ -52,7 +52,7 @@ export default async function AdminPagesList() {
                       Voir
                     </Link>
                     <Link href={`/admin/pages/${page.id}`} className="text-orange-600 hover:text-orange-900 font-medium text-sm">
-                      Éditer
+                      Edit
                     </Link>
                     <form action={async () => {
                       'use server';
@@ -68,7 +68,7 @@ export default async function AdminPagesList() {
             ) : (
               <tr>
                 <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                  Aucune page trouvée. Cliquez sur "Create une page" pour commencer.
+                  No page found. Click "Create a page" to get started.
                 </td>
               </tr>
             )}

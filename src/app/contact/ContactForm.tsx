@@ -20,7 +20,7 @@ export default function ContactForm() {
       setMessage(res.error);
     } else if (res.success) {
       setStatus('success');
-      setMessage(res.success ? (res.message || 'Message envoyé avec succès.') : '');
+      setMessage(res.success ? (res.message || 'Message sent successfully.') : '');
       e.currentTarget.reset();
     }
   };

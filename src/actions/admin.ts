@@ -59,7 +59,7 @@ export async function createCategory(formData: FormData) {
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur lors de la création de la catégorie" };
+    return { error: "Error creating category" };
   }
 }
 
@@ -79,7 +79,7 @@ export async function updateCategory(id: string, name: string, slug?: string, pa
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur lors de la mise à jour." };
+    return { error: "Error updating." };
   }
 }
 
@@ -90,7 +90,7 @@ export async function deleteCategory(id: string) {
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur: Cette catégorie contient peut-être des produits." };
+    return { error: "Error: This category may contain products." };
   }
 }
 
@@ -130,7 +130,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const providedSlug = formData.get('slug') as string;
 
   if (!title || !price || categoryIds.length === 0) {
-    return { error: "Le titre, le prix et au moins une catégorie sont obligatoires." };
+    return { error: "Title, price and at least one category are required." };
   }
 
   // Generate slug
@@ -172,7 +172,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
     return { success: true };
   } catch (error: any) {
     console.error(error);
-    return { error: error.message || "Impossible de créer le produit." };
+    return { error: error.message || "Unable to create product." };
   }
 }
 
@@ -205,7 +205,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
   const providedSlug = formData.get('slug') as string;
 
   if (!id || !title || !price || categoryIds.length === 0) {
-    return { error: "L'ID, le titre, le prix et au moins une catégorie sont obligatoires." };
+    return { error: "ID, title, price and at least one category are required." };
   }
 
   let finalSlug = providedSlug;
@@ -242,7 +242,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
     return { success: true };
   } catch (error: any) {
     console.error(error);
-    return { error: error.message || "Erreur lors de la mise à jour." };
+    return { error: error.message || "Error updating." };
   }
 }
 
@@ -317,7 +317,7 @@ export async function quickEditProduct(id: string, data: { title: string, catego
     return { success: true };
   } catch (error: any) {
     console.error(error);
-    return { error: "Erreur lors de la modification rapide. Vérifiez que le slug est unique." };
+    return { error: "Error during quick edit. Make sure the slug is unique." };
   }
 }
 
@@ -356,7 +356,7 @@ export async function updateOrderStatus(orderId: string, status: any) {
     revalidatePath('/admin/orders');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur lors de la mise à jour du statut." };
+    return { error: "Error updating status." };
   }
 }
 
@@ -389,7 +389,7 @@ export async function createCoupon(formData: FormData) {
     revalidatePath('/admin/coupons');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur lors de la création (le code existe peut-être déjà)." };
+    return { error: "Error creating coupon (the code may already exist)." };
   }
 }
 
@@ -402,7 +402,7 @@ export async function toggleCouponStatus(id: string, isActive: boolean) {
     revalidatePath('/admin/coupons');
     return { success: true };
   } catch (error) {
-    return { error: "Erreur lors de la mise à jour." };
+    return { error: "Error updating." };
   }
 }
 
