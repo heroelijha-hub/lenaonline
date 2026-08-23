@@ -91,6 +91,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const avgRating = product.reviews.length > 0 
     ? product.reviews.reduce((acc, curr) => acc + curr.rating, 0) / product.reviews.length 
     : 0;
+    
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
