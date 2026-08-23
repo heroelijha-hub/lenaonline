@@ -2,7 +2,7 @@ import { getRequestConfig } from 'next-intl/server';
 import { headers } from 'next/headers';
 import prisma from '@/lib/prisma';
 
-export async function getI18nConfig() {
+export default getRequestConfig(async () => {
   let pathname = '/';
   try {
     const headersList = await headers();
@@ -47,6 +47,4 @@ export async function getI18nConfig() {
     locale,
     messages
   };
-}
-
-export default getRequestConfig(getI18nConfig);
+});
