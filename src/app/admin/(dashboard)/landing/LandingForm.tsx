@@ -528,14 +528,44 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           {renderResponsiveInput(section, 'Texte du lien "Voir tout"', 'SEE_ALL_TEXT', 'See All')}
           {section.type === 'BestDeals' && (
             <>
-              <div>
-                <label className="block text-sm font-medium mb-1">Offer end (Countdown)</label>
+              <div className="mt-2 border p-3 rounded bg-white">
+                <label className="block text-sm font-medium mb-2">Offer end (Countdown)</label>
                 <input 
                   type="datetime-local" 
                   value={section.settings.countdown ? section.settings.countdown.substring(0,16) : ''} 
                   onChange={e => updateSectionSettings(section.id, 'countdown', e.target.value + ':00Z')}
-                  className="w-full border rounded px-3 py-2 text-sm"
+                  className="w-full border rounded px-3 py-2 text-sm mb-3"
                 />
+                <h4 className="font-bold text-xs text-gray-800 mb-2">Show countdown timer on:</h4>
+                <div className="flex gap-4">
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={section.settings.SHOW_TIMER_MOBILE !== 'false'} 
+                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_MOBILE', e.target.checked ? 'true' : 'false')}
+                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                    />
+                    <span>Mobile</span>
+                  </label>
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={section.settings.SHOW_TIMER_TABLET !== 'false'} 
+                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_TABLET', e.target.checked ? 'true' : 'false')}
+                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                    />
+                    <span>Tablet</span>
+                  </label>
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={section.settings.SHOW_TIMER_DESKTOP !== 'false'} 
+                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_DESKTOP', e.target.checked ? 'true' : 'false')}
+                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                    />
+                    <span>Desktop</span>
+                  </label>
+                </div>
               </div>
 
               {/* Promo Banners within BestDeals */}

@@ -48,6 +48,10 @@ export default async function BestDeals({ config }: { config?: any }) {
     } as React.CSSProperties;
   };
   
+  const showMobileTimer = settings.SHOW_TIMER_MOBILE !== 'false';
+  const showTabletTimer = settings.SHOW_TIMER_TABLET !== 'false';
+  const showDesktopTimer = settings.SHOW_TIMER_DESKTOP !== 'false';
+  
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
   const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => {
     const approvedReviews = (p as any).reviews || [];
@@ -76,11 +80,13 @@ export default async function BestDeals({ config }: { config?: any }) {
       <div className="flex flex-col gap-3 mb-6">
         
         {/* Mobile Timer (visible only on mobile) */}
-        <div className="block md:hidden">
-          <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold w-fit">
-            <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
+        {showMobileTimer && (
+          <div className="block md:hidden">
+            <div className="flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold w-fit">
+              <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -91,10 +97,12 @@ export default async function BestDeals({ config }: { config?: any }) {
               {config?.title || t('best_deals_title')}
             </h2>
             
-            {/* Desktop Timer (visible only on md+) */}
-            <div className="hidden md:flex items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold">
-              <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
-            </div>
+            {/* Desktop / Tablet Timer */}
+            {(showTabletTimer || showDesktopTimer) && (
+              <div className={`hidden ${showTabletTimer ? 'md:flex' : 'md:hidden'} ${showDesktopTimer ? 'lg:flex' : 'lg:hidden'} items-center gap-1 sm:gap-2 border border-orange-200 bg-orange-50/50 px-2 sm:px-4 py-1.5 rounded text-xs sm:text-sm text-gray-800 font-semibold`}>
+                <CountdownTimer targetDate={config?.countdown || '2026-12-31T23:59:59'} />
+              </div>
+            )}
           </div>
 
           <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
