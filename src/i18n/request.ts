@@ -5,9 +5,9 @@ import prisma from '@/lib/prisma';
 
 export default getRequestConfig(async () => {
   // Get the current path from headers (Next.js middleware usually sets x-pathname or we can get it from x-invoke-path)
-  const headersList = headers();
+  const headersList = await headers();
   // A safe way to get pathname if middleware sets it, or just use a default for server components
-  // In Next.js 14/15, getting pathname directly in getRequestConfig can be tricky without middleware forwarding it.
+  // In Next.js 14/15/16, getting pathname directly in getRequestConfig can be tricky without middleware forwarding it.
   const pathname = headersList.get('x-pathname') || '/';
 
   const isAdminRoute = pathname.startsWith('/admin');
