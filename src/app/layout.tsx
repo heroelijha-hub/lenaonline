@@ -135,6 +135,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com',
     mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com',
     mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
+    allCategoriesBgColor: settingsMap.ALL_CATEGORIES_BG_COLOR || '#111827', // text-gray-900 by default
+    allCategoriesTextColor: settingsMap.ALL_CATEGORIES_TEXT_COLOR || '#ffffff', // text-white
   };
 
   const cookieStore = await cookies();

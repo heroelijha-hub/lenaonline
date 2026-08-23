@@ -49,6 +49,8 @@ type StoreLayoutProps = {
     mobileContactEmail?: string;
     mobileContactWebsite?: string;
     mobileHeaderBorderColor?: string;
+    allCategoriesBgColor?: string;
+    allCategoriesTextColor?: string;
   };
 };
 
@@ -97,6 +99,8 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
         mobileContactEmail={settings.mobileContactEmail}
         mobileContactWebsite={settings.mobileContactWebsite}
         mobileHeaderBorderColor={settings.mobileHeaderBorderColor}
+        allCategoriesBgColor={settings.allCategoriesBgColor}
+        allCategoriesTextColor={settings.allCategoriesTextColor}
       />
       <main className="flex-grow">
         {children}

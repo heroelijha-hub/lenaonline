@@ -114,6 +114,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com');
   const [mobileHeaderBorderColor, setMobileHeaderBorderColor] = useState(initialSettings.MOBILE_HEADER_BORDER_COLOR || '#d1d5db');
 
+  // All Categories Button Settings
+  const [allCategoriesBgColor, setAllCategoriesBgColor] = useState(initialSettings.ALL_CATEGORIES_BG_COLOR || '#111827');
+  const [allCategoriesTextColor, setAllCategoriesTextColor] = useState(initialSettings.ALL_CATEGORIES_TEXT_COLOR || '#ffffff');
+
   // Search Bar (Ajax) settings
   const [searchBorderColor, setSearchBorderColor] = useState(initialSettings.SEARCH_BORDER_COLOR || '#d1d5db');
   const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Rechercher un produit...');
@@ -231,6 +235,9 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
     settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
     settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
+
+    settingsMap['ALL_CATEGORIES_BG_COLOR'] = allCategoriesBgColor;
+    settingsMap['ALL_CATEGORIES_TEXT_COLOR'] = allCategoriesTextColor;
 
     settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
     settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
@@ -1001,6 +1008,27 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
+        <SectionSaveButton />
+      </div>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-bold text-red-600 mb-4">All Categories Button</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Background color</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={allCategoriesBgColor} onChange={e => setAllCategoriesBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={allCategoriesBgColor} onChange={e => setAllCategoriesBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Text color</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={allCategoriesTextColor} onChange={e => setAllCategoriesTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
+              <input type="text" value={allCategoriesTextColor} onChange={e => setAllCategoriesTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
+            </div>
+          </div>
+        </div>
         <SectionSaveButton />
       </div>
 
