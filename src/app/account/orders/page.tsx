@@ -55,6 +55,7 @@ export default async function OrdersPage() {
     }
   });
 
+  return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100">
         <h2 className="text-xl font-bold text-gray-900">{t('orders_title')}</h2>
