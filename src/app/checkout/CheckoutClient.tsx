@@ -138,7 +138,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
             {t('have_coupon')} <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">{t('click_to_enter_code')}</button>
           </div>
           
-          {showCouponInput && !appliedCoupon && (
+          {showCouponInput && !coupon && (
             <div className="bg-white p-4 border border-gray-200 rounded">
               <div className="flex gap-2">
                 <input 
@@ -349,9 +349,9 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               <span>{formatPrice(cartTotal)}</span>
             </div>
 
-            {appliedCoupon && (
+            {coupon && (
               <div className="border-b border-gray-200 pb-4 mb-4 flex justify-between text-sm font-bold text-green-600">
-                <span>{t('discount', { code: appliedCoupon.code })}</span>
+                <span>{t('discount', { code: coupon.code })}</span>
                 <span>-{formatPrice(discountAmount)}</span>
               </div>
             )}
