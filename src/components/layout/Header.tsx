@@ -13,6 +13,7 @@ import MobileSidebar from '@/components/layout/MobileSidebar';
 import MobileSearchOverlay from '@/components/layout/MobileSearchOverlay';
 import NotificationBell from '@/components/layout/NotificationBell';
 import { useTranslations } from 'next-intl';
+import Price from '@/components/Price';
 
 type HeaderProps = {
   announcement?: string;
