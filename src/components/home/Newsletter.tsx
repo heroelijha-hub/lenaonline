@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { submitNewsletter } from '@/actions/contact';
+import { useTranslations } from 'next-intl';
 
 export default function Newsletter({ config }: { config?: any }) {
+  const t = useTranslations('Home');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -28,7 +30,7 @@ export default function Newsletter({ config }: { config?: any }) {
       setMessage(res.error);
     } else if (res.success) {
       setStatus('success');
-      setMessage(res.message || 'Merci !');
+      setMessage(res.message || t('success_msg'));
       e.currentTarget.reset();
     }
   };
@@ -41,10 +43,10 @@ export default function Newsletter({ config }: { config?: any }) {
           <h2 
             className="font-bold text-gray-900 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
             style={getResponsiveVars('title', {m: '24px', t: '24px', d: '24px'})}
-            dangerouslySetInnerHTML={{ __html: config?.title || "Join Our <span>Newsletter</span> For <span>$10</span> Offer" }}
+            dangerouslySetInnerHTML={{ __html: config?.title || t.raw('newsletter_title') }}
           />
           <p className="text-gray-500 text-sm">
-            Register Now To Get Latest Updates On Promotions & Coupons.
+            {t('newsletter_desc')}
           </p>
         </div>
 
@@ -60,7 +62,7 @@ export default function Newsletter({ config }: { config?: any }) {
                 <input 
                   type="email" 
                   name="email"
-                  placeholder="enter your e-mail ..." 
+                  placeholder={t('email_placeholder')} 
                   className="flex-1 bg-gray-50 border border-gray-100 rounded-l-md px-4 py-3 h-12 text-sm text-gray-700 outline-none focus:border-orange-300 transition"
                   required
                 />
@@ -69,7 +71,7 @@ export default function Newsletter({ config }: { config?: any }) {
                   disabled={status === 'loading'} 
                   className="bg-[#FF5C00] hover:bg-[#E55300] text-white font-bold px-8 h-12 rounded-r-md transition shadow-sm disabled:opacity-50"
                 >
-                  {status === 'loading' ? '...' : 'Subscribe'}
+                  {status === 'loading' ? '...' : t('subscribe')}
                 </button>
               </div>
               {status === 'error' && <div className="text-red-500 text-sm mt-1">{message}</div>}

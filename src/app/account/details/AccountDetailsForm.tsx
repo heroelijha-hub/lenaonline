@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { updateAccountDetails } from '@/actions/account';
+import { useTranslations } from 'next-intl';
 
 interface AccountDetailsFormProps {
   initialData: {
@@ -20,6 +21,8 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const t = useTranslations('AccountDetails');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +35,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
       if (res.error) {
         setError(res.error);
       } else if (res.success) {
-        setSuccess(res.message || 'Modifications enregistrées.');
+        setSuccess(t('save_success'));
         // Reset password fields
         (document.getElementById('currentPassword') as HTMLInputElement).value = '';
         (document.getElementById('newPassword') as HTMLInputElement).value = '';
@@ -62,7 +65,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Prénom <span className="text-red-500">*</span>
+            {t('first_name')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -74,7 +77,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Nom de famille <span className="text-red-500">*</span>
+            {t('last_name')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -88,7 +91,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Nom à afficher <span className="text-red-500">*</span>
+          {t('display_name')} <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -98,13 +101,13 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
           className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
         />
         <p className="mt-1.5 text-sm text-gray-500 italic">
-          Voici comment votre nom sera affiché dans la section compte et dans les avis
+          {t('display_name_hint')}
         </p>
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Adresse E-mail <span className="text-red-500">*</span>
+          {t('email_address')} <span className="text-red-500">*</span>
         </label>
         <input
           type="email"
@@ -118,12 +121,12 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
       <hr className="border-gray-200 my-8" />
 
       <div>
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Changement De Mot De Passe</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-4">{t('password_change_title')}</h3>
         
         <div className="space-y-4">
           <div className="relative">
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Mot de passe actuel (laisser vide pour ne pas modifier)
+              {t('current_password')}
             </label>
             <input
               id="currentPassword"
@@ -142,7 +145,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
 
           <div className="relative">
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Nouveau mot de passe (laisser vide pour ne pas modifier)
+              {t('new_password')}
             </label>
             <input
               id="newPassword"
@@ -161,7 +164,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
 
           <div className="relative">
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Confirmer le nouveau mot de passe
+              {t('confirm_password')}
             </label>
             <input
               id="confirmPassword"
@@ -186,7 +189,7 @@ export default function AccountDetailsForm({ initialData }: AccountDetailsFormPr
           disabled={isPending}
           className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
         >
-          {isPending ? 'Enregistrement...' : 'Enregistrer les modifications'}
+          {isPending ? t('saving') : t('save_changes_btn')}
         </button>
       </div>
     </form>

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useCurrency } from '@/components/CurrencyProvider';
+import { useTranslations } from 'next-intl';
 
 interface ProductActionsProps {
   product: {
@@ -30,6 +31,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   const { formatPrice } = useCurrency();
   const [addedItemName, setAddedItemName] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const t = useTranslations('Product');
 
   useEffect(() => {
     setIsClient(true);
@@ -61,7 +63,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
 
   const handleAddToCart = () => {
     if (isVariable && !currentVariation) {
-      alert("Veuillez sélectionner toutes les options avant d'ajouter au panier.");
+      alert(t('select_options_cart'));
       return;
     }
 
@@ -84,7 +86,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
 
   const handleBuyNow = () => {
     if (isVariable && !currentVariation) {
-      alert("Veuillez sélectionner toutes les options avant l'achat rapide.");
+      alert(t('select_options_buy'));
       return;
     }
 
@@ -110,10 +112,10 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
         <div className="bg-[#1b8448] text-white px-6 py-4 mb-8 flex flex-col sm:flex-row items-center justify-between shadow-sm rounded-sm">
           <div className="flex items-center gap-3 text-sm font-medium">
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-            <span>« {addedItemName} » a été ajouté à votre panier.</span>
+            <span>{t('added_to_cart', { name: addedItemName })}</span>
           </div>
           <Link href="/cart" className="mt-4 sm:mt-0 text-xs font-bold tracking-wider hover:underline whitespace-nowrap bg-black/10 hover:bg-black/20 transition-colors px-6 py-3 rounded-sm">
-            VOIR LE PANIER
+            {t('view_cart_caps')}
           </Link>
         </div>,
         notificationPortal
@@ -132,7 +134,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
         <div className="space-y-4 mb-6">
           {attributes.map(attr => (
             <div key={attr.name}>
-              <span className="text-sm text-gray-500 mb-2 block">{attr.name} : <span className="text-gray-900 font-semibold">{selectedAttributes[attr.name] || 'Sélectionner...'}</span></span>
+              <span className="text-sm text-gray-500 mb-2 block">{attr.name} : <span className="text-gray-900 font-semibold">{selectedAttributes[attr.name] || t('select_placeholder')}</span></span>
               <div className="flex flex-wrap gap-2">
                 {attr.options.map((opt: string) => {
                   const isSelected = selectedAttributes[attr.name] === opt;
@@ -156,7 +158,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
 
       {/* Stock status */}
       <p className="text-teal-600 font-semibold mb-6">
-        {currentStock === null ? 'En stock' : `${currentStock} en stock`}
+        {currentStock === null ? t('in_stock') : t('in_stock_count', { count: currentStock })}
       </p>
 
       {/* Actions (Quantity + Cart + Buy) */}
@@ -172,7 +174,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
           onClick={handleAddToCart}
           className="flex-1 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-md transition shadow-sm"
         >
-          Add to Cart
+          {t('add_to_cart')}
         </button>
         
         {enableBuyNow && (
@@ -180,7 +182,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
             onClick={handleBuyNow}
             className="flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm"
           >
-            Buy Now
+            {t('buy_now')}
           </button>
         )}
       </div>
@@ -194,18 +196,18 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
           }`}
         >
           <svg className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-          {isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          {isWishlisted ? t('remove_wishlist') : t('add_wishlist')}
         </button>
         <button className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-          Compare
+          {t('compare')}
         </button>
         <button 
           onClick={() => router.push('/contact')}
           className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          Ask a Question
+          {t('ask_question')}
         </button>
       </div>
     </div>

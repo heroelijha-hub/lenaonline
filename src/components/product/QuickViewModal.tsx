@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Price from '@/components/Price';
 import { useCartStore } from '@/store/cartStore';
+import { useTranslations } from 'next-intl';
 
 type QuickViewModalProps = {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const cartStore = useCartStore();
+  const t = useTranslations('Product');
 
   // Reset state when product changes or modal opens
   useEffect(() => {
@@ -135,7 +137,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
               onClick={handleAddToCart}
               className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-md h-12 transition shadow-sm"
             >
-              Ajouter au panier
+              {t('add_to_cart')}
             </button>
           </div>
 
@@ -143,21 +145,21 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
           <div className="space-y-3 pt-6 border-t border-gray-100 text-sm text-gray-600">
             {sku && (
               <div className="flex items-start">
-                <span className="w-24 font-semibold text-gray-900">UGS :</span>
+                <span className="w-24 font-semibold text-gray-900">{t('sku')}</span>
                 <span className="flex-1">{sku}</span>
               </div>
             )}
             
             {product.category && (
               <div className="flex items-start">
-                <span className="w-24 font-semibold text-gray-900">Catégories :</span>
+                <span className="w-24 font-semibold text-gray-900">{t('categories')}</span>
                 <span className="flex-1">{product.category.name}</span>
               </div>
             )}
             
             {product.tags && product.tags.length > 0 && (
               <div className="flex items-start">
-                <span className="w-24 font-semibold text-gray-900">Étiquettes :</span>
+                <span className="w-24 font-semibold text-gray-900">{t('tags')}</span>
                 <span className="flex-1">
                   {product.tags.join(', ')}
                 </span>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type MobileSidebarProps = {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export default function MobileSidebar({
   categories = [],
 }: MobileSidebarProps) {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const t = useTranslations('MobileSidebar');
 
   // Lock body scroll when sidebar is open
   useEffect(() => {
@@ -108,7 +110,7 @@ export default function MobileSidebar({
                   onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
                   className="w-full flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-800 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
                 >
-                  Catégories
+                  {t('categories')}
                   <svg className={`w-5 h-5 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
                 {isCategoriesOpen && (
@@ -119,7 +121,7 @@ export default function MobileSidebar({
                         onClick={onClose}
                         className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-orange-600 rounded-lg transition-colors"
                       >
-                        Toutes les catégories
+                        {t('all_categories')}
                       </Link>
                     </li>
                     {categories.map((cat) => (
@@ -142,7 +144,7 @@ export default function MobileSidebar({
 
         {/* Contact Info */}
         <div className="p-6 bg-gray-50 mt-auto">
-          <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Contact</h4>
+          <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('contact')}</h4>
           <ul className="space-y-4">
             {contactAddress && (
               <li className="flex items-start">

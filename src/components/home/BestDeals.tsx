@@ -3,6 +3,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import CountdownTimer from './CountdownTimer';
 import ProductSliderWrapper from './ProductSliderWrapper';
+import { getTranslations } from 'next-intl/server';
 
 // Composant interne pour l'étoile
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -35,6 +36,8 @@ export default async function BestDeals({ config }: { config?: any }) {
   if (config) {
     Object.assign(settings, config);
   }
+  
+  const t = await getTranslations('Home');
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
@@ -83,7 +86,7 @@ export default async function BestDeals({ config }: { config?: any }) {
               className="font-bold text-gray-900 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
               style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
             >
-              {config?.title || "Today's Best Deals"}
+              {config?.title || t('best_deals_title')}
             </h2>
             
             {/* Desktop Timer (visible only on md+) */}
@@ -93,7 +96,7 @@ export default async function BestDeals({ config }: { config?: any }) {
           </div>
 
           <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
-            {config?.SEE_ALL_TEXT || "See All"}
+            {config?.SEE_ALL_TEXT || t('see_all')}
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -174,13 +177,13 @@ export default async function BestDeals({ config }: { config?: any }) {
               className="text-orange-600 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
               style={getResponsiveVars('PROMO_1_SUBTITLE', {m: '14px', t: '14px', d: '14px'})}
             >
-              {settings.PROMO_1_SUBTITLE || 'Price Start $69'}
+              {settings.PROMO_1_SUBTITLE || t('promo_1_subtitle')}
             </span>
             <h2 
               className="font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
               style={{ ...getResponsiveVars('PROMO_1_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : {}) }}
             >
-              {settings.PROMO_1_TITLE || 'NOTHING\nWATCH PRO 2'}
+              {settings.PROMO_1_TITLE || t('promo_1_title')}
             </h2>
             <Link 
               href={settings.PROMO_1_LINK || '/#'} 
@@ -190,7 +193,7 @@ export default async function BestDeals({ config }: { config?: any }) {
                 color: settings.PROMO_1_BTN_TEXT_COLOR || undefined
               }}
             >
-              {settings.PROMO_1_CTA || 'Shop Now'}
+              {settings.PROMO_1_CTA || t('shop_now')}
             </Link>
           </div>
           {/* Image */}
@@ -223,13 +226,13 @@ export default async function BestDeals({ config }: { config?: any }) {
               className="font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
               style={{ ...getResponsiveVars('PROMO_2_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
             >
-              {settings.PROMO_2_TITLE || 'Get 20% Off'}
+              {settings.PROMO_2_TITLE || t('promo_2_title')}
             </h2>
             <p 
               className="font-bold text-gray-800 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
               style={{ ...getResponsiveVars('PROMO_2_SUBTITLE', {m: '18px', t: '18px', d: '18px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
             >
-              {settings.PROMO_2_SUBTITLE || 'Women Store'}
+              {settings.PROMO_2_SUBTITLE || t('promo_2_subtitle')}
             </p>
             <Link 
               href={settings.PROMO_2_LINK || '/#'} 
@@ -239,7 +242,7 @@ export default async function BestDeals({ config }: { config?: any }) {
                 color: settings.PROMO_2_BTN_TEXT_COLOR || undefined
               }}
             >
-              {settings.PROMO_2_CTA || 'Shop Now'}
+              {settings.PROMO_2_CTA || t('shop_now')}
             </Link>
           </div>
           {/* Image */}

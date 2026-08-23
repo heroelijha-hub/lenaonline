@@ -6,12 +6,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { useTranslations } from 'next-intl';
 
 export default function CartPage() {
   const router = useRouter();
   const { items, removeItem, updateQuantity, getTotalPrice } = useCartStore();
   const [mounted, setMounted] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('free');
+  const t = useTranslations('Cart');
 
   useEffect(() => {
     setMounted(true);
@@ -43,22 +45,22 @@ export default function CartPage() {
                   <svg className="w-5 h-5 text-blue-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
-                  Votre panier est actuellement vide.
+                  {t('empty_cart')}
                 </div>
                 <Link href="/" className="inline-block bg-[#ff4500] hover:bg-[#e03e00] text-white font-medium px-6 py-2.5 rounded transition">
-                  Retour à la boutique
+                  {t('back_to_shop')}
                 </Link>
               </div>
             ) : (
               <div className="space-y-6">
                 {/* Desktop Table Header */}
                 <div className="hidden md:grid grid-cols-12 gap-4 pb-3 border-b border-gray-200 text-sm font-bold text-gray-800">
-                  <div className="col-span-1 text-center">Retirer</div>
-                  <div className="col-span-2 text-center">Image</div>
-                  <div className="col-span-4">Titre du produit</div>
-                  <div className="col-span-2 text-center">Prix</div>
-                  <div className="col-span-2 text-center">Quantité</div>
-                  <div className="col-span-1 text-right">Total</div>
+                  <div className="col-span-1 text-center">{t('remove')}</div>
+                  <div className="col-span-2 text-center">{t('image')}</div>
+                  <div className="col-span-4">{t('product_title')}</div>
+                  <div className="col-span-2 text-center">{t('price')}</div>
+                  <div className="col-span-2 text-center">{t('quantity')}</div>
+                  <div className="col-span-1 text-right">{t('total')}</div>
                 </div>
                 
                 {/* Cart Items */}
@@ -71,7 +73,7 @@ export default function CartPage() {
                         <button 
                           onClick={() => removeItem(item.id)}
                           className="text-red-600 hover:text-red-800"
-                          title="Retirer"
+                          title={t('remove')}
                         >
                           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
                         </button>
@@ -83,7 +85,7 @@ export default function CartPage() {
                           {item.image ? (
                             <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
                           ) : (
-                            <span className="text-xs text-gray-400">Image</span>
+                            <span className="text-xs text-gray-400">{t('image')}</span>
                           )}
                         </Link>
                       </div>
@@ -142,15 +144,15 @@ export default function CartPage() {
                   <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                     <input 
                       type="text" 
-                      placeholder="Code de réduction" 
+                      placeholder={t('coupon_code')} 
                       className="border border-gray-300 px-4 py-2 text-sm outline-none focus:border-gray-500 w-full sm:w-48"
                     />
                     <button className="border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 transition w-full sm:w-auto whitespace-nowrap">
-                      Appliquer le coupon
+                      {t('apply_coupon')}
                     </button>
                   </div>
                   <button className="border border-gray-300 px-6 py-2 text-sm font-medium hover:bg-gray-50 transition w-full md:w-auto">
-                    Mettre à jour le panier
+                    {t('update_cart')}
                   </button>
                 </div>
               </div>
@@ -160,19 +162,19 @@ export default function CartPage() {
           {/* Right Column: Order Summary */}
           <div className="w-full lg:w-[380px] flex-shrink-0">
             <div className="bg-[#f9f9f9] p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Total Panier</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('cart_total_title')}</h2>
               
               <div className="border border-gray-200 bg-white mb-6 text-sm">
                 {/* Subtotal */}
                 <div className="flex border-b border-gray-200 p-4">
-                  <div className="w-1/3 font-bold text-gray-800">Sous-total</div>
+                  <div className="w-1/3 font-bold text-gray-800">{t('subtotal')}</div>
                   <div className="w-2/3 text-gray-700">{formatPrice(subtotal)}</div>
                 </div>
 
                 {/* Shipping Options (only show if items exist, or design shows it anyway, let's keep it close to mockup) */}
                 {items.length > 0 && (
                   <div className="flex border-b border-gray-200 p-4">
-                    <div className="w-1/3 font-bold text-gray-800 pt-1">Expédition</div>
+                    <div className="w-1/3 font-bold text-gray-800 pt-1">{t('shipping')}</div>
                     <div className="w-2/3 space-y-2 text-gray-700">
                       <label className="flex items-start cursor-pointer">
                         <input 
@@ -183,7 +185,7 @@ export default function CartPage() {
                           onChange={() => setShippingMethod('free')}
                           className="mt-1 mr-2"
                         />
-                        <span>Livraison gratuite</span>
+                        <span>{t('free_shipping')}</span>
                       </label>
                       <label className="flex items-start cursor-pointer">
                         <input 
@@ -194,7 +196,7 @@ export default function CartPage() {
                           onChange={() => setShippingMethod('standard')}
                           className="mt-1 mr-2"
                         />
-                        <span>Livraison standard:<br/>21,87€</span>
+                        <span>{t('standard_shipping')}<br/>21,87€</span>
                       </label>
                       <label className="flex items-start cursor-pointer">
                         <input 
@@ -205,13 +207,13 @@ export default function CartPage() {
                           onChange={() => setShippingMethod('express')}
                           className="mt-1 mr-2"
                         />
-                        <span>Livraison expresse:<br/>53,87€</span>
+                        <span>{t('express_shipping')}<br/>53,87€</span>
                       </label>
                       
-                      <p className="text-xs text-gray-500 mt-4 mb-2">Les options de livraison seront mises à jour lors de la commande.</p>
+                      <p className="text-xs text-gray-500 mt-4 mb-2">{t('shipping_update_msg')}</p>
                       
                       <button className="text-gray-800 underline text-sm hover:text-gray-600">
-                        Calculer les frais d'expédition
+                        {t('calculate_shipping')}
                       </button>
                     </div>
                   </div>
@@ -219,7 +221,7 @@ export default function CartPage() {
 
                 {/* Total */}
                 <div className="flex p-4 bg-gray-50 items-center">
-                  <div className="w-1/3 font-bold text-gray-800">Total</div>
+                  <div className="w-1/3 font-bold text-gray-800">{t('total')}</div>
                   <div className="w-2/3 text-lg font-bold text-gray-900">{formatPrice(total)}</div>
                 </div>
               </div>
@@ -229,7 +231,7 @@ export default function CartPage() {
                 disabled={items.length === 0}
                 className="w-full bg-[#111] hover:bg-black text-white font-bold py-3.5 px-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Valider La Commande
+                {t('proceed_checkout')}
               </button>
             </div>
           </div>

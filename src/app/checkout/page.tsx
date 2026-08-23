@@ -10,7 +10,7 @@ export default async function CheckoutPage() {
     ENABLE_STRIPE: settings.ENABLE_STRIPE !== undefined ? settings.ENABLE_STRIPE : 'true',
     ENABLE_PAYPAL: settings.ENABLE_PAYPAL !== undefined ? settings.ENABLE_PAYPAL : 'true',
     ENABLE_BANK_TRANSFER: settings.ENABLE_BANK_TRANSFER !== undefined ? settings.ENABLE_BANK_TRANSFER : 'true',
-    BANK_TRANSFER_CHECKOUT_MESSAGE: settings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Veuillez effectuer le virement sur le compte ci-dessous.',
+    BANK_TRANSFER_CHECKOUT_MESSAGE: settings.BANK_TRANSFER_CHECKOUT_MESSAGE || '',
   };
 
   const zones = await prisma.shippingZone.findMany({

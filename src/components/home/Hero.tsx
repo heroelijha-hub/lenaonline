@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import HeroMobileSliderWrapper from './HeroMobileSliderWrapper';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Hero({ config }: { config?: any }) {
   const settingsDb = await prisma.setting.findMany();
@@ -9,6 +10,8 @@ export default async function Hero({ config }: { config?: any }) {
   if (config) {
     settings = { ...settings, ...config };
   }
+  
+  const t = await getTranslations('Home');
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
@@ -33,19 +36,19 @@ export default async function Hero({ config }: { config?: any }) {
           className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
-          {settings.HERO_1_SUBTITLE || 'Supper Discount'}
+          {settings.HERO_1_SUBTITLE || t('hero_1_subtitle')}
         </span>
         <h2 
           className="font-bold text-slate-800 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '32px', d: '36px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_1_TITLE || 'Apple Iphone 17 Pro Max'}
+          {settings.HERO_1_TITLE || t('hero_1_title')}
         </h2>
         <p 
           className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_1_PRICE || 'from $349.99'}
+          {settings.HERO_1_PRICE || t('hero_1_price')}
         </p>
         <Link 
           href={settings.HERO_1_LINK || '/#'} 
@@ -55,7 +58,7 @@ export default async function Hero({ config }: { config?: any }) {
             color: settings.HERO_1_BTN_TEXT_COLOR || undefined
           }}
         >
-          {settings.HERO_1_CTA || 'Shop Now'}
+          {settings.HERO_1_CTA || t('shop_now')}
         </Link>
       </div>
       {settings.HERO_1_IMAGE ? (
@@ -89,13 +92,13 @@ export default async function Hero({ config }: { config?: any }) {
           className="text-gray-500 font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_2_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
-          {settings.HERO_2_SUBTITLE || 'Use Code: SALE35%'}
+          {settings.HERO_2_SUBTITLE || t('hero_2_subtitle')}
         </span>
         <h2 
           className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_2_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_2_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_2_TITLE || 'Heavy On Features\nLight On Price'}
+          {settings.HERO_2_TITLE || t('hero_2_title')}
         </h2>
         <Link 
           href={settings.HERO_2_LINK || '/#'} 
@@ -105,7 +108,7 @@ export default async function Hero({ config }: { config?: any }) {
             color: settings.HERO_2_BTN_TEXT_COLOR || undefined
           }}
         >
-          Shop Now
+          {settings.HERO_2_CTA || t('shop_now')}
         </Link>
       </div>
       {settings.HERO_2_IMAGE ? (
@@ -133,13 +136,13 @@ export default async function Hero({ config }: { config?: any }) {
           className="text-red-500 font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('HERO_3_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
         >
-          {settings.HERO_3_SUBTITLE || 'New Product'}
+          {settings.HERO_3_SUBTITLE || t('hero_3_subtitle')}
         </span>
         <h2 
           className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_3_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_3_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_3_TITLE || 'Sale 10%\nOff Speaker'}
+          {settings.HERO_3_TITLE || t('hero_3_title')}
         </h2>
         <Link 
           href={settings.HERO_3_LINK || '/#'} 
@@ -149,7 +152,7 @@ export default async function Hero({ config }: { config?: any }) {
             color: settings.HERO_3_BTN_TEXT_COLOR || undefined
           }}
         >
-          Shop Now
+          {settings.HERO_3_CTA || t('shop_now')}
         </Link>
       </div>
       {settings.HERO_3_IMAGE ? (
@@ -177,13 +180,13 @@ export default async function Hero({ config }: { config?: any }) {
           className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '22px', t: '26px', d: '30px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_4_TITLE || 'Headphones Listen With\nHeart'}
+          {settings.HERO_4_TITLE || t('hero_4_title')}
         </h2>
         <p 
           className="text-slate-600 mb-6 font-medium text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
         >
-          {settings.HERO_4_SUBTITLE || 'Last call for up to 25% off'}
+          {settings.HERO_4_SUBTITLE || t('hero_4_subtitle')}
         </p>
         <Link 
           href={settings.HERO_4_LINK || '/#'} 
@@ -193,7 +196,7 @@ export default async function Hero({ config }: { config?: any }) {
             color: settings.HERO_4_BTN_TEXT_COLOR || undefined
           }}
         >
-          Shop Now
+          {settings.HERO_4_CTA || t('shop_now')}
         </Link>
       </div>
       {settings.HERO_4_IMAGE ? (

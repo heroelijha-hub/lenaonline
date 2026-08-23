@@ -5,6 +5,7 @@ import ProductActions from '@/components/product/ProductActions';
 import Price from '@/components/Price';
 import ProductReviews from '@/components/product/ProductReviews';
 import { createClient } from '@/utils/supabase/server';
+import { getTranslations } from 'next-intl/server';
 
 import { Metadata } from 'next';
 
@@ -55,6 +56,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     }
   });
 
+  const t = await getTranslations('Product');
+
   const setting = await prisma.setting.findUnique({
     where: { key: 'ENABLE_BUY_NOW_BUTTON' }
   });
@@ -94,9 +97,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         {/* Breadcrumb */}
         <div className="bg-gray-50 py-4 px-4 sm:px-8 border-b border-gray-200">
           <div className="max-w-7xl mx-auto text-sm text-gray-500">
-            <Link href="/" className="hover:text-orange-500">Home</Link>
+            <Link href="/" className="hover:text-orange-500">{t('home')}</Link>
             <span className="mx-2">/</span>
-            <span className="hover:text-orange-500 cursor-pointer">{product.categories && product.categories.length > 0 ? product.categories[0].name : 'Category'}</span>
+            <span className="hover:text-orange-500 cursor-pointer">{product.categories && product.categories.length > 0 ? product.categories[0].name : t('category')}</span>
             <span className="mx-2">/</span>
             <span className="text-gray-900 font-medium">{product.title}</span>
           </div>
@@ -156,12 +159,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                       <div className="flex">
                         {[1,2,3,4,5].map(i => <Star key={i} filled={i <= Math.round(avgRating)} />)}
                       </div>
-                      <span className="ml-1 text-gray-600">{product.reviews.length} customer review{product.reviews.length > 1 ? 's' : ''}</span>
+                      <span className="ml-1 text-gray-600">{t('customer_reviews', { count: product.reviews.length })}</span>
                     </div>
                     <span className="border-l border-gray-300 h-4"></span>
                   </>
                 )}
-                <span>Sold: <span className="font-semibold text-gray-900">24</span></span>
+                <span>{t('sold')} <span className="font-semibold text-gray-900">24</span></span>
               </div>
 
               {/* Product Actions (Price, Variations, Add to Cart, Wishlist) */}
@@ -169,9 +172,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
               {/* Meta tags */}
               <div className="space-y-2 text-sm">
-                <p><span className="font-semibold text-gray-900">SKU:</span> {product.id.split('-')[0].toUpperCase()}</p>
-                <p><span className="font-semibold text-gray-900">Categories:</span> {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'Uncategorized'}</p>
-                <p><span className="font-semibold text-gray-900">Tags:</span> Shopelios, Featured</p>
+                <p><span className="font-semibold text-gray-900">{t('sku')}</span> {product.id.split('-')[0].toUpperCase()}</p>
+                <p><span className="font-semibold text-gray-900">{t('categories')}</span> {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('uncategorized')}</p>
+                <p><span className="font-semibold text-gray-900">{t('tags')}</span> Shopelios, Featured</p>
               </div>
 
             </div>
@@ -188,7 +191,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {/* Related Products Section */}
           <div className="mt-20">
             <div className="border-b border-gray-200 pb-4 mb-8">
-              <h2 className="text-xl font-bold text-gray-900">Related products</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t('related_products')}</h2>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -203,14 +206,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                       )}
                     </div>
                     <div className="mt-auto">
-                      <p className="text-xs text-blue-500 font-semibold mb-1">{rp.categories && rp.categories.length > 0 ? rp.categories[0].name : 'Général'}</p>
+                      <p className="text-xs text-blue-500 font-semibold mb-1">{rp.categories && rp.categories.length > 0 ? rp.categories[0].name : t('general')}</p>
                       <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">{rp.title}</h3>
                       <Price amount={rp.price} className="font-bold text-red-600" />
                     </div>
                   </Link>
                 ))
               ) : (
-                <p className="text-gray-500 text-sm">No related products found.</p>
+                <p className="text-gray-500 text-sm">{t('no_related_products')}</p>
               )}
             </div>
           </div>

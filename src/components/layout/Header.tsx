@@ -12,6 +12,7 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import MobileSidebar from '@/components/layout/MobileSidebar';
 import MobileSearchOverlay from '@/components/layout/MobileSearchOverlay';
 import NotificationBell from '@/components/layout/NotificationBell';
+import { useTranslations } from 'next-intl';
 
 type HeaderProps = {
   announcement?: string;
@@ -76,6 +77,8 @@ export default function Header({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  
+  const t = useTranslations('Header');
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -208,7 +211,7 @@ export default function Header({
             className="flex items-center hover:opacity-75 transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            Login
+            {t('login')}
           </button>
         </div>
       </div>
@@ -246,8 +249,8 @@ export default function Header({
             >
               <span className="truncate max-w-[100px] md:max-w-[150px]">
                 {selectedCategory === 'all' 
-                  ? 'All categories' 
-                  : categories.find(c => c.id === selectedCategory)?.name || 'All categories'}
+                  ? t('all_categories') 
+                  : categories.find(c => c.id === selectedCategory)?.name || t('all_categories')}
               </span>
               <svg className="w-4 h-4 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               
@@ -258,7 +261,7 @@ export default function Header({
                     className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-gray-700"
                     onClick={() => { setSelectedCategory('all'); setIsCategoryDropdownOpen(false); }}
                   >
-                    All categories
+                    {t('all_categories')}
                   </div>
                   {categories.map(cat => (
                     <div 
@@ -281,7 +284,7 @@ export default function Header({
               {isSearching ? (
                 <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: searchBtnTextColor, borderTopColor: 'transparent' }}></div>
               ) : (
-                searchBtnText
+                t('search_button')
               )}
             </button>
           </form>
@@ -290,7 +293,7 @@ export default function Header({
           {showSearchResults && searchQuery.length > 1 && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 shadow-xl rounded-lg z-50 overflow-hidden">
               {isSearching && searchResults.length === 0 ? (
-                <div className="p-4 text-center text-gray-500">Searching...</div>
+                <div className="p-4 text-center text-gray-500">{t('searching')}</div>
               ) : searchResults.length > 0 ? (
                 <div>
                   <ul className="max-h-80 overflow-y-auto py-2 custom-scrollbar">
@@ -331,13 +334,13 @@ export default function Header({
                       onClick={handleSearchSubmit}
                       className="text-sm text-orange-600 font-semibold hover:text-orange-700 w-full py-2"
                     >
-                      View all results for &quot;{searchQuery}&quot;
+                      {t('view_all_results')} &quot;{searchQuery}&quot;
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="p-4 text-center text-sm text-gray-500 bg-white">
-                  No results for &quot;<span className="font-semibold">{searchQuery}</span>&quot;
+                  {t('no_results')} &quot;<span className="font-semibold">{searchQuery}</span>&quot;
                 </div>
               )}
             </div>
@@ -375,7 +378,7 @@ export default function Header({
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-gray-900 text-sm md:text-base">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
-              <span className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">Cart</span>
+              <span className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">{t('cart')}</span>
             </div>
           </div>
 
@@ -400,7 +403,7 @@ export default function Header({
                 className="flex items-center text-white bg-gray-900 px-4 py-2 rounded-t-md font-semibold hover:bg-gray-800 transition h-full"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
-                All categories
+                {t('all_categories')}
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </button>
               
@@ -411,7 +414,7 @@ export default function Header({
                     className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 font-medium"
                     onClick={() => setIsBottomCategoryOpen(false)}
                   >
-                    All categories
+                    {t('all_categories')}
                   </Link>
                   {categories.map((cat) => (
                     <Link 
@@ -442,19 +445,19 @@ export default function Header({
             {showNew && (
               <Link href="/new" className="flex items-center hover:text-orange-600 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-                New
+                {t('new')}
               </Link>
             )}
             {showHot && (
               <Link href="/hot" className="flex items-center hover:text-orange-600 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-                Hot
+                {t('hot')}
               </Link>
             )}
             {showSale && (
               <Link href="/sale" className="flex items-center hover:text-orange-600 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-                Sale
+                {t('sale')}
               </Link>
             )}
           </div>

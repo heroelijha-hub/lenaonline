@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,22 +32,24 @@ export default async function SearchPage({
     orderBy: { createdAt: 'desc' }
   });
 
+  const t = await getTranslations('Search');
+
   return (
     <div className="bg-gray-50 min-h-screen py-8 font-sans">
       <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Résultats de recherche</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('search_results')}</h1>
         <p className="text-gray-600 mb-8">
-          {products.length} produit(s) trouvé(s) pour "{q}" 
-          {category !== 'all' ? ' dans cette catégorie.' : '.'}
+          {t('products_found', { count: products.length, q })}
+          {category !== 'all' ? t('in_category') : ''}
         </p>
 
         {products.length === 0 ? (
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
             <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <h2 className="text-xl font-medium text-gray-900 mb-2">Aucun résultat</h2>
-            <p className="text-gray-500 mb-6">Nous n'avons trouvé aucun produit correspondant à votre recherche.</p>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">{t('no_results')}</h2>
+            <p className="text-gray-500 mb-6">{t('no_products_match')}</p>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
-              Retour à l'accueil
+              {t('back_to_home')}
             </Link>
           </div>
         ) : (
@@ -62,12 +65,12 @@ export default async function SearchPage({
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                      No Image
+                      {t('no_image')}
                     </div>
                   )}
                   {product.isDealOfTheDay && (
                     <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      SALE
+                      {t('sale')}
                     </span>
                   )}
                 </Link>

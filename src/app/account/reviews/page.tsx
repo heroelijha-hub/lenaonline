@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,6 +13,9 @@ export default async function AccountReviewsPage() {
   if (!session) {
     redirect('/login');
   }
+
+  const t = await getTranslations('AccountReviews');
+  const locale = await getLocale();
 
   const reviews = await prisma.review.findMany({
     where: { userId: session.user.id },
@@ -26,23 +30,23 @@ export default async function AccountReviewsPage() {
         {/* Sidebar */}
         <aside className="w-64 flex-shrink-0">
           <div className="bg-gray-50 rounded-lg p-6">
-            <h2 className="font-bold text-gray-900 mb-4 text-lg">Mon Espace</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-lg">{t('my_space')}</h2>
             <nav className="space-y-3">
-              <Link href="/account" className="block text-gray-600 hover:text-orange-500">Tableau de bord</Link>
-              <Link href="/account/orders" className="block text-gray-600 hover:text-orange-500">Mes Commandes</Link>
-              <Link href="/account/reviews" className="block font-bold text-orange-500">Mes Reviews</Link>
+              <Link href="/account" className="block text-gray-600 hover:text-orange-500">{t('dashboard')}</Link>
+              <Link href="/account/orders" className="block text-gray-600 hover:text-orange-500">{t('my_orders')}</Link>
+              <Link href="/account/reviews" className="block font-bold text-orange-500">{t('my_reviews')}</Link>
             </nav>
           </div>
         </aside>
 
         {/* Content */}
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900 mb-8">Mes Reviews</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('my_reviews')}</h1>
 
           {reviews.length === 0 ? (
             <div className="bg-white p-8 border border-gray-200 rounded-lg text-center">
-              <p className="text-gray-500">Vous n'avez pas encore laissé d'avis.</p>
-              <Link href="/" className="inline-block mt-4 bg-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-700">Continuer mes achats</Link>
+              <p className="text-gray-500">{t('no_reviews')}</p>
+              <Link href="/" className="inline-block mt-4 bg-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-700">{t('continue_shopping')}</Link>
             </div>
           ) : (
             <div className="space-y-6">
@@ -62,7 +66,7 @@ export default async function AccountReviewsPage() {
                           ))}
                         </div>
                         <span className="text-sm text-gray-500">
-                          - {new Date(review.createdAt).toLocaleDateString()}
+                          - {new Date(review.createdAt).toLocaleDateString(locale)}
                         </span>
                       </div>
                     </div>
@@ -70,7 +74,7 @@ export default async function AccountReviewsPage() {
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                         review.isApproved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                       }`}>
-                        {review.isApproved ? 'Approuvé' : 'En attente de modération'}
+                        {review.isApproved ? t('approved') : t('pending_moderation')}
                       </span>
                     </div>
                   </div>

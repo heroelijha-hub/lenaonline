@@ -4,11 +4,13 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { loginUser, registerUser } from '@/actions/auth';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
   const router = useRouter();
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const t = useTranslations('Auth');
   
   const [isPendingLogin, startTransitionLogin] = useTransition();
   const [loginError, setLoginError] = useState('');
@@ -55,12 +57,12 @@ export default function LoginPage() {
           
           {/* LOGIN CARD */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Login</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">{t('login_title')}</h2>
             <form onSubmit={handleLogin} className="space-y-5">
               {loginError && <div className="text-red-500 text-sm font-medium">{loginError}</div>}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email address <span className="text-red-500">*</span>
+                  {t('email_address')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
@@ -72,7 +74,7 @@ export default function LoginPage() {
 
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password <span className="text-red-500">*</span>
+                  {t('password')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type={showLoginPassword ? "text" : "password"}
@@ -100,7 +102,7 @@ export default function LoginPage() {
                   className="h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
                 />
                 <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-700">
-                  Remember me
+                  {t('remember_me')}
                 </label>
               </div>
 
@@ -110,13 +112,13 @@ export default function LoginPage() {
                   disabled={isPendingLogin}
                   className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  {isPendingLogin ? 'Login...' : 'Log In'}
+                  {isPendingLogin ? t('logging_in') : t('log_in_btn')}
                 </button>
               </div>
             </form>
 
             <div className="mt-8">
-              <p className="text-sm text-gray-500 mb-3">Or login with</p>
+              <p className="text-sm text-gray-500 mb-3">{t('or_login_with')}</p>
               <div className="flex items-center justify-between">
                 <button
                   type="button"
@@ -128,10 +130,10 @@ export default function LoginPage() {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                   </svg>
-                  Continue with Google
+                  {t('continue_with_google')}
                 </button>
                 <Link href="#" className="text-sm font-medium text-orange-500 hover:text-orange-600 ml-4 text-right">
-                  Lost your password?
+                  {t('lost_password')}
                 </Link>
               </div>
             </div>
@@ -139,13 +141,13 @@ export default function LoginPage() {
 
           {/* REGISTER CARD */}
           <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Register</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">{t('register_title')}</h2>
             <form onSubmit={handleRegister} className="space-y-5">
               {registerError && <div className="text-red-500 text-sm font-medium">{registerError}</div>}
               {registerSuccess && <div className="text-green-600 bg-green-50 border border-green-200 p-3 rounded-md text-sm font-medium">{registerSuccess}</div>}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Username <span className="text-red-500">*</span>
+                  {t('username')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -157,7 +159,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email address <span className="text-red-500">*</span>
+                  {t('email_address')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
@@ -169,7 +171,7 @@ export default function LoginPage() {
 
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password <span className="text-red-500">*</span>
+                  {t('password')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type={showRegisterPassword ? "text" : "password"}
@@ -196,13 +198,13 @@ export default function LoginPage() {
                   disabled={isPendingRegister}
                   className="w-1/2 min-w-[140px] py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none disabled:opacity-50"
                 >
-                  {isPendingRegister ? 'Registering...' : 'Register'}
+                  {isPendingRegister ? t('registering') : t('register_btn')}
                 </button>
               </div>
             </form>
 
             <div className="mt-8">
-              <p className="text-sm text-gray-500 mb-3">Or connect with</p>
+              <p className="text-sm text-gray-500 mb-3">{t('or_connect_with')}</p>
               <button
                 type="button"
                 className="inline-flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
@@ -213,7 +215,7 @@ export default function LoginPage() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
-                Continue with Google
+                {t('continue_with_google')}
               </button>
             </div>
           </div>

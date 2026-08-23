@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '@/actions/auth';
+import { useTranslations } from 'next-intl';
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState('');
+  const t = useTranslations('LoginModal');
 
   if (!isOpen) return null;
 
@@ -46,7 +48,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </svg>
         </button>
 
-        <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">Sign in</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">{t('title')}</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {error && <div className="text-red-500 text-sm font-medium">{error}</div>}
@@ -55,7 +57,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               type="email"
               name="email"
               required
-              placeholder="Username or email"
+              placeholder={t('email_placeholder')}
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
             />
           </div>
@@ -65,7 +67,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               type={showPassword ? "text" : "password"}
               name="password"
               required
-              placeholder="Password"
+              placeholder={t('password_placeholder')}
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 pr-12"
             />
             <button
@@ -90,13 +92,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 className="h-4 w-4 text-slate-900 border-gray-300 rounded focus:ring-slate-900"
               />
               <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-700">
-                Remember me
+                {t('remember_me')}
               </label>
             </div>
 
             <div className="text-sm">
               <a href="#" className="font-medium text-orange-500 hover:text-orange-600">
-                Lost password?
+                {t('lost_password')}
               </a>
             </div>
           </div>
@@ -107,14 +109,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               disabled={isPending}
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50"
             >
-              {isPending ? 'Login...' : 'Log In'}
+              {isPending ? t('login_loading') : t('login_button')}
             </button>
             <Link
               href="/login"
               onClick={onClose}
               className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
-              Create an account
+              {t('create_account')}
             </Link>
           </div>
         </form>
@@ -125,7 +127,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or login with</span>
+              <span className="px-2 bg-white text-gray-500">{t('or_login_with')}</span>
             </div>
           </div>
 
@@ -141,7 +143,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              Continue with Google
+              {t('continue_with_google')}
             </button>
           </div>
         </div>

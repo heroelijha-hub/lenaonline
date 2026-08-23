@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import Price from '@/components/Price';
+import { useTranslations } from 'next-intl';
 
 type CartDrawerProps = {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [mounted, setMounted] = useState(false);
   const { items, removeItem, updateQuantity, clearCart, getTotalPrice, getTotalItems } = useCartStore();
   const [showCoupon, setShowCoupon] = useState(false);
+  const t = useTranslations('CartDrawer');
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -49,7 +51,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 {getTotalItems()}
               </span>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">Cart</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('title')}</h2>
           </div>
           
           <div className="flex items-center space-x-3">
@@ -58,7 +60,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 onClick={clearCart}
                 className="text-sm text-gray-500 hover:text-gray-800"
               >
-                Clear all
+                {t('clear_all')}
               </button>
             )}
             <button 
@@ -84,12 +86,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                    <circle cx="115" cy="100" r="4" fill="currentColor"/>
                 </svg>
               </div>
-              <p className="text-gray-800 font-medium mb-6">No products in the cart.</p>
+              <p className="text-gray-800 font-medium mb-6">{t('empty_cart')}</p>
               <button 
                 onClick={onClose}
                 className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-md transition"
               >
-                Continue shopping
+                {t('continue_shopping')}
               </button>
             </div>
           ) : (
@@ -100,7 +102,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     {item.image ? (
                        <img src={item.image} alt={item.title} className="w-full h-full object-contain p-1" />
                     ) : (
-                       <span className="text-xs text-gray-400">No Image</span>
+                       <span className="text-xs text-gray-400">{t('no_image')}</span>
                     )}
                   </div>
                   
@@ -142,7 +144,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       className="text-xs text-gray-500 hover:text-red-500 flex items-center mt-3 self-end"
                     >
                       <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                      Remove
+                      {t('remove')}
                     </button>
                   </div>
                 </div>
@@ -155,47 +157,47 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         <div className="p-4 bg-white border-t border-gray-100 mt-auto">
           {/* Coupon */}
           <div className="mb-4">
-            <button 
-              onClick={() => setShowCoupon(!showCoupon)}
-              className="flex items-center text-sm text-gray-700 hover:text-orange-600 transition"
-            >
-              <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" /></svg>
-              <span className="font-semibold text-orange-600 mr-1">Click here</span> Apply le coupon
-            </button>
-            {showCoupon && (
-              <div className="mt-3 flex gap-2">
-                <input type="text" placeholder="Code coupon" className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500" />
-                <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">Apply</button>
-              </div>
-            )}
-          </div>
+              <button 
+                onClick={() => setShowCoupon(!showCoupon)}
+                className="flex items-center text-sm text-gray-700 hover:text-orange-600 transition"
+              >
+                <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" /></svg>
+                <span className="font-semibold text-orange-600 mr-1">{t('click_here')}</span> {t('apply_coupon_text')}
+              </button>
+              {showCoupon && (
+                <div className="mt-3 flex gap-2">
+                  <input type="text" placeholder={t('coupon_placeholder')} className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm outline-none focus:border-orange-500" />
+                  <button className="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md hover:bg-gray-900 transition">{t('apply_btn')}</button>
+                </div>
+              )}
+            </div>
 
           <div className="border border-orange-500 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-900 font-medium">Subtotal</span>
-              <Price amount={getTotalPrice()} className="text-gray-900" />
-            </div>
-            <div className="flex justify-between items-center text-lg font-bold">
-              <span className="text-gray-900">Total</span>
-              <Price amount={getTotalPrice()} className="text-gray-900" />
-            </div>
+                <span className="text-gray-900 font-medium">{t('subtotal')}</span>
+                <Price amount={getTotalPrice()} className="text-gray-900" />
+              </div>
+              <div className="flex justify-between items-center text-lg font-bold">
+                <span className="text-gray-900">{t('total')}</span>
+                <Price amount={getTotalPrice()} className="text-gray-900" />
+              </div>
           </div>
 
           <div className="flex gap-3">
             <Link 
               href="/cart" 
-              onClick={onClose}
-              className="flex-1 flex justify-center items-center py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-md transition"
-            >
-              Voir le panier
-            </Link>
-            <Link 
-              href="/checkout" 
-              onClick={onClose}
-              className="flex-1 flex justify-center items-center py-3 px-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md transition"
-            >
-              Checkout
-            </Link>
+                onClick={onClose}
+                className="flex-1 flex justify-center items-center py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-md transition"
+              >
+                {t('view_cart')}
+              </Link>
+              <Link 
+                href="/checkout" 
+                onClick={onClose}
+                className="flex-1 flex justify-center items-center py-3 px-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md transition"
+              >
+                {t('checkout')}
+              </Link>
           </div>
         </div>
       </div>

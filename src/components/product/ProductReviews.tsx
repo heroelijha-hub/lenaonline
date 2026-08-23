@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { submitReview } from '@/actions/reviews';
+import { useTranslations, useLocale } from 'next-intl';
 
 type Review = {
   id: string;
@@ -36,6 +37,8 @@ export default function ProductReviews({ productId, reviews, description, isLogg
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
+  const t = useTranslations('Product');
+  const locale = useLocale();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ export default function ProductReviews({ productId, reviews, description, isLogg
     if (res.error) {
       setMsg({ type: 'error', text: res.error });
     } else {
-      setMsg({ type: 'success', text: 'Votre avis a été soumis et est en attente de modération.' });
+      setMsg({ type: 'success', text: t('review_submitted') });
       setComment('');
       setRating(5);
     }
@@ -61,13 +64,13 @@ export default function ProductReviews({ productId, reviews, description, isLogg
           onClick={() => setActiveTab('desc')}
           className={`px-8 py-4 text-sm font-bold ${activeTab === 'desc' ? 'text-gray-900 border-b-2 border-orange-500' : 'text-gray-500 hover:text-gray-900'}`}
         >
-          Description
+          {t('description_tab')}
         </button>
         <button 
           onClick={() => setActiveTab('reviews')}
           className={`px-8 py-4 text-sm font-bold ${activeTab === 'reviews' ? 'text-gray-900 border-b-2 border-orange-500' : 'text-gray-500 hover:text-gray-900'}`}
         >
-          Avis ({reviews.length})
+          {t('reviews_tab', { count: reviews.length })}
         </button>
       </div>
 
@@ -80,16 +83,16 @@ export default function ProductReviews({ productId, reviews, description, isLogg
                 dangerouslySetInnerHTML={{ __html: description }} 
               />
             ) : (
-              <div className="whitespace-pre-wrap">Aucune description détaillée.</div>
+              <div className="whitespace-pre-wrap">{t('no_description')}</div>
             )}
           </div>
         ) : (
           <div className="space-y-12">
             {/* Liste des avis */}
             <div>
-              <h3 className="text-xl font-bold mb-6 text-gray-900">Avis Clients</h3>
+              <h3 className="text-xl font-bold mb-6 text-gray-900">{t('customer_reviews_title')}</h3>
               {reviews.length === 0 ? (
-                <p className="text-gray-500 text-sm">Il n&apos;y a pas encore d&apos;avis pour ce produit.</p>
+                <p className="text-gray-500 text-sm">{t('no_reviews')}</p>
               ) : (
                 <div className="space-y-8">
                   {reviews.map(review => (
@@ -99,7 +102,7 @@ export default function ProductReviews({ productId, reviews, description, isLogg
                           {[1,2,3,4,5].map(i => <Star key={i} filled={i <= review.rating} />)}
                         </div>
                         <span className="text-sm font-bold text-gray-900">{review.user.email.split('@')[0]}</span>
-                        <span className="text-xs text-gray-500">- {new Date(review.createdAt).toLocaleDateString()}</span>
+                        <span className="text-xs text-gray-500">- {new Date(review.createdAt).toLocaleDateString(locale)}</span>
                       </div>
                       <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
                     </div>
@@ -110,10 +113,10 @@ export default function ProductReviews({ productId, reviews, description, isLogg
 
             {/* Formulaire d'avis */}
             <div className="bg-gray-50 p-6 md:p-8 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-bold mb-4 text-gray-900">Ajouter un avis</h3>
+              <h3 className="text-lg font-bold mb-4 text-gray-900">{t('add_review')}</h3>
               
               {!isLoggedIn ? (
-                <p className="text-sm text-gray-600">Vous devez être connecté pour laisser un avis. <a href="/login" className="text-orange-500 hover:underline">Se connecter</a></p>
+                <p className="text-sm text-gray-600">{t('must_be_logged_in')}<a href="/login" className="text-orange-500 hover:underline">{t('login')}</a></p>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {msg.text && (
@@ -123,29 +126,29 @@ export default function ProductReviews({ productId, reviews, description, isLogg
                   )}
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Votre note *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('your_rating')}</label>
                     <select 
                       value={rating} 
                       onChange={e => setRating(Number(e.target.value))}
                       className="w-full md:w-48 px-3 py-2 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
                     >
-                      <option value="5">5 - Excellent</option>
-                      <option value="4">4 - Très bien</option>
-                      <option value="3">3 - Moyen</option>
-                      <option value="2">2 - Pas terrible</option>
-                      <option value="1">1 - Mauvais</option>
+                      <option value="5">{t('rating_5')}</option>
+                      <option value="4">{t('rating_4')}</option>
+                      <option value="3">{t('rating_3')}</option>
+                      <option value="2">{t('rating_2')}</option>
+                      <option value="1">{t('rating_1')}</option>
                     </select>
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Votre avis *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('your_review')}</label>
                     <textarea 
                       required
                       value={comment}
                       onChange={e => setComment(e.target.value)}
                       rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-sm"
-                      placeholder="Qu'avez-vous pensé de ce produit ?"
+                      placeholder={t('review_placeholder')}
                     ></textarea>
                   </div>
                   
@@ -154,7 +157,7 @@ export default function ProductReviews({ productId, reviews, description, isLogg
                     disabled={loading}
                     className="bg-orange-600 text-white font-bold py-2 px-6 rounded hover:bg-orange-700 disabled:opacity-50 transition-colors text-sm"
                   >
-                    {loading ? 'Envoi...' : 'Soumettre'}
+                    {loading ? t('sending') : t('submit')}
                   </button>
                 </form>
               )}

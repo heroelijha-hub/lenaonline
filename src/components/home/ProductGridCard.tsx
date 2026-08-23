@@ -6,6 +6,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import QuickViewModal from '@/components/product/QuickViewModal';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type ProductGridCardProps = {
   product: any;
@@ -25,6 +26,7 @@ export default function ProductGridCard({
   const router = useRouter();
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
+  const t = useTranslations('Home');
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const isWishlisted = wishlistStore.hasItem(product.id);
   const image = product.images && product.images.length > 0 ? product.images[0] : '';
@@ -96,7 +98,7 @@ export default function ProductGridCard({
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              Add to Cart
+              {t('add_to_cart')}
             </button>
           )}
 
@@ -202,7 +204,7 @@ export default function ProductGridCard({
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              Add to Cart
+              {t('add_to_cart')}
             </button>
           </div>
         )}

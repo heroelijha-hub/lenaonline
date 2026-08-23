@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 export default async function LatestBlogs({ config }: { config?: any }) {
   const displayMode = config?.displayMode || 'DATE_DESC';
@@ -34,6 +35,9 @@ export default async function LatestBlogs({ config }: { config?: any }) {
     Object.assign(settings, config);
   }
 
+  const t = await getTranslations('Home');
+  const locale = await getLocale();
+
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
       '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
@@ -51,10 +55,10 @@ export default async function LatestBlogs({ config }: { config?: any }) {
           className="font-bold text-gray-900 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
         >
-          {config?.title || 'Our Latest Blogs'}
+          {config?.title || t('latest_blogs_title')}
         </h2>
         <Link href="/blog" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
-          {config?.SEE_ALL_TEXT || 'See All'}
+          {config?.SEE_ALL_TEXT || t('see_all')}
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -90,9 +94,9 @@ export default async function LatestBlogs({ config }: { config?: any }) {
             
             {/* Metadata */}
             <div className="flex items-center text-sm text-gray-500 mt-auto">
-              <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span>{new Date(blog.createdAt).toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               <span className="mx-2">/</span>
-              <span>{blog._count.comments} Comments</span>
+              <span>{t('comments', { count: blog._count.comments })}</span>
             </div>
           </Link>
         ))}

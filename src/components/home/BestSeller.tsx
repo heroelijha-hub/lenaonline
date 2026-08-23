@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 
 import { getFilteredProducts } from '@/actions/public';
 import Price from '@/components/Price';
+import { getTranslations } from 'next-intl/server';
 
 // ... (Star component kept the same)
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -75,6 +76,8 @@ export default async function BestSeller({ config }: { config?: any }) {
   if (config) {
     Object.assign(settings, config);
   }
+  
+  const t = await getTranslations('Home');
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
@@ -118,10 +121,10 @@ export default async function BestSeller({ config }: { config?: any }) {
           className="font-bold text-gray-900 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={getResponsiveVars('title', {m: '20px', t: '24px', d: '24px'})}
         >
-          {config?.title || "Our Best Seller"}
+          {config?.title || t('best_seller_title')}
         </h2>
         <Link href="/best-seller" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
-          {config?.SEE_ALL_TEXT || "See All"}
+          {config?.SEE_ALL_TEXT || t('see_all')}
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>

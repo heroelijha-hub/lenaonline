@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type FooterProps = {
   supportPhone?: string;
@@ -43,6 +44,7 @@ export default function Footer({
   footerColumns = []
 }: FooterProps) {
   const [openCols, setOpenCols] = useState<number[]>([]);
+  const t = useTranslations('Footer');
 
   const toggleCol = (idx: number) => {
     setOpenCols(prev => prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]);
@@ -62,14 +64,14 @@ export default function Footer({
           <div className="w-full lg:w-[35%]">
             {/* Our Locations */}
             <div>
-              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{footerLocationsTitle}</h3>
+              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{t('locations_title')}</h3>
               <ul className="space-y-3 text-sm">
                 {footerAddress1 && (
                   <li className="flex items-start">
                     <span className="text-orange-500 mr-2 mt-0.5">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </span>
-                    <p><span className="text-orange-500 font-medium">Store 1:</span> {footerAddress1}</p>
+                    <p><span className="text-orange-500 font-medium">{t('store_1')}:</span> {footerAddress1}</p>
                   </li>
                 )}
                 {footerAddress2 && (
@@ -77,7 +79,7 @@ export default function Footer({
                     <span className="text-orange-500 mr-2 mt-0.5">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </span>
-                    <p><span className="text-orange-500 font-medium">Store 2:</span> {footerAddress2}</p>
+                    <p><span className="text-orange-500 font-medium">{t('store_2')}:</span> {footerAddress2}</p>
                   </li>
                 )}
               </ul>
@@ -85,14 +87,14 @@ export default function Footer({
 
             {/* Newsletter */}
             <div className="mt-10">
-              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{footerNewsletterTitle}</h3>
+              <h3 className="font-bold text-lg mb-4" style={{ color: footerTextColor === '#000000' || footerTextColor === '#111827' ? footerBgColor : 'white' }}>{t('newsletter_title')}</h3>
               <p className="text-sm mb-4 leading-relaxed opacity-80">
-                {footerNewsletterText}
+                {t('newsletter_text')}
               </p>
               <form className="flex">
                 <input 
                   type="email" 
-                  placeholder={footerNewsletterPlaceholder}
+                  placeholder={t('newsletter_placeholder')}
                   className="flex-grow px-4 py-3 rounded-l-md bg-white text-gray-900 focus:outline-none"
                 />
                 <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-gray-900 px-4 py-2 rounded-r transition">
@@ -107,8 +109,8 @@ export default function Footer({
                 <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               </div>
               <div>
-                <p className="text-xl font-bold mb-1"><span className="text-blue-500">{footerCallUsText}</span> <span className="text-orange-500">{supportPhone}</span></p>
-                <p className="text-sm opacity-80">Email: {supportEmail}</p>
+                <p className="text-xl font-bold mb-1"><span className="text-blue-500">{t('call_us')}</span> <span className="text-orange-500">{supportPhone}</span></p>
+                <p className="text-sm opacity-80">{t('email')}: {supportEmail}</p>
               </div>
             </div>
 
@@ -143,7 +145,7 @@ export default function Footer({
         <div className="flex flex-col md:flex-row items-center justify-between text-xs opacity-60 pt-2">
           
           <div className="mb-4 md:mb-0">
-            {footerCopyright}
+            {t('copyright')}
           </div>
           
           {/* Payment Icons */}

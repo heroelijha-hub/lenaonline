@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import prisma from '@/lib/prisma';
+import { getTranslations } from 'next-intl/server';
 
 export default async function PromoBanners({ config }: { config?: any }) {
   // Only render if at least one title is configured
@@ -14,6 +15,8 @@ export default async function PromoBanners({ config }: { config?: any }) {
   if (config) {
     Object.assign(settings, config);
   }
+
+  const t = await getTranslations('Home');
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
@@ -50,7 +53,7 @@ export default async function PromoBanners({ config }: { config?: any }) {
                 className="font-bold hover:underline inline-block"
                 style={{ color: config.BANNER_1_TEXT_COLOR || '#ea580c' }}
               >
-                Shop Now &rarr;
+                {t('shop_now')} &rarr;
               </Link>
             </div>
             {config.BANNER_1_IMAGE && (
@@ -82,7 +85,7 @@ export default async function PromoBanners({ config }: { config?: any }) {
                 className="font-bold hover:underline inline-block"
                 style={{ color: config.BANNER_2_TEXT_COLOR || '#111827' }}
               >
-                Shop Now &rarr;
+                {t('shop_now')} &rarr;
               </Link>
             </div>
             {config.BANNER_2_IMAGE && (
