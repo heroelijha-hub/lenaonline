@@ -40,8 +40,8 @@ export async function getI18nConfig() {
   }
 
   const messages = locale === 'fr' 
-    ? (await import('../../messages/fr.json')).default
-    : (await import('../../messages/en.json')).default;
+    ? (await import('../messages/fr.json')).default
+    : (await import('../messages/en.json')).default;
 
   return {
     locale,
