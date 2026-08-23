@@ -1,0 +1,16 @@
+{
+  "Admin": {
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "users": "Utilisateurs"
+  },
+  "Frontend": {
+    "welcome": "Bienvenue sur Shopelios",
+    "shop": "Acheter maintenant",
+    "cart": "Votre Panier"
+  },
+  "Messages": {
+    "success": "Action réussie",
+    "error": "Une erreur est survenue"
+  }
+}

@@ -9,6 +9,8 @@ import BackToTop from "@/components/BackToTop";
 import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import { cookies } from 'next/headers';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,6 +24,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  
   const settingsDb = await prisma.setting.findMany();
   const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
@@ -161,17 +166,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
-        <CurrencyProvider options={currencyOptions}>
-          <StoreLayout settings={storeSettings}>
-            {children}
-            <ChatWidget 
-              enabled={settingsMap.CHAT_ENABLED !== 'false'} 
-              storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
-              storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
-            />
-            <BackToTop />
-          </StoreLayout>
-        </CurrencyProvider>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <CurrencyProvider options={currencyOptions}>
+            <StoreLayout settings={storeSettings}>
+              {children}
+              <ChatWidget 
+                enabled={settingsMap.CHAT_ENABLED !== 'false'} 
+                storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
+                storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
+              />
+              <BackToTop />
+            </StoreLayout>
+          </CurrencyProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

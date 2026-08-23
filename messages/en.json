@@ -1,0 +1,16 @@
+{
+  "Admin": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "users": "Users"
+  },
+  "Frontend": {
+    "welcome": "Welcome to Shopelios",
+    "shop": "Shop Now",
+    "cart": "Your Cart"
+  },
+  "Messages": {
+    "success": "Action successful",
+    "error": "An error occurred"
+  }
+}

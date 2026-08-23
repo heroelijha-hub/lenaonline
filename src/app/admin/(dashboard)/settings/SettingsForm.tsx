@@ -20,6 +20,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [currencyPosition, setCurrencyPosition] = useState(initialSettings.currencyPosition || 'left');
   const [thousandSeparator, setThousandSeparator] = useState(initialSettings.thousandSeparator || ',');
   const [decimalSeparator, setDecimalSeparator] = useState(initialSettings.decimalSeparator || '.');
+  
+  // Translation settings
+  const [activeLanguage, setActiveLanguage] = useState(initialSettings.active_language || 'en');
+  const [translationScope, setTranslationScope] = useState(initialSettings.translation_scope || 'all');
+
   const [enableBuyNow, setEnableBuyNow] = useState(initialSettings.ENABLE_BUY_NOW_BUTTON === 'true');
   const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
   const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'Shopelios');
@@ -183,6 +188,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['currencyPosition'] = currencyPosition;
     settingsMap['thousandSeparator'] = thousandSeparator;
     settingsMap['decimalSeparator'] = decimalSeparator;
+    
+    settingsMap['active_language'] = activeLanguage;
+    settingsMap['translation_scope'] = translationScope;
+
     settingsMap['ENABLE_BUY_NOW_BUTTON'] = enableBuyNow.toString();
     
     let finalChatIcon = chatStoreIcon;
@@ -381,6 +390,33 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             >
               <option value=".">Point (ex: 10.50)</option>
               <option value=",">Virgule (ex: 10,50)</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 className="text-lg font-bold text-red-600 mb-4 mt-8">Langues & Traduction</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Langue active (Site)</label>
+            <select
+              value={activeLanguage}
+              onChange={(e) => setActiveLanguage(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="en">Anglais (English)</option>
+              <option value="fr">Français (French)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Portée de la traduction</label>
+            <select
+              value={translationScope}
+              onChange={(e) => setTranslationScope(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="frontend_only">Option 1: Seulement Espace Client (Admin reste en Anglais)</option>
+              <option value="admin_only">Option 2: Seulement Admin (Client reste en Anglais)</option>
+              <option value="all">Option 3: Tout est traduit</option>
             </select>
           </div>
         </div>
