@@ -167,13 +167,16 @@ export default function Header({
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
+    if (searchQuery.trim() || selectedCategory !== 'all') {
       setShowSearchResults(false);
-      let url = `/search?q=${encodeURIComponent(searchQuery)}`;
-      if (selectedCategory !== 'all') {
-        url += `&category=${selectedCategory}`;
+      const params = new URLSearchParams();
+      if (searchQuery.trim()) {
+        params.append('q', searchQuery.trim());
       }
-      router.push(url);
+      if (selectedCategory !== 'all') {
+        params.append('category', selectedCategory);
+      }
+      router.push(`/search?${params.toString()}`);
     }
   };
 

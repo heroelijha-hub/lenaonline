@@ -108,7 +108,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerSocialInstagram: settingsMap.FOOTER_SOCIAL_INSTAGRAM || '#',
     footerSocialLinkedin: settingsMap.FOOTER_SOCIAL_LINKEDIN || '#',
     footerColumns: footerColumns,
-    categories: await prisma.category.findMany({ select: { id: true, name: true, slug: true } }),
+    categories: await prisma.category.findMany({ 
+      where: { products: { some: {} } },
+      select: { id: true, name: true, slug: true } 
+    }),
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
     maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Site en maintenance',
     maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!',
