@@ -326,7 +326,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         disabled={isLoading}
         className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-orange-300 text-sm font-semibold"
       >
-        {isLoading ? 'Saving...' : 'Save cette section'}
+        {isLoading ? 'Saving...' : 'Save this section'}
       </button>
     </div>
   );
@@ -806,7 +806,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte de l'input (Placeholder)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Input text (Placeholder)</label>
             <input type="text" value={searchPlaceholder} onChange={e => setSearchPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
@@ -815,14 +815,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond du bouton</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Button background color</label>
               <div className="flex items-center gap-2">
                 <input type="color" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du texte (bouton)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Text color (button)</label>
               <div className="flex items-center gap-2">
                 <input type="color" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
@@ -834,12 +834,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Liens de Navigation (Menu)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Navigation Links (Menu)</h3>
         <div className="space-y-4">
           {menuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Name du lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Link name</label>
                 <input
                   type="text"
                   value={link.label}
@@ -852,7 +852,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
                 <input
                   type="text"
                   value={link.url}
@@ -873,7 +873,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setMenuLinks(newLinks);
                   }}
                   className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
-                  title="Delete ce lien"
+                  title="Delete this link"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -893,7 +893,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Navigation Mobile (Hamburger)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Mobile Navigation (Hamburger)</h3>
         <p className="text-sm text-gray-500 mb-4">Configure the side menu (Drawer) that opens on mobile.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
@@ -915,7 +915,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           {mobileMenuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Name du lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Link name</label>
                 <input
                   type="text"
                   value={link.label}
@@ -928,7 +928,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
                 <input
                   type="text"
                   value={link.url}
@@ -968,7 +968,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-gray-800 mb-2">Section Contact</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">Contact Section</h4>
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
@@ -983,7 +983,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <input type="text" value={mobileContactEmail} onChange={e => setMobileContactEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Site Web (sans https://)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Website (without https://)</label>
             <input type="text" value={mobileContactWebsite} onChange={e => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
           </div>
         </div>
@@ -993,7 +993,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <h4 className="font-semibold text-gray-800 mb-2">Design</h4>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de bordure (Header Mobile)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Border color (Mobile Header)</label>
             <div className="flex items-center gap-3">
               <input type="color" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -1005,17 +1005,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Liens et Couleurs de la Top Bar</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Top Bar Links and Colors</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond (Top Bar)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Background color (Top Bar)</label>
             <div className="flex items-center gap-3">
               <input type="color" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du texte (Top Bar)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Text color (Top Bar)</label>
             <div className="flex items-center gap-3">
               <input type="color" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -1036,8 +1036,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 >
-                  <option value="location">Localisation</option>
-                  <option value="truck">Camion de livraison</option>
+                  <option value="location">Location</option>
+                  <option value="truck">Delivery truck</option>
                   <option value="phone">Phone</option>
                   <option value="star">Star</option>
                   <option value="mail">Email</option>
@@ -1057,7 +1057,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Lien</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
                 <input
                   type="text"
                   value={link.url}
@@ -1078,7 +1078,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setTopBarLinks(newLinks);
                   }}
                   className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-md transition"
-                  title="Delete ce lien"
+                  title="Delete this link"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -1098,7 +1098,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Settings du Chat</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Chat Settings</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -1109,12 +1109,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="chatEnabled" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Activer le module de Chat pour les clients
+              Enable Chat module for customers
             </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Name de la boutique (Chat)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Store Name (Chat)</label>
               <input
                 type="text"
                 value={chatStoreName}
@@ -1155,19 +1155,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Pied de Page (Footer)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Footer</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="md:col-span-2 grid grid-cols-2 gap-6 pb-4 border-b">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de Fond du Footer</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Footer Background Color</label>
               <div className="flex items-center gap-3">
                 <input type="color" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Couleur du Texte Principal</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Main Text Color</label>
               <div className="flex items-center gap-3">
                 <input type="color" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
@@ -1175,30 +1175,30 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse 1 (Store 1)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Address 1 (Store 1)</label>
             <input type="text" value={footerAddress1} onChange={e => setFooterAddress1(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse 2 (Store 2 - Optionnel)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Address 2 (Store 2 - Optional)</label>
             <input type="text" value={footerAddress2} onChange={e => setFooterAddress2(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte de la Newsletter</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter Text</label>
             <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2 border-t pt-4 mt-2">
             <h4 className="text-md font-medium text-gray-800 mb-4">Textes d&apos;interface (Titres et Labels)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title Adresses (ex: Our Locations)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Addresses Title (ex: Our Locations)</label>
                 <input type="text" value={footerLocationsTitle} onChange={e => setFooterLocationsTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title Newsletter (ex: Newsletter)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter Title (ex: Newsletter)</label>
                 <input type="text" value={footerNewsletterTitle} onChange={e => setFooterNewsletterTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Texte Placeholder Email (ex: Enter your email...)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Placeholder Text (ex: Enter your email...)</label>
                 <input type="text" value={footerNewsletterPlaceholder} onChange={e => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
@@ -1209,7 +1209,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte du Copyright (ex: © 2026 Shopelios)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Copyright Text (ex: © 2026 Shopelios)</label>
             <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
         </div>
@@ -1234,7 +1234,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
-        <h4 className="text-md font-medium text-gray-800 mb-3">Colonnes de liens du Footer</h4>
+        <h4 className="text-md font-medium text-gray-800 mb-3">Footer Link Columns</h4>
         <div className="space-y-6">
           {footerColumns.map((col, cIdx) => (
             <div key={cIdx} className="bg-gray-50 p-4 border rounded-md">
@@ -1266,7 +1266,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               <div className="space-y-2 pl-4 border-l-2 border-gray-200">
                 {col.links.map((link, lIdx) => (
                   <div key={lIdx} className="flex gap-2 items-center">
-                    <input type="text" value={link.label} placeholder="Name du lien" onChange={e => {
+                    <input type="text" value={link.label} placeholder="Link name" onChange={e => {
                       const newCols = [...footerColumns];
                       newCols[cIdx].links[lIdx].label = e.target.value;
                       setFooterColumns(newCols);
@@ -1287,14 +1287,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   const newCols = [...footerColumns];
                   newCols[cIdx].links.push({ label: 'New lien', url: '#' });
                   setFooterColumns(newCols);
-                }} className="text-orange-600 text-xs mt-2">+ Add un lien</button>
+                }} className="text-orange-600 text-xs mt-2">+ Add a link</button>
               </div>
             </div>
           ))}
           <button type="button" onClick={() => {
             setFooterColumns([...footerColumns, { title: 'Nouvelle Colonne', links: [] }]);
           }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
-            + Add une colonne
+            + Add a column
           </button>
         </div>
         <SectionSaveButton />
@@ -1317,17 +1317,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title de la page</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Page Title</label>
             <input type="text" value={maintenanceTitle} onChange={e => setMaintenanceTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Message d'explication</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Explanation Message</label>
             <textarea value={maintenanceMessage} onChange={e => setMaintenanceMessage(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Image d'illustration (Upload)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Illustration Image (Upload)</label>
             {maintenanceImage && !maintenanceFile && (
               <div className="relative inline-block mb-2">
                 <img src={maintenanceImage} alt="Maintenance" className="h-20 object-contain border bg-white p-1" />
@@ -1356,22 +1356,22 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Page 404 (Introuvable)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">404 Page (Not Found)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title de la page</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Page Title</label>
             <input type="text" value={notFoundTitle} onChange={e => setNotFoundTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Texte d'explication</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Explanation Text</label>
             <textarea value={notFoundText} onChange={e => setNotFoundText(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Button text retour (CTA)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Return button text (CTA)</label>
             <input type="text" value={notFoundCta} onChange={e => setNotFoundCta(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Couleur de fond (Si pas d'image)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Background color (If no image)</label>
             <div className="flex items-center gap-3">
               <input type="color" value={notFoundBgColor} onChange={e => setNotFoundBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={notFoundBgColor} onChange={e => setNotFoundBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
