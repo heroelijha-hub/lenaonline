@@ -176,13 +176,13 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">Zones Desservies</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Delivery Zones</h2>
         {!isAddingZone && (
           <button
             onClick={() => setIsAddingZone(true)}
             className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 font-medium text-sm"
           >
-            + Add une destination
+            + Add a destination
           </button>
         )}
       </div>

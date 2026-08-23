@@ -99,12 +99,12 @@ export default function WishlistClient() {
                 className="flex-1 bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold py-2 rounded transition flex items-center justify-center gap-1"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                Panier
+                Cart
               </button>
               <button 
                 onClick={() => toggleItem(p.id)}
                 className="p-2 border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 rounded text-gray-500 transition"
-                title="Retirer des favoris"
+                title="Remove from wishlist"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
               </button>

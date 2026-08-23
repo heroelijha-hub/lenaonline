@@ -78,7 +78,7 @@ export default function AdminPageForm() {
           onClick={() => router.push('/admin/pages')}
           className="text-gray-600 hover:text-gray-900 font-medium text-sm border border-gray-300 px-4 py-2 rounded-md bg-white hover:bg-gray-50 transition"
         >
-          Retour
+          Back
         </button>
       </div>
 
@@ -94,7 +94,7 @@ export default function AdminPageForm() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Title de la page</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Page Title</label>
               <input
                 type="text"
                 required
@@ -128,7 +128,7 @@ export default function AdminPageForm() {
               className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer"
             />
             <label htmlFor="isPublished" className="ml-2 block text-sm text-gray-900 font-medium cursor-pointer">
-              Publier cette page (visible publiquement)
+              Publish this page (publicly visible)
             </label>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function AdminPageForm() {
             disabled={saving}
             className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-8 rounded-md transition shadow-sm disabled:opacity-50"
           >
-            {saving ? 'Saving...' : 'Save la page'}
+            {saving ? 'Saving...' : 'Save page'}
           </button>
         </div>
       </form>

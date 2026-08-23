@@ -88,7 +88,7 @@ export default function BlogForm({ article }: { article?: any }) {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Title de l&apos;article *</label>
+              <label className="block text-sm font-medium mb-1">Article Title *</label>
               <input 
                 type="text" 
                 value={formData.title} 
@@ -99,7 +99,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Slug (URL de l&apos;article) *</label>
+              <label className="block text-sm font-medium mb-1">Slug (Article URL) *</label>
               <input 
                 type="text" 
                 value={formData.slug} 
@@ -121,7 +121,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Contenu Complet</label>
+              <label className="block text-sm font-medium mb-1">Full Content</label>
               <div className="bg-white">
                 <ReactQuill 
                   theme="snow" 
@@ -173,7 +173,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Name de l&apos;auteur</label>
+              <label className="block text-sm font-medium mb-1">Author Name</label>
               <input 
                 type="text" 
                 value={formData.authorName} 
@@ -184,7 +184,7 @@ export default function BlogForm({ article }: { article?: any }) {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="font-semibold text-gray-800 mb-3">Image de Couverture</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">Cover Image</h3>
             {formData.image && (
               <img src={formData.image} alt="Cover" className="w-full h-auto rounded mb-3 border" />
             )}
@@ -202,7 +202,7 @@ export default function BlogForm({ article }: { article?: any }) {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
           >
-            {loading ? 'Saving...' : (article ? 'Update' : 'Publier l\'article')}
+            {loading ? 'Saving...' : (article ? 'Update' : 'Publish Article')}
           </button>
         </div>
       </div>

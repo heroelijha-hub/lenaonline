@@ -57,8 +57,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           const url = prompt('Entrez l\'URL:');
           if (url) execCmd('createLink', url);
         }} className="p-1.5 hover:bg-gray-200 rounded px-2">Link</button>
-        <button type="button" onClick={() => execCmd('unlink')} className="p-1.5 hover:bg-gray-200 rounded px-2">Enlever lien</button>
-        <button type="button" onClick={() => execCmd('removeFormat')} className="p-1.5 hover:bg-gray-200 rounded px-2 text-red-600">Nettoyer format</button>
+        <button type="button" onClick={() => execCmd('unlink')} className="p-1.5 hover:bg-gray-200 rounded px-2">Remove link</button>
+        <button type="button" onClick={() => execCmd('removeFormat')} className="p-1.5 hover:bg-gray-200 rounded px-2 text-red-600">Clear formatting</button>
       </div>
       
       {/* Editor Area */}

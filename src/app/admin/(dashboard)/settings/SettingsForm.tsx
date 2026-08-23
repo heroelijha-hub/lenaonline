@@ -347,7 +347,34 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       )}
 
       <div>
-        <h3 className="text-lg font-bold text-red-600 mb-4">{t("regional_settings")}</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">Languages & Translation</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Active Language (Site)</label>
+            <select
+              value={activeLanguage}
+              onChange={(e) => setActiveLanguage(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="en">English</option>
+              <option value="fr">French (Français)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Translation scope</label>
+            <select
+              value={translationScope}
+              onChange={(e) => setTranslationScope(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="frontend_only">Option 1: Client side only (Admin stays in English)</option>
+              <option value="admin_only">Option 2: Admin only (Client stays in English)</option>
+              <option value="all">Option 3: Everything is translated</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 className="text-lg font-bold text-red-600 mb-4 mt-8">{t("regional_settings")}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{t("main_currency")}</label>
@@ -403,31 +430,6 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-red-600 mb-4 mt-8">Languages & Translation</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Active Language (Site)</label>
-            <select
-              value={activeLanguage}
-              onChange={(e) => setActiveLanguage(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            >
-              <option value="en">English</option>
-              <option value="fr">French (Français)</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Translation scope</label>
-            <select
-              value={translationScope}
-              onChange={(e) => setTranslationScope(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            >
-              <option value="frontend_only">Option 1: Client side only (Admin stays in English)</option>
-              <option value="admin_only">Option 2: Admin only (Client stays in English)</option>
-              <option value="all">Option 3: Everything is translated</option>
-            </select>
-          </div>
         </div>
         <SectionSaveButton />
       </div>
@@ -1276,7 +1278,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setFooterColumns(newCols);
                   }}
                   className="font-bold px-3 py-1.5 border border-gray-300 rounded focus:ring-orange-500 w-1/2"
-                  placeholder="Title de la colonne (ex: Contact Us)"
+                  placeholder="Column Title (ex: Contact Us)"
                 />
                 <button 
                   type="button" 
@@ -1287,7 +1289,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="text-red-500 hover:text-red-700 text-sm"
                 >
-                  Delete la colonne
+                  Delete column
                 </button>
               </div>
               
