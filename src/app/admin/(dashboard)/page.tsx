@@ -2,6 +2,8 @@ import { getTranslations } from 'next-intl/server';
 import { getDashboardStats } from '@/actions/dashboard';
 import DashboardChart from '@/components/admin/DashboardChart';
 import Link from 'next/link';
+import prisma from '@/lib/prisma';
+import { formatPriceNumber, defaultCurrencyOptions } from '@/lib/formatPrice';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,8 +11,20 @@ export default async function AdminDashboardPage() {
   const t = await getTranslations('Admin');
   const stats = await getDashboardStats();
 
+  const settingsDb = await prisma.setting.findMany();
+  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  
+  const currencyOptions = {
+    currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
+    currencyPosition: (settingsMap.currencyPosition as any) || defaultCurrencyOptions.currencyPosition,
+    thousandSeparator: settingsMap.thousandSeparator !== undefined ? settingsMap.thousandSeparator : defaultCurrencyOptions.thousandSeparator,
+    decimalSeparator: settingsMap.decimalSeparator || defaultCurrencyOptions.decimalSeparator,
+    taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
+    defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
+  };
+
   const formatPrice = (amount: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    return formatPriceNumber(amount, currencyOptions);
   };
 
   return (

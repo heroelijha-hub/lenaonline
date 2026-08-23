@@ -1,5 +1,7 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
+import Price from '@/components/Price';
 
 export const dynamic = 'force-dynamic';
 
@@ -58,9 +60,9 @@ export default async function NewArrivalsPage() {
                   </Link>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-1 sm:gap-2">
-                      <span className="font-bold text-orange-600 text-sm sm:text-base">${product.price.toFixed(2)}</span>
+                      <Price amount={product.price} showTax={false} className="font-bold text-orange-600 text-sm sm:text-base" />
                       {product.compareAtPrice && product.compareAtPrice > product.price && (
-                        <span className="text-[10px] sm:text-xs text-gray-400 line-through">${product.compareAtPrice.toFixed(2)}</span>
+                        <Price amount={product.compareAtPrice} showTax={false} className="text-[10px] sm:text-xs text-gray-400 line-through" />
                       )}
                     </div>
                   </div>

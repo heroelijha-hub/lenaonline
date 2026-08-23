@@ -141,15 +141,28 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       if (fullOrder) {
         // Send emails
         sendClientOrderConfirmation(fullOrder, user.email, firstName + ' ' + lastName).catch(e => console.error('Client email failed', e));
-        const adminSetting = await prisma.setting.findFirst({ where: { key: 'CONTACT_RECEIVER_EMAIL' } });
-        const adminEmail = adminSetting?.value || 'admin@shopelios.com';
+        
+        const allSettings = await prisma.setting.findMany();
+        const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+        const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@shopelios.com';
+        
+        const { formatPriceNumber, defaultCurrencyOptions } = await import('@/lib/formatPrice');
+        const currencyOptions = {
+          currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
+          currencyPosition: (settingsMap.currencyPosition as any) || defaultCurrencyOptions.currencyPosition,
+          thousandSeparator: settingsMap.thousandSeparator !== undefined ? settingsMap.thousandSeparator : defaultCurrencyOptions.thousandSeparator,
+          decimalSeparator: settingsMap.decimalSeparator || defaultCurrencyOptions.decimalSeparator,
+          taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
+          defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
+        };
+
         sendAdminOrderNotification(fullOrder, adminEmail, { name: firstName + ' ' + lastName, email: user.email }).catch(e => console.error('Admin email failed', e));
         
         // Push notification in-app
         createNotification({
           isAdmin: true,
           type: 'ORDER',
-          message: `Nouvelle commande de ${firstName} ${lastName} (${finalTotal.toFixed(2)}€)`,
+          message: `New order from ${firstName} ${lastName} (${formatPriceNumber(finalTotal, currencyOptions)})`,
           link: `/admin/orders/${order.id}`,
         }).catch(e => console.error('Notification failed', e));
       }
@@ -219,6 +232,11 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       }
       
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
+      // Retrieve settings for currency code
+      const allSettings2 = await prisma.setting.findMany();
+      const settingsMap2 = allSettings2.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+      const storeCurrencyCode = settingsMap2.currency || 'USD';
+
       const orderRes = await fetch('https://api-m.paypal.com/v2/checkout/orders', {
         method: 'POST',
         headers: {
@@ -230,7 +248,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
           purchase_units: [{
             reference_id: order.id,
             amount: {
-              currency_code: 'EUR',
+              currency_code: storeCurrencyCode,
               value: finalTotal.toFixed(2)
             }
           }],

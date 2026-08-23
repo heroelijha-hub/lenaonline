@@ -18,12 +18,12 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
 );
 
 const staticProducts = [
-  { id: 1, imagePlaceholder: '📱', category: 'Electronics', title: '256GB iphone 16 pro max Ratina Reday', rating: 5, ratingText: '(5.00)', price: '$18.00' },
-  { id: 2, imagePlaceholder: '👟', category: 'Clothings', title: 'Niki Dust & Water Proof Comfort Sneakers', rating: 5, ratingText: '(5.00)', price: '$19.00' },
-  { id: 3, imagePlaceholder: '🍯', category: 'Gift Box', title: 'Heinz Portion Healthy Food For Everyday', rating: 3, ratingText: '(2.00)', price: '$18.00' },
-  { id: 4, imagePlaceholder: '⌚', category: 'Clothings', title: 'Explore Pixel and Samsung Watches with...', rating: 5, ratingText: '(5.00)', price: '$33.00 - $59.00', discount: '-14%' },
-  { id: 5, imagePlaceholder: '🪑', category: 'Electronics', title: 'Soft Bamboo Entryway Flexible Sofa set', rating: 5, ratingText: '(5.00)', price: '$18.00 - $30.00', discount: '-18%' },
-  { id: 6, imagePlaceholder: '🚲', category: 'Cosmetics', title: 'Bike Frame Performance 700C 49/51/54/57cm', rating: 5, ratingText: '(5.00)', price: '$23.00' },
+  { id: 1, imagePlaceholder: '📱', category: 'Electronics', title: '256GB iphone 16 pro max Ratina Reday', rating: 5, ratingText: '(5.00)', rawPrice: 18.00 },
+  { id: 2, imagePlaceholder: '👟', category: 'Clothings', title: 'Niki Dust & Water Proof Comfort Sneakers', rating: 5, ratingText: '(5.00)', rawPrice: 19.00 },
+  { id: 3, imagePlaceholder: '🍯', category: 'Gift Box', title: 'Heinz Portion Healthy Food For Everyday', rating: 3, ratingText: '(2.00)', rawPrice: 18.00 },
+  { id: 4, imagePlaceholder: '⌚', category: 'Clothings', title: 'Explore Pixel and Samsung Watches with...', rating: 5, ratingText: '(5.00)', rawPrice: 33.00, discount: '-14%' },
+  { id: 5, imagePlaceholder: '🪑', category: 'Electronics', title: 'Soft Bamboo Entryway Flexible Sofa set', rating: 5, ratingText: '(5.00)', rawPrice: 18.00, discount: '-18%' },
+  { id: 6, imagePlaceholder: '🚲', category: 'Cosmetics', title: 'Bike Frame Performance 700C 49/51/54/57cm', rating: 5, ratingText: '(5.00)', rawPrice: 23.00 },
 ];
 
 export default async function BestDeals({ config }: { config?: any }) {
@@ -66,7 +66,6 @@ export default async function BestDeals({ config }: { config?: any }) {
       title: p.title,
       rating: ratingCount > 0 ? Math.round(avgRating) : 0,
       ratingText: ratingCount > 0 ? `(${avgRating.toFixed(2)})` : '',
-      price: `$${p.price.toFixed(2)}`,
       rawPrice: p.price,
       discount: p.discountLabel || undefined,
       imagePlaceholder: '🛍️'

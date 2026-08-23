@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Link from 'next/link';
 import { deleteProduct, duplicateProduct, quickEditProduct } from '@/actions/admin';
+import Price from '@/components/Price';
 
 export default function ProductsTable({ products, categories }: { products: any[], categories: any[] }) {
   const t = useTranslations('Admin');
@@ -153,7 +154,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium align-top">
-                    ${product.price.toFixed(2)}
+                    <Price amount={product.price} showTax={false} />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm align-top">
                     {product.stock === null ? (

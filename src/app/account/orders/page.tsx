@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations, getLocale } from 'next-intl/server';
+import Price from '@/components/Price';
 
 export const dynamic = 'force-dynamic';
 
@@ -103,7 +104,7 @@ export default async function OrdersPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="font-medium text-gray-900">{order.total.toFixed(2)}€</span>
+                      <span className="font-medium text-gray-900"><Price amount={order.total} showTax={false} /></span>
                       <span className="text-gray-400 text-xs ml-1">
                         {t('for_x_products', { count: totalItems })}
                       </span>

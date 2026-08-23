@@ -114,7 +114,7 @@ export default function QuickViewModal({ isOpen, onClose, product }: QuickViewMo
           <div className="mb-4">
             <Price amount={product.price} className="text-2xl font-bold text-red-600" />
             {product.compareAtPrice && product.compareAtPrice > product.price && (
-              <span className="text-gray-400 line-through text-sm ml-2">${product.compareAtPrice.toFixed(2)}</span>
+              <Price amount={product.compareAtPrice} showTax={false} className="text-gray-400 line-through text-sm ml-2" />
             )}
           </div>
 

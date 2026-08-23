@@ -326,9 +326,9 @@ export default function Header({
                           <div className="flex-1 min-w-0">
                             <h4 className="text-sm font-semibold text-gray-900 truncate">{product.title}</h4>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-orange-600 font-bold text-sm">${product.price.toFixed(2)}</span>
+                              <Price amount={product.price} showTax={false} className="text-orange-600 font-bold text-sm" />
                               {product.compareAtPrice && product.compareAtPrice > product.price && (
-                                <span className="text-gray-400 line-through text-xs">${product.compareAtPrice.toFixed(2)}</span>
+                                <Price amount={product.compareAtPrice} showTax={false} className="text-gray-400 line-through text-xs" />
                               )}
                             </div>
                           </div>
@@ -384,7 +384,9 @@ export default function Header({
               )}
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-gray-900 text-sm md:text-base">{mounted ? `$${cartTotal.toFixed(2)}` : '$0.00'}</span>
+              <span className="font-bold text-gray-900 text-sm md:text-base">
+                {mounted ? <Price amount={cartTotal} showTax={false} /> : <Price amount={0} showTax={false} />}
+              </span>
               <span className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">{t('cart')}</span>
             </div>
           </div>

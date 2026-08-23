@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Price from '@/components/Price';
 import { 
   createShippingZone, updateShippingZone, deleteShippingZone,
   addShippingMethod, updateShippingMethod, deleteShippingMethod 
@@ -281,11 +283,11 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                           <td className="px-3 py-2">
                             {method.type === 'Livraison Gratuite' || method.type === 'Collecte au magasin' 
                               ? 'Gratuit' 
-                              : `$${method.rate.toFixed(2)}`}
+                              : <Price amount={method.rate} showTax={false} />}
                           </td>
                           <td className="px-3 py-2 text-gray-500">
                             {method.type === 'Livraison Gratuite' && method.minOrderAmount 
-                              ? `From ${method.minOrderAmount.toFixed(2)}` 
+                              ? <><span className="mr-1">From</span><Price amount={method.minOrderAmount} showTax={false} /></> 
                               : '-'}
                           </td>
                           <td className="px-3 py-2">

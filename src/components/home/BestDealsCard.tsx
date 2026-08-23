@@ -7,6 +7,7 @@ import { useWishlistStore } from '@/store/wishlistStore';
 import QuickViewModal from '@/components/product/QuickViewModal';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Price from '@/components/Price';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
@@ -142,8 +143,9 @@ export default function BestDealsCard({
               </span>
             </div>
           )}
-          
-          <p className="font-bold text-gray-900">{product.price}</p>
+          <p className="font-bold text-gray-900">
+            {product.rawPrice ? <Price amount={product.rawPrice} showTax={false} /> : product.price}
+          </p>
         </div>
       </div>
       

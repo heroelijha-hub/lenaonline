@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import DeliveryTracker from '@/components/admin/DeliveryTracker';
+import Price from '@/components/Price';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,13 +62,13 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                       <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
                     </div>
                   </div>
-                  <p className="font-medium text-sm">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-medium text-sm"><Price amount={item.price * item.quantity} showTax={false} /></p>
                 </div>
               ))}
             </div>
             <div className="mt-4 pt-4 border-t flex justify-between items-center font-bold">
               <span>Total</span>
-              <span>${order.total.toFixed(2)}</span>
+              <span><Price amount={order.total} showTax={false} /></span>
             </div>
           </div>
         </div>

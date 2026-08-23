@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { updateOrderStatus, deleteOrder } from '@/actions/admin';
 import { useState } from 'react';
+import Price from '@/components/Price';
 
 export default function OrderTable({ orders }: { orders: any[] }) {
   const t = useTranslations('Admin');
@@ -45,7 +46,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{order.id.split('-')[0]}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.user?.email || 'Guest'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">${order.total.toFixed(2)}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900"><Price amount={order.total} showTax={false} /></td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <select 
                     value={order.status}

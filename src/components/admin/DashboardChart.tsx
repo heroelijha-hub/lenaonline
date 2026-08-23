@@ -14,6 +14,7 @@ interface SalesData {
   date: string;
   amount: number;
 }
+import { useCurrency } from '@/components/CurrencyProvider';
 
 export default function DashboardChart({ data }: { data: SalesData[] }) {
   // If no data, show a placeholder
@@ -25,13 +26,11 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
     );
   }
 
-  // Format Y Axis (Currency)
-  const formatYAxis = (tickItem: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(tickItem);
+  const { formatPrice } = useCurrency();
+
+  // Format Y-axis ticks
+  const formatYAxis = (tickItem: any) => {
+    return formatPrice(tickItem);
   };
 
   // Custom Tooltip
@@ -41,7 +40,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
         <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
           <p className="text-sm font-semibold text-gray-800 mb-1">{label}</p>
           <p className="text-sm text-orange-600 font-bold">
-            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(payload[0].value)}
+            {formatPrice(payload[0].value)}
           </p>
         </div>
       );
