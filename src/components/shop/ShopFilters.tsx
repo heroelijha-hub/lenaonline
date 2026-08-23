@@ -111,7 +111,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     <div className="w-full">
       {/* Categories */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter categories</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by categories</h3>
         <div className="space-y-3">
           {categories.map((cat) => (
             <label key={cat.id} className="flex items-center cursor-pointer group">
@@ -136,10 +136,10 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
 
       {/* Price */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filtrer par prix</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by price</h3>
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">Prix Min</label>
+            <label className="text-xs text-gray-500 mb-1 block">Min Price</label>
             <input
               type="number"
               min="0"
@@ -150,7 +150,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">Prix Max</label>
+            <label className="text-xs text-gray-500 mb-1 block">Max Price</label>
             <input
               type="number"
               min="0"
@@ -165,7 +165,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
           onClick={handlePriceApply}
           className="mt-4 w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded transition-colors"
         >
-          Appliquer le prix
+          Apply price
         </button>
       </div>
 
@@ -173,7 +173,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
 
       {/* Ratings */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filtrer par notes</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by rating</h3>
         <div className="space-y-3">
           {[5, 4, 3, 2, 1].map((rating) => (
             <label key={rating} className="flex items-center cursor-pointer group">

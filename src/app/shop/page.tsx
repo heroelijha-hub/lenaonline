@@ -6,7 +6,7 @@ import ShopPagination from '@/components/shop/ShopPagination';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Boutique | Shopelios',
+  title: 'Shop | Shopelios',
   description: 'Discover our product catalog',
 };
 
@@ -112,7 +112,7 @@ export default async function ShopPage({
         <div className="max-w-7xl mx-auto text-sm text-gray-500">
           <Link href="/" className="hover:text-orange-500">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-900 font-medium">Boutique</span>
+          <span className="text-gray-900 font-medium">Shop</span>
         </div>
       </div>
 

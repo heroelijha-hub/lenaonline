@@ -45,7 +45,7 @@ export default function ShopSort({ totalResults, currentRange }: { totalResults:
           className="border-none bg-transparent text-sm font-semibold text-gray-700 focus:ring-0 cursor-pointer"
         >
           <option value="">Default Sort</option>
-          <option value="price_asc">Prix croissant</option>
+          <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
           <option value="newest">New Arrivals</option>
         </select>
