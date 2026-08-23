@@ -3,6 +3,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import CountdownTimer from './CountdownTimer';
 import ProductSliderWrapper from './ProductSliderWrapper';
+import BestDealsCard from './BestDealsCard';
 import { getTranslations } from 'next-intl/server';
 
 // Internal star component
@@ -62,6 +63,7 @@ export default async function BestDeals({ config }: { config?: any }) {
       rating: ratingCount > 0 ? Math.round(avgRating) : 0,
       ratingText: ratingCount > 0 ? `(${avgRating.toFixed(2)})` : '',
       price: `$${p.price.toFixed(2)}`,
+      rawPrice: p.price,
       discount: p.discountLabel || undefined,
       imagePlaceholder: '🛍️'
     };
@@ -108,53 +110,13 @@ export default async function BestDeals({ config }: { config?: any }) {
       <div className="mb-8 relative">
         <ProductSliderWrapper>
           {displayProducts.map((product) => (
-            <Link 
-              href={`/product/${(product as any).slug || product.id}`} 
-              key={product.id} 
-              className="flex-none w-[250px] md:w-[300px] p-5 flex flex-col group cursor-pointer hover:shadow-lg transition bg-white border rounded-lg snap-start"
-              style={{ borderColor: settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb' }}
-            >
-              {/* Product Image Area */}
-              <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
-                {product.discount && (
-                  <span className="absolute top-0 left-0 bg-orange-100 text-orange-600 text-xs font-bold px-2 py-1 rounded z-10">
-                    {product.discount}
-                  </span>
-                )}
-                {/* Image or Placeholder */}
-                {(product as any).imageUrl ? (
-                  <img src={(product as any).imageUrl} alt={product.title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
-                ) : (
-                  <div className="text-7xl group-hover:scale-110 transition duration-500">
-                    {product.imagePlaceholder}
-                  </div>
-                )}
-              </div>
-              
-              {/* Product Info */}
-              <div className="mt-auto">
-                <p className="text-xs text-gray-500 mb-1">{product.category}</p>
-                <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
-                  {product.title}
-                </h3>
-                
-                {/* Rating */}
-                {product.ratingText && (
-                  <div className="flex items-center gap-1 mb-2">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} filled={i < product.rating} />
-                      ))}
-                    </div>
-                    <span className="text-xs text-gray-500 font-medium">
-                      {product.ratingText}
-                    </span>
-                  </div>
-                )}
-                
-                <p className="font-bold text-gray-900">{product.price}</p>
-              </div>
-            </Link>
+            <BestDealsCard 
+              key={product.id}
+              product={product}
+              borderColor={settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
+              btnBgColor={settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
+              btnTextColor={settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
+            />
           ))}
         </ProductSliderWrapper>
       </div>
