@@ -1,9 +1,7 @@
-import { getRequestConfig } from 'next-intl/server';
 import { headers } from 'next/headers';
-// Import db or prisma client here. Adjust path if necessary.
 import prisma from '@/lib/prisma';
 
-export default getRequestConfig(async () => {
+export async function getI18nConfig() {
   // Get the current path from headers (Next.js middleware usually sets x-pathname or we can get it from x-invoke-path)
   const headersList = await headers();
   // A safe way to get pathname if middleware sets it, or just use a default for server components
@@ -45,4 +43,4 @@ export default getRequestConfig(async () => {
     locale,
     messages
   };
-});
+}
