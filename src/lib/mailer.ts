@@ -52,11 +52,11 @@ export async function sendEmail({ to, subject, html }: { to: string, subject: st
 
 // FORMATTER HELPERS
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(price);
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 };
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(date);
+  return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 };
 
 // --- EMAIL TEMPLATES ---

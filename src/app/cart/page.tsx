@@ -29,7 +29,7 @@ export default function CartPage() {
   const total = subtotal + (items.length > 0 ? shippingCost : 0);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(price);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
   };
 
   return (

@@ -10,7 +10,7 @@ export default async function AdminDashboardPage() {
   const stats = await getDashboardStats();
 
   const formatPrice = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
   };
 
   return (
@@ -103,7 +103,7 @@ export default async function AdminDashboardPage() {
                     <div className="flex flex-col">
                       <span className="font-semibold text-sm text-gray-900">#{order.id.slice(-6).toUpperCase()}</span>
                       <span className="text-xs text-gray-500">{order.user.email}</span>
-                      <span className="text-xs text-gray-400 mt-0.5">{new Date(order.createdAt).toLocaleDateString('fr-FR')}</span>
+                      <span className="text-xs text-gray-400 mt-0.5">{new Date(order.createdAt).toLocaleDateString('en-US')}</span>
                     </div>
                     <div className="flex flex-col items-end">
                       <span className="font-bold text-sm text-gray-900">{formatPrice(order.total)}</span>

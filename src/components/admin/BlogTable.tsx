@@ -66,7 +66,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  {new Date(article.createdAt).toLocaleDateString('fr-FR')}
+                  {new Date(article.createdAt).toLocaleDateString('en-US')}
                 </td>
                 <td className="px-6 py-4 text-right">
                   <Link 

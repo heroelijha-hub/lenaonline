@@ -51,12 +51,12 @@ export async function getDashboardStats() {
     for (let i = 29; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const dateString = d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+      const dateString = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
       salesByDayMap.set(dateString, 0);
     }
 
     recentOrders.forEach(order => {
-      const dateString = new Date(order.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+      const dateString = new Date(order.createdAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
       if (salesByDayMap.has(dateString)) {
         salesByDayMap.set(dateString, salesByDayMap.get(dateString)! + order.total);
       }

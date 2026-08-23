@@ -27,9 +27,9 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
 
   // Format Y Axis (Currency)
   const formatYAxis = (tickItem: number) => {
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR',
+      currency: 'USD',
       maximumFractionDigits: 0,
     }).format(tickItem);
   };
@@ -41,7 +41,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
         <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
           <p className="text-sm font-semibold text-gray-800 mb-1">{label}</p>
           <p className="text-sm text-orange-600 font-bold">
-            {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(payload[0].value)}
+            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(payload[0].value)}
           </p>
         </div>
       );

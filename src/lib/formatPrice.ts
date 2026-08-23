@@ -48,7 +48,7 @@ export function formatPriceNumber(
 /**
  * Calculates the tax-inclusive price if the base price is tax-exclusive, and formats the complete string.
  * If 'taxIncludedInPrice' is true: simply displays the price (ex: 120€ incl. tax)
- * S'il est faux : le prix en base est HT, on affiche "Prix HT (Prix TTC TTC)" (ex: 100€ HT (120€ TTC))
+ * If false: the base price is tax exclusive, we display "Price excl. tax (Price incl. tax)" (ex: 100$ excl. tax (120$ incl. tax))
  */
 export function formatPriceWithTax(
   amount: number,
@@ -58,11 +58,11 @@ export function formatPriceWithTax(
   const vatRate = options.defaultVatRate || 20;
 
   if (isIncluded) {
-    return `${formatPriceNumber(amount, options)} TTC`;
+    return `${formatPriceNumber(amount, options)} incl. tax`;
   } else {
     const amountTTC = amount * (1 + vatRate / 100);
     const formattedHT = formatPriceNumber(amount, options);
     const formattedTTC = formatPriceNumber(amountTTC, options);
-    return `${formattedHT} HT (${formattedTTC} TTC)`;
+    return `${formattedHT} excl. tax (${formattedTTC} incl. tax)`;
   }
 }
