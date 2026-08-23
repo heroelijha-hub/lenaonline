@@ -409,13 +409,7 @@ export default function Header({
               
               {isBottomCategoryOpen && (
                 <div className="absolute top-full left-0 w-64 bg-white border border-gray-200 shadow-xl rounded-b-md rounded-tr-md z-40 py-2">
-                  <Link 
-                    href="/search" 
-                    className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 font-medium"
-                    onClick={() => setIsBottomCategoryOpen(false)}
-                  >
-                    {t('all_categories')}
-                  </Link>
+
                   {categories.map((cat) => (
                     <Link 
                       key={cat.id} 
