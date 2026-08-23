@@ -10,7 +10,7 @@ import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
-import { getI18nConfig } from '@/i18n/request';
+import { getMessages, getLocale } from 'next-intl/server';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { locale, messages } = await getI18nConfig();
+  const messages = await getMessages();
+  const locale = await getLocale();
   
   const settingsDb = await prisma.setting.findMany();
   const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
