@@ -30,6 +30,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
   const { formatPrice } = useCurrency();
   const [addedItemName, setAddedItemName] = useState<string | null>(null);
+  const [wishlistedItemName, setWishlistedItemName] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const t = useTranslations('Product');
 
@@ -106,6 +107,19 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
 
   const notificationPortal = isClient ? document.getElementById('cart-notification-portal') : null;
 
+  const handleToggleWishlist = () => {
+    const wasWishlisted = wishlistStore.hasItem(product.id);
+    wishlistStore.toggleItem(product.id);
+    
+    // Only show notification when ADDING to wishlist
+    if (!wasWishlisted) {
+      setWishlistedItemName(product.title);
+      setTimeout(() => {
+        setWishlistedItemName(null);
+      }, 5000);
+    }
+  };
+
   return (
     <div>
       {addedItemName && notificationPortal && createPortal(
@@ -116,6 +130,19 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
           </div>
           <Link href="/cart" className="mt-4 sm:mt-0 text-xs font-bold tracking-wider hover:underline whitespace-nowrap bg-black/10 hover:bg-black/20 transition-colors px-6 py-3 rounded-sm">
             {t('view_cart_caps')}
+          </Link>
+        </div>,
+        notificationPortal
+      )}
+
+      {wishlistedItemName && notificationPortal && createPortal(
+        <div className="bg-orange-600 text-white px-6 py-4 mb-8 flex flex-col sm:flex-row items-center justify-between shadow-sm rounded-sm">
+          <div className="flex items-center gap-3 text-sm font-medium">
+            <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            <span>{t('added_to_wishlist', { name: wishlistedItemName })}</span>
+          </div>
+          <Link href="/wishlist" className="mt-4 sm:mt-0 text-xs font-bold tracking-wider hover:underline whitespace-nowrap bg-black/10 hover:bg-black/20 transition-colors px-6 py-3 rounded-sm">
+            {t('view_wishlist_caps')}
           </Link>
         </div>,
         notificationPortal
@@ -190,7 +217,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       {/* Secondary Actions */}
       <div className="flex flex-wrap gap-3 mb-8">
         <button 
-          onClick={() => wishlistStore.toggleItem(product.id)}
+          onClick={handleToggleWishlist}
           className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md border transition ${
             isWishlisted ? 'bg-orange-500 text-white border-orange-500' : 'text-gray-600 hover:text-orange-500 bg-orange-50/50 border-orange-100'
           }`}
