@@ -286,7 +286,7 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
 
     return sendEmail({
       to: userEmail,
-      subject: \`Complete your purchase\`,
+      subject: `Complete your purchase`,
       html
     });
   } catch (e) {

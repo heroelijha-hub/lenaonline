@@ -40,7 +40,7 @@ export default function AbandonedCartTable({ carts }: { carts: any[] }) {
             carts.map((cart) => (
               <tr key={cart.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {cart.firstName || cart.lastName ? \`\${cart.firstName || ''} \${cart.lastName || ''}\` : 'Visiteur'}
+                  {cart.firstName || cart.lastName ? `${cart.firstName || ''} ${cart.lastName || ''}` : 'Visiteur'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {cart.email}<br/>

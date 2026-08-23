@@ -441,9 +441,9 @@ export async function sendRecoveryEmail(id: string) {
 
     const { sendAbandonedCartRecoveryEmail } = await import('@/lib/mailer');
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
-    const checkoutUrl = \`\${baseUrl}/checkout\`;
+    const checkoutUrl = `${baseUrl}/checkout`;
 
-    const name = cart.firstName ? \`\${cart.firstName} \${cart.lastName || ''}\`.trim() : '';
+    const name = cart.firstName ? `${cart.firstName} ${cart.lastName || ''}`.trim() : '';
     
     await sendAbandonedCartRecoveryEmail(cart, cart.email, name, checkoutUrl);
     
