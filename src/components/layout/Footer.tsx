@@ -26,7 +26,7 @@ type FooterProps = {
 
 export default function Footer({ 
   supportPhone = '+08 9229 8228', 
-  supportEmail = 'info@shopelios.com',
+  supportEmail = 'info@mystore.com',
   footerBgColor = '#0B162C',
   footerTextColor = '#d1d5db',
   footerAddress1 = '2972 Westheimer Rd. Illinois 85486',
@@ -36,7 +36,7 @@ export default function Footer({
   footerNewsletterText = 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!',
   footerNewsletterPlaceholder = 'Enter your email...',
   footerCallUsText = 'Call Us Now',
-  footerCopyright = '© 2026 Shopelios All rights reserved.',
+  footerCopyright = '© 2026 My Store. All rights reserved.',
   footerSocialFacebook = '#',
   footerSocialTwitter = '#',
   footerSocialInstagram = '#',

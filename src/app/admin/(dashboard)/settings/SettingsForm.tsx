@@ -29,12 +29,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   const [enableBuyNow, setEnableBuyNow] = useState(initialSettings.ENABLE_BUY_NOW_BUTTON === 'true');
   const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
-  const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'Shopelios');
+  const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'My Store');
   const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
   const [chatIconFile, setChatIconFile] = useState<File | null>(null);
 
   // Contact & Newsletter settings
-  const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com');
+  const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com');
   const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!');
 
   // SMTP Settings
@@ -60,11 +60,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   // Design & Header settings
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
-  const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Bienvenue sur notre boutique Shopelios !');
+  const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
   const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
-  const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@shopelios.com');
+  const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
   
   // Top Bar settings
   const defaultTopBarLinks = [
@@ -110,8 +110,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   });
   const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Main Street, London');
   const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
-  const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com');
-  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com');
+  const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@mystore.com');
+  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.mystore.com');
   const [mobileHeaderBorderColor, setMobileHeaderBorderColor] = useState(initialSettings.MOBILE_HEADER_BORDER_COLOR || '#d1d5db');
 
   // All Categories Button Settings
@@ -142,7 +142,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [footerNewsletterPlaceholder, setFooterNewsletterPlaceholder] = useState(initialSettings.FOOTER_NEWSLETTER_PLACEHOLDER || 'Enter your email...');
   
   const [footerCallUsText, setFooterCallUsText] = useState(initialSettings.FOOTER_CALL_US_TEXT || 'Call Us Now');
-  const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 Shopelios All rights reserved.');
+  const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 My Store. All rights reserved.');
   
   const [footerSocialFacebook, setFooterSocialFacebook] = useState(initialSettings.FOOTER_SOCIAL_FACEBOOK || '#');
   const [footerSocialTwitter, setFooterSocialTwitter] = useState(initialSettings.FOOTER_SOCIAL_TWITTER || '#');
@@ -500,7 +500,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 value={contactReceiverEmail}
                 onChange={(e) => setContactReceiverEmail(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                placeholder="admin@shopelios.com"
+                placeholder="admin@mystore.com"
               />
               <p className="mt-2 text-xs text-gray-500">The e-mail address that will receive contact form messages and registration notifications.</p>
             </div>
@@ -571,7 +571,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               value={smtpFrom}
               onChange={(e) => setSmtpFrom(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Boutique Shopelios <contact@shopelios.com>"
+              placeholder="My Store <contact@mystore.com>"
             />
           </div>
         </div>

@@ -5,15 +5,16 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { data: page } = await getPageBySlug(params.slug);
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
   
   if (!page || !page.isPublished) {
     return {
-      title: 'Page introuvable - Shopelios',
+      title: `Page not found - ${storeName}`,
     };
   }
 
   return {
-    title: `${page.title} - Shopelios`,
+    title: `${page.title} - ${storeName}`,
   };
 }
 

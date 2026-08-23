@@ -22,7 +22,7 @@ export const useWishlistStore = create<WishlistStore>()(
       hasItem: (productId) => get().items.includes(productId),
     }),
     {
-      name: 'shopelios-wishlist',
+      name: 'mystore-wishlist',
     }
   )
 );

@@ -158,7 +158,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         
         const allSettings = await prisma.setting.findMany();
         const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
-        const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@shopelios.com';
+        const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
         
         const { formatPriceNumber, defaultCurrencyOptions } = await import('@/lib/formatPrice');
         const currencyOptions = {

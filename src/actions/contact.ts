@@ -18,7 +18,7 @@ export async function submitContactMessage(formData: FormData) {
     // Save to DB if needed, or just simulate email sending
     // For now, we simulate sending an email to the configured admin email
     const settings = await getSettings();
-    const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com';
+    const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
 
     console.log(`[CONTACT] Sending email to: ${receiverEmail}`);
     console.log(`[CONTACT] From: ${name} <${email}>`);
@@ -41,7 +41,7 @@ export async function submitNewsletter(formData: FormData) {
     }
 
     const settings = await getSettings();
-    const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@shopelios.com';
+    const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
     const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!';
 
     console.log(`[NEWSLETTER] New subscription: ${email}`);

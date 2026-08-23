@@ -25,15 +25,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await prisma.product.findUnique({
     where: { slug }
   });
+  
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
   if (!product) {
     return {
-      title: 'Produit introuvable - Shopelios',
+      title: `Product not found - ${storeName}`,
     };
   }
 
   return {
-    title: `${product.title} | Shopelios`,
+    title: `${product.title} | ${storeName}`,
     description: product.shortDescription || product.description?.substring(0, 160),
     alternates: {
       canonical: `/product/${slug}`,
@@ -174,7 +176,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <div className="space-y-2 text-sm">
                 <p><span className="font-semibold text-gray-900">{t('sku')}</span> {product.id.split('-')[0].toUpperCase()}</p>
                 <p><span className="font-semibold text-gray-900">{t('categories')}</span> {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('uncategorized')}</p>
-                <p><span className="font-semibold text-gray-900">{t('tags')}</span> Shopelios, Featured</p>
+                <p><span className="font-semibold text-gray-900">{t('tags')}</span> {storeName}, Featured</p>
               </div>
 
             </div>

@@ -5,8 +5,10 @@ import ShopSort from '@/components/shop/ShopSort';
 import ShopPagination from '@/components/shop/ShopPagination';
 import Link from 'next/link';
 
+const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+
 export const metadata = {
-  title: 'Shop | Shopelios',
+  title: `Shop | ${storeName}`,
   description: 'Discover our product catalog',
 };
 

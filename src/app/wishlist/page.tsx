@@ -1,9 +1,11 @@
 import WishlistClient from './WishlistClient';
 import { Metadata } from 'next';
 
+const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+
 export const metadata: Metadata = {
-  title: 'My Wishlist | Shopelios',
-  description: 'Manage your favorite products on Shopelios',
+  title: `My Wishlist | ${storeName}`,
+  description: `Manage your favorite products on ${storeName}`,
 };
 
 export default function WishlistPage() {

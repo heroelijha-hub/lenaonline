@@ -44,7 +44,7 @@ type HeaderProps = {
 };
 
 export default function Header({ 
-  announcement = 'Welcome to Shopelios', 
+  announcement = 'Welcome to My Store', 
   logoImage = '',
   menuLinks = [],
   topBarLinks = [

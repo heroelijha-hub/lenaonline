@@ -17,10 +17,12 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://shopelios.vercel.app"),
-  title: "Shopelios | Boutique E-commerce",
-  description: "Boutique en ligne 100% fonctionnelle",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app"),
+  title: `${storeName} | E-commerce`,
+  description: "A complete online store",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -84,11 +86,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     prisma.product.count({ where: { compareAtPrice: { not: null } } })
   ]);
 
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+
   const storeSettings = {
-    announcement: settingsMap.HEADER_ANNOUNCEMENT || 'Welcome to Shopelios',
+    announcement: settingsMap.HEADER_ANNOUNCEMENT || `Welcome to ${storeName}`,
     logoImage: settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
     supportPhone: settingsMap.HEADER_SUPPORT_PHONE || '+08 9229 8228',
-    supportEmail: settingsMap.HEADER_SUPPORT_EMAIL || 'support@shopelios.com',
+    supportEmail: settingsMap.HEADER_SUPPORT_EMAIL || 'support@mystore.com',
     menuLinks: menuLinks,
     topBarLinks: topBarLinks,
     topBarBgColor: settingsMap.TOP_BAR_BG_COLOR || '#ffffff',
@@ -102,7 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerNewsletterText: settingsMap.FOOTER_NEWSLETTER_TEXT || 'Get 15% off your first purchase! Plus, be the first to know about sales new product launches and exclusive offers!',
     footerNewsletterPlaceholder: settingsMap.FOOTER_NEWSLETTER_PLACEHOLDER || 'Enter your email...',
     footerCallUsText: settingsMap.FOOTER_CALL_US_TEXT || 'Call Us Now',
-    footerCopyright: settingsMap.FOOTER_COPYRIGHT || '© 2026 Shopelios All rights reserved.',
+    footerCopyright: settingsMap.FOOTER_COPYRIGHT || `© 2026 ${storeName}. All rights reserved.`,
     footerSocialFacebook: settingsMap.FOOTER_SOCIAL_FACEBOOK || '#',
     footerSocialTwitter: settingsMap.FOOTER_SOCIAL_TWITTER || '#',
     footerSocialInstagram: settingsMap.FOOTER_SOCIAL_INSTAGRAM || '#',
@@ -113,11 +117,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       select: { id: true, name: true, slug: true } 
     }),
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
-    maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Site en maintenance',
+    maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Under Maintenance',
     maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!',
     maintenanceImage: settingsMap.MAINTENANCE_IMAGE || '',
     searchBorderColor: settingsMap.SEARCH_BORDER_COLOR || '#d1d5db',
-    searchPlaceholder: settingsMap.SEARCH_PLACEHOLDER || 'Rechercher un produit...',
+    searchPlaceholder: settingsMap.SEARCH_PLACEHOLDER || 'Search products...',
     searchBtnText: settingsMap.SEARCH_BTN_TEXT || 'Search',
     searchBtnBgColor: settingsMap.SEARCH_BTN_BG_COLOR || '#f97316',
     searchBtnTextColor: settingsMap.SEARCH_BTN_TEXT_COLOR || '#111827',
@@ -133,10 +137,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         return defaultMenuLinks;
       }
     })(),
-    mobileContactAddress: settingsMap.MOBILE_CONTACT_ADDRESS || '123 Rue Principale, Paris',
-    mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89',
-    mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com',
-    mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com',
+    mobileContactAddress: settingsMap.MOBILE_CONTACT_ADDRESS || '123 Main Street',
+    mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE || '+1 234 567 89',
+    mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@mystore.com',
+    mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.mystore.com',
     mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
     allCategoriesBgColor: settingsMap.ALL_CATEGORIES_BG_COLOR || '#111827', // text-gray-900 by default
     allCategoriesTextColor: settingsMap.ALL_CATEGORIES_TEXT_COLOR || '#ffffff', // text-white

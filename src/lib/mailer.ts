@@ -27,7 +27,8 @@ async function getTransporter() {
     },
   });
 
-  return { transporter, from: settings.SMTP_FROM || `"Shopelios" <${settings.SMTP_USER}>`, logo: settings.HEADER_LOGO_IMAGE };
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+  return { transporter, from: settings.SMTP_FROM || `"${storeName}" <${settings.SMTP_USER}>`, logo: settings.HEADER_LOGO_IMAGE };
 }
 
 // General email sender

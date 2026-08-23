@@ -29,8 +29,8 @@ export default function AdminLoginPage() {
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900">Espace Admin</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign in to manage your Shopelios store
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Sign in to manage your store
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

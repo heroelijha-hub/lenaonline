@@ -60,7 +60,7 @@ export const useCartStore = create<CartStore>()(
       getTotalPrice: () => get().items.reduce((total, item) => total + item.price * item.quantity, 0),
     }),
     {
-      name: 'shopelios-cart',
+      name: 'mystore-cart',
       partialize: (state) => ({ items: state.items, coupon: state.coupon }),
     }
   )
