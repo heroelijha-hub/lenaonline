@@ -35,7 +35,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
         <tbody className="bg-white divide-y divide-gray-200">
           {coupons.length === 0 ? (
             <tr>
-              <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">Aucun coupon.</td>
+              <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">No coupons.</td>
             </tr>
           ) : (
             coupons.map((coupon) => (

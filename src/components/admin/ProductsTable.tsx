@@ -55,7 +55,7 @@ export default function ProductsTable({ products, categories }: { products: any[
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit & Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product & Actions</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
           </tr>
@@ -64,7 +64,7 @@ export default function ProductsTable({ products, categories }: { products: any[
           {products.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
-                Aucun produit dans le catalogue. Cliquez sur "Add un produit" pour commencer.
+                No products in the catalog. Click "Add a product" to get started.
               </td>
             </tr>
           ) : (
@@ -93,11 +93,11 @@ export default function ProductsTable({ products, categories }: { products: any[
                         </div>
                         <div className="flex gap-4">
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">{t("base_price")}</label>
+                            <label className="text-xs font-semibold text-gray-600">{"Regular price ($)"}</label>
                             <input type="number" step="0.01" value={editData.price} onChange={e => setEditData({...editData, price: parseFloat(e.target.value) || 0})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">Price promo ($)</label>
+                            <label className="text-xs font-semibold text-gray-600">Promo price ($)</label>
                             <input type="number" step="0.01" value={editData.compareAtPrice} onChange={e => setEditData({...editData, compareAtPrice: e.target.value ? parseFloat(e.target.value) : ''})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                         </div>

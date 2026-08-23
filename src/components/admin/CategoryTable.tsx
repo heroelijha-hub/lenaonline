@@ -118,7 +118,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       onChange={(e) => setEditParentId(e.target.value)}
                       className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm bg-white"
                     >
-                      <option value="">Aucun</option>
+                      <option value="">None</option>
                       {categories.filter(c => c.id !== cat.id).map(c => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
@@ -130,7 +130,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   {editingId === cat.id ? (
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => handleSaveEdit(cat.id)} className="text-green-600 hover:text-green-900">Sauver</button>
+                      <button onClick={() => handleSaveEdit(cat.id)} className="text-green-600 hover:text-green-900">Save</button>
                       <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-900">Cancel</button>
                     </div>
                   ) : (

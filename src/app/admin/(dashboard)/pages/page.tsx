@@ -14,13 +14,13 @@ export default async function AdminPagesList() {
           href="/admin/pages/new" 
           className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition"
         >
-          Create une page
+          Create a page
         </Link>
       </div>
 
       {error && (
         <div className="bg-red-50 text-red-600 p-4 rounded-md mb-6 border border-red-200">
-          Erreur: {error}
+          Error: {error}
         </div>
       )}
 
@@ -44,7 +44,7 @@ export default async function AdminPagesList() {
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       page.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {page.isPublished ? 'Publishede' : 'Draft'}
+                      {page.isPublished ? 'Published' : 'Draft'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-3">

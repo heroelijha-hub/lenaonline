@@ -113,7 +113,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
               <td className="px-6 py-4 text-right space-x-2">
                 {editingId === review.id ? (
                   <>
-                    <button onClick={() => handleSave(review.id)} className="text-green-600 font-bold hover:underline">Sauver</button>
+                    <button onClick={() => handleSave(review.id)} className="text-green-600 font-bold hover:underline">Save</button>
                     <button onClick={() => setEditingId(null)} className="text-gray-500 hover:underline">Cancel</button>
                   </>
                 ) : (
@@ -127,7 +127,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
           ))}
           {reviews.length === 0 && (
             <tr>
-              <td colSpan={6} className="px-6 py-10 text-center text-gray-500">Aucun avis pour le moment.</td>
+              <td colSpan={6} className="px-6 py-10 text-center text-gray-500">No reviews yet.</td>
             </tr>
           )}
         </tbody>

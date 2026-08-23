@@ -37,7 +37,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
         <tbody className="bg-white divide-y divide-gray-200">
           {orders.length === 0 ? (
             <tr>
-              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">Aucune commande.</td>
+              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">No orders.</td>
             </tr>
           ) : (
             orders.map((order) => (

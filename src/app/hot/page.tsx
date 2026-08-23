@@ -28,7 +28,7 @@ export default async function HotProductsPage() {
 
         {products.length === 0 ? (
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
-            <h2 className="text-xl font-medium text-gray-900 mb-2">Aucun produit populaire pour le moment</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">No popular products yet</h2>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
               Back to Home
             </Link>

@@ -71,7 +71,7 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
       {/* Sidebar: Sessions List */}
       <div className="w-1/3 border-r border-gray-200 flex flex-col bg-gray-50">
         <div className="p-4 border-b border-gray-200 bg-white">
-          <h2 className="font-bold text-gray-900">Conversations en cours</h2>
+          <h2 className="font-bold text-gray-900">Active Conversations</h2>
         </div>
         <div className="flex-1 overflow-y-auto">
           {sessions.map((s) => (
@@ -92,12 +92,12 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
                 <p className="text-xs text-orange-600 mb-1 truncate">{s.guestEmail}</p>
               )}
               <p className="text-xs text-gray-500 truncate">
-                {s.messages?.[0]?.content || 'Aucun message'}
+                {s.messages?.[0]?.content || 'No messages'}
               </p>
             </button>
           ))}
           {sessions.length === 0 && (
-            <div className="p-4 text-sm text-gray-500 text-center">Aucune conversation.</div>
+            <div className="p-4 text-sm text-gray-500 text-center">No conversations.</div>
           )}
         </div>
       </div>

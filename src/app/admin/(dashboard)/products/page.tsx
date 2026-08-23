@@ -11,12 +11,12 @@ export default async function ProductsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Catalogue Products</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Product Catalog</h1>
         <Link 
           href="/admin/products/new" 
           className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md transition"
         >
-          + Add un produit
+          + Add a product
         </Link>
       </div>
 

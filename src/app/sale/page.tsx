@@ -27,7 +27,7 @@ export default async function SaleProductsPage() {
 
         {products.length === 0 ? (
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
-            <h2 className="text-xl font-medium text-gray-900 mb-2">Aucune promotion en cours</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">No ongoing promotions</h2>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
               Back to Home
             </Link>

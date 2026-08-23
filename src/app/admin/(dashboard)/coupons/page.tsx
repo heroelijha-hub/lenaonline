@@ -10,7 +10,7 @@ export default async function CouponsPage() {
 
   return (
     <div className="max-w-6xl mx-auto flex gap-8 items-start">
-      {/* Colonne gauche: Formulaire */}
+      {/* Left column: Form */}
       <div className="w-1/3 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h2 className="text-lg font-bold text-gray-900 mb-6">{t("new_coupon")}</h2>
         {/* @ts-expect-error Server Action typing */}
@@ -35,12 +35,12 @@ export default async function CouponsPage() {
             <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">{t("active_immediately")}</label>
           </div>
           <button type="submit" className="w-full bg-orange-500 text-white font-medium py-2 rounded hover:bg-orange-600 transition">
-            Create le Coupon
+            Create Coupon
           </button>
         </form>
       </div>
 
-      {/* Colonne droite: Liste */}
+      {/* Right column: List */}
       <div className="w-2/3">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">{t("manage_coupons")}</h1>
         <CouponTable coupons={coupons} />

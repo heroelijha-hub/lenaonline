@@ -138,12 +138,12 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   return (
     <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-100">
       <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        {isEditing ? `Edit : ${initialData.title}` : 'Add un New Produit'}
+        {isEditing ? `Edit : ${initialData.title}` : 'Add New Product'}
       </h1>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Type de produit */}
+        {/* Product type */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">{t("product_type")}</label>
           <select 
@@ -159,7 +159,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title du produit *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Product title *</label>
             <input 
               type="text" 
               name="title" 
@@ -207,10 +207,10 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
         </div>
 
-        {/* Price & Stock (Pour Simple Produit ou prix de base) */}
+        {/* Price & Stock (for simple product or base price) */}
         <div className="grid grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t("base_price_req")}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{"Regular price ($) *"}</label>
             <input type="number" step="0.01" name="price" defaultValue={initialData?.price} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
@@ -220,12 +220,12 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           {productType === 'SIMPLE' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Stock (Leave empty = unlimited)</label>
-              <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder="En stock" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder="In stock" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
             </div>
           )}
         </div>
 
-        {/* Attributs & Variations */}
+        {/* Attributes & Variations */}
         {productType === 'VARIABLE' && (
           <div className="border border-blue-200 bg-blue-50/30 p-6 rounded-lg space-y-8">
             {/* Attributes section */}
@@ -233,20 +233,20 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">{t("attributes")}</h3>
                 <button type="button" onClick={addAttribute} className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">
-                  + Add un attribut
+                  + Add attribute
                 </button>
               </div>
               <div className="space-y-3">
                 {attributes.map((attr, idx) => (
                   <div key={idx} className="flex gap-4 items-start bg-white p-3 border border-gray-200 rounded">
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Name (ex: Couleur)</label>
+                      <label className="block text-xs text-gray-500 mb-1">Name (ex: Color)</label>
                       <input 
                         type="text" 
                         value={attr.name} 
                         onChange={e => { const newAttr = [...attributes]; newAttr[idx].name = e.target.value; setAttributes(newAttr); }}
                         className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm"
-                        placeholder="Couleur"
+                        placeholder="Color"
                       />
                     </div>
                     <div className="flex-[2]">
@@ -256,7 +256,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                         value={attr.options} 
                         onChange={e => { const newAttr = [...attributes]; newAttr[idx].options = e.target.value; setAttributes(newAttr); }}
                         className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm"
-                        placeholder="Rouge | Bleu | Vert"
+                        placeholder="Red | Blue | Green"
                       />
                     </div>
                     <button type="button" onClick={() => removeAttribute(idx)} className="mt-6 text-red-500 hover:text-red-700 p-1">
@@ -273,7 +273,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">{t("variations")}</h3>
                 <button type="button" onClick={addVariation} disabled={attributes.length === 0} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 disabled:opacity-50">
-                  + Add une variation
+                  + Add variation
                 </button>
               </div>
               <div className="space-y-3">
@@ -285,7 +285,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       {attributes.map(attr => (
                         <div key={attr.name}>
-                          <label className="block text-xs text-gray-500 mb-1">{attr.name || 'Attribut'}</label>
+                          <label className="block text-xs text-gray-500 mb-1">{attr.name || 'Attribute'}</label>
                           <select 
                             value={v.attributes[attr.name] || ''}
                             onChange={e => {
@@ -305,7 +305,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     </div>
                     <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-3">
                       <div>
-                        <label className="block text-xs text-gray-500 mb-1">Price de la variation ($)</label>
+                        <label className="block text-xs text-gray-500 mb-1">Variation price ($)</label>
                         <input 
                           type="number" step="0.01" 
                           value={v.price} 
@@ -336,7 +336,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d&apos;images (Cloudinary - max 20)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Image Gallery (Cloudinary - max 20)</label>
           <p className="text-xs text-gray-500 mb-2">{t("image_gallery_desc")}</p>
           {existingImages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
@@ -366,7 +366,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     &times;
                   </button>
                   <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-[10px] text-center opacity-0 group-hover:opacity-100 transition">
-                    Ordre: {idx + 1}
+                    Order: {idx + 1}
                   </div>
                 </div>
               ))}
@@ -387,7 +387,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           )}
         </div>
 
-        {/* Description Courte & Longue */}
+        {/* Short & Long Description */}
         <div className="space-y-8 pb-8">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{t("short_desc")}</label>
@@ -449,7 +449,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                 </button>
               </span>
             ))}
-            {tags.length === 0 && <p className="text-xs text-gray-500 italic">Aucun tag pour le moment.</p>}
+            {tags.length === 0 && <p className="text-xs text-gray-500 italic">No tags yet.</p>}
           </div>
         </div>
 
@@ -457,11 +457,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-3 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
           <div className="flex items-center">
             <input type="checkbox" name="isBestSeller" id="isBestSeller" defaultChecked={initialData?.isBestSeller} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">Mettre en &quot;Best Seller&quot;</label>
+            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">Mark as "Best Seller"</label>
           </div>
           <div className="flex items-center">
             <input type="checkbox" name="isDealOfTheDay" id="isDealOfTheDay" defaultChecked={initialData?.isDealOfTheDay} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">Mettre en &quot;Deal of the Day&quot;</label>
+            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">Mark as "Deal of the Day"</label>
           </div>
           <div>
             <input type="text" name="discountLabel" defaultValue={initialData?.discountLabel} placeholder="Label (ex: -14%)" className="w-full px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
@@ -482,7 +482,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             disabled={isLoading}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
           >
-            {isLoading ? 'Saving...' : (isEditing ? 'Update le Produit' : 'Save le Produit')}
+            {isLoading ? 'Saving...' : (isEditing ? 'Update Product' : 'Save Product')}
           </button>
         </div>
 

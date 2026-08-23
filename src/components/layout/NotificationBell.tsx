@@ -125,7 +125,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="p-4 text-center text-sm text-gray-500">
-                Aucune notification
+                No notifications
               </div>
             ) : (
               <ul className="divide-y divide-gray-100">

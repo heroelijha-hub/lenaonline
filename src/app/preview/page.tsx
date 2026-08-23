@@ -71,7 +71,7 @@ export default async function PreviewPage() {
     <div className="min-h-screen bg-white">
       <main>
         {activeSections.length > 0 ? activeSections.map(renderSection) : (
-          <div className="flex items-center justify-center h-64 text-gray-400">Aucune section active.</div>
+          <div className="flex items-center justify-center h-64 text-gray-400">No active sections.</div>
         )}
       </main>
     </div>
