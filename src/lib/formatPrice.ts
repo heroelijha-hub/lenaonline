@@ -58,7 +58,7 @@ export function formatPriceWithTax(
   const vatRate = options.defaultVatRate || 20;
 
   if (isIncluded) {
-    return `${formatPriceNumber(amount, options)} incl. tax`;
+    return formatPriceNumber(amount, options);
   } else {
     const amountTTC = amount * (1 + vatRate / 100);
     const formattedHT = formatPriceNumber(amount, options);
