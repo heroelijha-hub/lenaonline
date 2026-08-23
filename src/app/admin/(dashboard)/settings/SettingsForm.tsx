@@ -108,7 +108,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       return defaultMenu;
     }
   });
-  const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Rue Principale, Paris');
+  const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Main Street, London');
   const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
   const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@shopelios.com');
   const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.shopelios.com');
@@ -120,7 +120,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   // Search Bar (Ajax) settings
   const [searchBorderColor, setSearchBorderColor] = useState(initialSettings.SEARCH_BORDER_COLOR || '#d1d5db');
-  const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Rechercher un produit...');
+  const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Search for a product...');
   const [searchBtnText, setSearchBtnText] = useState(initialSettings.SEARCH_BTN_TEXT || 'Search');
   const [searchBtnBgColor, setSearchBtnBgColor] = useState(initialSettings.SEARCH_BTN_BG_COLOR || '#f97316');
   const [searchBtnTextColor, setSearchBtnTextColor] = useState(initialSettings.SEARCH_BTN_TEXT_COLOR || '#111827');
@@ -162,7 +162,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   });
 
   // 404 Page settings
-  const [notFoundTitle, setNotFoundTitle] = useState(initialSettings.NOT_FOUND_TITLE || 'Oops! Cette page est introuvable.');
+  const [notFoundTitle, setNotFoundTitle] = useState(initialSettings.NOT_FOUND_TITLE || 'Oops! This page could not be found.');
   const [notFoundText, setNotFoundText] = useState(initialSettings.NOT_FOUND_TEXT || 'It seems we cannot find the page you are looking for. It may have been moved or deleted.');
   const [notFoundCta, setNotFoundCta] = useState(initialSettings.NOT_FOUND_CTA || 'Back to Home');
   const [notFoundBgColor, setNotFoundBgColor] = useState(initialSettings.NOT_FOUND_BG_COLOR || '#000000');
@@ -171,7 +171,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
   // Maintenance Page Settings
   const [maintenanceMode, setMaintenanceMode] = useState(initialSettings.MAINTENANCE_MODE === 'true');
-  const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site en maintenance');
+  const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site under maintenance');
   const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!');
   const [maintenanceImage, setMaintenanceImage] = useState(initialSettings.MAINTENANCE_IMAGE || '');
   const [maintenanceFile, setMaintenanceFile] = useState<File | null>(null);
@@ -371,7 +371,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setCurrencyPosition(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value="left">Gauche (ex: $10)</option>
+              <option value="left">Left (ex: $10)</option>
               <option value="right">{t("right_ex")}</option>
               <option value="left-space">{t("left_space_ex")}</option>
               <option value="right-space">{t("right_space_ex")}</option>
@@ -978,7 +978,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <h4 className="font-semibold text-gray-800 mb-2">Contact Section</h4>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Adresse</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
             <input type="text" value={mobileContactAddress} onChange={e => setMobileContactAddress(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
@@ -1072,7 +1072,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 </select>
               </div>
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Texte</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Text</label>
                 <input
                   type="text"
                   value={link.label}
@@ -1215,7 +1215,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <h4 className="text-md font-medium text-gray-800 mb-4">Textes d&apos;interface (Titres et Labels)</h4>
+            <h4 className="text-md font-medium text-gray-800 mb-4">Interface Texts (Titles and Labels)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Addresses Title (ex: Our Locations)</label>
@@ -1230,7 +1230,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 <input type="text" value={footerNewsletterPlaceholder} onChange={e => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Texte &quot;Appelez-nous&quot; (ex: Call Us Now)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">&quot;Call us&quot; Text (ex: Call Us Now)</label>
                 <input type="text" value={footerCallUsText} onChange={e => setFooterCallUsText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
             </div>
