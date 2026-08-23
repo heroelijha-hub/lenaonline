@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { logoutUser } from '@/actions/auth';
 import { useTranslations } from 'next-intl';
 
+export const dynamic = 'force-dynamic';
+
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
