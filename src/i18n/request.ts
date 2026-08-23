@@ -37,8 +37,12 @@ export default getRequestConfig(async () => {
     locale = isAdminRoute ? activeLanguage : 'en';
   }
 
+  const messages = locale === 'fr' 
+    ? (await import('../../messages/fr.json')).default
+    : (await import('../../messages/en.json')).default;
+
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default
+    messages
   };
 });

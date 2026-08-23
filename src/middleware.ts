@@ -59,6 +59,9 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Set x-pathname to be used by i18n
+  response.headers.set('x-pathname', url.pathname)
+
   return response
 }
 
