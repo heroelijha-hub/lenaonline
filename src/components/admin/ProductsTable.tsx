@@ -1,10 +1,12 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Link from 'next/link';
 import { deleteProduct, duplicateProduct, quickEditProduct } from '@/actions/admin';
 
 export default function ProductsTable({ products, categories }: { products: any[], categories: any[] }) {
+  const t = useTranslations('Admin');
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -91,7 +93,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         </div>
                         <div className="flex gap-4">
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">Price de base ($)</label>
+                            <label className="text-xs font-semibold text-gray-600">{t("base_price")}</label>
                             <input type="number" step="0.01" value={editData.price} onChange={e => setEditData({...editData, price: parseFloat(e.target.value) || 0})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                           <div className="flex flex-col gap-1 flex-1">
@@ -137,15 +139,15 @@ export default function ProductsTable({ products, categories }: { products: any[
                         
                         {/* Woo-style Row Actions */}
                         <div className="flex items-center gap-3 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Link href={`/admin/products/edit/${product.id}`} className="text-blue-600 hover:underline">Edit</Link>
+                          <Link href={`/admin/products/edit/${product.id}`} className="text-blue-600 hover:underline">{t("product_edit")}</Link>
                           <span className="text-gray-300">|</span>
-                          <button onClick={() => startEdit(product)} className="text-blue-600 hover:underline">Modification rapide</button>
+                          <button onClick={() => startEdit(product)} className="text-blue-600 hover:underline">{t("product_quick_edit")}</button>
                           <span className="text-gray-300">|</span>
-                          <button onClick={() => handleDelete(product.id)} disabled={isLoading} className="text-red-600 hover:underline">Corbeille</button>
+                          <button onClick={() => handleDelete(product.id)} disabled={isLoading} className="text-red-600 hover:underline">{t("product_trash")}</button>
                           <span className="text-gray-300">|</span>
-                          <Link href={`/product/${product.slug}`} target="_blank" className="text-blue-600 hover:underline">Voir</Link>
+                          <Link href={`/product/${product.slug}`} target="_blank" className="text-blue-600 hover:underline">{t("product_view")}</Link>
                           <span className="text-gray-300">|</span>
-                          <button onClick={() => handleDuplicate(product.id)} disabled={isLoading} className="text-blue-600 hover:underline">Dupliquer</button>
+                          <button onClick={() => handleDuplicate(product.id)} disabled={isLoading} className="text-blue-600 hover:underline">{t("product_duplicate")}</button>
                         </div>
                       </>
                     )}
@@ -155,7 +157,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm align-top">
                     {product.stock === null ? (
-                      <span className="text-teal-600 font-medium">En stock</span>
+                      <span className="text-teal-600 font-medium">{t("in_stock")}</span>
                     ) : product.stock > 0 ? (
                       <span className="text-teal-600 font-medium">{product.stock} restants</span>
                     ) : (

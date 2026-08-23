@@ -1,5 +1,5 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCategories, createProduct, uploadImage } from '@/actions/admin';
@@ -9,6 +9,8 @@ import 'react-quill-new/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
+  const t = useTranslations('Admin');
+
   const router = useRouter();
   const parseJSON = (data: any, fallback: any = []) => {
     if (!data) return fallback;
@@ -143,15 +145,15 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         
         {/* Type de produit */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Type de Produit</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("product_type")}</label>
           <select 
             name="type" 
             value={productType} 
             onChange={(e) => setProductType(e.target.value as any)} 
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 bg-gray-50 font-semibold"
           >
-            <option value="SIMPLE">Produit Simple</option>
-            <option value="VARIABLE">Produit Variable</option>
+            <option value="SIMPLE">{t("simple_product")}</option>
+            <option value="VARIABLE">{t("variable_product")}</option>
           </select>
         </div>
 
@@ -208,11 +210,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         {/* Price & Stock (Pour Simple Produit ou prix de base) */}
         <div className="grid grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Price de base ($) *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("base_price_req")}</label>
             <input type="number" step="0.01" name="price" defaultValue={initialData?.price} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Price barré ($)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("sale_price")}</label>
             <input type="number" step="0.01" name="compareAtPrice" defaultValue={initialData?.compareAtPrice} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           {productType === 'SIMPLE' && (
@@ -229,7 +231,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             {/* Attributes section */}
             <div>
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Attributs</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t("attributes")}</h3>
                 <button type="button" onClick={addAttribute} className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">
                   + Add un attribut
                 </button>
@@ -262,14 +264,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     </button>
                   </div>
                 ))}
-                {attributes.length === 0 && <p className="text-sm text-gray-500 italic">Aucun attribut. Ajoutez-en pour pouvoir créer des variations.</p>}
+                {attributes.length === 0 && <p className="text-sm text-gray-500 italic">{t("no_attributes")}</p>}
               </div>
             </div>
 
             {/* Variations section */}
             <div className="border-t border-blue-200 pt-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Variations</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t("variations")}</h3>
                 <button type="button" onClick={addVariation} disabled={attributes.length === 0} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 disabled:opacity-50">
                   + Add une variation
                 </button>
@@ -326,7 +328,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     </div>
                   </div>
                 ))}
-                {variations.length === 0 && <p className="text-sm text-gray-500 italic">Ajoutez des variations avec leurs propres prix.</p>}
+                {variations.length === 0 && <p className="text-sm text-gray-500 italic">{t("add_variation_desc")}</p>}
               </div>
             </div>
 
@@ -335,7 +337,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Galerie d&apos;images (Cloudinary - max 20)</label>
-          <p className="text-xs text-gray-500 mb-2">Glissez-déposez les images existantes pour modifier leur ordre. Cliquez sur la croix pour supprimer.</p>
+          <p className="text-xs text-gray-500 mb-2">{t("image_gallery_desc")}</p>
           {existingImages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
               {existingImages.map((img: string, idx: number) => (
@@ -388,13 +390,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         {/* Description Courte & Longue */}
         <div className="space-y-8 pb-8">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description Courte</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("short_desc")}</label>
             <div className="bg-white">
               <ReactQuill theme="snow" value={shortDescription} onChange={setShortDescription} className="h-32 mb-10" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description Longue</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("long_desc")}</label>
             <div className="bg-white">
               <ReactQuill theme="snow" value={description} onChange={setDescription} className="h-64 mb-12" />
             </div>
@@ -403,7 +405,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         {/* Tags */}
         <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tags (Mots-clés)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tags_label")}</label>
           <div className="flex gap-2 mb-2">
             <input 
               type="text" 
@@ -418,7 +420,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                   }
                 }
               }}
-              placeholder="Ex: nouveauté, été, promotion... (Appuyez sur Entrée)" 
+              placeholder={t("tags_placeholder")} 
               className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
             />
             <button 

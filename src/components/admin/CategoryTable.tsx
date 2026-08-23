@@ -1,5 +1,5 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { updateCategory, deleteCategory } from '@/actions/admin';
 
@@ -12,6 +12,8 @@ type Category = {
 };
 
 export default function CategoryTable({ categories }: { categories: Category[] }) {
+  const t = useTranslations('Admin');
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editSlug, setEditSlug] = useState('');
@@ -66,8 +68,8 @@ export default function CategoryTable({ categories }: { categories: Category[] }
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parent</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("parent_col")}</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t("actions_col")}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -122,7 +124,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       ))}
                     </select>
                   ) : (
-                    cat.parent ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">{cat.parent.name}</span> : <span className="text-gray-400 italic">Principale</span>
+                    cat.parent ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">{cat.parent.name}</span> : <span className="text-gray-400 italic">{t("main_col")}</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -133,7 +135,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                     </div>
                   ) : (
                     <div className="flex justify-end gap-3">
-                      <button onClick={() => handleEditClick(cat)} className="text-orange-600 hover:text-orange-900">Éditer</button>
+                      <button onClick={() => handleEditClick(cat)} className="text-orange-600 hover:text-orange-900">{t("edit_col")}</button>
                       <button 
                         onClick={() => handleDelete(cat.id)} 
                         disabled={isDeleting === cat.id}

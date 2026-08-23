@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { getDashboardStats } from '@/actions/dashboard';
 import DashboardChart from '@/components/admin/DashboardChart';
 import Link from 'next/link';
@@ -5,6 +6,7 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
+  const t = await getTranslations('Admin');
   const stats = await getDashboardStats();
 
   const formatPrice = (amount: number) => {
@@ -29,7 +31,7 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{formatPrice(stats.totalRevenue)}</p>
-          <p className="text-xs text-gray-400 mt-2">Total revenue</p>
+          <p className="text-xs text-gray-400 mt-2">{t("total_revenue")}</p>
         </div>
 
         {/* Orders */}
@@ -41,7 +43,7 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.totalOrdersCount}</p>
-          <p className="text-xs text-gray-400 mt-2">Orders validées</p>
+          <p className="text-xs text-gray-400 mt-2">{t("validated_orders")}</p>
         </div>
 
         {/* Customers */}
@@ -75,7 +77,7 @@ export default async function AdminDashboardPage() {
         {/* Graph */}
         <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-gray-900">Sales of the last 30 days</h2>
+            <h2 className="text-lg font-bold text-gray-900">{t("sales_last_30_days")}</h2>
           </div>
           <div className="h-[300px] w-full">
             <DashboardChart data={stats.salesData} />
@@ -85,7 +87,7 @@ export default async function AdminDashboardPage() {
         {/* Recent Orders List */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-gray-900">Dernières Orders</h2>
+            <h2 className="text-lg font-bold text-gray-900">{t("latest_orders")}</h2>
             <Link href="/admin/orders" className="text-sm font-medium text-orange-600 hover:text-orange-700">View all</Link>
           </div>
           

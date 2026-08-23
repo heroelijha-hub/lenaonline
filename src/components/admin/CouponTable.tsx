@@ -1,9 +1,11 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { toggleCouponStatus, deleteCoupon } from '@/actions/admin';
 import { useState } from 'react';
 
 export default function CouponTable({ coupons }: { coupons: any[] }) {
+  const t = useTranslations('Admin');
+
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleToggle = async (id: string, currentStatus: boolean) => {
@@ -24,10 +26,10 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réduction</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("code_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("discount_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("status_col")}</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t("actions_col")}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">

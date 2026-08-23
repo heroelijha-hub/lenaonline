@@ -1,9 +1,11 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { updateOrderStatus, deleteOrder } from '@/actions/admin';
 import { useState } from 'react';
 
 export default function OrderTable({ orders }: { orders: any[] }) {
+  const t = useTranslations('Admin');
+
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
@@ -24,12 +26,12 @@ export default function OrderTable({ orders }: { orders: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Commande</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t("order_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t("date_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t("customer_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t("total_col")}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t("status_col")}</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t("actions_col")}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -52,13 +54,13 @@ export default function OrderTable({ orders }: { orders: any[] }) {
                     className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50"
                   >
                     <option value="PENDING">Pending</option>
-                    <option value="PAID">Paiement reçu</option>
-                    <option value="PROCESSING">En cours de préparation</option>
-                    <option value="SHIPPED">Expédié</option>
-                    <option value="IN_TRANSIT">En transit</option>
-                    <option value="DELIVERED">Livré</option>
-                    <option value="AT_PICKUP_POINT">Déposé en point relais</option>
-                    <option value="CANCELLED">Annulé</option>
+                    <option value="PAID">{t("status_paid")}</option>
+                    <option value="PROCESSING">{t("status_processing")}</option>
+                    <option value="SHIPPED">{t("status_shipped")}</option>
+                    <option value="IN_TRANSIT">{t("status_in_transit")}</option>
+                    <option value="DELIVERED">{t("status_delivered")}</option>
+                    <option value="AT_PICKUP_POINT">{t("status_pickup")}</option>
+                    <option value="CANCELLED">{t("status_cancelled")}</option>
                   </select>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">

@@ -1,5 +1,5 @@
 'use client';
-
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateSetting, updateSettingsBatch } from '@/actions/settings';
@@ -15,6 +15,8 @@ const CURRENCIES = [
 ];
 
 export default function SettingsForm({ initialSettings }: { initialSettings: Record<string, string> }) {
+  const t = useTranslations('Admin');
+
   const router = useRouter();
   const [currency, setCurrency] = useState(initialSettings.currency || 'USD');
   const [currencyPosition, setCurrencyPosition] = useState(initialSettings.currencyPosition || 'left');
@@ -338,10 +340,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       )}
 
       <div>
-        <h3 className="text-lg font-bold text-red-600 mb-4">Settings Régionaux</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{t("regional_settings")}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Devise principale</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("main_currency")}</label>
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
@@ -356,16 +358,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <p className="mt-2 text-xs text-gray-500">C'est la devise par défaut utilisée pour afficher les prix.</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Position du symbole</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t("symbol_position")}</label>
             <select
               value={currencyPosition}
               onChange={(e) => setCurrencyPosition(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
               <option value="left">Gauche (ex: $10)</option>
-              <option value="right">Droite (ex: 10$)</option>
-              <option value="left-space">Gauche avec espace (ex: $ 10)</option>
-              <option value="right-space">Droite avec espace (ex: 10 $)</option>
+              <option value="right">{t("right_ex")}</option>
+              <option value="left-space">{t("left_space_ex")}</option>
+              <option value="right-space">{t("right_space_ex")}</option>
             </select>
           </div>
           <div>
@@ -375,10 +377,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setThousandSeparator(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value="">Aucun (ex: 1000)</option>
-              <option value=",">Virgule (ex: 1,000)</option>
-              <option value=".">Point (ex: 1.000)</option>
-              <option value=" ">Espace (ex: 1 000)</option>
+              <option value="">{t("none_ex")}</option>
+              <option value=",">{t("comma_ex")}</option>
+              <option value=".">{t("dot_ex_thousand")}</option>
+              <option value=" ">{t("space_ex")}</option>
             </select>
           </div>
           <div>
@@ -388,8 +390,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setDecimalSeparator(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value=".">Point (ex: 10.50)</option>
-              <option value=",">Virgule (ex: 10,50)</option>
+              <option value=".">{t("dot_ex_decimal")}</option>
+              <option value=",">{t("comma_ex_decimal")}</option>
             </select>
           </div>
         </div>
