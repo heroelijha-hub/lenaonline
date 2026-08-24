@@ -56,6 +56,14 @@ export default async function ShopPage({
     orderBy: { name: 'asc' }
   });
 
+  // Fetch shop specific settings
+  const settingsDb = await prisma.setting.findMany({
+    where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
+  });
+  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const cardStyle = (settingsMap.SHOP_CARD_STYLE as 'design1' | 'design2') || 'design2';
+  const borderColor = settingsMap.SHOP_CARD_BORDER_COLOR || '';
+
   // Since filtering by average rating requires relation aggregation not directly supported 
   // in a simple where clause, we fetch products and filter in memory if ratings filter is active.
   // For sorting, we can do it in Prisma.
@@ -134,7 +142,7 @@ export default async function ShopPage({
             {paginatedProducts.length > 0 ? (
               <div className={view === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "flex flex-col gap-6"}>
                 {paginatedProducts.map(product => (
-                  <ProductCard key={product.id} product={product} view={view} />
+                  <ProductCard key={product.id} product={product} view={view} cardStyle={cardStyle} borderColor={borderColor} />
                 ))}
               </div>
             ) : (

@@ -34,6 +34,13 @@ export default async function SearchPage({
     orderBy: { createdAt: 'desc' }
   });
 
+  const settingsDb = await prisma.setting.findMany({
+    where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
+  });
+  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const cardStyle = (settingsMap.SHOP_CARD_STYLE as 'design1' | 'design2') || 'design2';
+  const borderColor = settingsMap.SHOP_CARD_BORDER_COLOR || '';
+
   const t = await getTranslations('Search');
 
   return (
@@ -57,7 +64,7 @@ export default async function SearchPage({
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {products.map((product: any) => (
-              <ProductCard key={product.id} product={product} view="grid" />
+              <ProductCard key={product.id} product={product} view="grid" cardStyle={cardStyle} borderColor={borderColor} />
             ))}
           </div>
         )}

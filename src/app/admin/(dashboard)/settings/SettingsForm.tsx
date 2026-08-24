@@ -59,6 +59,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [bankTransferInstructions, setBankTransferInstructions] = useState(initialSettings.BANK_TRANSFER_INSTRUCTIONS || 'Your order will be processed upon payment receipt.');
 
   // Design & Header settings
+  const [shopCardStyle, setShopCardStyle] = useState(initialSettings.SHOP_CARD_STYLE || 'design2');
+  const [shopCardBorderColor, setShopCardBorderColor] = useState(initialSettings.SHOP_CARD_BORDER_COLOR || '#e5e7eb');
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
   const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
@@ -222,6 +224,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['CHAT_STORE_NAME'] = chatStoreName;
     
     settingsMap['THEME_COLOR'] = themeColor;
+    settingsMap['SHOP_CARD_STYLE'] = shopCardStyle;
+    settingsMap['SHOP_CARD_BORDER_COLOR'] = shopCardBorderColor;
     settingsMap['HEADER_ANNOUNCEMENT'] = headerAnnouncement;
     settingsMap['HEADER_SUPPORT_PHONE'] = headerSupportPhone;
     settingsMap['HEADER_SUPPORT_EMAIL'] = headerSupportEmail;
@@ -701,6 +705,43 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">Design & Header</h3>
+        
+        {/* Product Card Settings */}
+        <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h4 className="text-md font-bold text-gray-900 mb-4">Product Cards (Shop & Category pages)</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Card Style</label>
+              <select
+                value={shopCardStyle}
+                onChange={(e) => setShopCardStyle(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              >
+                <option value="design1">Design 1 (Hover actions in center)</option>
+                <option value="design2">Design 2 (Cart button at bottom, Hover top-right)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Card Border Color</label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={shopCardBorderColor}
+                  onChange={(e) => setShopCardBorderColor(e.target.value)}
+                  className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer bg-white"
+                />
+                <input
+                  type="text"
+                  value={shopCardBorderColor}
+                  onChange={(e) => setShopCardBorderColor(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 flex-1"
+                  placeholder="#e5e7eb"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Main Store Color (Theme)</label>
