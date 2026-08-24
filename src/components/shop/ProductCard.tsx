@@ -52,9 +52,9 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
     e.stopPropagation();
     wishlistStore.toggleItem(product.id);
     if (!isWishlisted) {
-      toast.success('Produit ajouté aux favoris !');
+      toast.success('Product added to wishlist!');
     } else {
-      toast.success('Produit retiré des favoris.');
+      toast.success('Product removed from wishlist.');
     }
   };
 
@@ -67,7 +67,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <button 
             onClick={handleAddToCart} 
             className="w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shadow-sm"
-            title="Ajouter au panier"
+            title="Add to cart"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
           </button>
@@ -81,7 +81,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <button 
             onClick={handleToggleWishlist} 
             className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm ${isWishlisted ? 'bg-orange-500 text-white' : 'bg-white text-gray-900 hover:bg-orange-500 hover:text-white'}`}
-            title="Ajouter aux favoris"
+            title="Add to wishlist"
           >
             <svg className="w-5 h-5" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
           </button>
@@ -101,7 +101,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         </button>
         <button 
           className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm ${isWishlisted ? 'bg-orange-500 text-white' : 'bg-white/90 text-gray-700 hover:bg-orange-500 hover:text-white'}`}
-          title="Ajouter aux favoris"
+          title="Add to wishlist"
           onClick={handleToggleWishlist}
         >
           <svg className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -162,7 +162,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             {cardStyle !== 'design1' && (
               <button 
                 className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors duration-300 shadow-sm"
-                title="Ajouter au panier"
+                title="Add to cart"
                 onClick={handleAddToCart}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -232,7 +232,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           {cardStyle !== 'design1' && (
             <button 
               className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors duration-300 shadow-sm"
-              title="Ajouter au panier"
+              title="Add to cart"
               onClick={handleAddToCart}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
