@@ -1,12 +1,38 @@
 import Link from 'next/link';
-import { getPages, deletePage } from '@/actions/pages';
+import { deletePage } from '@/actions/pages';
+import AdminPagination from '@/components/admin/AdminPagination';
 import { getTranslations } from 'next-intl/server';
+import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminPagesList() {
+export default async function AdminPagesList({ searchParams }: { searchParams: { page?: string } }) {
   const t = await getTranslations('AdminPages');
-  const { data: pages, success, error } = await getPages();
+  const page = parseInt(searchParams.page || '1', 10);
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  let pages = [];
+  let total = 0;
+  let error = null;
+  let success = false;
+  try {
+    const [fetchedPages, pagesCount] = await Promise.all([
+      prisma.page.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.page.count()
+    ]);
+    pages = fetchedPages;
+    total = pagesCount;
+    success = true;
+  } catch (err: any) {
+    error = err.message || "Failed to load pages";
+  }
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div>
@@ -77,6 +103,9 @@ export default async function AdminPagesList() {
           </tbody>
         </table>
       </div>
+      {success && totalPages > 1 && (
+        <AdminPagination currentPage={page} totalPages={totalPages} />
+      )}
     </div>
   );
 }

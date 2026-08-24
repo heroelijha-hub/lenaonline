@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toggleReviewApproval, deleteReview, updateReview } from '@/actions/reviews';
+import { useTranslations } from 'next-intl';
 
 type Review = {
   id: string;
@@ -14,6 +15,7 @@ type Review = {
 };
 
 export default function ReviewTable({ reviews }: { reviews: Review[] }) {
+  const t = useTranslations('AdminReviews');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({ rating: 5, comment: '', createdAtStr: '' });
 
@@ -22,7 +24,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Voulez-vous vraiment supprimer cet avis ?')) {
+    if (confirm(t('confirm_delete'))) {
       await deleteReview(id);
     }
   };
@@ -47,12 +49,12 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th className="px-6 py-3">Product</th>
-            <th className="px-6 py-3">Customer</th>
-            <th className="px-6 py-3">Note & Commentaire</th>
-            <th className="px-6 py-3">Date</th>
-            <th className="px-6 py-3">Status</th>
-            <th className="px-6 py-3 text-right">Actions</th>
+            <th className="px-6 py-3">{t('col_product')}</th>
+            <th className="px-6 py-3">{t('col_customer')}</th>
+            <th className="px-6 py-3">{t('col_rating_comment')}</th>
+            <th className="px-6 py-3">{t('col_date')}</th>
+            <th className="px-6 py-3">{t('col_status')}</th>
+            <th className="px-6 py-3 text-right">{t('col_actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -107,19 +109,19 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                     review.isApproved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
-                  {review.isApproved ? 'Approved' : 'Pending'}
+                  {review.isApproved ? t('approved') : t('pending')}
                 </button>
               </td>
               <td className="px-6 py-4 text-right space-x-2">
                 {editingId === review.id ? (
                   <>
-                    <button onClick={() => handleSave(review.id)} className="text-green-600 font-bold hover:underline">Save</button>
-                    <button onClick={() => setEditingId(null)} className="text-gray-500 hover:underline">Cancel</button>
+                    <button onClick={() => handleSave(review.id)} className="text-green-600 font-bold hover:underline">{t('save')}</button>
+                    <button onClick={() => setEditingId(null)} className="text-gray-500 hover:underline">{t('cancel')}</button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => startEdit(review)} className="text-blue-600 font-bold hover:underline">Edit</button>
-                    <button onClick={() => handleDelete(review.id)} className="text-red-600 font-bold hover:underline">Delete</button>
+                    <button onClick={() => startEdit(review)} className="text-blue-600 font-bold hover:underline">{t('edit')}</button>
+                    <button onClick={() => handleDelete(review.id)} className="text-red-600 font-bold hover:underline">{t('delete')}</button>
                   </>
                 )}
               </td>
@@ -127,7 +129,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
           ))}
           {reviews.length === 0 && (
             <tr>
-              <td colSpan={6} className="px-6 py-10 text-center text-gray-500">No reviews yet.</td>
+              <td colSpan={6} className="px-6 py-10 text-center text-gray-500">{t('no_reviews')}</td>
             </tr>
           )}
         </tbody>

@@ -1,13 +1,29 @@
-import { getProducts, getCategories } from '@/actions/admin';
+import { getCategories } from '@/actions/admin';
 import Link from 'next/link';
 import ProductsTable from '@/components/admin/ProductsTable';
+import AdminPagination from '@/components/admin/AdminPagination';
 import { getTranslations } from 'next-intl/server';
+import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage() {
+export default async function ProductsPage({ searchParams }: { searchParams: { page?: string } }) {
   const t = await getTranslations('AdminProducts');
-  const products = await getProducts();
+  const page = parseInt(searchParams.page || '1', 10);
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      skip,
+      take: limit,
+      include: { categories: true },
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.product.count()
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
   const categories = await getCategories();
 
   return (
@@ -22,7 +38,8 @@ export default async function ProductsPage() {
         </Link>
       </div>
 
-      <ProductsTable products={products} categories={categories} />
+      <ProductsTable products={products as any} categories={categories} />
+      <AdminPagination currentPage={page} totalPages={totalPages} />
     </div>
   );
 }

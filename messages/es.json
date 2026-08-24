@@ -846,5 +846,22 @@
     "connection_error": "Error de conexión al chat. Por favor, inténtalo de nuevo.",
     "send_message_prompt": "¡Envíanos un mensaje y responderemos lo antes posible!",
     "your_message": "Tu mensaje..."
+  },
+  "AdminReviews": {
+    "title": "Reseñas de Clientes",
+    "confirm_delete": "¿Estás seguro de que deseas eliminar esta reseña?",
+    "col_product": "Producto",
+    "col_customer": "Cliente",
+    "col_rating_comment": "Calificación y Comentario",
+    "col_date": "Fecha",
+    "col_status": "Estado",
+    "col_actions": "Acciones",
+    "approved": "Aprobado",
+    "pending": "Pendiente",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "no_reviews": "Aún no hay reseñas."
   }
 }

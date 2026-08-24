@@ -846,5 +846,22 @@
     "connection_error": "Erreur de connexion au chat. Veuillez réessayer.",
     "send_message_prompt": "Envoyez-nous un message et nous vous répondrons dès que possible !",
     "your_message": "Votre message..."
+  },
+  "AdminReviews": {
+    "title": "Avis Clients",
+    "confirm_delete": "Voulez-vous vraiment supprimer cet avis ?",
+    "col_product": "Produit",
+    "col_customer": "Client",
+    "col_rating_comment": "Note & Commentaire",
+    "col_date": "Date",
+    "col_status": "Statut",
+    "col_actions": "Actions",
+    "approved": "Approuvé",
+    "pending": "En attente",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "no_reviews": "Aucun avis pour le moment."
   }
 }

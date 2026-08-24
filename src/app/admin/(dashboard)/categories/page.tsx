@@ -1,13 +1,28 @@
 import { getTranslations } from 'next-intl/server';
-import { getCategories } from '@/actions/admin';
+import prisma from '@/lib/prisma';
 import CategoryTable from '@/components/admin/CategoryTable';
 import CategoryCreateForm from '@/components/admin/CategoryCreateForm';
+import AdminPagination from '@/components/admin/AdminPagination';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CategoriesPage() {
+export default async function CategoriesPage({ searchParams }: { searchParams: { page?: string } }) {
   const t = await getTranslations('AdminCategories');
-  const categories = await getCategories();
+  const page = parseInt(searchParams.page || '1', 10);
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  const [categories, total] = await Promise.all([
+    prisma.category.findMany({
+      skip,
+      take: limit,
+      include: { parent: true, children: true },
+      orderBy: { name: 'asc' }
+    }),
+    prisma.category.count()
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -20,7 +35,8 @@ export default async function CategoriesPage() {
         <CategoryCreateForm categories={categories} />
       </div>
 
-      <CategoryTable categories={categories} />
+      <CategoryTable categories={categories as any} />
+      <AdminPagination currentPage={page} totalPages={totalPages} />
     </div>
   );
 }

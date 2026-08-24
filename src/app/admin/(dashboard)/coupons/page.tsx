@@ -1,12 +1,27 @@
 import { getTranslations } from 'next-intl/server';
-import { getCoupons, createCoupon } from '@/actions/admin';
+import { createCoupon } from '@/actions/admin';
 import CouponTable from '@/components/admin/CouponTable';
+import AdminPagination from '@/components/admin/AdminPagination';
+import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CouponsPage() {
+export default async function CouponsPage({ searchParams }: { searchParams: { page?: string } }) {
   const t = await getTranslations('AdminCoupons');
-  const coupons = await getCoupons();
+  const page = parseInt(searchParams.page || '1', 10);
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  const [coupons, total] = await Promise.all([
+    prisma.coupon.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.coupon.count()
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="max-w-6xl mx-auto flex gap-8 items-start">
@@ -43,7 +58,8 @@ export default async function CouponsPage() {
       {/* Right column: List */}
       <div className="w-2/3">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">{t("manage_coupons")}</h1>
-        <CouponTable coupons={coupons} />
+        <CouponTable coupons={coupons as any} />
+        <AdminPagination currentPage={page} totalPages={totalPages} />
       </div>
     </div>
   );
