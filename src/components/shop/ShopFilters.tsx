@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Category {
   id: string;
@@ -18,6 +19,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations('Shop');
 
   // State
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -111,7 +113,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     <div className="w-full">
       {/* Categories */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by categories</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_categories')}</h3>
         <div className="space-y-3">
           {categories.map((cat) => (
             <label key={cat.id} className="flex items-center cursor-pointer group">
@@ -136,10 +138,10 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
 
       {/* Price */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by price</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_price')}</h3>
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">Min Price</label>
+            <label className="text-xs text-gray-500 mb-1 block">{t('min_price')}</label>
             <input
               type="number"
               min="0"
@@ -150,7 +152,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">Max Price</label>
+            <label className="text-xs text-gray-500 mb-1 block">{t('max_price')}</label>
             <input
               type="number"
               min="0"
@@ -165,7 +167,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
           onClick={handlePriceApply}
           className="mt-4 w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded transition-colors"
         >
-          Apply price
+          {t('apply_price')}
         </button>
       </div>
 
@@ -173,7 +175,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
 
       {/* Ratings */}
       <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Filter by rating</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_rating')}</h3>
         <div className="space-y-3">
           {[5, 4, 3, 2, 1].map((rating) => (
             <label key={rating} className="flex items-center cursor-pointer group">

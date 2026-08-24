@@ -468,5 +468,22 @@
   "Messages": {
     "success": "Action réussie",
     "error": "Une erreur est survenue"
+  },
+  "Shop": {
+    "title": "Boutique",
+    "home": "Accueil",
+    "no_products_found": "Aucun produit trouvé",
+    "try_modifying_filters": "Essayez de modifier vos filtres pour trouver ce que vous cherchez.",
+    "filter_categories": "Filtrer par catégories",
+    "filter_price": "Filtrer par prix",
+    "min_price": "Prix min",
+    "max_price": "Prix max",
+    "apply_price": "Appliquer",
+    "filter_rating": "Filtrer par note",
+    "showing_results": "Affichage de {currentRange} sur {totalResults} résultats",
+    "default_sort": "Tri par défaut",
+    "price_asc": "Prix : Croissant",
+    "price_desc": "Prix : Décroissant",
+    "new_arrivals": "Nouveautés"
   }
 }

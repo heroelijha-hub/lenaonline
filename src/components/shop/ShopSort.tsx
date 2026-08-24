@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function ShopSort({ totalResults, currentRange }: { totalResults: number, currentRange: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations('Shop');
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -35,7 +37,7 @@ export default function ShopSort({ totalResults, currentRange }: { totalResults:
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between bg-white py-3 border-b border-gray-100 mb-6">
       <div className="text-sm text-gray-500 mb-4 sm:mb-0">
-        Showing {currentRange} of {totalResults} results
+        {t('showing_results', { currentRange, totalResults })}
       </div>
       
       <div className="flex items-center gap-4">
@@ -44,10 +46,10 @@ export default function ShopSort({ totalResults, currentRange }: { totalResults:
           onChange={handleSortChange}
           className="border-none bg-transparent text-sm font-semibold text-gray-700 focus:ring-0 cursor-pointer"
         >
-          <option value="">Default Sort</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-          <option value="newest">New Arrivals</option>
+          <option value="">{t('default_sort')}</option>
+          <option value="price_asc">{t('price_asc')}</option>
+          <option value="price_desc">{t('price_desc')}</option>
+          <option value="newest">{t('new_arrivals')}</option>
         </select>
         
         <div className="flex items-center gap-1 border-l border-gray-200 pl-4">

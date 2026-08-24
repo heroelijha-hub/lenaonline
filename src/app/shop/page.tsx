@@ -4,6 +4,7 @@ import ShopFilters from '@/components/shop/ShopFilters';
 import ShopSort from '@/components/shop/ShopSort';
 import ShopPagination from '@/components/shop/ShopPagination';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
@@ -18,6 +19,7 @@ export default async function ShopPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const params = await searchParams;
+  const t = await getTranslations('Shop');
   
   // Extract query params
   const categoryParams = params.category;
@@ -120,9 +122,9 @@ export default async function ShopPage({
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 px-4 sm:px-8 border-b border-gray-200">
         <div className="max-w-7xl mx-auto text-sm text-gray-500">
-          <Link href="/" className="hover:text-orange-500">Home</Link>
+          <Link href="/" className="hover:text-orange-500">{t('home')}</Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-900 font-medium">Shop</span>
+          <span className="text-gray-900 font-medium">{t('title')}</span>
         </div>
       </div>
 
@@ -148,8 +150,8 @@ export default async function ShopPage({
             ) : (
               <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100">
                 <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
-                <p className="text-gray-500">Try modifying your filters to find what you are looking for.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('no_products_found')}</h3>
+                <p className="text-gray-500">{t('try_modifying_filters')}</p>
               </div>
             )}
 

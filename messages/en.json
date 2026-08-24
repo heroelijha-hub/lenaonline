@@ -468,5 +468,22 @@
   "Messages": {
     "success": "Action successful",
     "error": "An error occurred"
+  },
+  "Shop": {
+    "title": "Shop",
+    "home": "Home",
+    "no_products_found": "No products found",
+    "try_modifying_filters": "Try modifying your filters to find what you are looking for.",
+    "filter_categories": "Filter by categories",
+    "filter_price": "Filter by price",
+    "min_price": "Min Price",
+    "max_price": "Max Price",
+    "apply_price": "Apply price",
+    "filter_rating": "Filter by rating",
+    "showing_results": "Showing {currentRange} of {totalResults} results",
+    "default_sort": "Default Sort",
+    "price_asc": "Price: Low to High",
+    "price_desc": "Price: High to Low",
+    "new_arrivals": "New Arrivals"
   }
 }
