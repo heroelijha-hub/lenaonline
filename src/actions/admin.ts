@@ -258,6 +258,8 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
 export async function deleteProduct(id: string) {
   await requireAdmin();
   try {
+    await prisma.orderItem.deleteMany({ where: { productId: id } });
+    await prisma.review.deleteMany({ where: { productId: id } });
     await prisma.product.delete({ where: { id } });
     revalidatePath('/admin/products');
     revalidatePath('/');
@@ -271,6 +273,8 @@ export async function deleteProduct(id: string) {
 export async function bulkDeleteProducts(ids: string[]) {
   await requireAdmin();
   try {
+    await prisma.orderItem.deleteMany({ where: { productId: { in: ids } } });
+    await prisma.review.deleteMany({ where: { productId: { in: ids } } });
     await prisma.product.deleteMany({
       where: {
         id: {
