@@ -128,6 +128,15 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
     let importedCount = 0;
 
     for (const wcProduct of products) {
+      // Check if product with same title already exists
+      const existingProduct = await prisma.product.findFirst({
+        where: { title: wcProduct.name }
+      });
+
+      if (existingProduct) {
+        continue; // Skip this product
+      }
+
       const categoryIds: string[] = [];
       if (wcProduct.categories && Array.isArray(wcProduct.categories)) {
         for (const wcCat of wcProduct.categories) {

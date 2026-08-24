@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Link from 'next/link';
-import { deleteProduct, duplicateProduct, quickEditProduct } from '@/actions/admin';
+import { deleteProduct, duplicateProduct, quickEditProduct, bulkDeleteProducts } from '@/actions/admin';
 import Price from '@/components/Price';
 
 export default function ProductsTable({ products, categories }: { products: any[], categories: any[] }) {
@@ -11,6 +11,7 @@ export default function ProductsTable({ products, categories }: { products: any[
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const startEdit = (p: any) => {
     setEditingId(p.id);
@@ -39,7 +40,35 @@ export default function ProductsTable({ products, categories }: { products: any[
       setIsLoading(true);
       const res = await deleteProduct(id);
       if (res.error) alert(res.error);
+      else setSelectedIds(selectedIds.filter(selId => selId !== id));
       setIsLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (confirm(`Êtes-vous sûr de vouloir supprimer ces ${selectedIds.length} produits ?`)) {
+      setIsLoading(true);
+      const res = await bulkDeleteProducts(selectedIds);
+      if (res.error) alert(res.error);
+      else setSelectedIds([]);
+      setIsLoading(false);
+    }
+  };
+
+  const toggleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedIds(products.map(p => p.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const toggleSelect = (id: string) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter(selId => selId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
     }
   };
 
@@ -52,9 +81,31 @@ export default function ProductsTable({ products, categories }: { products: any[
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      {selectedIds.length > 0 && (
+        <div className="bg-orange-50 px-6 py-3 border-b border-gray-200 flex items-center justify-between">
+          <span className="text-sm font-medium text-orange-800">
+            {selectedIds.length} sélectionné(s)
+          </span>
+          <button
+            onClick={handleBulkDelete}
+            disabled={isLoading}
+            className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded transition"
+          >
+            Supprimer la sélection
+          </button>
+        </div>
+      )}
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
+            <th className="px-6 py-3 text-left w-12">
+              <input 
+                type="checkbox" 
+                checked={products.length > 0 && selectedIds.length === products.length}
+                onChange={toggleSelectAll}
+                className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+              />
+            </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('image_th')}</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('product_th')}</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price_th')}</th>
@@ -73,7 +124,15 @@ export default function ProductsTable({ products, categories }: { products: any[
               const isEditing = editingId === product.id;
 
               return (
-                <tr key={product.id} className={`hover:bg-gray-50 transition ${isEditing ? 'bg-orange-50/30' : ''}`}>
+                <tr key={product.id} className={`hover:bg-gray-50 transition ${isEditing || selectedIds.includes(product.id) ? 'bg-orange-50/30' : ''}`}>
+                  <td className="px-6 py-4 whitespace-nowrap align-top">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedIds.includes(product.id)}
+                      onChange={() => toggleSelect(product.id)}
+                      className="rounded border-gray-300 text-orange-600 focus:ring-orange-500 mt-3"
+                    />
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap align-top">
                     {product.images && product.images[0] ? (
                       <img src={product.images[0]} alt={product.title} className="h-12 w-12 rounded object-cover border border-gray-200" />
