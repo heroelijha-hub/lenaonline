@@ -211,13 +211,13 @@ export default async function CheckoutSuccessPage({
         <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="font-bold text-gray-900 mb-2">{t('bank_transfer_instructions_title')}</h3>
           <p className="text-sm text-gray-600 mb-4">
-            {t('bank_transfer_instructions_desc')}
+            {settings.BANK_TRANSFER_INSTRUCTIONS || t('bank_transfer_instructions_desc')}
           </p>
           <div className="bg-white p-4 rounded border border-gray-200 font-mono text-sm space-y-2">
-            <p><strong>{t('account_holder')}</strong> Shopelios SARL</p>
-            <p><strong>{t('iban')}</strong> FR76 1234 5678 9101 1121 3141 516</p>
-            <p><strong>{t('bic')}</strong> EXAMPLFR123</p>
-            <p><strong>{t('bank')}</strong> Banque Exemple</p>
+            <p><strong>{t('account_holder')}</strong> {settings.BANK_TRANSFER_ACCOUNT_HOLDER || ''}</p>
+            <p><strong>{t('iban')}</strong> {settings.BANK_TRANSFER_IBAN || ''}</p>
+            <p><strong>{t('bic')}</strong> {settings.BANK_TRANSFER_BIC || ''}</p>
+            <p><strong>{t('bank')}</strong> {settings.BANK_TRANSFER_BANK_NAME || ''}</p>
           </div>
         </div>
       )}

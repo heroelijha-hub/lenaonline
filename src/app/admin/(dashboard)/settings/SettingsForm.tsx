@@ -54,6 +54,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [paypalClientId, setPaypalClientId] = useState(initialSettings.PAYPAL_CLIENT_ID || '');
   const [paypalSecret, setPaypalSecret] = useState(initialSettings.PAYPAL_SECRET || '');
   const [bankTransferIban, setBankTransferIban] = useState(initialSettings.BANK_TRANSFER_IBAN || '');
+  const [bankTransferBic, setBankTransferBic] = useState(initialSettings.BANK_TRANSFER_BIC || '');
   const [bankTransferAccountHolder, setBankTransferAccountHolder] = useState(initialSettings.BANK_TRANSFER_ACCOUNT_HOLDER || '');
   const [bankTransferBankName, setBankTransferBankName] = useState(initialSettings.BANK_TRANSFER_BANK_NAME || '');
   const [bankTransferCheckoutMessage, setBankTransferCheckoutMessage] = useState(initialSettings.BANK_TRANSFER_CHECKOUT_MESSAGE || 'Veuillez effectuer le virement sur le compte ci-dessous.');
@@ -276,6 +277,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['PAYPAL_CLIENT_ID'] = paypalClientId;
     settingsMap['PAYPAL_SECRET'] = paypalSecret;
     settingsMap['BANK_TRANSFER_IBAN'] = bankTransferIban;
+    settingsMap['BANK_TRANSFER_BIC'] = bankTransferBic;
     settingsMap['BANK_TRANSFER_ACCOUNT_HOLDER'] = bankTransferAccountHolder;
     settingsMap['BANK_TRANSFER_BANK_NAME'] = bankTransferBankName;
     settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
@@ -659,6 +661,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               onChange={(e) => setBankTransferIban(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="FR76 1234..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">BIC / SWIFT</label>
+            <input 
+              type="text" 
+              value={bankTransferBic}
+              onChange={(e) => setBankTransferBic(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              placeholder="Ex: EXAMPLFR123"
             />
           </div>
           <div>
