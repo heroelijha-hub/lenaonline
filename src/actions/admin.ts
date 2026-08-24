@@ -100,6 +100,24 @@ export async function deleteCategory(id: string) {
   }
 }
 
+export async function bulkDeleteCategories(ids: string[]) {
+  await requireAdmin();
+  try {
+    await prisma.category.deleteMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    });
+    revalidatePath('/admin/categories');
+    revalidatePath('/', 'layout');
+    return { success: true };
+  } catch (error) {
+    return { error: "Impossible de supprimer ces catégories. Elles contiennent peut-être des produits." };
+  }
+}
+
 // --- PRODUCTS ---
 export async function getProducts() {
   await requireAdmin();

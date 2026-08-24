@@ -1,7 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { updateCategory, deleteCategory } from '@/actions/admin';
+import { updateCategory, deleteCategory, bulkDeleteCategories } from '@/actions/admin';
 
 type Category = {
   id: string;
@@ -19,6 +19,8 @@ export default function CategoryTable({ categories }: { categories: Category[] }
   const [editSlug, setEditSlug] = useState('');
   const [editParentId, setEditParentId] = useState('');
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   const generateSlug = (text: string) => 
     text.toString().toLowerCase().trim()
@@ -60,11 +62,63 @@ export default function CategoryTable({ categories }: { categories: Category[] }
     setIsDeleting(null);
   };
 
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (confirm(`Êtes-vous sûr de vouloir supprimer ces ${selectedIds.length} catégories ?`)) {
+      setIsBulkDeleting(true);
+      const res = await bulkDeleteCategories(selectedIds);
+      if (res.error) alert(res.error);
+      else {
+        setSelectedIds([]);
+      }
+      setIsBulkDeleting(false);
+    }
+  };
+
+  const toggleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedIds(categories.map(c => c.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const toggleSelect = (id: string) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter(selId => selId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      {selectedIds.length > 0 && (
+        <div className="bg-orange-50 px-6 py-3 border-b border-gray-200 flex items-center justify-between">
+          <span className="text-sm font-medium text-orange-800">
+            {selectedIds.length} sélectionné(s)
+          </span>
+          <button
+            onClick={handleBulkDelete}
+            disabled={isBulkDeleting}
+            className="text-sm bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded shadow-sm disabled:opacity-50"
+          >
+            {isBulkDeleting ? t('deleting') : t('delete')}
+          </button>
+        </div>
+      )}
+      <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+              <input 
+                type="checkbox" 
+                checked={categories.length > 0 && selectedIds.length === categories.length}
+                onChange={toggleSelectAll}
+                className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+              />
+            </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('id_th')}</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('name_th')}</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('slug_th')}</th>
@@ -75,11 +129,19 @@ export default function CategoryTable({ categories }: { categories: Category[] }
         <tbody className="bg-white divide-y divide-gray-200">
           {categories.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">{t('no_categories')}</td>
+              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">{t('no_categories')}</td>
             </tr>
           ) : (
             categories.map((cat) => (
               <tr key={cat.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedIds.includes(cat.id)}
+                    onChange={() => toggleSelect(cat.id)}
+                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                  />
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <span className="truncate w-24 inline-block" title={cat.id}>{cat.id.split('-')[0]}...</span>
                 </td>
@@ -151,6 +213,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
