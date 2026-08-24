@@ -64,6 +64,87 @@ async function generateUniqueSlug(baseSlug: string) {
 }
 
 /**
+ * Main action to import WooCommerce Categories and their hierarchy
+ */
+export async function importWooCommerceCategories(url: string, consumerKey: string, consumerSecret: string) {
+  await requireAdmin();
+  const baseUrl = url.replace(/\/$/, '');
+  const apiUrl = `${baseUrl}/wp-json/wc/v3/products/categories`;
+
+  try {
+    let allCategories: any[] = [];
+    let page = 1;
+    let hasMore = true;
+
+    // Fetch all categories (assuming < 1000 categories for now to avoid infinite loops, but paginated)
+    while (hasMore && page <= 20) {
+      const response = await fetch(`${apiUrl}?per_page=100&page=${page}`, {
+        headers: {
+          'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+          'Content-Type': 'application/json'
+        },
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur API WooCommerce (Catégories): ${response.status} ${response.statusText}`);
+      }
+
+      const cats = await response.json();
+      if (cats.length === 0) {
+        hasMore = false;
+      } else {
+        allCategories = [...allCategories, ...cats];
+        page++;
+      }
+    }
+
+    if (allCategories.length === 0) return { success: true, count: 0 };
+
+    // 1st Pass: Create all categories to get their UUIDs
+    const wcIdToUuidMap: Record<number, string> = {};
+
+    for (const wcCat of allCategories) {
+      let category = await prisma.category.findUnique({
+        where: { name: wcCat.name }
+      });
+
+      if (!category) {
+        category = await prisma.category.create({
+          data: {
+            name: wcCat.name,
+            slug: wcCat.slug || wcCat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          }
+        });
+      }
+      wcIdToUuidMap[wcCat.id] = category.id;
+    }
+
+    // 2nd Pass: Link parents
+    for (const wcCat of allCategories) {
+      if (wcCat.parent && wcCat.parent > 0) {
+        const parentUuid = wcIdToUuidMap[wcCat.parent];
+        const childUuid = wcIdToUuidMap[wcCat.id];
+
+        if (parentUuid && childUuid) {
+          await prisma.category.update({
+            where: { id: childUuid },
+            data: { parentId: parentUuid }
+          });
+        }
+      }
+    }
+
+    revalidatePath('/admin/categories');
+    return { success: true, count: allCategories.length };
+
+  } catch (error: any) {
+    console.error('Error importing categories from WooCommerce:', error);
+    return { success: false, message: error.message || 'Une erreur est survenue lors de l\'importation des catégories.' };
+  }
+}
+
+/**
  * Gets the total number of products to import
  */
 export async function countWooCommerceProducts(url: string, consumerKey: string, consumerSecret: string) {

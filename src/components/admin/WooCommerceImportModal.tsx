@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { countWooCommerceProducts, importWooCommerceProductsBatch } from '@/actions/woocommerce';
+import { countWooCommerceProducts, importWooCommerceProductsBatch, importWooCommerceCategories } from '@/actions/woocommerce';
 
 export default function WooCommerceImportModal() {
   const t = useTranslations('AdminProducts');
@@ -14,6 +14,7 @@ export default function WooCommerceImportModal() {
   const [resultMessage, setResultMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   
   // Progress states
+  const [importingCategories, setImportingCategories] = useState(false);
   const [totalProducts, setTotalProducts] = useState(0);
   const [importedProducts, setImportedProducts] = useState(0);
 
@@ -26,6 +27,17 @@ export default function WooCommerceImportModal() {
     setTotalProducts(0);
 
     try {
+      // 0. Import categories hierarchy
+      setImportingCategories(true);
+      const catRes = await importWooCommerceCategories(url, consumerKey, consumerSecret);
+      setImportingCategories(false);
+
+      if (!catRes.success) {
+        setResultMessage({ type: 'error', text: t('import_error') + ': ' + catRes.message });
+        setLoading(false);
+        return;
+      }
+
       // 1. Get total products
       const countRes = await countWooCommerceProducts(url, consumerKey, consumerSecret);
       if (!countRes.success || !countRes.total) {
@@ -135,10 +147,21 @@ export default function WooCommerceImportModal() {
                 />
               </div>
 
-              {loading && totalProducts > 0 && (
+              {loading && importingCategories && (
+                <div className="space-y-2">
+                  <div className="flex justify-center text-sm font-medium text-orange-600">
+                    <span>Synchronisation des catégories en cours...</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="bg-orange-600 h-2.5 rounded-full animate-pulse w-full"></div>
+                  </div>
+                </div>
+              )}
+
+              {loading && !importingCategories && totalProducts > 0 && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs font-semibold text-gray-700">
-                    <span>Progression...</span>
+                    <span>Progression des produits...</span>
                     <span>{importedProducts} / {totalProducts}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
