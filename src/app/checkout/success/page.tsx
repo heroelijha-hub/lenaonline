@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { getSettings } from '@/actions/settings';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
@@ -10,6 +12,7 @@ export default async function CheckoutSuccessPage({
 }) {
   const orderId = searchParams.orderId as string;
   const t = await getTranslations('Checkout');
+  const tCart = await getTranslations('Cart');
   const locale = await getLocale();
   const settings = await getSettings();
 
@@ -18,7 +21,7 @@ export default async function CheckoutSuccessPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('order_not_found')}</h1>
         <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors">
-          {t('back_to_shop', { namespace: 'Cart' })}
+          {tCart('back_to_shop')}
         </Link>
       </div>
     );
@@ -34,7 +37,7 @@ export default async function CheckoutSuccessPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('order_not_found')}</h1>
         <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors">
-          {t('back_to_shop', { namespace: 'Cart' })}
+          {tCart('back_to_shop')}
         </Link>
       </div>
     );
@@ -220,7 +223,7 @@ export default async function CheckoutSuccessPage({
       
       <div className="mt-8 text-center">
         <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors">
-          {t('back_to_shop', { namespace: 'Cart' })}
+          {tCart('back_to_shop')}
         </Link>
       </div>
     </div>
