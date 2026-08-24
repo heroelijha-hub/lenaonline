@@ -1,9 +1,10 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { getUserNotifications, getAdminNotifications, markAsRead, markAllAsRead } from '@/actions/notification';
 import { Notification } from '@prisma/client';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface NotificationBellProps {
   isAdmin?: boolean;
@@ -15,8 +16,21 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
   const [isOpen, setIsOpen] = useState(false);
   const [guestId, setGuestId] = useState<string | undefined>(undefined);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('Notifications');
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
+
+  const decodeMessage = (raw: string): string => {
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed.key === 'new_support_message') return t('new_support_message');
+      if (parsed.key === 'new_chat_from') return t('new_chat_from', { name: parsed.name });
+      if (parsed.key === 'new_order_from') return t('new_order_from', { name: parsed.name, amount: parsed.amount });
+      return raw;
+    } catch {
+      return raw;
+    }
+  };
 
   useEffect(() => {
     if (!isAdmin && !userId) {
@@ -33,26 +47,21 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
       } else if (userId || guestId) {
         data = await getUserNotifications(userId, guestId);
       }
-      
+
       setNotifications(prev => {
-        // Check if there are new unread notifications compared to previous state
         const prevUnreadIds = new Set(prev.filter(n => !n.isRead).map(n => n.id));
         const currentUnread = data.filter(n => !n.isRead);
-        
+
         let hasNew = false;
         for (const n of currentUnread) {
-          if (!prevUnreadIds.has(n.id)) {
-            hasNew = true;
-            break;
-          }
+          if (!prevUnreadIds.has(n.id)) { hasNew = true; break; }
         }
-        
+
         if (hasNew) {
-          // Play sound
           const audio = new Audio('/notification.mp3');
           audio.play().catch(e => console.log('Audio play failed:', e));
         }
-        
+
         return data;
       });
     } catch (e) {
@@ -61,24 +70,18 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
   };
 
   useEffect(() => {
-    // Initial fetch
     fetchNotifications();
-    
-    // Poll every 10 seconds
     const interval = setInterval(fetchNotifications, 10000);
     return () => clearInterval(interval);
   }, [isAdmin, userId, guestId]);
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
@@ -94,7 +97,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-600 hover:text-orange-600 transition focus:outline-none flex items-center justify-center"
       >
@@ -111,22 +114,17 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
       {isOpen && (
         <div className="fixed inset-x-4 top-20 mx-auto max-w-xs sm:max-w-none sm:absolute sm:inset-auto sm:right-0 sm:top-auto sm:mt-2 w-auto sm:w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden">
           <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-            <h3 className="font-semibold text-gray-800 text-sm">Notifications</h3>
+            <h3 className="font-semibold text-gray-800 text-sm">{t('title')}</h3>
             {unreadCount > 0 && (
-              <button 
-                onClick={handleMarkAllAsRead}
-                className="text-xs text-orange-600 hover:text-orange-700 font-medium"
-              >
-                Tout marquer comme lu
+              <button onClick={handleMarkAllAsRead} className="text-xs text-orange-600 hover:text-orange-700 font-medium">
+                {t('mark_all_read')}
               </button>
             )}
           </div>
-          
+
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="p-4 text-center text-sm text-gray-500">
-                No notifications
-              </div>
+              <div className="p-4 text-center text-sm text-gray-500">{t('no_notifications')}</div>
             ) : (
               <ul className="divide-y divide-gray-100">
                 {notifications.map(n => (
@@ -134,33 +132,30 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          {n.type === 'CHAT' && <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Chat</span>}
-                          {n.type === 'ORDER' && <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Commande</span>}
+                          {n.type === 'CHAT' && <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">{t('label_chat')}</span>}
+                          {n.type === 'ORDER' && <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">{t('label_order')}</span>}
                           <span className="text-[10px] text-gray-400">
                             {new Date(n.createdAt).toLocaleDateString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
                         <p className={`text-sm ${n.isRead ? 'text-gray-600' : 'text-gray-900 font-medium'}`}>
-                          {n.message}
+                          {decodeMessage(n.message)}
                         </p>
                         {n.link && (
-                          <Link 
-                            href={n.link} 
-                            onClick={() => {
-                              if (!n.isRead) handleMarkAsRead(n.id);
-                              setIsOpen(false);
-                            }}
+                          <Link
+                            href={n.link}
+                            onClick={() => { if (!n.isRead) handleMarkAsRead(n.id); setIsOpen(false); }}
                             className="text-xs text-orange-600 hover:underline mt-2 inline-block font-medium"
                           >
-                            View details &rarr;
+                            {t('view_details')} &rarr;
                           </Link>
                         )}
                       </div>
                       {!n.isRead && (
-                        <button 
+                        <button
                           onClick={() => handleMarkAsRead(n.id)}
                           className="w-2 h-2 rounded-full bg-orange-600 mt-1 ml-3 flex-shrink-0"
-                          title="Marquer comme lu"
+                          title={t('mark_all_read')}
                         />
                       )}
                     </div>

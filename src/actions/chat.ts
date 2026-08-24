@@ -47,7 +47,7 @@ export async function sendMessage(sessionId: string, sender: ChatSender, content
     await createNotification({
       isAdmin: true,
       type: 'CHAT',
-      message: `Nouveau message de ${updatedSession.guestName || 'Visiteur'}`,
+      message: JSON.stringify({ key: 'new_chat_from', name: updatedSession.guestName || 'Visiteur' }),
       link: '/admin/chat',
     });
   } else {
@@ -56,7 +56,7 @@ export async function sendMessage(sessionId: string, sender: ChatSender, content
       isAdmin: false,
       guestId: updatedSession.guestId,
       type: 'CHAT',
-      message: `Nouveau message du support`,
+      message: JSON.stringify({ key: 'new_support_message' }),
     });
   }
 

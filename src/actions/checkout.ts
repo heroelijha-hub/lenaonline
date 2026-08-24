@@ -214,7 +214,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         createNotification({
           isAdmin: true,
           type: 'ORDER',
-          message: `New order from ${firstName} ${lastName} (${formatPriceNumber(verifiedTotal, currencyOptions)})`,
+          message: JSON.stringify({ key: 'new_order_from', name: `${firstName} ${lastName}`, amount: formatPriceNumber(verifiedTotal, currencyOptions) }),
           link: `/admin/orders/${order.id}`,
         }).catch(e => console.error('Notification failed', e));
       }

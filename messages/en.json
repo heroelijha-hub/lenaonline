@@ -863,5 +863,16 @@
     "edit": "Edit",
     "delete": "Delete",
     "no_reviews": "No reviews yet."
+  },
+  "Notifications": {
+    "new_support_message": "New message from support",
+    "new_chat_from": "New message from {name}",
+    "new_order_from": "New order from {name} ({amount})",
+    "mark_all_read": "Mark all as read",
+    "no_notifications": "No notifications",
+    "view_details": "View details",
+    "label_chat": "Chat",
+    "label_order": "Order",
+    "title": "Notifications"
   }
 }
