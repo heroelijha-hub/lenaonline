@@ -207,17 +207,17 @@ export default async function CheckoutSuccessPage({
         </div>
       </div>
 
-      {order.paymentMethod === 'BANK_TRANSFER' && (
+      {order.paymentMethod === 'BANK_TRANSFER' && (settings.BANK_TRANSFER_IBAN || settings.BANK_TRANSFER_ACCOUNT_HOLDER || settings.BANK_TRANSFER_BIC || settings.BANK_TRANSFER_BANK_NAME) && (
         <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
           <h3 className="font-bold text-gray-900 mb-2">{t('bank_transfer_instructions_title')}</h3>
           <p className="text-sm text-gray-600 mb-4">
             {settings.BANK_TRANSFER_INSTRUCTIONS || t('bank_transfer_instructions_desc')}
           </p>
           <div className="bg-white p-4 rounded border border-gray-200 font-mono text-sm space-y-2">
-            <p><strong>{t('account_holder')}</strong> {settings.BANK_TRANSFER_ACCOUNT_HOLDER || ''}</p>
-            <p><strong>{t('iban')}</strong> {settings.BANK_TRANSFER_IBAN || ''}</p>
-            <p><strong>{t('bic')}</strong> {settings.BANK_TRANSFER_BIC || ''}</p>
-            <p><strong>{t('bank')}</strong> {settings.BANK_TRANSFER_BANK_NAME || ''}</p>
+            {settings.BANK_TRANSFER_ACCOUNT_HOLDER && <p><strong>{t('account_holder')}</strong> {settings.BANK_TRANSFER_ACCOUNT_HOLDER}</p>}
+            {settings.BANK_TRANSFER_IBAN && <p><strong>{t('iban')}</strong> {settings.BANK_TRANSFER_IBAN}</p>}
+            {settings.BANK_TRANSFER_BIC && <p><strong>{t('bic')}</strong> {settings.BANK_TRANSFER_BIC}</p>}
+            {settings.BANK_TRANSFER_BANK_NAME && <p><strong>{t('bank')}</strong> {settings.BANK_TRANSFER_BANK_NAME}</p>}
           </div>
         </div>
       )}
