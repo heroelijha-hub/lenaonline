@@ -1,11 +1,12 @@
 'use client';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { updateOrderStatus, deleteOrder } from '@/actions/admin';
 import { useState } from 'react';
 import Price from '@/components/Price';
 
 export default function OrderTable({ orders }: { orders: any[] }) {
   const t = useTranslations('AdminOrders');
+  const locale = useLocale();
 
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -44,7 +45,7 @@ export default function OrderTable({ orders }: { orders: any[] }) {
             orders.map((order) => (
               <tr key={order.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{order.id.split('-')[0]}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString(locale)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.user?.email || t('guest')}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900"><Price amount={order.total} showTax={false} /></td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import { getDashboardStats } from '@/actions/dashboard';
 import DashboardChart from '@/components/admin/DashboardChart';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
   const t = await getTranslations('AdminDashboard');
+  const locale = await getLocale();
   const stats = await getDashboardStats();
 
   const settingsDb = await prisma.setting.findMany();
@@ -117,7 +118,7 @@ export default async function AdminDashboardPage() {
                     <div className="flex flex-col">
                       <span className="font-semibold text-sm text-gray-900">#{order.id.slice(-6).toUpperCase()}</span>
                       <span className="text-xs text-gray-500">{order.user.email}</span>
-                      <span className="text-xs text-gray-400 mt-0.5">{new Date(order.createdAt).toLocaleDateString('en-US')}</span>
+                      <span className="text-xs text-gray-400 mt-0.5">{new Date(order.createdAt).toLocaleDateString(locale)}</span>
                     </div>
                     <div className="flex flex-col items-end">
                       <span className="font-bold text-sm text-gray-900">{formatPrice(order.total)}</span>

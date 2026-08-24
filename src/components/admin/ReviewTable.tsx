@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { toggleReviewApproval, deleteReview, updateReview } from '@/actions/reviews';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 type Review = {
   id: string;
@@ -16,6 +16,7 @@ type Review = {
 
 export default function ReviewTable({ reviews }: { reviews: Review[] }) {
   const t = useTranslations('AdminReviews');
+  const locale = useLocale();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({ rating: 5, comment: '', createdAtStr: '' });
 
@@ -99,7 +100,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                     className="border rounded p-1 text-sm"
                   />
                 ) : (
-                  new Date(review.createdAt).toLocaleDateString()
+                  new Date(review.createdAt).toLocaleDateString(locale)
                 )}
               </td>
               <td className="px-6 py-4">

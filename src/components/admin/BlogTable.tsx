@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { deleteArticle } from '@/actions/blog';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function BlogTable({ initialArticles }: { initialArticles: any[] }) {
   const t = useTranslations('AdminBlogs');
+  const locale = useLocale();
   const [articles, setArticles] = useState(initialArticles);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
@@ -68,7 +69,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  {new Date(article.createdAt).toLocaleDateString('en-US')}
+                  {new Date(article.createdAt).toLocaleDateString(locale)}
                 </td>
                 <td className="px-6 py-4 text-right">
                   <Link 

@@ -3,9 +3,11 @@
 import prisma from '@/lib/prisma';
 import { OrderStatus } from '@prisma/client';
 import { requireAdmin } from '@/lib/auth';
+import { getLocale } from 'next-intl/server';
 
 export async function getDashboardStats() {
   await requireAdmin();
+  const locale = await getLocale();
   try {
     // 1. Global KPIs
     const totalProducts = await prisma.product.count();
@@ -53,12 +55,12 @@ export async function getDashboardStats() {
     for (let i = 29; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const dateString = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+      const dateString = d.toLocaleDateString(locale, { day: '2-digit', month: 'short' });
       salesByDayMap.set(dateString, 0);
     }
 
     recentOrders.forEach(order => {
-      const dateString = new Date(order.createdAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+      const dateString = new Date(order.createdAt).toLocaleDateString(locale, { day: '2-digit', month: 'short' });
       if (salesByDayMap.has(dateString)) {
         salesByDayMap.set(dateString, salesByDayMap.get(dateString)! + order.total);
       }

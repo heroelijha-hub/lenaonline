@@ -3,10 +3,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { getAdminSessions, sendMessage, closeSession, getSessionMessages } from '@/actions/chat';
 import { ChatSender, ChatMessage, ChatSession } from '@prisma/client';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function AdminChatClient({ initialSessions }: { initialSessions: any[] }) {
   const t = useTranslations('AdminChat');
+  const locale = useLocale();
   const [sessions, setSessions] = useState(initialSessions);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -133,7 +134,7 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
                       {msg.content}
                     </div>
                     <span className="text-xs text-gray-400 mt-1">
-                      {new Date(msg.createdAt).toLocaleString()}
+                      {new Date(msg.createdAt).toLocaleString(locale)}
                     </span>
                   </div>
                 );
