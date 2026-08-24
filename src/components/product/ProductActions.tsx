@@ -189,25 +189,27 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       </p>
 
       {/* Actions (Quantity + Cart + Buy) */}
-      <div className="flex gap-4 mb-8">
-        {/* Qty */}
-        <div className="flex border border-gray-300 rounded-md overflow-hidden bg-gray-50 w-32">
-          <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">-</button>
-          <input type="text" value={quantity} readOnly className="w-full text-center bg-transparent font-semibold border-x border-gray-300" />
-          <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">+</button>
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex gap-4 w-full sm:w-auto sm:flex-1">
+          {/* Qty */}
+          <div className="flex border border-gray-300 rounded-md overflow-hidden bg-gray-50 w-32 shrink-0">
+            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">-</button>
+            <input type="text" value={quantity} readOnly className="w-full text-center bg-transparent font-semibold border-x border-gray-300" />
+            <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">+</button>
+          </div>
+          
+          <button 
+            onClick={handleAddToCart}
+            className="flex-1 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-md transition shadow-sm"
+          >
+            {t('add_to_cart')}
+          </button>
         </div>
-        
-        <button 
-          onClick={handleAddToCart}
-          className="flex-1 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-md transition shadow-sm"
-        >
-          {t('add_to_cart')}
-        </button>
         
         {enableBuyNow && (
           <button 
             onClick={handleBuyNow}
-            className="flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm"
+            className="w-full sm:flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm py-3 sm:py-0"
           >
             {t('buy_now')}
           </button>
