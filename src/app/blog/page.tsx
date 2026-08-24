@@ -2,6 +2,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { getRecentComments } from '@/actions/blog';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,8 @@ export default async function BlogIndexPage({
   searchParams: { q?: string }
 }) {
   const query = searchParams.q || '';
+  const t = await getTranslations('Blog');
+  const locale = await getLocale();
   
   const articles = await prisma.article.findMany({
     where: {
@@ -33,7 +36,7 @@ export default async function BlogIndexPage({
   return (
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 w-full">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 font-sans text-center">Notre Blog</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-8 font-sans text-center">{t('title')}</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
@@ -41,7 +44,7 @@ export default async function BlogIndexPage({
           <div className="lg:col-span-8 space-y-8">
             {articles.length === 0 ? (
               <div className="bg-white p-8 rounded-lg border border-gray-200 text-center text-gray-500">
-                No articles found{query ? ` for "${query}"` : ''}.
+                {t('no_articles')}{query ? ` ${t('for')} "${query}"` : ''}.
               </div>
             ) : (
               articles.map(article => (
@@ -67,18 +70,18 @@ export default async function BlogIndexPage({
                     <div className="flex items-center text-xs text-gray-500 mb-4 gap-4">
                       <span className="flex items-center gap-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                        {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        {new Date(article.createdAt).toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                       <span className="flex items-center gap-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                        {article._count.comments} Commentaires
+                        {t('comments_count', { count: article._count.comments })}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600 line-clamp-3 mb-4 flex-1">
                       {article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...'}
                     </p>
                     <Link href={`/blog/${article.slug}`} className="inline-block mt-auto bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded transition self-start">
-                      Read More
+                      {t('read_more')}
                     </Link>
                   </div>
                 </div>

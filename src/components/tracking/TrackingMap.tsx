@@ -20,6 +20,8 @@ type TrackingMapProps = {
   destinationLng: number | null;
   destinationName: string;
   positions: DeliveryPosition[];
+  departureText?: string;
+  arrivalText?: string;
 };
 
 export default function TrackingMap({
@@ -29,7 +31,9 @@ export default function TrackingMap({
   destinationLat,
   destinationLng,
   destinationName,
-  positions
+  positions,
+  departureText = 'Departure',
+  arrivalText = 'Arrival'
 }: TrackingMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<unknown>(null);
@@ -54,14 +58,14 @@ export default function TrackingMap({
       if (originLat && originLng) {
         L.marker([originLat, originLng], {
           icon: L.divIcon({ className: '', html: '<div style="font-size:28px;line-height:1;">🏭</div>', iconSize: [32,32], iconAnchor: [16,32] })
-        }).addTo(mapInstance.current).bindPopup(`Departure: ${originName}`);
+        }).addTo(mapInstance.current).bindPopup(`${departureText}: ${originName}`);
       }
 
       // Destination
       if (destinationLat && destinationLng) {
         L.marker([destinationLat, destinationLng], {
           icon: L.divIcon({ className: '', html: '<div style="font-size:28px;line-height:1;">🏁</div>', iconSize: [32,32], iconAnchor: [16,32] })
-        }).addTo(mapInstance.current).bindPopup(`Arrival: ${destinationName}`);
+        }).addTo(mapInstance.current).bindPopup(`${arrivalText}: ${destinationName}`);
       }
 
       // History Positions

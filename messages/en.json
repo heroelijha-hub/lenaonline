@@ -506,5 +506,68 @@
     "hours_1": "Mon-Sat: 10:00 AM - 7:30 PM",
     "hours_2": "Mon-Sat: 09:30 AM - 8:00 PM",
     "hours_3": "Mon-Sat: 10:00 AM - 7:00 PM"
+  },
+  "Wishlist": {
+    "page_title": "My Wishlist",
+    "page_description": "Manage your favorite products on {storeName}",
+    "title": "My Wishlist",
+    "empty_title": "Your wishlist is empty",
+    "empty_subtitle": "Explore our catalog and add products to your wishlist.",
+    "discover_products": "Discover products",
+    "general": "General",
+    "add_to_cart": "Cart",
+    "remove": "Remove from wishlist"
+  },
+  "NewArrivals": {
+    "title": "New Arrivals",
+    "subtitle": "Discover our latest freshly arrived products.",
+    "no_products": "No recent products",
+    "back_to_home": "Back to Home",
+    "no_image": "No Image",
+    "new_badge": "NEW"
+  },
+  "HotProducts": {
+    "title": "Popular Products",
+    "subtitle": "The most appreciated and best-selling products in our store.",
+    "no_products": "No popular products yet",
+    "back_to_home": "Back to Home",
+    "no_image": "No Image",
+    "hot_badge": "HOT"
+  },
+  "SaleProducts": {
+    "title": "Sale Products",
+    "subtitle": "Enjoy our best deals and exclusive discounts.",
+    "no_products": "No ongoing promotions",
+    "back_to_home": "Back to Home",
+    "no_image": "No Image",
+    "sale_badge": "SALE"
+  },
+  "Blog": {
+    "title": "Our Blog",
+    "no_articles": "No articles found",
+    "for": "for",
+    "comments_count": "{count} Comments",
+    "read_more": "Read More",
+    "search_placeholder": "Search...",
+    "search_btn": "Search",
+    "recent_articles": "Recent Articles",
+    "no_recent_articles": "No recent articles.",
+    "recent_comments": "Recent Comments",
+    "no_comments": "No comments to display.",
+    "on": "on",
+    "article_not_found": "Article not found",
+    "by": "By",
+    "share": "Share:",
+    "next_article": "Next Article →",
+    "related_post": "Related Post",
+    "write_review": "Write a review",
+    "review_desc": "Your email address will not be published. Required fields are marked with *",
+    "comment_placeholder": "Comment *",
+    "name_placeholder": "Name *",
+    "email_placeholder": "Email *",
+    "submit_comment": "Leave a comment",
+    "submitting": "Submitting...",
+    "comment_success": "Your comment was submitted successfully!",
+    "comment_error": "Error submitting your comment."
   }
 }

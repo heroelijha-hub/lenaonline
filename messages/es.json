@@ -506,5 +506,68 @@
     "hours_1": "Lun-Sáb: 10:00 AM - 7:30 PM",
     "hours_2": "Lun-Sáb: 09:30 AM - 8:00 PM",
     "hours_3": "Lun-Sáb: 10:00 AM - 7:00 PM"
+  },
+  "Wishlist": {
+    "page_title": "Mi Lista de Deseos",
+    "page_description": "Gestiona tus productos favoritos en {storeName}",
+    "title": "Mis Favoritos",
+    "empty_title": "Tu lista de deseos está vacía",
+    "empty_subtitle": "Explora nuestro catálogo y añade productos a tu lista.",
+    "discover_products": "Descubrir productos",
+    "general": "General",
+    "add_to_cart": "Carrito",
+    "remove": "Eliminar de favoritos"
+  },
+  "NewArrivals": {
+    "title": "Novedades",
+    "subtitle": "Descubre nuestros últimos productos recién llegados.",
+    "no_products": "No hay productos recientes",
+    "back_to_home": "Volver al inicio",
+    "no_image": "Sin imagen",
+    "new_badge": "NUEVO"
+  },
+  "HotProducts": {
+    "title": "Populares (Hot)",
+    "subtitle": "Los productos más apreciados y más vendidos de nuestra tienda.",
+    "no_products": "No hay productos populares todavía",
+    "back_to_home": "Volver al inicio",
+    "no_image": "Sin imagen",
+    "hot_badge": "HOT"
+  },
+  "SaleProducts": {
+    "title": "Promociones (Sale)",
+    "subtitle": "Disfruta de nuestras mejores ofertas y descuentos exclusivos.",
+    "no_products": "No hay promociones en curso",
+    "back_to_home": "Volver al inicio",
+    "no_image": "Sin imagen",
+    "sale_badge": "OFERTA"
+  },
+  "Blog": {
+    "title": "Nuestro Blog",
+    "no_articles": "No se encontraron artículos",
+    "for": "para",
+    "comments_count": "{count} Comentarios",
+    "read_more": "Leer más",
+    "search_placeholder": "Buscar...",
+    "search_btn": "Buscar",
+    "recent_articles": "Artículos recientes",
+    "no_recent_articles": "No hay artículos recientes.",
+    "recent_comments": "Comentarios recientes",
+    "no_comments": "No hay comentarios para mostrar.",
+    "on": "en",
+    "article_not_found": "Artículo no encontrado",
+    "by": "Por",
+    "share": "Compartir:",
+    "next_article": "Siguiente artículo →",
+    "related_post": "Artículo relacionado",
+    "write_review": "Escribir un comentario",
+    "review_desc": "Su dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *",
+    "comment_placeholder": "Comentario *",
+    "name_placeholder": "Nombre *",
+    "email_placeholder": "Correo electrónico *",
+    "submit_comment": "Dejar un comentario",
+    "submitting": "Enviando...",
+    "comment_success": "¡Su comentario fue enviado con éxito!",
+    "comment_error": "Error al enviar el comentario."
   }
 }

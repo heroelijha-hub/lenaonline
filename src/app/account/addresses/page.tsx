@@ -30,7 +30,7 @@ export default async function AddressesPage() {
           {/* Billing address */}
           <div>
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
-              <h3 className="text-xl font-bold text-gray-900">{t('CheckoutSuccess.billing_address')}</h3>
+              <h3 className="text-xl font-bold text-gray-900">{t('Checkout.billing_address')}</h3>
               <Link href="#" className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors">
                 {t('AccountAddresses.add_btn')}
               </Link>
@@ -50,7 +50,7 @@ export default async function AddressesPage() {
           {/* Shipping address */}
           <div>
             <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
-              <h3 className="text-xl font-bold text-gray-900">{t('CheckoutSuccess.shipping_address')}</h3>
+              <h3 className="text-xl font-bold text-gray-900">{t('Checkout.shipping_address')}</h3>
               <Link href="#" className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors">
                 {t('AccountAddresses.add_btn')}
               </Link>

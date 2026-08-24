@@ -139,6 +139,8 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
               destinationLng={order.destinationLng}
               destinationName={`${order.destinationAddress}, ${order.destinationCountry}`}
               positions={order.deliveryPositions}
+              departureText={t('departure').replace(':', '').trim()}
+              arrivalText={t('arrival').replace(':', '').trim()}
             />
           </div>
 

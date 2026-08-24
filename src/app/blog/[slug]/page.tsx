@@ -5,6 +5,7 @@ import CommentForm from '@/components/blog/CommentForm';
 import { getRecentComments, getArticleBySlug } from '@/actions/blog';
 import SafeHTML from '@/components/SafeHTML';
 import Link from 'next/link';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 import { Metadata } from 'next';
 
@@ -15,7 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = await getArticleBySlug(slug);
   
   if (!article || !article.isPublished) {
-    return { title: 'Article introuvable' };
+    const t = await getTranslations('Blog');
+    return { title: t('article_not_found') };
   }
   
   const description = article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 160);
@@ -41,6 +43,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
+  const t = await getTranslations('Blog');
+  const locale = await getLocale();
   
   if (!article || !article.isPublished) {
     notFound();
@@ -92,16 +96,16 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 {article.authorName && (
                   <span className="flex items-center gap-1 font-medium text-gray-700">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    By {article.authorName}
+                    {t('by')} {article.authorName}
                   </span>
                 )}
                 <span className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                  {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {new Date(article.createdAt).toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
                 <span className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                  {article.comments.length} Comments
+                  {t('comments_count', { count: article.comments.length })}
                 </span>
               </div>
 
@@ -122,7 +126,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               <div className="mt-12 pt-8 border-t border-gray-100">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-semibold text-gray-900">Partager:</span>
+                    <span className="font-semibold text-gray-900">{t('share')}</span>
                     {/* Share placeholders */}
                     <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition">f</button>
                     <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition">t</button>
@@ -131,7 +135,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   
                   {nextPost && (
                     <div className="text-right">
-                      <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Article Suivant &rarr;</div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">{t('next_article')}</div>
                       <Link href={`/blog/${nextPost.slug}`} className="font-semibold text-gray-900 hover:text-orange-600 transition">
                         {nextPost.title}
                       </Link>
@@ -145,7 +149,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             {relatedPosts.length > 0 && (
               <div className="mt-12">
                 <div className="flex items-center gap-4 mb-6">
-                  <h3 className="text-xl font-bold text-gray-900">Related Post</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{t('related_post')}</h3>
                   <div className="h-px bg-gray-200 flex-1"></div>
                 </div>
                 
@@ -168,11 +172,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                       <div className="flex items-center text-xs text-gray-500 gap-4 mt-auto">
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                          {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {new Date(post.createdAt).toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                          {post._count.comments} Comments
+                          {t('comments_count', { count: post._count.comments })}
                         </span>
                       </div>
                     </Link>

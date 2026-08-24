@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { getTranslations, getLocale } from 'next-intl/server';
+import { getSettings } from '@/actions/settings';
 
 export default async function CheckoutSuccessPage({
   searchParams,
@@ -10,6 +11,7 @@ export default async function CheckoutSuccessPage({
   const orderId = searchParams.orderId as string;
   const t = await getTranslations('Checkout');
   const locale = await getLocale();
+  const settings = await getSettings();
 
   if (!orderId) {
     return (
@@ -50,7 +52,11 @@ export default async function CheckoutSuccessPage({
   };
   
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+    const currency = settings.MAIN_CURRENCY || 'USD';
+    const symbolPos = settings.CURRENCY_SYMBOL_POSITION || 'left';
+    
+    // Simplification for the server side display
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(price);
   };
 
   const getPaymentMethodLabel = (method: string) => {

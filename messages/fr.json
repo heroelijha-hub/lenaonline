@@ -506,5 +506,68 @@
     "hours_1": "Lun-Sam : 10h00 - 19h30",
     "hours_2": "Lun-Sam : 09h30 - 20h00",
     "hours_3": "Lun-Sam : 10h00 - 19h00"
+  },
+  "Wishlist": {
+    "page_title": "Ma Liste d'Envies",
+    "page_description": "Gérez vos produits préférés sur {storeName}",
+    "title": "Mes Favoris",
+    "empty_title": "Votre liste de favoris est vide",
+    "empty_subtitle": "Explorez notre catalogue et ajoutez des produits à votre liste.",
+    "discover_products": "Découvrir les produits",
+    "general": "Général",
+    "add_to_cart": "Panier",
+    "remove": "Retirer des favoris"
+  },
+  "NewArrivals": {
+    "title": "Nouveautés",
+    "subtitle": "Découvrez nos derniers produits fraîchement arrivés.",
+    "no_products": "Aucun produit récent",
+    "back_to_home": "Retour à l'accueil",
+    "no_image": "Aucune image",
+    "new_badge": "NOUVEAU"
+  },
+  "HotProducts": {
+    "title": "Populaires (Hot)",
+    "subtitle": "Les produits les plus appréciés et les plus vendus de notre boutique.",
+    "no_products": "Aucun produit populaire pour le moment",
+    "back_to_home": "Retour à l'accueil",
+    "no_image": "Aucune image",
+    "hot_badge": "HOT"
+  },
+  "SaleProducts": {
+    "title": "Promotions (Sale)",
+    "subtitle": "Profitez de nos meilleures offres et réductions exclusives.",
+    "no_products": "Aucune promotion en cours",
+    "back_to_home": "Retour à l'accueil",
+    "no_image": "Aucune image",
+    "sale_badge": "PROMO"
+  },
+  "Blog": {
+    "title": "Notre Blog",
+    "no_articles": "Aucun article trouvé",
+    "for": "pour",
+    "comments_count": "{count} Commentaires",
+    "read_more": "Lire la suite",
+    "search_placeholder": "Rechercher...",
+    "search_btn": "Rechercher",
+    "recent_articles": "Articles récents",
+    "no_recent_articles": "Aucun article récent.",
+    "recent_comments": "Commentaires récents",
+    "no_comments": "Aucun commentaire à afficher.",
+    "on": "sur",
+    "article_not_found": "Article introuvable",
+    "by": "Par",
+    "share": "Partager:",
+    "next_article": "Article Suivant →",
+    "related_post": "Article Similaire",
+    "write_review": "Laisser un commentaire",
+    "review_desc": "Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués avec *",
+    "comment_placeholder": "Commentaire *",
+    "name_placeholder": "Nom *",
+    "email_placeholder": "Email *",
+    "submit_comment": "Laisser un commentaire",
+    "submitting": "Envoi...",
+    "comment_success": "Votre commentaire a été envoyé avec succès !",
+    "comment_error": "Erreur lors de l'envoi du commentaire."
   }
 }

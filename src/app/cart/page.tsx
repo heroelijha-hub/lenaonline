@@ -196,7 +196,7 @@ export default function CartPage() {
                           onChange={() => setShippingMethod('standard')}
                           className="mt-1 mr-2"
                         />
-                        <span>{t('standard_shipping')}<br/>21,87€</span>
+                        <span>{t('standard_shipping')}<br/>{formatPrice(21.87)}</span>
                       </label>
                       <label className="flex items-start cursor-pointer">
                         <input 
@@ -207,7 +207,7 @@ export default function CartPage() {
                           onChange={() => setShippingMethod('express')}
                           className="mt-1 mr-2"
                         />
-                        <span>{t('express_shipping')}<br/>53,87€</span>
+                        <span>{t('express_shipping')}<br/>{formatPrice(53.87)}</span>
                       </label>
                       
                       <p className="text-xs text-gray-500 mt-4 mb-2">{t('shipping_update_msg')}</p>

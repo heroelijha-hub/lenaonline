@@ -1,18 +1,23 @@
 import WishlistClient from './WishlistClient';
-import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
-export const metadata: Metadata = {
-  title: `My Wishlist | ${storeName}`,
-  description: `Manage your favorite products on ${storeName}`,
-};
+export async function generateMetadata() {
+  const t = await getTranslations('Wishlist');
+  return {
+    title: `${t('page_title')} | ${storeName}`,
+    description: t('page_description', { storeName }),
+  };
+}
 
-export default function WishlistPage() {
+export default async function WishlistPage() {
+  const t = await getTranslations('Wishlist');
+
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Wishlist</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">{t('title')}</h1>
         <WishlistClient />
       </div>
     </div>

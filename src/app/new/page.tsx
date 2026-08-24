@@ -6,6 +6,8 @@ import Price from '@/components/Price';
 export const dynamic = 'force-dynamic';
 
 export default async function NewArrivalsPage() {
+  const t = await getTranslations('NewArrivals');
+
   const products = await prisma.product.findMany({
     include: { categories: true },
     orderBy: { createdAt: 'desc' },
@@ -17,18 +19,18 @@ export default async function NewArrivalsPage() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">New Arrivals</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
             <p className="text-gray-600">
-              Discover our latest freshly arrived products.
+              {t('subtitle')}
             </p>
           </div>
         </div>
 
         {products.length === 0 ? (
           <div className="bg-white p-12 text-center rounded-lg border border-gray-200">
-            <h2 className="text-xl font-medium text-gray-900 mb-2">No recent products</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">{t('no_products')}</h2>
             <Link href="/" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-2 rounded transition">
-              Back to Home
+              {t('back_to_home')}
             </Link>
           </div>
         ) : (
@@ -44,11 +46,11 @@ export default async function NewArrivalsPage() {
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
-                      No Image
+                      {t('no_image')}
                     </div>
                   )}
                   <span className="absolute top-2 left-2 bg-blue-500 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded">
-                    NEW
+                    {t('new_badge')}
                   </span>
                 </Link>
                 <div className="p-3 sm:p-4 flex-grow flex flex-col">
