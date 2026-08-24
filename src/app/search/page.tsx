@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import Price from '@/components/Price';
+import ProductCard from '@/components/shop/ProductCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,43 +56,8 @@ export default async function SearchPage({
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition group flex flex-col h-full">
-                <Link href={`/product/${product.slug}`} className="relative h-48 sm:h-56 p-4 flex items-center justify-center bg-white overflow-hidden">
-                  {product.images && product.images.length > 0 ? (
-                    <img 
-                      src={product.images[0]} 
-                      alt={product.title} 
-                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                      {t('no_image')}
-                    </div>
-                  )}
-                  {product.isDealOfTheDay && (
-                    <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      {t('sale')}
-                    </span>
-                  )}
-                </Link>
-                <div className="p-4 flex-grow flex flex-col">
-                  {product.categories && product.categories.length > 0 && (
-                    <span className="text-xs text-gray-500 mb-1">{product.categories[0].name}</span>
-                  )}
-                  <Link href={`/product/${product.slug}`} className="text-sm font-medium text-gray-900 hover:text-orange-600 transition line-clamp-2 mb-2 flex-grow">
-                    {product.title}
-                  </Link>
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-2">
-                      <Price amount={product.price} showTax={false} className="font-bold text-orange-600" />
-                      {product.compareAtPrice && product.compareAtPrice > product.price && (
-                        <Price amount={product.compareAtPrice} showTax={false} className="text-xs text-gray-400 line-through" />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {products.map((product: any) => (
+              <ProductCard key={product.id} product={product} view="grid" />
             ))}
           </div>
         )}

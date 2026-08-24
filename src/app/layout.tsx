@@ -11,6 +11,7 @@ import ThemeProvider from "@/components/layout/ThemeProvider";
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -178,6 +179,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider messages={messages} locale={locale}>
           <CurrencyProvider options={currencyOptions}>
             <StoreLayout settings={storeSettings}>
+              <Toaster position="bottom-right" />
               {children}
               <ChatWidget 
                 enabled={settingsMap.CHAT_ENABLED !== 'false'} 

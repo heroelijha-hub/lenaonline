@@ -21,6 +21,7 @@ interface ProductCardProps {
 import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
+import { toast } from 'react-hot-toast';
 
 export default function ProductCard({ product, view = 'grid' }: ProductCardProps) {
   const router = useRouter();
@@ -48,6 +49,11 @@ export default function ProductCard({ product, view = 'grid' }: ProductCardProps
     e.preventDefault();
     e.stopPropagation();
     wishlistStore.toggleItem(product.id);
+    if (!isWishlisted) {
+      toast.success('Produit ajouté aux favoris !');
+    } else {
+      toast.success('Produit retiré des favoris.');
+    }
   };
 
 
