@@ -2,11 +2,13 @@ import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import DeliveryTracker from '@/components/admin/DeliveryTracker';
 import Price from '@/components/Price';
+import { getTranslations } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const t = await getTranslations('AdminOrders');
   const order = await prisma.order.findUnique({
     where: { id },
     include: {
@@ -29,15 +31,15 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Commande #{order.id.split('-')[0]}</h1>
-        <a href="/admin/orders" className="text-sm font-medium text-gray-600 hover:text-gray-900">&larr; Retour aux commandes</a>
+        <h1 className="text-2xl font-bold text-gray-900">{t('order_number')}{order.id.split('-')[0]}</h1>
+        <a href="/admin/orders" className="text-sm font-medium text-gray-600 hover:text-gray-900">{t('back_to_orders')}</a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Order Details */}
         <div className="lg:col-span-2 space-y-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Articles</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">{t('items')}</h2>
             <div className="space-y-4">
               {order.orderItems.map(item => (
                 <div key={item.id} className="flex justify-between items-center py-2 border-b last:border-0">
@@ -59,7 +61,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                           })()}
                         </p>
                       )}
-                      <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{t('qty')}: {item.quantity}</p>
                     </div>
                   </div>
                   <p className="font-medium text-sm"><Price amount={item.price * item.quantity} showTax={false} /></p>
@@ -67,7 +69,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
               ))}
             </div>
             <div className="mt-4 pt-4 border-t flex justify-between items-center font-bold">
-              <span>Total</span>
+              <span>{t('total')}</span>
               <span><Price amount={order.total} showTax={false} /></span>
             </div>
           </div>

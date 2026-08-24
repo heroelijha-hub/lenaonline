@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { deleteArticle } from '@/actions/blog';
+import { useTranslations } from 'next-intl';
 
 export default function BlogTable({ initialArticles }: { initialArticles: any[] }) {
+  const t = useTranslations('AdminBlogs');
   const [articles, setArticles] = useState(initialArticles);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this article?')) return;
+    if (!confirm(t('confirm_delete'))) return;
     
     setLoadingId(id);
     const res = await deleteArticle(id);
@@ -18,7 +20,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
     if (res.success) {
       setArticles(articles.filter(a => a.id !== id));
     } else {
-      alert(res.error || "Erreur lors de la suppression.");
+      alert(res.error || t('delete_error'));
     }
   };
 
@@ -27,18 +29,18 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
       <table className="w-full text-left text-sm text-gray-600">
         <thead className="bg-gray-50 border-b border-gray-200 text-gray-800 font-semibold">
           <tr>
-            <th className="px-6 py-4">Article</th>
-            <th className="px-6 py-4">Category</th>
-            <th className="px-6 py-4">Status</th>
-            <th className="px-6 py-4">Date</th>
-            <th className="px-6 py-4 text-right">Actions</th>
+            <th className="px-6 py-4">{t('col_article')}</th>
+            <th className="px-6 py-4">{t('col_category')}</th>
+            <th className="px-6 py-4">{t('col_status')}</th>
+            <th className="px-6 py-4">{t('col_date')}</th>
+            <th className="px-6 py-4 text-right">{t('col_actions')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
           {articles.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                No articles found.
+                {t('no_articles')}
               </td>
             </tr>
           ) : (
@@ -62,7 +64,7 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                 <td className="px-6 py-4">{article.category || '-'}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${article.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                    {article.isPublished ? 'Published' : 'Draft'}
+                    {article.isPublished ? t('published') : t('draft')}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -73,14 +75,14 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                     href={`/admin/blogs/edit/${article.id}`}
                     className="text-orange-600 hover:text-orange-800 font-medium mr-4"
                   >
-                    Edit
+                    {t('edit')}
                   </Link>
                   <button 
                     onClick={() => handleDelete(article.id)}
                     disabled={loadingId === article.id}
                     className="text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
                   >
-                    {loadingId === article.id ? '...' : 'Delete'}
+                    {loadingId === article.id ? '...' : t('delete')}
                   </button>
                 </td>
               </tr>

@@ -4,7 +4,7 @@ import { toggleCouponStatus, deleteCoupon } from '@/actions/admin';
 import { useState } from 'react';
 
 export default function CouponTable({ coupons }: { coupons: any[] }) {
-  const t = useTranslations('Admin');
+  const t = useTranslations('AdminCoupons');
 
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Voulez-vous vraiment supprimer ce coupon ?')) return;
+    if (!confirm(t('confirm_delete'))) return;
     setLoadingId(id);
     await deleteCoupon(id);
     setLoadingId(null);
@@ -35,7 +35,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
         <tbody className="bg-white divide-y divide-gray-200">
           {coupons.length === 0 ? (
             <tr>
-              <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">No coupons.</td>
+              <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">{t('no_coupons')}</td>
             </tr>
           ) : (
             coupons.map((coupon) => (
@@ -52,7 +52,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
                       coupon.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     } hover:opacity-80 transition disabled:opacity-50`}
                   >
-                    {coupon.isActive ? 'Active' : 'Inactive'}
+                    {coupon.isActive ? t('status_active') : t('status_inactive')}
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -61,7 +61,7 @@ export default function CouponTable({ coupons }: { coupons: any[] }) {
                     disabled={loadingId === coupon.id}
                     className="text-red-600 hover:text-red-900 disabled:opacity-50"
                   >
-                    Delete
+                    {t('delete')}
                   </button>
                 </td>
               </tr>

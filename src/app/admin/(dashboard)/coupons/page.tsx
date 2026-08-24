@@ -5,7 +5,7 @@ import CouponTable from '@/components/admin/CouponTable';
 export const dynamic = 'force-dynamic';
 
 export default async function CouponsPage() {
-  const t = await getTranslations('Admin');
+  const t = await getTranslations('AdminCoupons');
   const coupons = await getCoupons();
 
   return (
@@ -35,7 +35,7 @@ export default async function CouponsPage() {
             <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">{t("active_immediately")}</label>
           </div>
           <button type="submit" className="w-full bg-orange-500 text-white font-medium py-2 rounded hover:bg-orange-600 transition">
-            Create Coupon
+            {t('create_coupon_btn')}
           </button>
         </form>
       </div>

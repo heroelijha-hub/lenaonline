@@ -16,6 +16,7 @@ const CURRENCIES = [
 
 export default function SettingsForm({ initialSettings }: { initialSettings: Record<string, string> }) {
   const t = useTranslations('Admin');
+  const tSettings = useTranslations('AdminSettings');
 
   const router = useRouter();
   const [currency, setCurrency] = useState(initialSettings.currency || 'USD');
@@ -324,7 +325,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     await updateSettingsBatch(settingsMap);
 
-    setMessage('Settings updated successfully.');
+    setMessage(tSettings('update_success'));
     setIsLoading(false);
     router.refresh();
   };
@@ -337,7 +338,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         disabled={isLoading}
         className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-orange-300 text-sm font-semibold"
       >
-        {isLoading ? 'Saving...' : 'Save this section'}
+        {isLoading ? tSettings('saving') : tSettings('save_section')}
       </button>
     </div>
   );
@@ -351,7 +352,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       )}
 
       <div>
-        <h3 className="text-lg font-bold text-red-600 mb-4">Languages & Translation</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('languages_translation')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Active Language (Site)</label>
@@ -438,7 +439,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Taxes & VAT</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('taxes_vat')}</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -482,7 +483,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Store Features</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('store_features')}</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -526,7 +527,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Email Server (SMTP) - Transactional Emails</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('email_server')}</h3>
         <p className="text-sm text-gray-500 mb-4">Configure these settings so the store can automatically send emails (Order confirmation, Shipping, Cancellation).</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div>
@@ -584,7 +585,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Payments (Stripe, PayPal & Bank Transfer)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('payments')}</h3>
         <p className="text-sm text-gray-500 mb-4">Check "Enable this mode" to make the payment method visible at checkout.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2 flex items-center justify-between border-b pb-2 mb-4">
@@ -705,7 +706,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Design & Header</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('design_header')}</h3>
         
         {/* Product Card Settings */}
         <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">

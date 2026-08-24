@@ -25,7 +25,7 @@ const DEFAULT_SECTIONS: SectionConfig[] = [
 ];
 
 export default function LandingForm({ initialSettings, categories }: { initialSettings: Record<string, string>, categories: any[] }) {
-  const t = useTranslations('Admin');
+  const t = useTranslations('AdminLanding');
 
   const [sections, setSections] = useState<SectionConfig[]>(() => {
     try {
@@ -82,9 +82,9 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     try {
       await updateSetting('HOMEPAGE_LAYOUT', JSON.stringify(sections));
       await updateSetting('GLOBAL_FONT_FAMILY', globalFont);
-      setMessage('Update successful!');
+      setMessage(t('update_success'));
     } catch (e) {
-      setMessage('Update failed.');
+      setMessage(t('update_failed'));
     } finally {
       setIsLoading(false);
       setTimeout(() => setMessage(''), 3000);
@@ -684,11 +684,11 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <a href="/admin" className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition" title="Exit editor">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </a>
-            <span className="font-semibold text-xs tracking-wide">Page Editor</span>
+            <span className="font-semibold text-xs tracking-wide">{t('editor_title')}</span>
           </div>
           <button onClick={handleSave} disabled={isLoading} className="bg-orange-600 hover:bg-orange-500 text-white px-3 py-1 rounded text-xs font-medium transition disabled:opacity-50 flex items-center gap-1">
             {isLoading && <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
-            {isLoading ? '...' : 'Save'}
+            {isLoading ? t('saving') : t('save')}
           </button>
         </div>
         {message && <div className="px-4 py-2 bg-green-50 text-green-600 text-xs text-center border-b border-green-100 font-medium shrink-0">{message}</div>}
@@ -700,8 +700,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             <div className="p-3">
               {/* Global Settings */}
               <div className="mb-6 bg-white p-3 border rounded shadow-sm">
-                <h4 className="font-bold text-xs text-gray-800 mb-2 border-b pb-1">{t("global_settings")}</h4>
-                <label className="block text-xs font-medium mb-1">{t("font_family")}</label>
+                <h4 className="font-bold text-xs text-gray-800 mb-2 border-b pb-1">{t('global_settings')}</h4>
+                <label className="block text-xs font-medium mb-1">{t('font_family')}</label>
                 <select 
                   value={globalFont} 
                   onChange={e => setGlobalFont(e.target.value)} 
@@ -723,7 +723,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 </select>
               </div>
 
-              <p className="text-[11px] leading-tight text-gray-500 mb-4">{t("click_section_preview")}</p>
+              <p className="text-[11px] leading-tight text-gray-500 mb-4">{t('click_section_preview')}</p>
               
               <div className="space-y-3 mb-6">
                 {sections.map((section, index) => (

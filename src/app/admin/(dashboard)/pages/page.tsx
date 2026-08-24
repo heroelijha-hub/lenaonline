@@ -1,20 +1,22 @@
 import Link from 'next/link';
 import { getPages, deletePage } from '@/actions/pages';
+import { getTranslations } from 'next-intl/server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPagesList() {
+  const t = await getTranslations('AdminPages');
   const { data: pages, success, error } = await getPages();
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Custom Pages</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t('manage_pages')}</h1>
         <Link 
           href="/admin/pages/new" 
           className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition"
         >
-          Create a page
+          {t('create_page')}
         </Link>
       </div>
 
@@ -28,10 +30,10 @@ export default async function AdminPagesList() {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Title</th>
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600">URL / Slug</th>
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600">Status</th>
-              <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-right">Actions</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600">{t('col_title')}</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600">{t('col_slug')}</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600">{t('col_status')}</th>
+              <th className="px-6 py-3 text-sm font-semibold text-gray-600 text-right">{t('col_actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -44,22 +46,22 @@ export default async function AdminPagesList() {
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       page.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {page.isPublished ? 'Published' : 'Draft'}
+                      {page.isPublished ? t('published') : t('draft')}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-3">
                     <Link href={`/${page.slug}`} target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
-                      Voir
+                      {t('view')}
                     </Link>
                     <Link href={`/admin/pages/${page.id}`} className="text-orange-600 hover:text-orange-900 font-medium text-sm">
-                      Edit
+                      {t('edit')}
                     </Link>
                     <form action={async () => {
                       'use server';
                       await deletePage(page.id);
                     }} className="inline-block">
                       <button type="submit" className="text-red-600 hover:text-red-900 font-medium text-sm">
-                        Delete
+                        {t('delete')}
                       </button>
                     </form>
                   </td>
@@ -68,7 +70,7 @@ export default async function AdminPagesList() {
             ) : (
               <tr>
                 <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                  No page found. Click "Create a page" to get started.
+                  {t('no_pages')}
                 </td>
               </tr>
             )}

@@ -6,10 +6,12 @@ import { createArticle, updateArticle } from '@/actions/blog';
 import { uploadImage } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
+import { useTranslations } from 'next-intl';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function BlogForm({ article }: { article?: any }) {
+  const t = useTranslations('AdminBlogs');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -51,7 +53,7 @@ export default function BlogForm({ article }: { article?: any }) {
       if (url) setFormData({ ...formData, image: url });
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de l'upload de l'image.");
+      setError(t('upload_error'));
     } finally {
       setLoading(false);
     }
@@ -88,7 +90,7 @@ export default function BlogForm({ article }: { article?: any }) {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Article Title *</label>
+              <label className="block text-sm font-medium mb-1">{t('title_label')}</label>
               <input 
                 type="text" 
                 value={formData.title} 
@@ -99,19 +101,19 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Slug (Article URL) *</label>
+              <label className="block text-sm font-medium mb-1">{t('slug_label')}</label>
               <input 
                 type="text" 
                 value={formData.slug} 
                 onChange={e => setFormData({ ...formData, slug: e.target.value })}
                 required
                 className="w-full border px-4 py-2 rounded text-sm"
-                placeholder="mon-super-article"
+                placeholder={t('slug_placeholder')}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Excerpt (Summary for grids)</label>
+              <label className="block text-sm font-medium mb-1">{t('excerpt_label')}</label>
               <textarea 
                 value={formData.excerpt} 
                 onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
@@ -121,7 +123,7 @@ export default function BlogForm({ article }: { article?: any }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Full Content</label>
+              <label className="block text-sm font-medium mb-1">{t('content_label')}</label>
               <div className="bg-white">
                 <ReactQuill 
                   theme="snow" 
@@ -136,7 +138,7 @@ export default function BlogForm({ article }: { article?: any }) {
 
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
-            <h3 className="font-semibold text-gray-800">Organization & Visibility</h3>
+            <h3 className="font-semibold text-gray-800">{t('organization_title')}</h3>
             
             <div className="flex items-center gap-2 mb-4">
               <input 
@@ -146,34 +148,34 @@ export default function BlogForm({ article }: { article?: any }) {
                 onChange={e => setFormData({ ...formData, isPublished: e.target.checked })}
               />
               <label htmlFor="isPublished" className="text-sm font-medium text-gray-700">
-                Article is published (visible)
+                {t('published_checkbox')}
               </label>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Category</label>
+              <label className="block text-sm font-medium mb-1">{t('category_label')}</label>
               <input 
                 type="text" 
                 value={formData.category} 
                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                 className="w-full border px-3 py-2 rounded text-sm"
-                placeholder="Ex: Fashion"
+                placeholder={t('category_placeholder')}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Keywords (comma-separated)</label>
+              <label className="block text-sm font-medium mb-1">{t('keywords_label')}</label>
               <input 
                 type="text" 
                 value={formData.tags} 
                 onChange={e => setFormData({ ...formData, tags: e.target.value })}
                 className="w-full border px-3 py-2 rounded text-sm"
-                placeholder="Tondeuse, Entretien..."
+                placeholder={t('keywords_placeholder')}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Author Name</label>
+              <label className="block text-sm font-medium mb-1">{t('author_label')}</label>
               <input 
                 type="text" 
                 value={formData.authorName} 
@@ -184,7 +186,7 @@ export default function BlogForm({ article }: { article?: any }) {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="font-semibold text-gray-800 mb-3">Cover Image</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">{t('cover_image')}</h3>
             {formData.image && (
               <img src={formData.image} alt="Cover" className="w-full h-auto rounded mb-3 border" />
             )}
@@ -202,7 +204,7 @@ export default function BlogForm({ article }: { article?: any }) {
             disabled={loading}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
           >
-            {loading ? 'Saving...' : (article ? 'Update' : 'Publish Article')}
+            {loading ? t('saving') : (article ? t('update') : t('publish'))}
           </button>
         </div>
       </div>

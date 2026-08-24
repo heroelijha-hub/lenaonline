@@ -5,7 +5,7 @@ import OrderTable from '@/components/admin/OrderTable';
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersPage() {
-  const t = await getTranslations('Admin');
+  const t = await getTranslations('AdminOrders');
   const orders = await getOrders();
 
   return (

@@ -2,18 +2,20 @@
 import { useState } from 'react';
 import Price from '@/components/Price';
 import { sendRecoveryEmail } from '@/actions/admin';
+import { useTranslations } from 'next-intl';
 
 export default function AbandonedCartTable({ carts }: { carts: any[] }) {
+  const t = useTranslations('AdminAbandonedCarts');
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleSendEmail = async (id: string) => {
-    if (!confirm('Are you sure you want to send a recovery email for this cart?')) return;
+    if (!confirm(t('confirm_send_email'))) return;
     setLoading(id);
     const res = await sendRecoveryEmail(id);
     if (res.error) {
       alert(res.error);
     } else {
-      alert('Email sent successfully!');
+      alert(t('email_sent_success'));
     }
     setLoading(null);
   };
@@ -23,24 +25,24 @@ export default function AbandonedCartTable({ carts }: { carts: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Activity</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('customer_col')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('contact_col')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('last_activity_col')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('total_col')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('status_col')}</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('actions_col')}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {carts.length === 0 ? (
             <tr>
-              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">No abandoned carts found.</td>
+              <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">{t('no_carts')}</td>
             </tr>
           ) : (
             carts.map((cart) => (
               <tr key={cart.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {cart.firstName || cart.lastName ? `${cart.firstName || ''} ${cart.lastName || ''}` : 'Guest'}
+                  {cart.firstName || cart.lastName ? `${cart.firstName || ''} ${cart.lastName || ''}` : t('guest')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {cart.email}<br/>
@@ -51,16 +53,16 @@ export default function AbandonedCartTable({ carts }: { carts: any[] }) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
                   <Price amount={cart.totalAmount} showTax={false} />
-                  <div className="text-xs text-gray-500 font-normal">{cart.cartData?.length || 0} item(s)</div>
+                  <div className="text-xs text-gray-500 font-normal">{cart.cartData?.length || 0} {t('items')}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   {cart.status === 'RECOVERED' ? (
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      Recovered
+                      {t('recovered')}
                     </span>
                   ) : (
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                      Abandoned
+                      {t('abandoned')}
                     </span>
                   )}
                 </td>
@@ -71,7 +73,7 @@ export default function AbandonedCartTable({ carts }: { carts: any[] }) {
                       disabled={loading === cart.id} 
                       className="text-white hover:bg-orange-700 bg-orange-600 px-3 py-1.5 rounded text-xs font-semibold disabled:opacity-50"
                     >
-                      {loading === cart.id ? 'Sending...' : 'Send Email'}
+                      {loading === cart.id ? t('sending') : t('send_email')}
                     </button>
                   )}
                 </td>

@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { createCategory } from '@/actions/admin';
+import { useTranslations } from 'next-intl';
 
 export default function CategoryCreateForm({ categories }: { categories: any[] }) {
+  const t = useTranslations('AdminCategories');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [parentId, setParentId] = useState('');
@@ -41,7 +43,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         type="text" 
         value={name}
         onChange={handleNameChange}
-        placeholder="Category name (ex: Smartphones)"
+        placeholder={t('name_placeholder')}
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800"
         required
       />
@@ -49,7 +51,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         type="text" 
         value={slug}
         onChange={(e) => setSlug(e.target.value)}
-        placeholder="Slug (ex: smartphones)"
+        placeholder={t('slug_placeholder')}
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 bg-gray-50"
         required
       />
@@ -58,7 +60,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         onChange={(e) => setParentId(e.target.value)}
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 bg-white"
       >
-        <option value="">No parent (Main Category)</option>
+        <option value="">{t('no_parent_option')}</option>
         {categories.map(c => (
           <option key={c.id} value={c.id}>{c.name}</option>
         ))}
@@ -68,7 +70,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         disabled={loading}
         className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-md transition disabled:opacity-50"
       >
-        Add
+        {t('add_btn')}
       </button>
     </form>
   );

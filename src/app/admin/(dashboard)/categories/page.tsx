@@ -6,7 +6,7 @@ import CategoryCreateForm from '@/components/admin/CategoryCreateForm';
 export const dynamic = 'force-dynamic';
 
 export default async function CategoriesPage() {
-  const t = await getTranslations('Admin');
+  const t = await getTranslations('AdminCategories');
   const categories = await getCategories();
 
   return (

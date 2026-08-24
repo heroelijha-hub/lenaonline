@@ -12,7 +12,7 @@ type Category = {
 };
 
 export default function CategoryTable({ categories }: { categories: Category[] }) {
-  const t = useTranslations('Admin');
+  const t = useTranslations('AdminCategories');
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
@@ -51,7 +51,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
+    if (!confirm(t('confirm_delete'))) return;
     setIsDeleting(id);
     const res = await deleteCategory(id);
     if (res.error) {
@@ -65,9 +65,9 @@ export default function CategoryTable({ categories }: { categories: Category[] }
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('id_th')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('name_th')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('slug_th')}</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t("parent_col")}</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t("actions_col")}</th>
           </tr>
@@ -75,7 +75,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
         <tbody className="bg-white divide-y divide-gray-200">
           {categories.length === 0 ? (
             <tr>
-              <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">No existing categories.</td>
+              <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">{t('no_categories')}</td>
             </tr>
           ) : (
             categories.map((cat) => (
@@ -118,7 +118,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       onChange={(e) => setEditParentId(e.target.value)}
                       className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm bg-white"
                     >
-                      <option value="">None</option>
+                      <option value="">{t('none')}</option>
                       {categories.filter(c => c.id !== cat.id).map(c => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
@@ -130,8 +130,8 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   {editingId === cat.id ? (
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => handleSaveEdit(cat.id)} className="text-green-600 hover:text-green-900">Save</button>
-                      <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-900">Cancel</button>
+                      <button onClick={() => handleSaveEdit(cat.id)} className="text-green-600 hover:text-green-900">{t('save')}</button>
+                      <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-900">{t('cancel')}</button>
                     </div>
                   ) : (
                     <div className="flex justify-end gap-3">
@@ -141,7 +141,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                         disabled={isDeleting === cat.id}
                         className="text-red-600 hover:text-red-900 disabled:opacity-50"
                       >
-                        {isDeleting === cat.id ? 'Suppr...' : 'Delete'}
+                        {isDeleting === cat.id ? t('deleting') : t('delete')}
                       </button>
                     </div>
                   )}
