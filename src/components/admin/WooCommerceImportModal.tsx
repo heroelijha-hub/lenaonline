@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { importWooCommerceProducts } from '@/actions/woocommerce';
+import { countWooCommerceProducts, importWooCommerceProductsBatch } from '@/actions/woocommerce';
 
 export default function WooCommerceImportModal() {
   const t = useTranslations('AdminProducts');
@@ -12,21 +12,58 @@ export default function WooCommerceImportModal() {
   const [consumerKey, setConsumerKey] = useState('');
   const [consumerSecret, setConsumerSecret] = useState('');
   const [resultMessage, setResultMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  
+  // Progress states
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [importedProducts, setImportedProducts] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setResultMessage(null);
 
+    setImportedProducts(0);
+    setTotalProducts(0);
+
     try {
-      const res = await importWooCommerceProducts(url, consumerKey, consumerSecret);
-      if (res.success) {
-        setResultMessage({ type: 'success', text: t('import_success').replace('{count}', res.count?.toString() || '0') });
-        // Optional: auto close after a few seconds
-        setTimeout(() => setIsOpen(false), 3000);
-      } else {
-        setResultMessage({ type: 'error', text: t('import_error') + ': ' + res.message });
+      // 1. Get total products
+      const countRes = await countWooCommerceProducts(url, consumerKey, consumerSecret);
+      if (!countRes.success || !countRes.total) {
+        setResultMessage({ type: 'error', text: t('import_error') + ': ' + countRes.message });
+        setLoading(false);
+        return;
       }
+
+      const total = countRes.total;
+      setTotalProducts(total);
+      
+      if (total === 0) {
+        setResultMessage({ type: 'success', text: t('import_success').replace('{count}', '0') });
+        setLoading(false);
+        return;
+      }
+
+      // 2. Import in batches to avoid Vercel timeout (5 items per page)
+      const perPage = 5;
+      const totalPages = Math.ceil(total / perPage);
+      let totalImported = 0;
+
+      for (let page = 1; page <= totalPages; page++) {
+        const batchRes = await importWooCommerceProductsBatch(url, consumerKey, consumerSecret, page, perPage);
+        
+        if (!batchRes.success) {
+          setResultMessage({ type: 'error', text: t('import_error') + ': ' + batchRes.message });
+          setLoading(false);
+          return;
+        }
+
+        totalImported += (batchRes.count || 0);
+        setImportedProducts(totalImported);
+      }
+
+      setResultMessage({ type: 'success', text: t('import_success').replace('{count}', totalImported.toString()) });
+      setTimeout(() => setIsOpen(false), 3000);
+      
     } catch (error: any) {
       setResultMessage({ type: 'error', text: t('import_error') + ': ' + error.message });
     } finally {
@@ -97,6 +134,18 @@ export default function WooCommerceImportModal() {
                   disabled={loading}
                 />
               </div>
+
+              {loading && totalProducts > 0 && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs font-semibold text-gray-700">
+                    <span>Progression...</span>
+                    <span>{importedProducts} / {totalProducts}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="bg-orange-600 h-2.5 rounded-full transition-all duration-300" style={{ width: `${Math.min(100, Math.round((importedProducts / totalProducts) * 100))}%` }}></div>
+                  </div>
+                </div>
+              )}
 
               {resultMessage && (
                 <div className={`p-3 rounded-lg text-sm ${resultMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>

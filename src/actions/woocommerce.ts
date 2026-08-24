@@ -64,61 +64,76 @@ async function generateUniqueSlug(baseSlug: string) {
 }
 
 /**
- * Main action to import products from WooCommerce
+ * Gets the total number of products to import
  */
-export async function importWooCommerceProducts(url: string, consumerKey: string, consumerSecret: string) {
+export async function countWooCommerceProducts(url: string, consumerKey: string, consumerSecret: string) {
   await requireAdmin();
-
-  // Clean URL
   const baseUrl = url.replace(/\/$/, '');
   const apiUrl = `${baseUrl}/wp-json/wc/v3/products`;
 
   try {
-    let allProducts: any[] = [];
-    let page = 1;
-    let hasMore = true;
+    const response = await fetch(`${apiUrl}?per_page=1`, {
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    });
 
-    // Fetch all products with pagination
-    while (hasMore) {
-      const response = await fetch(`${apiUrl}?per_page=100&page=${page}`, {
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
-          'Content-Type': 'application/json'
-        },
-        cache: 'no-store' // Avoid caching the API response
-      });
-
-      if (!response.ok) {
-        throw new Error(`WooCommerce API Error: ${response.status} ${response.statusText}`);
-      }
-
-      const products = await response.json();
-      
-      if (products.length === 0) {
-        hasMore = false;
-      } else {
-        allProducts = [...allProducts, ...products];
-        page++;
-      }
+    if (!response.ok) {
+      throw new Error(`Erreur API WooCommerce: ${response.status} ${response.statusText}`);
     }
 
-    if (allProducts.length === 0) {
-      return { success: false, message: 'No products found on the store.' };
+    const totalStr = response.headers.get('x-wp-total');
+    if (!totalStr) {
+      return { success: false, message: "Impossible de déterminer le nombre total de produits (header x-wp-total manquant)." };
+    }
+
+    const total = parseInt(totalStr, 10);
+    return { success: true, total };
+  } catch (error: any) {
+    console.error('Error counting WooCommerce products:', error);
+    return { success: false, message: error.message || 'Une erreur inattendue est survenue.' };
+  }
+}
+
+/**
+ * Main action to import a specific batch of products from WooCommerce
+ */
+export async function importWooCommerceProductsBatch(url: string, consumerKey: string, consumerSecret: string, page: number = 1, perPage: number = 5) {
+  await requireAdmin();
+
+  const baseUrl = url.replace(/\/$/, '');
+  const apiUrl = `${baseUrl}/wp-json/wc/v3/products`;
+
+  try {
+    const response = await fetch(`${apiUrl}?per_page=${perPage}&page=${page}`, {
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erreur API WooCommerce: ${response.status} ${response.statusText}`);
+    }
+
+    const products = await response.json();
+    
+    if (products.length === 0) {
+      return { success: true, count: 0 };
     }
 
     let importedCount = 0;
 
-    // Process each product
-    for (const wcProduct of allProducts) {
-      // 1. Handle Categories
+    for (const wcProduct of products) {
       const categoryIds: string[] = [];
       if (wcProduct.categories && Array.isArray(wcProduct.categories)) {
         for (const wcCat of wcProduct.categories) {
-          // Find or create category
           let category = await prisma.category.findUnique({
             where: { name: wcCat.name }
           });
-
           if (!category) {
             category = await prisma.category.create({
               data: {
@@ -131,7 +146,6 @@ export async function importWooCommerceProducts(url: string, consumerKey: string
         }
       }
 
-      // 2. Handle Images (Download & Upload to Cloudinary)
       const cloudinaryImageUrls: string[] = [];
       if (wcProduct.images && Array.isArray(wcProduct.images)) {
         for (const wcImg of wcProduct.images) {
@@ -144,15 +158,12 @@ export async function importWooCommerceProducts(url: string, consumerKey: string
         }
       }
 
-      // 3. Create the Product
       const baseSlug = wcProduct.slug || wcProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const uniqueSlug = await generateUniqueSlug(baseSlug);
 
-      // Determine price
       const price = parseFloat(wcProduct.price || wcProduct.regular_price || '0');
       const compareAtPrice = parseFloat(wcProduct.regular_price || '0');
 
-      // Determine stock
       let stock: number | null = null;
       if (wcProduct.manage_stock && wcProduct.stock_quantity !== null) {
         stock = parseInt(wcProduct.stock_quantity, 10);
@@ -162,13 +173,13 @@ export async function importWooCommerceProducts(url: string, consumerKey: string
         data: {
           title: wcProduct.name,
           slug: uniqueSlug,
-          description: wcProduct.description,
-          shortDescription: wcProduct.short_description,
+          description: wcProduct.description || '',
+          shortDescription: wcProduct.short_description || '',
           price: price,
           compareAtPrice: (compareAtPrice > price) ? compareAtPrice : null,
           images: cloudinaryImageUrls,
           stock: stock,
-          type: 'SIMPLE', // Default to simple for v1
+          type: 'SIMPLE',
           categories: {
             connect: categoryIds.map(id => ({ id }))
           }
@@ -182,7 +193,7 @@ export async function importWooCommerceProducts(url: string, consumerKey: string
     return { success: true, count: importedCount };
 
   } catch (error: any) {
-    console.error('Error importing from WooCommerce:', error);
-    return { success: false, message: error.message || 'An unexpected error occurred.' };
+    console.error('Error importing batch from WooCommerce:', error);
+    return { success: false, message: error.message || 'Une erreur inattendue est survenue.' };
   }
 }
