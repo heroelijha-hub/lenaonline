@@ -6,7 +6,7 @@ import { deleteProduct, duplicateProduct, quickEditProduct } from '@/actions/adm
 import Price from '@/components/Price';
 
 export default function ProductsTable({ products, categories }: { products: any[], categories: any[] }) {
-  const t = useTranslations('Admin');
+  const t = useTranslations('AdminProducts');
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
@@ -35,7 +35,7 @@ export default function ProductsTable({ products, categories }: { products: any[
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this product?")) {
+    if (confirm(t('confirm_delete'))) {
       setIsLoading(true);
       const res = await deleteProduct(id);
       if (res.error) alert(res.error);
@@ -55,17 +55,17 @@ export default function ProductsTable({ products, categories }: { products: any[
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product & Actions</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('image_th')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('product_th')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price_th')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('stock_th')}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {products.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
-                No products in the catalog. Click "Add a product" to get started.
+                {t('no_products')}
               </td>
             </tr>
           ) : (
@@ -85,25 +85,25 @@ export default function ProductsTable({ products, categories }: { products: any[
                     {isEditing ? (
                       <div className="space-y-3 bg-white p-4 border border-gray-200 rounded-md shadow-sm">
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Title</label>
+                          <label className="text-xs font-semibold text-gray-600">{t('quick_edit_title')}</label>
                           <input type="text" value={editData.title} onChange={e => setEditData({...editData, title: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
                         </div>
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Slug</label>
+                          <label className="text-xs font-semibold text-gray-600">{t('quick_edit_slug')}</label>
                           <input type="text" value={editData.slug} onChange={e => setEditData({...editData, slug: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
                         </div>
                         <div className="flex gap-4">
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">{"Regular price ($)"}</label>
+                            <label className="text-xs font-semibold text-gray-600">{t('quick_edit_price')}</label>
                             <input type="number" step="0.01" value={editData.price} onChange={e => setEditData({...editData, price: parseFloat(e.target.value) || 0})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                           <div className="flex flex-col gap-1 flex-1">
-                            <label className="text-xs font-semibold text-gray-600">Promo price ($)</label>
+                            <label className="text-xs font-semibold text-gray-600">{t('quick_edit_promo')}</label>
                             <input type="number" step="0.01" value={editData.compareAtPrice} onChange={e => setEditData({...editData, compareAtPrice: e.target.value ? parseFloat(e.target.value) : ''})} className="border px-2 py-1 rounded text-sm w-full" />
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <label className="text-xs font-semibold text-gray-600">Categories</label>
+                          <label className="text-xs font-semibold text-gray-600">{t('quick_edit_categories')}</label>
                           <div className="border rounded p-2 max-h-32 overflow-y-auto bg-gray-50 flex flex-col gap-1 text-sm">
                             {categories.map(c => (
                               <label key={c.id} className="flex items-center gap-2 cursor-pointer">
@@ -125,8 +125,8 @@ export default function ProductsTable({ products, categories }: { products: any[
                           </div>
                         </div>
                         <div className="flex items-center gap-2 pt-2">
-                          <button onClick={() => setEditingId(null)} className="text-sm px-3 py-1 text-gray-500 border border-gray-300 rounded hover:bg-gray-50">Cancel</button>
-                          <button onClick={() => handleQuickEditSubmit(product.id)} disabled={isLoading} className="text-sm px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600">Save</button>
+                          <button onClick={() => setEditingId(null)} className="text-sm px-3 py-1 text-gray-500 border border-gray-300 rounded hover:bg-gray-50">{t('cancel')}</button>
+                          <button onClick={() => handleQuickEditSubmit(product.id)} disabled={isLoading} className="text-sm px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600">{t('save')}</button>
                         </div>
                       </div>
                     ) : (
@@ -135,7 +135,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                           <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-[10px]">ID: {product.id.substring(0,8)}</span>
                           <span>•</span>
-                          <span className="text-orange-600 font-medium">{product.categories?.map((c: any) => c.name).join(', ') || 'Uncategorized'}</span>
+                          <span className="text-orange-600 font-medium">{product.categories?.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : t('uncategorized')}</span>
                         </div>
                         
                         {/* Woo-style Row Actions */}
@@ -160,9 +160,9 @@ export default function ProductsTable({ products, categories }: { products: any[
                     {product.stock === null ? (
                       <span className="text-teal-600 font-medium">{t("in_stock")}</span>
                     ) : product.stock > 0 ? (
-                      <span className="text-teal-600 font-medium">{product.stock} restants</span>
+                      <span className="text-teal-600 font-medium">{product.stock} {t('remaining')}</span>
                     ) : (
-                      <span className="text-red-600 font-medium">Out of stock</span>
+                      <span className="text-red-600 font-medium">{t("out_of_stock")}</span>
                     )}
                   </td>
                 </tr>

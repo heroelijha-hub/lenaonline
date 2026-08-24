@@ -9,7 +9,7 @@ import 'react-quill-new/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
-  const t = useTranslations('Admin');
+  const t = useTranslations('AdminProducts');
 
   const router = useRouter();
   const parseJSON = (data: any, fallback: any = []) => {
@@ -138,7 +138,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   return (
     <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-100">
       <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        {isEditing ? `Edit : ${initialData.title}` : 'Add New Product'}
+        {isEditing ? `${t('update_product_btn')} : ${initialData.title}` : t('add_product')}
       </h1>
       
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -159,7 +159,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product title *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('product_title_label')}</label>
             <input 
               type="text" 
               name="title" 
@@ -170,7 +170,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug (URL) *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('slug_label')}</label>
             <input 
               type="text" 
               name="slug" 
@@ -184,7 +184,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-1 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Categories *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('categories_label')}</label>
             <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-gray-50 flex flex-col gap-2">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
@@ -210,7 +210,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         {/* Price & Stock (for simple product or base price) */}
         <div className="grid grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{"Regular price ($) *"}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('regular_price_label')}</label>
             <input type="number" step="0.01" name="price" defaultValue={initialData?.price} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
@@ -219,8 +219,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
           {productType === 'SIMPLE' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Stock (Leave empty = unlimited)</label>
-              <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder="In stock" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('stock_label')}</label>
+              <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder={t('stock_placeholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
             </div>
           )}
         </div>
@@ -233,30 +233,30 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">{t("attributes")}</h3>
                 <button type="button" onClick={addAttribute} className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">
-                  + Add attribute
+                  {t('add_attribute_btn')}
                 </button>
               </div>
               <div className="space-y-3">
                 {attributes.map((attr, idx) => (
                   <div key={idx} className="flex gap-4 items-start bg-white p-3 border border-gray-200 rounded">
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Name (ex: Color)</label>
+                      <label className="block text-xs text-gray-500 mb-1">{t('attr_name_label')}</label>
                       <input 
                         type="text" 
                         value={attr.name} 
                         onChange={e => { const newAttr = [...attributes]; newAttr[idx].name = e.target.value; setAttributes(newAttr); }}
                         className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm"
-                        placeholder="Color"
+                        placeholder={t('attr_name_placeholder')}
                       />
                     </div>
                     <div className="flex-[2]">
-                      <label className="block text-xs text-gray-500 mb-1">Values (separated by |)</label>
+                      <label className="block text-xs text-gray-500 mb-1">{t('attr_val_label')}</label>
                       <input 
                         type="text" 
                         value={attr.options} 
                         onChange={e => { const newAttr = [...attributes]; newAttr[idx].options = e.target.value; setAttributes(newAttr); }}
                         className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm"
-                        placeholder="Red | Blue | Green"
+                        placeholder={t('attr_val_placeholder')}
                       />
                     </div>
                     <button type="button" onClick={() => removeAttribute(idx)} className="mt-6 text-red-500 hover:text-red-700 p-1">
@@ -273,7 +273,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">{t("variations")}</h3>
                 <button type="button" onClick={addVariation} disabled={attributes.length === 0} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 disabled:opacity-50">
-                  + Add variation
+                  {t('add_variation_btn')}
                 </button>
               </div>
               <div className="space-y-3">
@@ -305,24 +305,24 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                     </div>
                     <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-3">
                       <div>
-                        <label className="block text-xs text-gray-500 mb-1">Variation price ($)</label>
+                        <label className="block text-xs text-gray-500 mb-1">{t('variation_price_label')}</label>
                         <input 
                           type="number" step="0.01" 
                           value={v.price} 
                           onChange={e => { const newV = [...variations]; newV[idx].price = e.target.value; setVariations(newV); }}
                           className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-                          placeholder="Ex: 15.00"
+                          placeholder={t('variation_price_placeholder')}
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-500 mb-1">Stock</label>
+                        <label className="block text-xs text-gray-500 mb-1">{t('variation_stock_label')}</label>
                         <input 
                           type="number" 
                           value={v.stock} 
                           onChange={e => { const newV = [...variations]; newV[idx].stock = e.target.value; setVariations(newV); }}
                           className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-                          placeholder="Leave empty = unlimited"
+                          placeholder={t('variation_stock_placeholder')}
                         />
                       </div>
                     </div>
@@ -336,7 +336,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Image Gallery (Cloudinary - max 20)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('image_gallery_label')}</label>
           <p className="text-xs text-gray-500 mb-2">{t("image_gallery_desc")}</p>
           {existingImages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
@@ -383,7 +383,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             className="w-full px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
           />
           {imageFiles.length > 0 && (
-            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} new file(s) selected</p>
+            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} {t('new_files_selected')}</p>
           )}
         </div>
 
@@ -433,7 +433,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               }}
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition"
             >
-              Add
+              {t('add_tag_btn')}
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -449,7 +449,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                 </button>
               </span>
             ))}
-            {tags.length === 0 && <p className="text-xs text-gray-500 italic">No tags yet.</p>}
+            {tags.length === 0 && <p className="text-xs text-gray-500 italic">{t('no_tags_yet')}</p>}
           </div>
         </div>
 
@@ -457,14 +457,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-3 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
           <div className="flex items-center">
             <input type="checkbox" name="isBestSeller" id="isBestSeller" defaultChecked={initialData?.isBestSeller} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">Mark as "Best Seller"</label>
+            <label htmlFor="isBestSeller" className="ml-2 block text-sm text-gray-900">{t('mark_best_seller')}</label>
           </div>
           <div className="flex items-center">
             <input type="checkbox" name="isDealOfTheDay" id="isDealOfTheDay" defaultChecked={initialData?.isDealOfTheDay} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />
-            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">Mark as "Deal of the Day"</label>
+            <label htmlFor="isDealOfTheDay" className="ml-2 block text-sm text-gray-900">{t('mark_deal_day')}</label>
           </div>
           <div>
-            <input type="text" name="discountLabel" defaultValue={initialData?.discountLabel} placeholder="Label (ex: -14%)" className="w-full px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <input type="text" name="discountLabel" defaultValue={initialData?.discountLabel} placeholder={t('discount_label_placeholder')} className="w-full px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
         </div>
 
@@ -475,14 +475,14 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             onClick={() => router.back()}
             className="bg-white border border-gray-300 text-gray-700 px-6 py-2 rounded-md font-medium mr-4 hover:bg-gray-50 transition"
           >
-            Cancel
+            {t('cancel')}
           </button>
           <button 
             type="submit" 
             disabled={isLoading}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
           >
-            {isLoading ? 'Saving...' : (isEditing ? 'Update Product' : 'Save Product')}
+            {isLoading ? t('saving') : (isEditing ? t('update_product_btn') : t('add_product_btn'))}
           </button>
         </div>
 

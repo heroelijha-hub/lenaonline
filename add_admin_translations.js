@@ -5,169 +5,130 @@ const locales = ['en', 'fr', 'es'];
 
 const translations = {
   en: {
-    AdminSetup: {
-      "welcome": "Welcome!",
-      "description": "Configure your main administrator account to start managing your store.",
-      "email_label": "Administrator Email",
-      "password_label": "Password",
-      "email_placeholder": "admin@yourstore.com",
-      "password_placeholder": "Secure password",
-      "creating": "Creating...",
-      "create_btn": "Create Administrator Account"
-    },
-    AdminLogin: {
-      "title": "Admin Space",
-      "description": "Sign in to manage your store",
-      "email_label": "Administrator Email",
-      "password_label": "Password",
-      "email_placeholder": "admin@yourstore.com",
-      "password_placeholder": "••••••••",
-      "login_btn": "Login",
-      "logging_in": "Logging in..."
-    },
-    AdminLayout: {
-      "title": "Shopelios Admin",
-      "dashboard": "Dashboard",
-      "products": "Products",
-      "categories": "Categories",
-      "orders": "Orders",
-      "abandoned_carts": "Abandoned Carts",
-      "coupons": "Coupons",
-      "landing_page": "Landing Page",
-      "customer_chat": "Customer Chat",
-      "blog": "Blog",
-      "pages": "Pages",
-      "settings": "Settings",
-      "shipping": "Shipping",
-      "sign_out": "Sign out"
-    },
-    AdminDashboard: {
-      "title": "Dashboard",
-      "subtitle": "Global overview of your store performance.",
-      "revenue": "Revenue",
-      "total_revenue": "Total generated revenue",
-      "orders": "Orders",
-      "validated_orders": "Total validated orders",
-      "customers": "Customers",
-      "registered_customers": "Registered on the store",
-      "aov": "Average Order Value",
-      "avg_spend": "Average spend per customer",
-      "sales_last_30_days": "Sales (Last 30 Days)",
-      "latest_orders": "Latest Orders",
-      "view_all": "View all",
-      "no_recent_orders": "No recent orders.",
-      "articles": "item(s)"
-    }
+    "product_type": "Product type",
+    "simple_product": "Simple Product",
+    "variable_product": "Variable Product",
+    "sale_price": "Sale price ($)",
+    "attributes": "Attributes",
+    "no_attributes": "No attributes added yet.",
+    "variations": "Variations",
+    "add_variation_desc": "Add variations to set specific prices and stock for different attributes.",
+    "image_gallery_desc": "Drag and drop to reorder images. The first image will be the main one.",
+    "short_desc": "Short description",
+    "long_desc": "Full description",
+    "tags_label": "Tags",
+    "tags_placeholder": "Add a tag (ex: summer, new, flash-sale)",
+    "add_product_btn": "Save Product",
+    "update_product_btn": "Update Product",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "product_title_label": "Product title *",
+    "slug_label": "Slug (URL) *",
+    "categories_label": "Categories *",
+    "regular_price_label": "Regular price ($) *",
+    "stock_label": "Stock (Leave empty = unlimited)",
+    "stock_placeholder": "In stock",
+    "add_attribute_btn": "+ Add attribute",
+    "attr_name_label": "Name (ex: Color)",
+    "attr_name_placeholder": "Color",
+    "attr_val_label": "Values (separated by |)",
+    "attr_val_placeholder": "Red | Blue | Green",
+    "add_variation_btn": "+ Add variation",
+    "variation_price_label": "Variation price ($)",
+    "variation_price_placeholder": "Ex: 15.00",
+    "variation_stock_label": "Stock",
+    "variation_stock_placeholder": "Leave empty = unlimited",
+    "image_gallery_label": "Image Gallery (Cloudinary - max 20)",
+    "new_files_selected": "new file(s) selected",
+    "add_tag_btn": "Add",
+    "no_tags_yet": "No tags yet.",
+    "mark_best_seller": "Mark as \"Best Seller\"",
+    "mark_deal_day": "Mark as \"Deal of the Day\"",
+    "discount_label_placeholder": "Label (ex: -14%)"
   },
   fr: {
-    AdminSetup: {
-      "welcome": "Bienvenue !",
-      "description": "Configurez votre compte administrateur principal pour commencer à gérer votre boutique.",
-      "email_label": "Email Administrateur",
-      "password_label": "Mot de passe",
-      "email_placeholder": "admin@votreboutique.com",
-      "password_placeholder": "Mot de passe sécurisé",
-      "creating": "Création en cours...",
-      "create_btn": "Créer le compte administrateur"
-    },
-    AdminLogin: {
-      "title": "Espace Admin",
-      "description": "Connectez-vous pour gérer votre boutique",
-      "email_label": "Email Administrateur",
-      "password_label": "Mot de passe",
-      "email_placeholder": "admin@votreboutique.com",
-      "password_placeholder": "••••••••",
-      "login_btn": "Connexion",
-      "logging_in": "Connexion en cours..."
-    },
-    AdminLayout: {
-      "title": "Shopelios Admin",
-      "dashboard": "Tableau de bord",
-      "products": "Produits",
-      "categories": "Catégories",
-      "orders": "Commandes",
-      "abandoned_carts": "Paniers abandonnés",
-      "coupons": "Codes Promo",
-      "landing_page": "Page d'accueil",
-      "customer_chat": "Chat Client",
-      "blog": "Blog",
-      "pages": "Pages",
-      "settings": "Paramètres",
-      "shipping": "Livraison",
-      "sign_out": "Déconnexion"
-    },
-    AdminDashboard: {
-      "title": "Tableau de bord",
-      "subtitle": "Aperçu global des performances de votre boutique.",
-      "revenue": "Revenus",
-      "total_revenue": "Total des revenus générés",
-      "orders": "Commandes",
-      "validated_orders": "Commandes validées",
-      "customers": "Clients",
-      "registered_customers": "Inscrits sur la boutique",
-      "aov": "Panier Moyen",
-      "avg_spend": "Dépense moyenne par client",
-      "sales_last_30_days": "Ventes (30 derniers jours)",
-      "latest_orders": "Dernières commandes",
-      "view_all": "Voir tout",
-      "no_recent_orders": "Aucune commande récente.",
-      "articles": "article(s)"
-    }
+    "product_type": "Type de produit",
+    "simple_product": "Produit Simple",
+    "variable_product": "Produit Variable",
+    "sale_price": "Prix promo ($)",
+    "attributes": "Attributs",
+    "no_attributes": "Aucun attribut ajouté pour le moment.",
+    "variations": "Déclinaisons",
+    "add_variation_desc": "Ajoutez des déclinaisons pour définir des prix et des stocks spécifiques.",
+    "image_gallery_desc": "Glissez-déposez pour réorganiser. La première image sera la principale.",
+    "short_desc": "Description courte",
+    "long_desc": "Description complète",
+    "tags_label": "Étiquettes (Tags)",
+    "tags_placeholder": "Ajouter un tag (ex: été, nouveau, promo)",
+    "add_product_btn": "Enregistrer le produit",
+    "update_product_btn": "Mettre à jour",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "product_title_label": "Titre du produit *",
+    "slug_label": "Slug (URL) *",
+    "categories_label": "Catégories *",
+    "regular_price_label": "Prix régulier ($) *",
+    "stock_label": "Stock (Laisser vide = illimité)",
+    "stock_placeholder": "En stock",
+    "add_attribute_btn": "+ Ajouter un attribut",
+    "attr_name_label": "Nom (ex: Couleur)",
+    "attr_name_placeholder": "Couleur",
+    "attr_val_label": "Valeurs (séparées par |)",
+    "attr_val_placeholder": "Rouge | Bleu | Vert",
+    "add_variation_btn": "+ Ajouter une déclinaison",
+    "variation_price_label": "Prix de la déclinaison ($)",
+    "variation_price_placeholder": "Ex: 15.00",
+    "variation_stock_label": "Stock",
+    "variation_stock_placeholder": "Laisser vide = illimité",
+    "image_gallery_label": "Galerie d'images (Cloudinary - max 20)",
+    "new_files_selected": "nouveau(x) fichier(s) sélectionné(s)",
+    "add_tag_btn": "Ajouter",
+    "no_tags_yet": "Aucun tag pour l'instant.",
+    "mark_best_seller": "Marquer comme \"Meilleure Vente\"",
+    "mark_deal_day": "Marquer comme \"Offre du Jour\"",
+    "discount_label_placeholder": "Label (ex: -14%)"
   },
   es: {
-    AdminSetup: {
-      "welcome": "¡Bienvenido!",
-      "description": "Configure su cuenta de administrador principal para comenzar a administrar su tienda.",
-      "email_label": "Correo del administrador",
-      "password_label": "Contraseña",
-      "email_placeholder": "admin@sutienda.com",
-      "password_placeholder": "Contraseña segura",
-      "creating": "Creando...",
-      "create_btn": "Crear cuenta de administrador"
-    },
-    AdminLogin: {
-      "title": "Espacio Admin",
-      "description": "Inicie sesión para administrar su tienda",
-      "email_label": "Correo del administrador",
-      "password_label": "Contraseña",
-      "email_placeholder": "admin@sutienda.com",
-      "password_placeholder": "••••••••",
-      "login_btn": "Iniciar sesión",
-      "logging_in": "Iniciando sesión..."
-    },
-    AdminLayout: {
-      "title": "Shopelios Admin",
-      "dashboard": "Panel de control",
-      "products": "Productos",
-      "categories": "Categorías",
-      "orders": "Pedidos",
-      "abandoned_carts": "Carritos abandonados",
-      "coupons": "Cupones",
-      "landing_page": "Página de inicio",
-      "customer_chat": "Chat de clientes",
-      "blog": "Blog",
-      "pages": "Páginas",
-      "settings": "Configuración",
-      "shipping": "Envío",
-      "sign_out": "Cerrar sesión"
-    },
-    AdminDashboard: {
-      "title": "Panel de control",
-      "subtitle": "Descripción general del rendimiento de su tienda.",
-      "revenue": "Ingresos",
-      "total_revenue": "Ingresos totales generados",
-      "orders": "Pedidos",
-      "validated_orders": "Total de pedidos validados",
-      "customers": "Clientes",
-      "registered_customers": "Registrados en la tienda",
-      "aov": "Valor promedio del pedido",
-      "avg_spend": "Gasto promedio por cliente",
-      "sales_last_30_days": "Ventas (Últimos 30 días)",
-      "latest_orders": "Últimos pedidos",
-      "view_all": "Ver todo",
-      "no_recent_orders": "No hay pedidos recientes.",
-      "articles": "artículo(s)"
-    }
+    "product_type": "Tipo de producto",
+    "simple_product": "Producto Simple",
+    "variable_product": "Producto Variable",
+    "sale_price": "Precio de oferta ($)",
+    "attributes": "Atributos",
+    "no_attributes": "No se han añadido atributos todavía.",
+    "variations": "Variaciones",
+    "add_variation_desc": "Añada variaciones para establecer precios y existencias específicos.",
+    "image_gallery_desc": "Arrastrar y soltar para reordenar. La primera imagen será la principal.",
+    "short_desc": "Descripción corta",
+    "long_desc": "Descripción completa",
+    "tags_label": "Etiquetas (Tags)",
+    "tags_placeholder": "Añadir una etiqueta (ej: verano, nuevo, oferta)",
+    "add_product_btn": "Guardar Producto",
+    "update_product_btn": "Actualizar Producto",
+    "saving": "Guardando...",
+    "cancel": "Cancelar",
+    "product_title_label": "Título del producto *",
+    "slug_label": "Slug (URL) *",
+    "categories_label": "Categorías *",
+    "regular_price_label": "Precio regular ($) *",
+    "stock_label": "Stock (Dejar vacío = ilimitado)",
+    "stock_placeholder": "En stock",
+    "add_attribute_btn": "+ Añadir atributo",
+    "attr_name_label": "Nombre (ej: Color)",
+    "attr_name_placeholder": "Color",
+    "attr_val_label": "Valores (separados por |)",
+    "attr_val_placeholder": "Rojo | Azul | Verde",
+    "add_variation_btn": "+ Añadir variación",
+    "variation_price_label": "Precio de la variación ($)",
+    "variation_price_placeholder": "Ej: 15.00",
+    "variation_stock_label": "Stock",
+    "variation_stock_placeholder": "Dejar vacío = ilimitado",
+    "image_gallery_label": "Galería de imágenes (Cloudinary - máx 20)",
+    "new_files_selected": "nuevo(s) archivo(s) seleccionado(s)",
+    "add_tag_btn": "Añadir",
+    "no_tags_yet": "Sin etiquetas todavía.",
+    "mark_best_seller": "Marcar como \"Más vendido\"",
+    "mark_deal_day": "Marcar como \"Oferta del día\"",
+    "discount_label_placeholder": "Etiqueta (ej: -14%)"
   }
 };
 
@@ -175,17 +136,12 @@ for (const locale of locales) {
   const filePath = path.join(__dirname, 'messages', `${locale}.json`);
   if (fs.existsSync(filePath)) {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    data.AdminSetup = translations[locale].AdminSetup;
-    data.AdminLogin = translations[locale].AdminLogin;
-    data.AdminLayout = translations[locale].AdminLayout;
-    data.AdminDashboard = translations[locale].AdminDashboard;
-    
-    // Also remove the old "Admin" namespace we saw in AdminDashboard if it exists
-    if (data.Admin) {
-      delete data.Admin;
-    }
-
+    // Merge new keys into AdminProducts
+    data.AdminProducts = {
+      ...data.AdminProducts,
+      ...translations[locale]
+    };
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    console.log(`Updated ${locale}.json with Admin Phase 1 translations`);
+    console.log(`Updated ${locale}.json with AdminProducts form translations`);
   }
 }
