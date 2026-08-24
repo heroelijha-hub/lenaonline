@@ -138,7 +138,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
               {/* Main Image */}
               <div className="flex-1 border border-gray-200 rounded-lg relative overflow-hidden flex items-center justify-center bg-white min-h-[400px]">
-                {product.discountLabel && (
+                {product.discountLabel && product.compareAtPrice && product.compareAtPrice > product.price && (
                   <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">
                     {product.discountLabel}
                   </span>
