@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { submitNewsletter } from '@/actions/contact';
 import { useTranslations } from 'next-intl';
+import DOMPurify from 'dompurify';
 
 export default function Newsletter({ config }: { config?: any }) {
   const t = useTranslations('Home');
@@ -43,7 +44,7 @@ export default function Newsletter({ config }: { config?: any }) {
           <h2 
             className="font-bold text-gray-900 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
             style={getResponsiveVars('title', {m: '24px', t: '24px', d: '24px'})}
-            dangerouslySetInnerHTML={{ __html: config?.title || t.raw('newsletter_title') }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(config?.title || t.raw('newsletter_title')) }}
           />
           <p className="text-gray-500 text-sm">
             {t('newsletter_desc')}

@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { ChatSender, ChatSessionStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 // Client actions
 export async function getOrCreateSession(guestId: string, guestName?: string, guestEmail?: string) {
@@ -72,6 +73,7 @@ export async function getSessionMessages(sessionId: string) {
 
 // Admin actions
 export async function getAdminSessions() {
+  await requireAdmin();
   return await prisma.chatSession.findMany({
     orderBy: { updatedAt: 'desc' },
     include: {
@@ -84,6 +86,7 @@ export async function getAdminSessions() {
 }
 
 export async function closeSession(sessionId: string) {
+  await requireAdmin();
   await prisma.chatSession.update({
     where: { id: sessionId },
     data: { status: 'CLOSED' },

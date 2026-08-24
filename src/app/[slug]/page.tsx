@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getPageBySlug } from '@/actions/pages';
+import SafeHTML from '@/components/SafeHTML';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,15 +35,15 @@ export default async function CustomPage({ params }: { params: { slug: string } 
         {/* Container for the custom page */}
         <div className="w-full">
           {/* Desktop Content */}
-          <div 
+          <SafeHTML 
+            html={page.desktopContent || ''}
             className="hidden md:block w-full prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: page.desktopContent || '' }}
           />
           
           {/* Mobile Content */}
-          <div 
+          <SafeHTML 
+            html={page.mobileContent || (page.desktopContent || '')}
             className="block md:hidden w-full prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: page.mobileContent || (page.desktopContent || '') }}
           />
         </div>
       </main>

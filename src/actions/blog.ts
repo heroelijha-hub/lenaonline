@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 // ARTICLES
 export async function getArticles(publishedOnly = false) {
@@ -35,6 +36,7 @@ export async function getArticleById(id: string) {
 }
 
 export async function createArticle(data: any) {
+  await requireAdmin();
   try {
     const article = await prisma.article.create({
       data: {
@@ -58,6 +60,7 @@ export async function createArticle(data: any) {
 }
 
 export async function updateArticle(id: string, data: any) {
+  await requireAdmin();
   try {
     const article = await prisma.article.update({
       where: { id },
@@ -83,6 +86,7 @@ export async function updateArticle(id: string, data: any) {
 }
 
 export async function deleteArticle(id: string) {
+  await requireAdmin();
   try {
     await prisma.article.delete({
       where: { id }
@@ -104,7 +108,7 @@ export async function addComment(articleId: string, data: any) {
         author: data.author,
         email: data.email,
         content: data.content,
-        isApproved: true // Auto-approve for now
+        isApproved: false // Requires admin moderation
       }
     });
     // Find the article to revalidate its page

@@ -2,10 +2,12 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 // --- ZONES ---
 
 export async function getShippingZones() {
+  await requireAdmin();
   try {
     const zones = await prisma.shippingZone.findMany({
       orderBy: { name: 'asc' },
@@ -23,6 +25,7 @@ export async function getShippingZones() {
 }
 
 export async function createShippingZone(data: { name: string; isActive?: boolean }) {
+  await requireAdmin();
   try {
     const zone = await prisma.shippingZone.create({
       data,
@@ -36,6 +39,7 @@ export async function createShippingZone(data: { name: string; isActive?: boolea
 }
 
 export async function updateShippingZone(id: string, data: { name?: string; isActive?: boolean }) {
+  await requireAdmin();
   try {
     const zone = await prisma.shippingZone.update({
       where: { id },
@@ -50,6 +54,7 @@ export async function updateShippingZone(id: string, data: { name?: string; isAc
 }
 
 export async function deleteShippingZone(id: string) {
+  await requireAdmin();
   try {
     await prisma.shippingZone.delete({
       where: { id },
@@ -65,6 +70,7 @@ export async function deleteShippingZone(id: string) {
 // --- METHODS ---
 
 export async function addShippingMethod(zoneId: string, data: { type: string; rate: number; minOrderAmount?: number; isActive?: boolean }) {
+  await requireAdmin();
   try {
     const method = await prisma.shippingMethod.create({
       data: {
@@ -84,6 +90,7 @@ export async function addShippingMethod(zoneId: string, data: { type: string; ra
 }
 
 export async function updateShippingMethod(id: string, data: { type?: string; rate?: number; minOrderAmount?: number | null; isActive?: boolean }) {
+  await requireAdmin();
   try {
     const method = await prisma.shippingMethod.update({
       where: { id },
@@ -98,6 +105,7 @@ export async function updateShippingMethod(id: string, data: { type?: string; ra
 }
 
 export async function deleteShippingMethod(id: string) {
+  await requireAdmin();
   try {
     await prisma.shippingMethod.delete({
       where: { id },

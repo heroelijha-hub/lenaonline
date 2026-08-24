@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import CommentForm from '@/components/blog/CommentForm';
 import { getRecentComments, getArticleBySlug } from '@/actions/blog';
+import SafeHTML from '@/components/SafeHTML';
 import Link from 'next/link';
 
 import { Metadata } from 'next';
@@ -112,9 +113,9 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               )}
 
               {/* Rich Content */}
-              <div 
+              <SafeHTML 
+                html={article.content}
                 className="prose prose-orange max-w-none text-gray-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: article.content }}
               />
 
               {/* Footer / Links */}

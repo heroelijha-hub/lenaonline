@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 // Helper to geocode (City, Country) -> Lat, Lng via Nominatim
 export async function geocodeCity(city: string, country: string): Promise<{ lat: number, lng: number } | null> {
@@ -40,6 +41,7 @@ export async function updateOrderTracking(
   destinationAddress: string, 
   destinationCountry: string
 ) {
+  await requireAdmin();
   let originLat: number | null = null;
   let originLng: number | null = null;
   let destinationLat: number | null = null;
@@ -84,6 +86,7 @@ export async function updateOrderTracking(
 
 // Add a new delivery position to the history
 export async function addDeliveryPosition(orderId: string, city: string, country: string, note?: string) {
+  await requireAdmin();
   const coords = await geocodeCity(city, country);
   
   if (!coords) {
@@ -107,6 +110,7 @@ export async function addDeliveryPosition(orderId: string, city: string, country
 
 // Supprimer une position
 export async function deleteDeliveryPosition(positionId: string, orderId: string) {
+  await requireAdmin();
   await prisma.deliveryPosition.delete({
     where: { id: positionId }
   });

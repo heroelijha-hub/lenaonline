@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAdmin } from '@/lib/auth';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -12,6 +13,7 @@ cloudinary.config({
 
 // --- CLOUDINARY UPLOAD ---
 export async function uploadImage(formData: FormData) {
+  await requireAdmin();
   const file = formData.get('file') as File;
   if (!file) return null;
 
@@ -35,6 +37,7 @@ export async function uploadImage(formData: FormData) {
 
 // --- CATEGORIES ---
 export async function getCategories() {
+  await requireAdmin();
   return await prisma.category.findMany({
     include: { parent: true, children: true },
     orderBy: { name: 'asc' }
@@ -42,6 +45,7 @@ export async function getCategories() {
 }
 
 export async function createCategory(formData: FormData) {
+  await requireAdmin();
   const name = formData.get('name') as string;
   let slug = formData.get('slug') as string;
   const parentId = formData.get('parentId') as string || null;
@@ -64,6 +68,7 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, name: string, slug?: string, parentId?: string | null) {
+  await requireAdmin();
   try {
     let finalSlug = slug;
     if (!finalSlug) {
@@ -84,6 +89,7 @@ export async function updateCategory(id: string, name: string, slug?: string, pa
 }
 
 export async function deleteCategory(id: string) {
+  await requireAdmin();
   try {
     await prisma.category.delete({ where: { id } });
     revalidatePath('/admin/categories');
@@ -96,6 +102,7 @@ export async function deleteCategory(id: string) {
 
 // --- PRODUCTS ---
 export async function getProducts() {
+  await requireAdmin();
   return await prisma.product.findMany({
     include: { categories: true },
     orderBy: { createdAt: 'desc' }
@@ -103,6 +110,7 @@ export async function getProducts() {
 }
 
 export async function createProduct(formData: FormData, imageUrls: string[]) {
+  await requireAdmin();
   const type = formData.get('type') as any || 'SIMPLE';
   const attributesRaw = formData.get('attributes') as string;
   const variationsRaw = formData.get('variations') as string;
@@ -177,6 +185,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
 }
 
 export async function updateProduct(formData: FormData, imageUrls: string[]) {
+  await requireAdmin();
   const id = formData.get('id') as string;
   const type = formData.get('type') as any || 'SIMPLE';
   const attributesRaw = formData.get('attributes') as string;
@@ -247,6 +256,7 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
   try {
     await prisma.product.delete({ where: { id } });
     revalidatePath('/admin/products');
@@ -259,6 +269,7 @@ export async function deleteProduct(id: string) {
 }
 
 export async function duplicateProduct(id: string) {
+  await requireAdmin();
   try {
     const existing = await prisma.product.findUnique({ where: { id }, include: { categories: true } });
     if (!existing) return { error: "Produit introuvable." };
@@ -299,6 +310,7 @@ export async function duplicateProduct(id: string) {
 }
 
 export async function quickEditProduct(id: string, data: { title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | '' }) {
+  await requireAdmin();
   try {
     await prisma.product.update({
       where: { id },
@@ -323,6 +335,7 @@ export async function quickEditProduct(id: string, data: { title: string, catego
 
 // --- ORDERS ---
 export async function getOrders() {
+  await requireAdmin();
   return await prisma.order.findMany({
     include: {
       user: true,
@@ -335,6 +348,7 @@ export async function getOrders() {
 }
 
 export async function updateOrderStatus(orderId: string, status: any) {
+  await requireAdmin();
   try {
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
@@ -362,12 +376,14 @@ export async function updateOrderStatus(orderId: string, status: any) {
 
 // --- COUPONS ---
 export async function getCoupons() {
+  await requireAdmin();
   return await prisma.coupon.findMany({
     orderBy: { createdAt: 'desc' }
   });
 }
 
 export async function createCoupon(formData: FormData) {
+  await requireAdmin();
   const code = formData.get('code') as string;
   const type = formData.get('type') as any || 'PERCENTAGE';
   const value = parseFloat(formData.get('value') as string);
@@ -394,6 +410,7 @@ export async function createCoupon(formData: FormData) {
 }
 
 export async function toggleCouponStatus(id: string, isActive: boolean) {
+  await requireAdmin();
   try {
     await prisma.coupon.update({
       where: { id },
@@ -407,6 +424,7 @@ export async function toggleCouponStatus(id: string, isActive: boolean) {
 }
 
 export async function deleteCoupon(id: string) {
+  await requireAdmin();
   try {
     await prisma.coupon.delete({ where: { id } });
     revalidatePath('/admin/coupons');
@@ -417,6 +435,7 @@ export async function deleteCoupon(id: string) {
 }
 
 export async function deleteOrder(id: string) {
+  await requireAdmin();
   try {
     await prisma.order.delete({ where: { id } });
     revalidatePath('/admin/orders');
@@ -428,12 +447,14 @@ export async function deleteOrder(id: string) {
 
 // --- ABANDONED CARTS ---
 export async function getAbandonedCarts() {
+  await requireAdmin();
   return await prisma.abandonedCart.findMany({
     orderBy: { lastActive: 'desc' }
   });
 }
 
 export async function sendRecoveryEmail(id: string) {
+  await requireAdmin();
   try {
     const cart = await prisma.abandonedCart.findUnique({ where: { id } });
     if (!cart) return { error: "Panier introuvable." };

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth';
 
 export async function getPages() {
   try {
@@ -48,6 +49,7 @@ export async function createPage(data: {
   mobileContent?: string;
   isPublished?: boolean;
 }) {
+  await requireAdmin();
   try {
     const newPage = await prisma.page.create({
       data: {
@@ -74,6 +76,7 @@ export async function updatePage(id: string, data: {
   mobileContent?: string;
   isPublished?: boolean;
 }) {
+  await requireAdmin();
   try {
     const page = await prisma.page.update({
       where: { id },
@@ -91,6 +94,7 @@ export async function updatePage(id: string, data: {
 }
 
 export async function deletePage(id: string) {
+  await requireAdmin();
   try {
     const page = await prisma.page.delete({
       where: { id }

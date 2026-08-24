@@ -13,9 +13,9 @@ export async function updateAccountDetails(formData: FormData) {
   const confirmPassword = formData.get('confirmPassword') as string
 
   const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { user }, error } = await supabase.auth.getUser()
 
-  if (!session) {
+  if (error || !user) {
     return { error: 'You must be logged in.' }
   }
 
@@ -27,7 +27,7 @@ export async function updateAccountDetails(formData: FormData) {
     }
   }
 
-  if (email && email !== session.user.email) {
+  if (email && email !== user.email) {
     updates.email = email
   }
 
@@ -35,11 +35,8 @@ export async function updateAccountDetails(formData: FormData) {
     if (newPassword !== confirmPassword) {
       return { error: 'Les nouveaux mots de passe ne correspondent pas.' }
     }
-    // Note: For security reasons, current password verification 
-    // may be required on the API side depending on the Supabase config. But updateUser() 
-    // permet de modifier le mot de passe si on a une session valide.
-    if (!newPassword || newPassword.length < 6) {
-      return { error: 'Password must be at least 6 characters long.' }
+    if (!newPassword || newPassword.length < 8) {
+      return { error: 'Password must be at least 8 characters long.' }
     }
     updates.password = newPassword
   }

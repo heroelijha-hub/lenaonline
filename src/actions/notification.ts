@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { NotificationType } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 export async function createNotification({
   userId,
@@ -40,6 +41,7 @@ export async function createNotification({
 }
 
 export async function getAdminNotifications() {
+  await requireAdmin();
   return await prisma.notification.findMany({
     where: {
       isAdmin: true,

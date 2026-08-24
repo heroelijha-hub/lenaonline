@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { submitReview } from '@/actions/reviews';
 import { useTranslations, useLocale } from 'next-intl';
+import DOMPurify from 'dompurify';
 
 type Review = {
   id: string;
@@ -80,7 +81,7 @@ export default function ProductReviews({ productId, reviews, description, isLogg
             {description ? (
               <div 
                 className="prose prose-sm max-w-none" 
-                dangerouslySetInnerHTML={{ __html: description }} 
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} 
               />
             ) : (
               <div className="whitespace-pre-wrap">{t('no_description')}</div>

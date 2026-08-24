@@ -63,12 +63,47 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     }
 
     const shippingRate = validZone.methods[0].rate;
-    // We should compute the true cart total on server instead of trusting finalTotal, but for now we'll just trust cartItems and recalculate
-    let computedCartTotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    // Note: To be fully secure, discount calculation should also be on server, but we will add the verified shipping rate to the client's discounted total for this step
-    // A better approach is trusting `finalTotal` only as a reference, but let's recalculate if we can.
-    // The user didn't ask for a full rewrite of checkout validation, so I will just ensure we at least use a valid shipping rate if we were to completely rewrite it.
-    // Actually, to avoid breaking coupons, I will just trust finalTotal for now since it's an MVP, but I'll add the shipping method to the order.
+    
+    // ===== SERVER-SIDE PRICE VERIFICATION =====
+    // Never trust client-provided prices. Fetch real prices from database.
+    const productIds = cartItems.map((item: any) => item.productId);
+    const dbProducts = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, price: true, title: true },
+    });
+    const productPriceMap = new Map(dbProducts.map(p => [p.id, p.price]));
+
+    // Verify all products exist and recalculate total from DB prices
+    let serverCartTotal = 0;
+    const verifiedItems: any[] = [];
+    for (const item of cartItems) {
+      const dbPrice = productPriceMap.get(item.productId);
+      if (dbPrice === undefined) {
+        return { error: `Product not found: ${item.productId}. Please refresh your cart.` };
+      }
+      serverCartTotal += dbPrice * item.quantity;
+      verifiedItems.push({ ...item, price: dbPrice }); // Use DB price, not client price
+    }
+
+    // Apply coupon discount server-side if provided
+    const couponCode = formData.get('couponCode') as string;
+    let discountAmount = 0;
+    if (couponCode) {
+      const coupon = await prisma.coupon.findUnique({
+        where: { code: couponCode.toUpperCase() },
+      });
+      if (coupon && coupon.isActive) {
+        if (coupon.type === 'PERCENTAGE') {
+          discountAmount = serverCartTotal * (coupon.value / 100);
+        } else {
+          discountAmount = Math.min(coupon.value, serverCartTotal);
+        }
+      }
+    }
+
+    const serverTotal = Math.max(0, serverCartTotal - discountAmount) + shippingRate;
+    // Round to 2 decimal places to avoid floating point issues
+    const verifiedTotal = Math.round(serverTotal * 100) / 100;
 
     
     // Find or create user
@@ -107,21 +142,23 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       } : null,
       shippingCost: shippingRate,
       shippingMethodName: validZone.methods[0].type,
-      subTotal: computedCartTotal
+      subTotal: serverCartTotal,
+      discount: discountAmount,
+      couponCode: couponCode || null,
     };
 
-    // Create the order
+    // Create the order with SERVER-VERIFIED total
     const order = await prisma.order.create({
       data: {
         userId: user.id,
-        total: finalTotal,
+        total: verifiedTotal,
         paymentMethod: paymentMethod as any,
         status: paymentMethod === 'BANK_TRANSFER' ? 'PENDING' : 'PENDING',
         orderItems: {
-          create: cartItems.map(item => ({
+          create: verifiedItems.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
-            price: item.price,
+            price: item.price, // DB-verified price
             variationId: item.variationId || null,
             attributes: item.attributes || null
           }))
@@ -129,6 +166,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         destinationAddress: JSON.stringify(orderMetadata)
       }
     });
+
 
     // Check and recover abandoned cart if it exists
     try {
@@ -176,7 +214,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         createNotification({
           isAdmin: true,
           type: 'ORDER',
-          message: `New order from ${firstName} ${lastName} (${formatPriceNumber(finalTotal, currencyOptions)})`,
+          message: `New order from ${firstName} ${lastName} (${formatPriceNumber(verifiedTotal, currencyOptions)})`,
           link: `/admin/orders/${order.id}`,
         }).catch(e => console.error('Notification failed', e));
       }
@@ -197,7 +235,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: cartItems.map(item => ({
+        line_items: verifiedItems.map(item => ({
           price_data: {
             currency: 'eur',
             product_data: {
@@ -263,7 +301,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
             reference_id: order.id,
             amount: {
               currency_code: storeCurrencyCode,
-              value: finalTotal.toFixed(2)
+              value: verifiedTotal.toFixed(2)
             }
           }],
           application_context: {

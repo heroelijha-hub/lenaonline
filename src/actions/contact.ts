@@ -15,6 +15,17 @@ export async function submitContactMessage(formData: FormData) {
       return { error: 'Veuillez remplir tous les champs obligatoires.' };
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { error: 'Please provide a valid email address.' };
+    }
+
+    // Limit field lengths to prevent abuse
+    if (name.length > 200 || email.length > 254 || (subject && subject.length > 500) || message.length > 5000) {
+      return { error: 'One or more fields exceed the maximum allowed length.' };
+    }
+
     // Save to DB if needed, or just simulate email sending
     // For now, we simulate sending an email to the configured admin email
     const settings = await getSettings();

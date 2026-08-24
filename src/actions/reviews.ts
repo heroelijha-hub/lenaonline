@@ -2,23 +2,15 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { createClient } from '@/utils/supabase/server';
-
-async function getCurrentUser() {
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
-  if (!authUser) return null;
-
-  return await prisma.user.findUnique({
-    where: { id: authUser.id }
-  });
-}
+import { requireAuth, requireAdmin } from '@/lib/auth';
 
 // --- Client Actions ---
 
 export async function submitReview(productId: string, rating: number, comment: string) {
-  const user = await getCurrentUser();
-  if (!user) {
+  let user;
+  try {
+    user = await requireAuth();
+  } catch {
     return { error: "You must be logged in to leave a review." };
   }
 
@@ -50,10 +42,7 @@ export async function submitReview(productId: string, rating: number, comment: s
 // --- Admin Actions ---
 
 export async function toggleReviewApproval(reviewId: string, isApproved: boolean) {
-  const user = await getCurrentUser();
-  if (!user || user.role !== 'ADMIN') {
-    throw new Error("Unauthorized.");
-  }
+  await requireAdmin();
 
   await prisma.review.update({
     where: { id: reviewId },
@@ -65,10 +54,7 @@ export async function toggleReviewApproval(reviewId: string, isApproved: boolean
 }
 
 export async function updateReview(reviewId: string, rating: number, comment: string, createdAtStr: string) {
-  const user = await getCurrentUser();
-  if (!user || user.role !== 'ADMIN') {
-    throw new Error("Unauthorized.");
-  }
+  await requireAdmin();
 
   await prisma.review.update({
     where: { id: reviewId },
@@ -84,10 +70,7 @@ export async function updateReview(reviewId: string, rating: number, comment: st
 }
 
 export async function deleteReview(reviewId: string) {
-  const user = await getCurrentUser();
-  if (!user || user.role !== 'ADMIN') {
-    throw new Error("Unauthorized.");
-  }
+  await requireAdmin();
 
   await prisma.review.delete({
     where: { id: reviewId }

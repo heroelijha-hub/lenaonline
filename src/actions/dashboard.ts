@@ -2,8 +2,10 @@
 
 import prisma from '@/lib/prisma';
 import { OrderStatus } from '@prisma/client';
+import { requireAdmin } from '@/lib/auth';
 
 export async function getDashboardStats() {
+  await requireAdmin();
   try {
     // 1. Global KPIs
     const totalProducts = await prisma.product.count();

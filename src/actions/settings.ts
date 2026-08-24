@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 export async function getSettings() {
   const settings = await prisma.setting.findMany();
@@ -13,6 +14,7 @@ export async function getSettings() {
 }
 
 export async function updateSetting(key: string, value: string) {
+  await requireAdmin();
   try {
     await prisma.setting.upsert({
       where: { key },
@@ -27,6 +29,7 @@ export async function updateSetting(key: string, value: string) {
 }
 
 export async function updateSettingsBatch(settingsMap: Record<string, string>) {
+  await requireAdmin();
   try {
     const transactions = Object.entries(settingsMap).map(([key, value]) => {
       return prisma.setting.upsert({

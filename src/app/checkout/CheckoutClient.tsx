@@ -106,6 +106,9 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     setIsProcessing(true);
     
     const formData = new FormData(e.currentTarget);
+    if (coupon) {
+      formData.append('couponCode', coupon.code);
+    }
     
     const res = await processCheckout(formData, cart, finalTotal, paymentMethod as any);
     

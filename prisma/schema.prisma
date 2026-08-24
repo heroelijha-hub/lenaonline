@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("NEXT_PUBLIC_SUPABASE_URL_DB") // On utilisera une string de connexion postgres directe pour Prisma
-  directUrl = env("SUPABASE_DIRECT_URL") // Nécessaire pour Supabase avec Prisma
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {

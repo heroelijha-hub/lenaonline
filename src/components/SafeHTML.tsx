@@ -1,0 +1,54 @@
+'use client';
+
+import DOMPurify from 'dompurify';
+
+/**
+ * Renders sanitized HTML content safely using DOMPurify.
+ * Use this component instead of dangerouslySetInnerHTML for any 
+ * user-generated or admin-provided HTML content.
+ * 
+ * Style tags and internal CSS are NOT sanitized by this component
+ * since they don't come from user input.
+ */
+export default function SafeHTML({ 
+  html, 
+  className,
+  as: Tag = 'div',
+  style,
+}: { 
+  html: string; 
+  className?: string;
+  as?: 'div' | 'span' | 'h2' | 'p' | 'section' | 'article';
+  style?: React.CSSProperties;
+}) {
+  const clean = DOMPurify.sanitize(html, {
+    // Allow common HTML tags for rich content
+    ALLOWED_TAGS: [
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'p', 'br', 'hr',
+      'ul', 'ol', 'li',
+      'strong', 'em', 'b', 'i', 'u', 's', 'del', 'ins', 'mark',
+      'a', 'img', 'figure', 'figcaption',
+      'blockquote', 'pre', 'code',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'div', 'span', 'section', 'article',
+      'video', 'source', 'iframe',
+      'sup', 'sub', 'small',
+    ],
+    ALLOWED_ATTR: [
+      'href', 'target', 'rel', 'title', 'alt',
+      'src', 'width', 'height', 'loading',
+      'class', 'id', 'style',
+      'colspan', 'rowspan',
+      'controls', 'autoplay', 'muted', 'loop', 'type',
+      'allowfullscreen', 'frameborder',
+    ],
+    // Allow safe URI schemes only
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+    // Remove any script-related content
+    FORBID_TAGS: ['script', 'object', 'embed', 'form', 'input', 'textarea', 'select', 'button'],
+    FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur'],
+  });
+
+  return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: clean }} />;
+}
