@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { deleteProduct, duplicateProduct, quickEditProduct, bulkDeleteProducts } from '@/actions/admin';
 import Price from '@/components/Price';
 
@@ -12,6 +13,7 @@ export default function ProductsTable({ products, categories }: { products: any[
   const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const router = useRouter();
 
   const startEdit = (p: any) => {
     setEditingId(p.id);
@@ -31,6 +33,7 @@ export default function ProductsTable({ products, categories }: { products: any[
       alert(res.error);
     } else {
       setEditingId(null);
+      router.refresh();
     }
     setIsLoading(false);
   };
@@ -40,7 +43,10 @@ export default function ProductsTable({ products, categories }: { products: any[
       setIsLoading(true);
       const res = await deleteProduct(id);
       if (res.error) alert(res.error);
-      else setSelectedIds(selectedIds.filter(selId => selId !== id));
+      else {
+        setSelectedIds(selectedIds.filter(selId => selId !== id));
+        router.refresh();
+      }
       setIsLoading(false);
     }
   };
@@ -51,7 +57,10 @@ export default function ProductsTable({ products, categories }: { products: any[
       setIsLoading(true);
       const res = await bulkDeleteProducts(selectedIds);
       if (res.error) alert(res.error);
-      else setSelectedIds([]);
+      else {
+        setSelectedIds([]);
+        router.refresh();
+      }
       setIsLoading(false);
     }
   };
@@ -76,6 +85,7 @@ export default function ProductsTable({ products, categories }: { products: any[
     setIsLoading(true);
     const res = await duplicateProduct(id);
     if (res.error) alert(res.error);
+    else router.refresh();
     setIsLoading(false);
   };
 
