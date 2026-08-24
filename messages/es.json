@@ -566,7 +566,17 @@
     "no_tags_yet": "Sin etiquetas todavía.",
     "mark_best_seller": "Marcar como \"Más vendido\"",
     "mark_deal_day": "Marcar como \"Oferta del día\"",
-    "discount_label_placeholder": "Etiqueta (ej: -14%)"
+    "discount_label_placeholder": "Etiqueta (ej: -14%)",
+    "import_woo_btn": "Importar WooCommerce",
+    "import_woo_title": "Importar desde WooCommerce",
+    "import_woo_desc": "Importe automáticamente productos desde una tienda WooCommerce existente. Las imágenes se descargarán a Cloudinary.",
+    "import_woo_url": "URL de la tienda WooCommerce",
+    "import_woo_key": "Clave del consumidor (ck_...)",
+    "import_woo_secret": "Secreto del consumidor (cs_...)",
+    "import_woo_loading": "Importando, por favor espere...",
+    "import_woo_submit": "Iniciar importación",
+    "import_success": "¡{count} productos importados exitosamente!",
+    "import_error": "Error durante la importación"
   },
   "AdminCategories": {
     "manage_categories": "Gestionar Categorías",

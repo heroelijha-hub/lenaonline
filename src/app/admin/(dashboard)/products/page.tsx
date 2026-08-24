@@ -2,6 +2,7 @@ import { getCategories } from '@/actions/admin';
 import Link from 'next/link';
 import ProductsTable from '@/components/admin/ProductsTable';
 import AdminPagination from '@/components/admin/AdminPagination';
+import WooCommerceImportModal from '@/components/admin/WooCommerceImportModal';
 import { getTranslations } from 'next-intl/server';
 import prisma from '@/lib/prisma';
 
@@ -31,12 +32,16 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-        <Link 
-          href="/admin/products/new" 
-          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md transition"
-        >
-          {t('add_product')}
-        </Link>
+        <div className="flex items-center space-x-4">
+          <WooCommerceImportModal />
+          <Link 
+            href="/admin/products/new" 
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md transition flex items-center space-x-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            <span>{t('add_product')}</span>
+          </Link>
+        </div>
       </div>
 
       <ProductsTable products={products as any} categories={categories} />
