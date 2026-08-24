@@ -6,9 +6,10 @@ export const dynamic = 'force-dynamic';
 import { getTranslations } from 'next-intl/server';
 import AdminPagination from '@/components/admin/AdminPagination';
 
-export default async function AdminReviewsPage({ searchParams }: { searchParams: { page?: string } }) {
+export default async function AdminReviewsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const t = await getTranslations('AdminReviews');
-  const page = parseInt(searchParams.page || '1', 10);
+  const resolvedParams = await searchParams;
+  const page = parseInt(resolvedParams.page || '1', 10);
   const limit = 20;
   const skip = (page - 1) * limit;
 

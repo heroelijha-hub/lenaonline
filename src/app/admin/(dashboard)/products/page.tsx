@@ -7,9 +7,10 @@ import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage({ searchParams }: { searchParams: { page?: string } }) {
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const t = await getTranslations('AdminProducts');
-  const page = parseInt(searchParams.page || '1', 10);
+  const resolvedParams = await searchParams;
+  const page = parseInt(resolvedParams.page || '1', 10);
   const limit = 20;
   const skip = (page - 1) * limit;
 

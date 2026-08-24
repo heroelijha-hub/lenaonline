@@ -6,9 +6,10 @@ import AdminPagination from '@/components/admin/AdminPagination';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CategoriesPage({ searchParams }: { searchParams: { page?: string } }) {
+export default async function CategoriesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const t = await getTranslations('AdminCategories');
-  const page = parseInt(searchParams.page || '1', 10);
+  const resolvedParams = await searchParams;
+  const page = parseInt(resolvedParams.page || '1', 10);
   const limit = 20;
   const skip = (page - 1) * limit;
 

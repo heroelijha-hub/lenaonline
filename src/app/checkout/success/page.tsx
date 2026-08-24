@@ -8,9 +8,10 @@ export const dynamic = 'force-dynamic';
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const orderId = searchParams.orderId as string;
+  const resolvedParams = await searchParams;
+  const orderId = resolvedParams.orderId as string;
   const t = await getTranslations('Checkout');
   const tCart = await getTranslations('Cart');
   const locale = await getLocale();
