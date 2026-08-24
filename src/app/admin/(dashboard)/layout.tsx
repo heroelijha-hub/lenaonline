@@ -3,8 +3,11 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import NotificationBell from '@/components/layout/NotificationBell';
+import { getTranslations } from 'next-intl/server';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const t = await getTranslations('AdminLayout');
+
   // 1. Check if an admin exists in the database
   const adminCount = await prisma.user.count({ where: { role: 'ADMIN' } });
   if (adminCount === 0) {
@@ -33,45 +36,45 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="h-full flex flex-col">
           <div className="h-16 flex items-center px-6 border-b border-gray-200">
             <Link href="/admin" className="text-xl font-bold text-orange-600">
-              Shopelios Admin
+              {t('title')}
             </Link>
           </div>
           <nav className="flex-1 px-4 py-6 space-y-2">
             <Link href="/admin" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Dashboard
+              {t('dashboard')}
             </Link>
             <Link href="/admin/products" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Products
+              {t('products')}
             </Link>
             <Link href="/admin/categories" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Categories
+              {t('categories')}
             </Link>
             <Link href="/admin/orders" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Orders
+              {t('orders')}
             </Link>
             <Link href="/admin/abandoned-carts" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Abandoned Carts
+              {t('abandoned_carts')}
             </Link>
             <Link href="/admin/coupons" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Coupons
+              {t('coupons')}
             </Link>
             <Link href="/admin/landing" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Landing Page
+              {t('landing_page')}
             </Link>
             <Link href="/admin/chat" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Customer Chat
+              {t('customer_chat')}
             </Link>
             <Link href="/admin/blogs" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Blog
+              {t('blog')}
             </Link>
             <Link href="/admin/pages" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              Pages
+              {t('pages')}
             </Link>
             <Link href="/admin/settings" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              Settings
+              {t('settings')}
             </Link>
             <Link href="/admin/shipping" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              Shipping
+              {t('shipping')}
             </Link>
           </nav>
         </div>
@@ -80,7 +83,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-          <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
+          <h1 className="text-xl font-semibold text-gray-800">{t('dashboard')}</h1>
           <div className="flex items-center space-x-6">
             <NotificationBell isAdmin={true} />
             <div className="flex items-center space-x-4">
@@ -92,7 +95,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               redirect('/');
             }}>
               <button type="submit" className="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition-colors font-medium">
-                Sign out
+                {t('sign_out')}
               </button>
             </form>
             </div>
