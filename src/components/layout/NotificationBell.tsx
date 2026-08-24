@@ -109,7 +109,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden">
+        <div className="fixed inset-x-4 top-20 mx-auto max-w-xs sm:max-w-none sm:absolute sm:inset-auto sm:right-0 sm:top-auto sm:mt-2 w-auto sm:w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden">
           <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
             <h3 className="font-semibold text-gray-800 text-sm">Notifications</h3>
             {unreadCount > 0 && (
