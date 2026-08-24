@@ -2,6 +2,7 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { getSettings } from '@/actions/settings';
+import { formatPriceNumber, defaultCurrencyOptions } from '@/lib/formatPrice';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,12 +56,17 @@ export default async function CheckoutSuccessPage({
     return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
   };
   
+  const currencyOptions = {
+    currencySymbol: settings.currencySymbol || defaultCurrencyOptions.currencySymbol,
+    currencyPosition: (settings.currencyPosition as any) || defaultCurrencyOptions.currencyPosition,
+    thousandSeparator: settings.thousandSeparator !== undefined ? settings.thousandSeparator : defaultCurrencyOptions.thousandSeparator,
+    decimalSeparator: settings.decimalSeparator || defaultCurrencyOptions.decimalSeparator,
+    taxIncludedInPrice: settings.TAX_INCLUDED_IN_PRICE === 'true',
+    defaultVatRate: Number(settings.DEFAULT_VAT_RATE) || 20,
+  };
+
   const formatPrice = (price: number) => {
-    const currency = settings.MAIN_CURRENCY || 'USD';
-    const symbolPos = settings.CURRENCY_SYMBOL_POSITION || 'left';
-    
-    // Simplification for the server side display
-    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(price);
+    return formatPriceNumber(price, currencyOptions);
   };
 
   const getPaymentMethodLabel = (method: string) => {
