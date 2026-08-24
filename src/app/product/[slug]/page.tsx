@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ProductActions from '@/components/product/ProductActions';
+import ProductGallery from '@/components/product/ProductGallery';
 import Price from '@/components/Price';
 import ProductReviews from '@/components/product/ProductReviews';
 import { createClient } from '@/utils/supabase/server';
@@ -114,42 +115,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="flex flex-col lg:flex-row gap-12">
             
             {/* Left Column: Gallery */}
-            <div className="w-full lg:w-1/2 flex gap-4">
-              {/* Thumbnails (Vertical) */}
-              <div className="flex flex-col gap-3 w-20">
-                <button className="w-full py-1 border border-gray-200 rounded text-gray-400 hover:bg-gray-100 flex justify-center">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
-                </button>
-                
-                {hasImages ? (
-                  product.images.slice(0, 5).map((img, idx) => (
-                    <div key={idx} className={`border-2 rounded overflow-hidden cursor-pointer h-20 w-20 flex-shrink-0 ${idx === 0 ? 'border-orange-500' : 'border-transparent hover:border-gray-300'}`}>
-                      <img src={img} alt={`thumb-${idx}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))
-                ) : (
-                  <div className="border-2 border-orange-500 rounded h-20 w-20 bg-gray-100 flex items-center justify-center text-2xl">🛍️</div>
-                )}
-                
-                <button className="w-full py-1 border border-gray-200 rounded text-gray-400 hover:bg-gray-100 flex justify-center mt-auto">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                </button>
-              </div>
-
-              {/* Main Image */}
-              <div className="flex-1 border border-gray-200 rounded-lg relative overflow-hidden flex items-center justify-center bg-white min-h-[400px]">
-                {product.discountLabel && product.compareAtPrice && product.compareAtPrice > product.price && (
-                  <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">
-                    {product.discountLabel}
-                  </span>
-                )}
-                {mainImage ? (
-                  <img src={mainImage} alt={product.title} className="w-full h-full object-contain p-4" />
-                ) : (
-                  <div className="text-9xl text-gray-300">🛍️</div>
-                )}
-              </div>
-            </div>
+            <ProductGallery 
+              images={product.images} 
+              title={product.title} 
+              discountLabel={product.discountLabel} 
+              compareAtPrice={product.compareAtPrice} 
+              price={product.price} 
+            />
 
             {/* Right Column: Product Info */}
             <div className="w-full lg:w-1/2 flex flex-col">
