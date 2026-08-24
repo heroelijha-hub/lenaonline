@@ -485,5 +485,26 @@
     "price_asc": "Price: Low to High",
     "price_desc": "Price: High to Low",
     "new_arrivals": "New Arrivals"
+  },
+  "ProductCard": {
+    "added_to_wishlist": "Product added to wishlist!",
+    "removed_from_wishlist": "Product removed from wishlist.",
+    "add_to_cart": "Add to cart",
+    "quick_view": "Quick view",
+    "add_to_wishlist": "Add to wishlist",
+    "general": "General"
+  },
+  "StoreLocator": {
+    "page_title": "Our Stores",
+    "page_description": "Find the nearest store to you.",
+    "title": "Find a Store",
+    "subtitle": "Discover our physical stores and come test our products in person. Our team will be happy to advise you.",
+    "search_placeholder": "Search for a city, zip code...",
+    "directions": "Directions",
+    "status_open": "Open",
+    "status_closing": "Closing soon",
+    "hours_1": "Mon-Sat: 10:00 AM - 7:30 PM",
+    "hours_2": "Mon-Sat: 09:30 AM - 8:00 PM",
+    "hours_3": "Mon-Sat: 10:00 AM - 7:00 PM"
   }
 }

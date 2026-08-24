@@ -1,37 +1,42 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
-export const metadata = {
-  title: `Our Stores - ${storeName}`,
-  description: `Find the nearest ${storeName} store to you.`,
-};
+export async function generateMetadata() {
+  const t = await getTranslations('StoreLocator');
+  return {
+    title: `${t('page_title')} - ${storeName}`,
+    description: t('page_description'),
+  };
+}
 
-export default function StoreLocatorPage() {
+export default async function StoreLocatorPage() {
+  const t = await getTranslations('StoreLocator');
   const stores = [
     {
       id: 1,
       name: `${storeName} Paris Centre`,
       address: '15 Rue de Rivoli, 75001 Paris, France',
       phone: '+33 1 23 45 67 89',
-      hours: 'Mon-Sat: 10:00 AM - 7:30 PM',
-      status: 'Open',
+      hours: t('hours_1'),
+      status: t('status_open'),
     },
     {
       id: 2,
       name: `${storeName} Lyon Part-Dieu`,
       address: '17 Rue du Dr Bouchut, 69003 Lyon, France',
       phone: '+33 4 56 78 90 12',
-      hours: 'Mon-Sat: 09:30 AM - 8:00 PM',
-      status: 'Open',
+      hours: t('hours_2'),
+      status: t('status_open'),
     },
     {
       id: 3,
       name: `${storeName} Marseille Vieux-Port`,
       address: 'Quai des Belges, 13001 Marseille, France',
       phone: '+33 4 91 23 45 67',
-      hours: 'Mon-Sat: 10:00 AM - 7:00 PM',
-      status: 'Closing soon',
+      hours: t('hours_3'),
+      status: t('status_closing'),
     }
   ];
 
@@ -39,10 +44,9 @@ export default function StoreLocatorPage() {
     <div className="bg-gray-50 min-h-screen py-8 md:py-12 font-sans">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Find a Store</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('title')}</h1>
           <p className="text-gray-600 text-lg">
-            Discover our physical stores and come test our products in person.
-            Our team will be happy to advise you.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -53,7 +57,7 @@ export default function StoreLocatorPage() {
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Search for a city, zip code..." 
+                  placeholder={t('search_placeholder')}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none transition"
                 />
                 <svg className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
@@ -65,7 +69,7 @@ export default function StoreLocatorPage() {
                 <div key={store.id} className="bg-white p-5 rounded-xl border border-gray-200 hover:border-orange-500 hover:shadow-md transition cursor-pointer group">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-gray-900 group-hover:text-orange-600 transition">{store.name}</h3>
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${store.status === 'Open' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${store.status === t('status_open') ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                       {store.status}
                     </span>
                   </div>
@@ -84,7 +88,7 @@ export default function StoreLocatorPage() {
                     </p>
                   </div>
                   <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 rounded-lg transition text-sm">
-                    Directions
+                    {t('directions')}
                   </button>
                 </div>
               ))}

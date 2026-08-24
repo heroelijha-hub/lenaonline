@@ -24,6 +24,7 @@ import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { toast } from 'react-hot-toast';
+import { useTranslations } from 'next-intl';
 
 export default function ProductCard({ product, view = 'grid', cardStyle = 'design2', borderColor }: ProductCardProps) {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
   const isWishlisted = wishlistStore.hasItem(product.id);
+  const t = useTranslations('ProductCard');
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,9 +54,9 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
     e.stopPropagation();
     wishlistStore.toggleItem(product.id);
     if (!isWishlisted) {
-      toast.success('Product added to wishlist!');
+      toast.success(t('added_to_wishlist'));
     } else {
-      toast.success('Product removed from wishlist.');
+      toast.success(t('removed_from_wishlist'));
     }
   };
 
@@ -67,21 +69,21 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <button 
             onClick={handleAddToCart} 
             className="w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shadow-sm"
-            title="Add to cart"
+            title={t('add_to_cart')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
           </button>
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsQuickViewOpen(true); }} 
             className="w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shadow-sm"
-            title="Quick view"
+            title={t('quick_view')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
           </button>
           <button 
             onClick={handleToggleWishlist} 
             className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm ${isWishlisted ? 'bg-orange-500 text-white' : 'bg-white text-gray-900 hover:bg-orange-500 hover:text-white'}`}
-            title="Add to wishlist"
+            title={t('add_to_wishlist')}
           >
             <svg className="w-5 h-5" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
           </button>
@@ -94,14 +96,14 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
       <div className="absolute top-2 right-2 flex flex-col gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <button 
           className="w-8 h-8 bg-white/90 text-gray-700 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors duration-300 shadow-sm"
-          title="Quick view"
+          title={t('quick_view')}
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsQuickViewOpen(true); }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
         </button>
         <button 
           className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm ${isWishlisted ? 'bg-orange-500 text-white' : 'bg-white/90 text-gray-700 hover:bg-orange-500 hover:text-white'}`}
-          title="Add to wishlist"
+          title={t('add_to_wishlist')}
           onClick={handleToggleWishlist}
         >
           <svg className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -139,7 +141,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
 
         <div className="p-6 flex flex-col flex-grow">
           <span className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium">
-            {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'General'}
+            {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('general')}
           </span>
           
           <h3 
@@ -162,7 +164,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             {cardStyle !== 'design1' && (
               <button 
                 className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors duration-300 shadow-sm"
-                title="Add to cart"
+                title={t('add_to_cart')}
                 onClick={handleAddToCart}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -206,7 +208,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
       <div className="p-4 flex flex-col flex-grow">
         {/* Category */}
         <span className="text-xs text-gray-500 mb-1">
-          {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'General'}
+          {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('general')}
         </span>
         
         {/* Title constrained to 2 lines max with ellipsis */}
@@ -232,7 +234,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           {cardStyle !== 'design1' && (
             <button 
               className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors duration-300 shadow-sm"
-              title="Add to cart"
+              title={t('add_to_cart')}
               onClick={handleAddToCart}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>

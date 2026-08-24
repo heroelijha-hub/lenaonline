@@ -485,5 +485,26 @@
     "price_asc": "Prix : Croissant",
     "price_desc": "Prix : Décroissant",
     "new_arrivals": "Nouveautés"
+  },
+  "ProductCard": {
+    "added_to_wishlist": "Produit ajouté aux favoris !",
+    "removed_from_wishlist": "Produit retiré des favoris.",
+    "add_to_cart": "Ajouter au panier",
+    "quick_view": "Aperçu rapide",
+    "add_to_wishlist": "Ajouter aux favoris",
+    "general": "Général"
+  },
+  "StoreLocator": {
+    "page_title": "Nos Magasins",
+    "page_description": "Trouvez le magasin le plus proche de chez vous.",
+    "title": "Trouver un magasin",
+    "subtitle": "Découvrez nos magasins physiques et venez tester nos produits en personne. Notre équipe sera ravie de vous conseiller.",
+    "search_placeholder": "Rechercher une ville, un code postal...",
+    "directions": "Itinéraire",
+    "status_open": "Ouvert",
+    "status_closing": "Ferme bientôt",
+    "hours_1": "Lun-Sam : 10h00 - 19h30",
+    "hours_2": "Lun-Sam : 09h30 - 20h00",
+    "hours_3": "Lun-Sam : 10h00 - 19h00"
   }
 }

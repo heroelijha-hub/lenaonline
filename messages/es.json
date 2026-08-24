@@ -485,5 +485,26 @@
     "price_asc": "Precio: de menor a mayor",
     "price_desc": "Precio: de mayor a menor",
     "new_arrivals": "Novedades"
+  },
+  "ProductCard": {
+    "added_to_wishlist": "¡Producto añadido a la lista de deseos!",
+    "removed_from_wishlist": "Producto eliminado de la lista de deseos.",
+    "add_to_cart": "Añadir al carrito",
+    "quick_view": "Vista rápida",
+    "add_to_wishlist": "Añadir a lista de deseos",
+    "general": "General"
+  },
+  "StoreLocator": {
+    "page_title": "Nuestras Tiendas",
+    "page_description": "Encuentra la tienda más cercana a ti.",
+    "title": "Buscar una tienda",
+    "subtitle": "Descubre nuestras tiendas físicas y ven a probar nuestros productos en persona. Nuestro equipo estará encantado de asesorarte.",
+    "search_placeholder": "Buscar una ciudad, código postal...",
+    "directions": "Cómo llegar",
+    "status_open": "Abierto",
+    "status_closing": "Cierra pronto",
+    "hours_1": "Lun-Sáb: 10:00 AM - 7:30 PM",
+    "hours_2": "Lun-Sáb: 09:30 AM - 8:00 PM",
+    "hours_3": "Lun-Sáb: 10:00 AM - 7:00 PM"
   }
 }
