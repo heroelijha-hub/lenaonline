@@ -12,7 +12,7 @@ export default async function AdminPagesList({ searchParams }: { searchParams: {
   const limit = 20;
   const skip = (page - 1) * limit;
 
-  let pages = [];
+  let pages: any[] = [];
   let total = 0;
   let error = null;
   let success = false;
