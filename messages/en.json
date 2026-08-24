@@ -1,4 +1,4 @@
-{
+﻿{
   "Frontend": {
     "welcome": "Welcome to Shopelios",
     "shop": "Shop Now",
@@ -93,8 +93,8 @@
     "general": "General",
     "select_options_cart": "Please select all options before adding to cart.",
     "select_options_buy": "Please select all options before quick purchase.",
-    "added_to_cart": "« {name} » has been added to your cart.",
-    "added_to_wishlist": "« {name} » has been added to your wishlist.",
+    "added_to_cart": "Â« {name} Â» has been added to your cart.",
+    "added_to_wishlist": "Â« {name} Â» has been added to your wishlist.",
     "view_cart_caps": "VIEW CART",
     "view_wishlist_caps": "VIEW WISHLIST",
     "select_placeholder": "Select...",
@@ -342,7 +342,7 @@
     "newsletter_placeholder": "Enter your email...",
     "call_us": "Call Us Now",
     "email": "Email",
-    "copyright": "© 2026 Shopelios All rights reserved."
+    "copyright": "Â© 2026 Shopelios All rights reserved."
   },
   "Messages": {
     "success": "Action successful",
@@ -437,7 +437,7 @@
     "article_not_found": "Article not found",
     "by": "By",
     "share": "Share:",
-    "next_article": "Next Article →",
+    "next_article": "Next Article â†’",
     "related_post": "Related Post",
     "write_review": "Write a review",
     "review_desc": "Your email address will not be published. Required fields are marked with *",
@@ -465,7 +465,7 @@
     "email_label": "Administrator Email",
     "password_label": "Password",
     "email_placeholder": "admin@yourstore.com",
-    "password_placeholder": "••••••••",
+    "password_placeholder": "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
     "login_btn": "Login",
     "logging_in": "Logging in..."
   },
@@ -474,7 +474,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "categories": "Categories",
-    "orders": "Orders",
+    "orders": "Orders",`n      "reviews": "Reviews",
     "abandoned_carts": "Abandoned Carts",
     "coupons": "Coupons",
     "landing_page": "Landing Page",
@@ -490,7 +490,7 @@
     "subtitle": "Global overview of your store performance.",
     "revenue": "Revenue",
     "total_revenue": "Total generated revenue",
-    "orders": "Orders",
+    "orders": "Orders",`n      "reviews": "Reviews",
     "validated_orders": "Total validated orders",
     "customers": "Customers",
     "registered_customers": "Registered on the store",
@@ -611,7 +611,7 @@
     "delete": "Delete",
     "confirm_delete": "Are you sure you want to delete this order?",
     "order_number": "Order #",
-    "back_to_orders": "← Back to orders",
+    "back_to_orders": "â† Back to orders",
     "items": "Items",
     "qty": "Qty",
     "total": "Total",
@@ -664,7 +664,7 @@
     "promo_code_ex": "Ex: SUMMER20",
     "discount_type": "Discount Type",
     "percentage": "Percentage (%)",
-    "fixed_amount": "Fixed Amount ($/€)",
+    "fixed_amount": "Fixed Amount ($/â‚¬)",
     "discount_value": "Discount Value",
     "discount_value_ex": "Ex: 20",
     "active_immediately": "Active immediately",
