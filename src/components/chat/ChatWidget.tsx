@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getOrCreateSession, sendMessage, getSessionMessages } from '@/actions/chat';
 import { ChatSender, ChatMessage } from '@prisma/client';
+import { useTranslations } from 'next-intl';
 
 function generateId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -18,6 +19,7 @@ interface ChatWidgetProps {
 }
 
 export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidgetProps) {
+  const t = useTranslations('ChatWidget');
   const [isOpen, setIsOpen] = useState(false);
   const [guestId, setGuestId] = useState<string>('');
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -86,7 +88,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       } catch (err) {
         console.error("Failed to create session on register:", err);
         setSessionId(null);
-        alert("Chat connection error. Please ensure the database is up to date.");
+        alert(t('connection_error'));
       }
     }
   };
@@ -155,7 +157,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
               </div>
               <div>
                 <h3 className="font-bold leading-tight">{storeName}</h3>
-                <p className="text-xs text-orange-200">We reply quickly</p>
+                <p className="text-xs text-orange-200">{t('we_reply_quickly')}</p>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-orange-100 hover:text-white transition">
@@ -166,13 +168,13 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
           {/* Body */}
           {!hasRegistered ? (
             <div className="flex-1 p-6 bg-gray-50 flex flex-col justify-center">
-              <h4 className="font-bold text-gray-800 mb-2">Bienvenue !</h4>
-              <p className="text-sm text-gray-600 mb-4">Please enter your name and email address to start the conversation.</p>
+              <h4 className="font-bold text-gray-800 mb-2">{t('welcome')}</h4>
+              <p className="text-sm text-gray-600 mb-4">{t('please_enter_details')}</p>
               <form onSubmit={handleRegister} className="flex flex-col gap-3">
                 <input
                   type="text"
                   required
-                  placeholder="Votre nom"
+                  placeholder={t('your_name')}
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 text-sm"
@@ -180,7 +182,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                 <input
                   type="email"
                   required
-                  placeholder="Votre e-mail"
+                  placeholder={t('your_email')}
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 text-sm"
@@ -189,7 +191,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                   type="submit"
                   className="w-full bg-orange-600 text-white font-semibold py-2 rounded-md hover:bg-orange-700 transition mt-2"
                 >
-                  Start chat
+                  {t('start_chat')}
                 </button>
               </form>
             </div>
@@ -199,7 +201,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
               <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
                 {messages.length === 0 && (
                   <div className="text-center text-gray-500 text-sm mt-8">
-                    Send us a message and we will reply as soon as possible!
+                    {t('send_message_prompt')}
                   </div>
                 )}
                 {messages.map((msg) => {
@@ -227,7 +229,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Votre message..."
+                    placeholder={t('your_message')}
                     className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
                   />
                   <button

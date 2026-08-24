@@ -698,7 +698,8 @@
     "blog": "Blog",
     "newsletter": "Boletín",
     "back_to_list": "Volver a la lista",
-    "name_placeholder": "Nombre..."
+    "name_placeholder": "Nombre...",
+    "add_widget": "Añadir widget"
   },
   "AdminChat": {
     "title": "Chat de Soporte",
@@ -834,5 +835,16 @@
     "min_amount_label": "Monto mínimo (Opcional)",
     "save": "Guardar",
     "add_method_for": "+ Añadir un método para {zone}"
+  },
+  "ChatWidget": {
+    "we_reply_quickly": "Respondemos rápidamente",
+    "welcome": "¡Bienvenido!",
+    "please_enter_details": "Por favor, introduce tu nombre y correo electrónico para iniciar la conversación.",
+    "your_name": "Tu nombre",
+    "your_email": "Tu correo electrónico",
+    "start_chat": "Iniciar chat",
+    "connection_error": "Error de conexión al chat. Por favor, inténtalo de nuevo.",
+    "send_message_prompt": "¡Envíanos un mensaje y responderemos lo antes posible!",
+    "your_message": "Tu mensaje..."
   }
 }
