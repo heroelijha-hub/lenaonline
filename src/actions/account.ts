@@ -41,10 +41,10 @@ export async function updateAccountDetails(formData: FormData) {
     updates.password = newPassword
   }
 
-  const { error } = await supabase.auth.updateUser(updates)
+  const { error: updateError } = await supabase.auth.updateUser(updates)
 
-  if (error) {
-    return { error: error.message }
+  if (updateError) {
+    return { error: updateError.message }
   }
 
   revalidatePath('/account/details')
