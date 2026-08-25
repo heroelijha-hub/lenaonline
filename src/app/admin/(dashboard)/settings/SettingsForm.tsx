@@ -802,8 +802,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   {tSettings('header_logo')}
                 </label>
                 {headerLogoImage && !logoFile && (
-                  <div className="mb-4">
-                    <img src={headerLogoImage} alt="Current Logo" className="h-12 object-contain" />
+                  <div className="mb-4 flex items-center gap-4">
+                    <div className="bg-gray-50 p-2 border border-gray-200 rounded">
+                      <img src={headerLogoImage} alt="Current Logo" className="h-12 object-contain" />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setHeaderLogoImage('')} 
+                      className="text-sm text-red-600 hover:text-red-800 hover:underline font-medium px-2 py-1"
+                    >
+                      Supprimer
+                    </button>
                   </div>
                 )}
                 {logoFile && (
@@ -825,8 +834,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   Favicon (Icône de l'onglet)
                 </label>
                 {faviconImage && !faviconFile && (
-                  <div className="mb-4">
-                    <img src={faviconImage} alt="Current Favicon" className="w-8 h-8 object-contain rounded" />
+                  <div className="mb-4 flex items-center gap-4">
+                    <div className="bg-gray-50 p-2 border border-gray-200 rounded">
+                      <img src={faviconImage} alt="Current Favicon" className="w-8 h-8 object-contain rounded" />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setFaviconImage('')} 
+                      className="text-sm text-red-600 hover:text-red-800 hover:underline font-medium px-2 py-1"
+                    >
+                      Supprimer
+                    </button>
                   </div>
                 )}
                 {faviconFile && (
