@@ -279,6 +279,50 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
         stock = parseInt(wcProduct.stock_quantity, 10);
       }
 
+      // Attributes logic
+      let parsedAttributes: any[] = [];
+      if (wcProduct.attributes && Array.isArray(wcProduct.attributes)) {
+        parsedAttributes = wcProduct.attributes
+          .filter((attr: any) => attr.variation) // only those used for variations
+          .map((attr: any) => ({
+            name: attr.name,
+            options: attr.options
+          }));
+      }
+
+      // Variations fetch logic
+      let parsedVariations: any[] = [];
+      if (wcProduct.type === 'variable') {
+        try {
+          const varResponse = await fetch(`${apiUrl}/${wcProduct.id}/variations`, {
+            headers: {
+              'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+              'Content-Type': 'application/json'
+            },
+            cache: 'no-store'
+          });
+          if (varResponse.ok) {
+            const wcVariations = await varResponse.json();
+            parsedVariations = wcVariations.map((wcVar: any) => {
+              const attrMap: Record<string, string> = {};
+              if (wcVar.attributes && Array.isArray(wcVar.attributes)) {
+                wcVar.attributes.forEach((attr: any) => {
+                  attrMap[attr.name] = attr.option;
+                });
+              }
+              return {
+                id: String(wcVar.id),
+                attributes: attrMap,
+                price: parseFloat(wcVar.price || wcVar.regular_price || '0'),
+                stock: (wcVar.manage_stock && wcVar.stock_quantity !== null) ? parseInt(wcVar.stock_quantity, 10) : null
+              };
+            });
+          }
+        } catch (err) {
+          console.error(`Failed to fetch variations for product ${wcProduct.id}`, err);
+        }
+      }
+
       await prisma.product.create({
         data: {
           title: wcProduct.name,
@@ -289,7 +333,9 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           compareAtPrice: (compareAtPrice > price) ? compareAtPrice : null,
           images: cloudinaryImageUrls,
           stock: stock,
-          type: 'SIMPLE',
+          type: wcProduct.type === 'variable' ? 'VARIABLE' : 'SIMPLE',
+          attributes: parsedAttributes.length > 0 ? parsedAttributes : null,
+          variations: parsedVariations.length > 0 ? parsedVariations : null,
           categories: {
             connect: categoryIds.map(id => ({ id }))
           }
