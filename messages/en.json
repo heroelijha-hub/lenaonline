@@ -157,6 +157,23 @@
     "calculate_shipping": "Calculate shipping costs",
     "proceed_checkout": "Proceed to Checkout"
   },
+  "Contact": {
+    "address_label": "Address",
+    "phone_label": "Phone",
+    "email_label": "E-mail",
+    "form_title": "Send us a message!",
+    "form_subtitle": "Contact us by filling out the form below.",
+    "name_placeholder": "Full name",
+    "phone_placeholder": "+32 XXX .....",
+    "subject_placeholder": "Subject",
+    "message_placeholder": "Your Message",
+    "send_btn": "Send",
+    "sending": "Sending...",
+    "success_sending": "Your message has been sent successfully!",
+    "error_sending": "An error occurred while sending the message.",
+    "missing_fields": "Please fill out all required fields.",
+    "fields_too_long": "One or more fields exceed the maximum allowed length."
+  },
   "Checkout": {
     "select_payment": "Please select a payment method.",
     "have_coupon": "Have a coupon?",

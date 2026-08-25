@@ -64,6 +64,24 @@ export default async function AdminPagesList({ searchParams }: { searchParams: P
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
+            {/* Ligne fixe pour la page Contact */}
+            <tr className="hover:bg-gray-50">
+              <td className="px-6 py-4 font-medium text-gray-900">Contact Us (Système)</td>
+              <td className="px-6 py-4 text-gray-500">/contact</td>
+              <td className="px-6 py-4">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {t('published')}
+                </span>
+              </td>
+              <td className="px-6 py-4 text-right space-x-3">
+                <Link href="/contact" target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                  {t('view')}
+                </Link>
+                <Link href="/admin/pages/contact" className="text-orange-600 hover:text-orange-900 font-medium text-sm">
+                  {t('edit')}
+                </Link>
+              </td>
+            </tr>
             {success && pages && pages.length > 0 ? (
               pages.map((page: any) => (
                 <tr key={page.id} className="hover:bg-gray-50">

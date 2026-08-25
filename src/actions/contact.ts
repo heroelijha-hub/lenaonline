@@ -2,6 +2,8 @@
 
 import prisma from '@/lib/prisma';
 import { getSettings } from './settings';
+import { getContactSettings } from './contactSettings';
+import { getTranslations } from 'next-intl/server';
 
 export async function submitContactMessage(formData: FormData) {
   try {
@@ -12,7 +14,8 @@ export async function submitContactMessage(formData: FormData) {
     const message = formData.get('message') as string;
 
     if (!name || !email || !message) {
-      return { error: 'Veuillez remplir tous les champs obligatoires.' };
+      const t = await getTranslations('Contact');
+      return { error: t('missing_fields') };
     }
 
     // Validate email format
@@ -23,13 +26,14 @@ export async function submitContactMessage(formData: FormData) {
 
     // Limit field lengths to prevent abuse
     if (name.length > 200 || email.length > 254 || (subject && subject.length > 500) || message.length > 5000) {
-      return { error: 'One or more fields exceed the maximum allowed length.' };
+      const t = await getTranslations('Contact');
+      return { error: t('fields_too_long') };
     }
 
     // Save to DB if needed, or just simulate email sending
     // For now, we simulate sending an email to the configured admin email
-    const settings = await getSettings();
-    const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
+    const contactSettings = await getContactSettings();
+    const receiverEmail = contactSettings.formRecipient;
 
     console.log(`[CONTACT] Sending email to: ${receiverEmail}`);
     console.log(`[CONTACT] From: ${name} <${email}>`);
@@ -39,7 +43,8 @@ export async function submitContactMessage(formData: FormData) {
     return { success: true, message: 'Your message has been sent successfully!' };
   } catch (error) {
     console.error('Contact submission error:', error);
-    return { error: "Une erreur est survenue lors de l'envoi du message." };
+    const t = await getTranslations('Contact');
+    return { error: t('error_sending') };
   }
 }
 

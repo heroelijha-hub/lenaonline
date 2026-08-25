@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { submitContactMessage } from '@/actions/contact';
+import { useTranslations } from 'next-intl';
 
 export default function ContactForm() {
+  const t = useTranslations('Contact');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -17,10 +19,10 @@ export default function ContactForm() {
     
     if (res.error) {
       setStatus('error');
-      setMessage(res.error);
+      setMessage(t('error_sending'));
     } else if (res.success) {
       setStatus('success');
-      setMessage(res.success ? (res.message || 'Message sent successfully.') : '');
+      setMessage(t('success_sending'));
       e.currentTarget.reset();
     }
   };
@@ -44,7 +46,7 @@ export default function ContactForm() {
             type="text" 
             name="name"
             required
-            placeholder="Nom complet" 
+            placeholder={t('name_placeholder')} 
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
           />
         </div>
@@ -64,7 +66,7 @@ export default function ContactForm() {
           <input 
             type="tel" 
             name="phone"
-            placeholder="+32 XXX ....." 
+            placeholder={t('phone_placeholder')} 
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
           />
         </div>
@@ -72,7 +74,7 @@ export default function ContactForm() {
           <input 
             type="text" 
             name="subject"
-            placeholder="Objet" 
+            placeholder={t('subject_placeholder')} 
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
           />
         </div>
@@ -82,7 +84,7 @@ export default function ContactForm() {
         <textarea 
           name="message"
           required
-          placeholder="Votre Message" 
+          placeholder={t('message_placeholder')} 
           rows={6}
           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
         ></textarea>
@@ -94,7 +96,7 @@ export default function ContactForm() {
           disabled={status === 'loading'}
           className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors mt-2 disabled:opacity-50"
         >
-          {status === 'loading' ? 'Envoi...' : 'Envoyer'}
+          {status === 'loading' ? t('sending') : t('send_btn')}
         </button>
       </div>
     </form>
