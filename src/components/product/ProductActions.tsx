@@ -189,8 +189,8 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       </p>
 
       {/* Actions (Quantity + Cart + Buy) */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <div className="flex gap-4 w-full sm:w-auto sm:flex-1">
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex gap-4 w-full">
           {/* Qty */}
           <div className="flex border border-gray-300 rounded-md overflow-hidden bg-gray-50 w-32 shrink-0">
             <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2 text-gray-600 hover:bg-gray-200 font-bold">-</button>
@@ -214,7 +214,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
         {enableBuyNow && (
           <button 
             onClick={handleBuyNow}
-            className="w-full sm:flex-1 bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm py-3 sm:py-0"
+            className="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md transition shadow-sm py-3"
           >
             {t('buy_now')}
           </button>
