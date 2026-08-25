@@ -164,7 +164,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {(product as any).brand && (
                   <p><span className="font-semibold text-gray-900">Marque :</span> {(product as any).brand.name}</p>
                 )}
-                <p><span className="font-semibold text-gray-900">{t('tags')}</span> {product.tags?.length > 0 ? product.tags.join(', ') : `${storeName}, Featured`}</p>
+                <p><span className="font-semibold text-gray-900">{t('tags')}</span> {(product as any).tags?.length > 0 ? (product as any).tags.map((t: any) => t.name).join(', ') : `${storeName}, Featured`}</p>
               </div>
 
             </div>

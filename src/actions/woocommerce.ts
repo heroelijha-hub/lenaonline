@@ -276,7 +276,7 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
         );
         if (brandAttr && brandAttr.options && brandAttr.options.length > 0) {
           brandName = brandAttr.options[0];
-          brandSlug = brandName?.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          brandSlug = brandName ? brandName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : null;
         }
       }
 

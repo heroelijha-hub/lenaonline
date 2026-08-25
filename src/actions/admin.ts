@@ -495,7 +495,9 @@ export async function duplicateProduct(id: string) {
         isBestSeller: existing.isBestSeller,
         isDealOfTheDay: existing.isDealOfTheDay,
         discountLabel: existing.discountLabel,
-        tags: existing.tags,
+        tags: {
+          connect: existing.tags.map((t: any) => ({ id: t.id }))
+        },
         images: existing.images,
       }
     });

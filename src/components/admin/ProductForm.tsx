@@ -147,7 +147,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       if (isEditing) {
         formData.append('id', initialData.id);
         const { updateProduct } = await import('@/actions/admin');
-        const res = await updateProduct(formData, imageUrls);
+        const res = await updateProduct(initialData.id, formData, imageUrls);
         if (res.error) alert(res.error);
         else router.push('/admin/products');
       } else {
