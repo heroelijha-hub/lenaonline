@@ -11,6 +11,7 @@ import ThemeProvider from "@/components/layout/ThemeProvider";
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
+import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
@@ -178,16 +179,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <CurrencyProvider options={currencyOptions}>
-            <StoreLayout settings={storeSettings}>
-              <Toaster position="bottom-right" />
-              {children}
-              <ChatWidget 
-                enabled={settingsMap.CHAT_ENABLED !== 'false'} 
-                storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
-                storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
-              />
-              <BackToTop />
-            </StoreLayout>
+            <PostHogProvider>
+              <StoreLayout settings={storeSettings}>
+                <Toaster position="bottom-right" />
+                {children}
+                <ChatWidget 
+                  enabled={settingsMap.CHAT_ENABLED !== 'false'} 
+                  storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
+                  storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
+                />
+                <BackToTop />
+              </StoreLayout>
+            </PostHogProvider>
           </CurrencyProvider>
         </NextIntlClientProvider>
       </body>

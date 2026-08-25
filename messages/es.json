@@ -575,8 +575,13 @@
     "import_woo_secret": "Secreto del consumidor (cs_...)",
     "import_woo_loading": "Importando, por favor espere...",
     "import_woo_submit": "Iniciar importación",
-    "import_success": "¡{count} productos importados exitosamente!",
-    "import_error": "Error durante la importación"
+    "import_success": "¡{count} productos importados con éxito!",
+    "import_error": "Error durante la importación",
+    "delete_error": "Imposible eliminar el producto.",
+    "bulk_delete_error": "Imposible eliminar los productos seleccionados.",
+    "woo_import_html_error": "La API de WooCommerce devolvió una respuesta inesperada (HTML en lugar de JSON). Esto suele suceder debido a una limitación de seguridad de su servidor (cortafuegos o antispam) después de varias peticiones. Puede reiniciar la importación, se reanudará donde se detuvo.",
+    "woo_import_parse_error": "Imposible leer los datos devueltos por WooCommerce. Puede reiniciar la importación para continuar.",
+    "syncing_categories": "Sincronizando categorías..."
   },
   "AdminCategories": {
     "manage_categories": "Gestionar Categorías",
@@ -597,8 +602,10 @@
     "confirm_delete": "¿Está seguro de que desea eliminar esta categoría?",
     "name_placeholder": "Nombre de categoría (ej: Smartphones)",
     "slug_placeholder": "Slug (ej: smartphones)",
-    "no_parent_option": "Sin padre (Categoría principal)",
-    "add_btn": "Añadir"
+    "no_parent_option": "Ningún padre (Categoría principal)",
+    "add_btn": "Añadir",
+    "bulk_delete_error": "Imposible eliminar estas categorías. Pueden contener productos.",
+    "woo_import_cat_html_error": "La API de WooCommerce devolvió una respuesta inesperada al recuperar categorías."
   },
   "AdminOrders": {
     "manage_orders": "Gestionar Pedidos",

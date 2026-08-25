@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { getTranslations } from 'next-intl/server';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
 import { requireAdmin } from '@/lib/auth';
@@ -114,7 +115,8 @@ export async function bulkDeleteCategories(ids: string[]) {
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    return { error: "Impossible de supprimer ces catégories. Elles contiennent peut-être des produits." };
+    const t = await getTranslations('AdminCategories');
+    return { error: t('bulk_delete_error') };
   }
 }
 
@@ -284,7 +286,8 @@ export async function deleteProduct(id: string) {
     return { success: true };
   } catch (error: any) {
     console.error(error);
-    return { error: "Impossible de supprimer le produit." };
+    const t = await getTranslations('AdminProducts');
+    return { error: t('delete_error') };
   }
 }
 
@@ -305,7 +308,8 @@ export async function bulkDeleteProducts(ids: string[]) {
     return { success: true };
   } catch (error: any) {
     console.error(error);
-    return { error: "Impossible de supprimer les produits sélectionnés." };
+    const t = await getTranslations('AdminProducts');
+    return { error: t('bulk_delete_error') };
   }
 }
 

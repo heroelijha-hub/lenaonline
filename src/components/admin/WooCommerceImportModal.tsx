@@ -150,7 +150,7 @@ export default function WooCommerceImportModal() {
               {loading && importingCategories && (
                 <div className="space-y-2">
                   <div className="flex justify-center text-sm font-medium text-orange-600">
-                    <span>Synchronisation des catégories en cours...</span>
+                    <span>{t('syncing_categories')}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div className="bg-orange-600 h-2.5 rounded-full animate-pulse w-full"></div>

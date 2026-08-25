@@ -576,7 +576,12 @@
     "import_woo_loading": "Importing, please wait...",
     "import_woo_submit": "Start Import",
     "import_success": "{count} products successfully imported!",
-    "import_error": "Error during import"
+    "import_error": "Error during import",
+    "delete_error": "Unable to delete the product.",
+    "bulk_delete_error": "Unable to delete selected products.",
+    "woo_import_html_error": "The WooCommerce API returned an unexpected response (HTML instead of JSON). This often happens due to a security limitation of your host (firewall or anti-spam) after several requests. You can restart the import, it will resume where it stopped.",
+    "woo_import_parse_error": "Unable to read data returned by WooCommerce. You can restart the import to continue.",
+    "syncing_categories": "Syncing categories..."
   },
   "AdminCategories": {
     "manage_categories": "Manage Categories",
@@ -596,8 +601,10 @@
     "delete": "Delete",
     "confirm_delete": "Are you sure you want to delete this category?",
     "name_placeholder": "Category name (ex: Smartphones)",
-    "slug_placeholder": "Slug (ex: smartphones)",
-    "no_parent_option": "No parent (Main Category)",
+    "slug_placeholder": "Slug (e.g. smartphones)",
+    "no_parent_option": "No parent (Main category)",
+    "bulk_delete_error": "Unable to delete these categories. They may contain products.",
+    "woo_import_cat_html_error": "The WooCommerce API returned an unexpected response when retrieving categories.",
     "add_btn": "Add"
   },
   "AdminOrders": {

@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
+import { getTranslations } from 'next-intl/server';
 
 // Configure Cloudinary
 cloudinary.config({
@@ -92,7 +93,8 @@ export async function importWooCommerceCategories(url: string, consumerKey: stri
 
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("L'API WooCommerce a retourné une réponse inattendue lors de la récupération des catégories.");
+        const t = await getTranslations('AdminCategories');
+        throw new Error(t('woo_import_cat_html_error'));
       }
 
       const cats = await response.json();
@@ -208,14 +210,16 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
       console.error("Non-JSON response from WooCommerce API.");
-      throw new Error("L'API WooCommerce a retourné une réponse inattendue (HTML au lieu de JSON). Cela arrive souvent suite à une limitation de sécurité de votre hébergeur (pare-feu ou anti-spam) après plusieurs requêtes. Vous pouvez relancer l'importation, elle reprendra là où elle s'est arrêtée.");
+      const t = await getTranslations('AdminProducts');
+      throw new Error(t('woo_import_html_error'));
     }
 
     let products;
     try {
       products = await response.json();
     } catch (err) {
-      throw new Error("Impossible de lire les données renvoyées par WooCommerce. Vous pouvez relancer l'importation pour continuer.");
+      const t = await getTranslations('AdminProducts');
+      throw new Error(t('woo_import_parse_error'));
     }
     
     if (!Array.isArray(products) || products.length === 0) {

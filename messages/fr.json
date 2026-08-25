@@ -576,7 +576,12 @@
     "import_woo_loading": "Importation en cours, merci de patienter...",
     "import_woo_submit": "Lancer l'importation",
     "import_success": "{count} produits importés avec succès !",
-    "import_error": "Erreur lors de l'importation"
+    "import_error": "Erreur lors de l'importation",
+    "delete_error": "Impossible de supprimer le produit.",
+    "bulk_delete_error": "Impossible de supprimer les produits sélectionnés.",
+    "woo_import_html_error": "L'API WooCommerce a retourné une réponse inattendue (HTML au lieu de JSON). Cela arrive souvent suite à une limitation de sécurité de votre hébergeur (pare-feu ou anti-spam) après plusieurs requêtes. Vous pouvez relancer l'importation, elle reprendra là où elle s'est arrêtée.",
+    "woo_import_parse_error": "Impossible de lire les données renvoyées par WooCommerce. Vous pouvez relancer l'importation pour continuer.",
+    "syncing_categories": "Synchronisation des catégories en cours..."
   },
   "AdminCategories": {
     "manage_categories": "Gérer les Catégories",
@@ -598,6 +603,8 @@
     "name_placeholder": "Nom de la catégorie (ex: Smartphones)",
     "slug_placeholder": "Slug (ex: smartphones)",
     "no_parent_option": "Aucun parent (Catégorie principale)",
+    "bulk_delete_error": "Impossible de supprimer ces catégories. Elles contiennent peut-être des produits.",
+    "woo_import_cat_html_error": "L'API WooCommerce a retourné une réponse inattendue lors de la récupération des catégories.",
     "add_btn": "Ajouter"
   },
   "AdminOrders": {
