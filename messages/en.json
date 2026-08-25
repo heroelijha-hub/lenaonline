@@ -91,6 +91,7 @@
     "related_products": "Related products",
     "no_related_products": "No related products found.",
     "general": "General",
+    "select_options_btn": "Select options",
     "select_options_cart": "Please select all options before adding to cart.",
     "select_options_buy": "Please select all options before quick purchase.",
     "added_to_cart": "« {name} » has been added to your cart.",

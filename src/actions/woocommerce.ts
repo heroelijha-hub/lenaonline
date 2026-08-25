@@ -279,6 +279,14 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
         stock = parseInt(wcProduct.stock_quantity, 10);
       }
 
+      // Tags
+      const tags: string[] = [];
+      if (wcProduct.tags && Array.isArray(wcProduct.tags)) {
+        wcProduct.tags.forEach((t: any) => {
+          if (t && t.name) tags.push(t.name);
+        });
+      }
+
       // Attributes logic
       let parsedAttributes: any[] = [];
       if (wcProduct.attributes && Array.isArray(wcProduct.attributes)) {
@@ -303,20 +311,28 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           });
           if (varResponse.ok) {
             const wcVariations = await varResponse.json();
-            parsedVariations = wcVariations.map((wcVar: any) => {
+            parsedVariations = await Promise.all(wcVariations.map(async (wcVar: any) => {
               const attrMap: Record<string, string> = {};
               if (wcVar.attributes && Array.isArray(wcVar.attributes)) {
                 wcVar.attributes.forEach((attr: any) => {
                   attrMap[attr.name] = attr.option;
                 });
               }
+
+              let varImage = undefined;
+              if (wcVar.image && wcVar.image.src) {
+                const secureUrl = await uploadImageFromUrlToCloudinary(wcVar.image.src);
+                if (secureUrl) varImage = secureUrl;
+              }
+
               return {
                 id: String(wcVar.id),
                 attributes: attrMap,
                 price: parseFloat(wcVar.price || wcVar.regular_price || '0'),
-                stock: (wcVar.manage_stock && wcVar.stock_quantity !== null) ? parseInt(wcVar.stock_quantity, 10) : null
+                stock: (wcVar.manage_stock && wcVar.stock_quantity !== null) ? parseInt(wcVar.stock_quantity, 10) : null,
+                image: varImage
               };
-            });
+            }));
           }
         } catch (err) {
           console.error(`Failed to fetch variations for product ${wcProduct.id}`, err);
@@ -334,6 +350,7 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           images: cloudinaryImageUrls,
           stock: stock,
           type: wcProduct.type === 'variable' ? 'VARIABLE' : 'SIMPLE',
+          tags: tags,
           attributes: parsedAttributes.length > 0 ? parsedAttributes : undefined,
           variations: parsedVariations.length > 0 ? parsedVariations : undefined,
           categories: {

@@ -19,7 +19,7 @@ interface ProductActionsProps {
     stock: number | null;
     images: string[];
     attributes?: { name: string; options: string[] }[];
-    variations?: { id: string; price: string; stock?: string; attributes: Record<string, string> }[];
+    variations?: { id: string; price: string; stock?: string; image?: string; attributes: Record<string, string> }[];
   };
   enableBuyNow?: boolean;
 }
@@ -48,7 +48,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   const attributes = product.attributes || [];
   const variations = product.variations || [];
 
-  let currentVariation: { id: string; price: string; stock?: string; attributes: Record<string, string> } | null = null;
+  let currentVariation: { id: string; price: string; stock?: string; image?: string; attributes: Record<string, string> } | null = null;
   if (isVariable && Object.keys(selectedAttributes).length === attributes.length) {
     currentVariation = variations.find(v => {
       // Check if this variation matches all selected attributes
@@ -74,7 +74,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       variationId: currentVariation?.id,
       title: product.title,
       price: currentPrice,
-      image: product.images?.[0] || '',
+      image: currentVariation?.image || product.images?.[0] || '',
       quantity,
       attributes: currentVariation ? selectedAttributes : undefined,
     });
@@ -97,7 +97,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
       variationId: currentVariation?.id,
       title: product.title,
       price: currentPrice,
-      image: product.images?.[0] || '',
+      image: currentVariation?.image || product.images?.[0] || '',
       quantity,
       attributes: currentVariation ? selectedAttributes : undefined,
     });
@@ -161,7 +161,7 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
         <div className="space-y-4 mb-6">
           {attributes.map(attr => (
             <div key={attr.name}>
-              <span className="text-sm text-gray-500 mb-2 block">{attr.name} : <span className="text-gray-900 font-semibold">{selectedAttributes[attr.name] || t('select_placeholder')}</span></span>
+              <span className="text-sm text-gray-500 mb-2 block">{attr.name} {selectedAttributes[attr.name] && <span className="text-gray-900 font-semibold ml-1">: {selectedAttributes[attr.name]}</span>}</span>
               <div className="flex flex-wrap gap-2">
                 {attr.options.map((opt: string) => {
                   const isSelected = selectedAttributes[attr.name] === opt;
@@ -200,9 +200,14 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
           
           <button 
             onClick={handleAddToCart}
-            className="flex-1 bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold rounded-md transition shadow-sm"
+            disabled={isVariable && !currentVariation}
+            className={`flex-1 font-semibold rounded-md transition shadow-sm py-3 px-4 ${
+              (isVariable && !currentVariation)
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-[#0f172a] hover:bg-[#1e293b] text-white'
+            }`}
           >
-            {t('add_to_cart')}
+            {(isVariable && !currentVariation) ? t('select_options_btn') : t('add_to_cart')}
           </button>
         </div>
         

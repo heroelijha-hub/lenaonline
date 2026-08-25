@@ -91,6 +91,7 @@
     "related_products": "Produits apparentés",
     "no_related_products": "Aucun produit associé trouvé.",
     "general": "Général",
+    "select_options_btn": "Sélectionner les options",
     "select_options_cart": "Veuillez sélectionner toutes les options avant d'ajouter au panier.",
     "select_options_buy": "Veuillez sélectionner toutes les options avant l'achat rapide.",
     "added_to_cart": "« {name} » a été ajouté à votre panier.",
