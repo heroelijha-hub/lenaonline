@@ -469,7 +469,7 @@ export async function bulkDeleteProducts(ids: string[]) {
 export async function duplicateProduct(id: string) {
   await requireAdmin();
   try {
-    const existing = await prisma.product.findUnique({ where: { id }, include: { categories: true } });
+    const existing = await prisma.product.findUnique({ where: { id }, include: { categories: true, tags: true } });
     if (!existing) return { error: "Produit introuvable." };
 
     const newTitle = existing.title + " (Copie)";
