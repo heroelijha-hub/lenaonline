@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server';
 export default async function ContactPage() {
   const settings = await getContactSettings();
   const t = await getTranslations('Contact');
-  const textParagraphs = settings.text.split('\n').filter(p => p.trim() !== '');
+  const textParagraphs = settings.text.split('\n').filter((p: string) => p.trim() !== '');
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900 font-sans">
       
@@ -19,7 +19,7 @@ export default async function ContactPage() {
               <div>
                 <h2 className="text-2xl font-bold mb-6">{settings.title}</h2>
                 <div className="space-y-4 text-sm text-gray-600 leading-relaxed">
-                  {textParagraphs.map((paragraph, idx) => (
+                  {textParagraphs.map((paragraph: string, idx: number) => (
                     <p key={idx}>{paragraph}</p>
                   ))}
                 </div>
