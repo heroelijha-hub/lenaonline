@@ -540,8 +540,9 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             {tags.length === 0 && <p className="text-xs text-gray-500 italic">{t('no_tags_yet')}</p>}
           </div>
         </div>
+      </div>
 
-        {/* Flags / Labels */}
+      {/* Flags / Labels */}
         <div className="grid grid-cols-3 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
           <div className="flex items-center">
             <input type="checkbox" name="isBestSeller" id="isBestSeller" defaultChecked={initialData?.isBestSeller} className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" />

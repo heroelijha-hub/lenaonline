@@ -56,6 +56,8 @@ export async function createBrandAction(formData: FormData, logoUrl?: string) {
   } catch (error) {
     return { error: "Erreur de création de marque" };
   }
+}
+
 export async function updateBrand(id: string, formData: FormData, logoUrl?: string | null) {
   await requireAdmin();
   const name = formData.get('name') as string;
