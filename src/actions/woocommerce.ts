@@ -90,6 +90,11 @@ export async function importWooCommerceCategories(url: string, consumerKey: stri
         throw new Error(`Erreur API WooCommerce (Catégories): ${response.status} ${response.statusText}`);
       }
 
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("L'API WooCommerce a retourné une réponse inattendue lors de la récupération des catégories.");
+      }
+
       const cats = await response.json();
       if (cats.length === 0) {
         hasMore = false;
@@ -200,9 +205,20 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
       throw new Error(`Erreur API WooCommerce: ${response.status} ${response.statusText}`);
     }
 
-    const products = await response.json();
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("Non-JSON response from WooCommerce API.");
+      throw new Error("L'API WooCommerce a retourné une réponse inattendue (HTML au lieu de JSON). Cela arrive souvent suite à une limitation de sécurité de votre hébergeur (pare-feu ou anti-spam) après plusieurs requêtes. Vous pouvez relancer l'importation, elle reprendra là où elle s'est arrêtée.");
+    }
+
+    let products;
+    try {
+      products = await response.json();
+    } catch (err) {
+      throw new Error("Impossible de lire les données renvoyées par WooCommerce. Vous pouvez relancer l'importation pour continuer.");
+    }
     
-    if (products.length === 0) {
+    if (!Array.isArray(products) || products.length === 0) {
       return { success: true, count: 0 };
     }
 

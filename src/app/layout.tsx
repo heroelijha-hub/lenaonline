@@ -115,7 +115,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerColumns: footerColumns,
     categories: await prisma.category.findMany({ 
       where: { products: { some: {} } },
-      select: { id: true, name: true, slug: true } 
+      select: { id: true, name: true, slug: true, parentId: true } 
     }),
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
     maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Under Maintenance',

@@ -22,7 +22,7 @@ type HeaderProps = {
   topBarLinks?: Array<{ label: string, icon: string, url: string }>;
   topBarBgColor?: string;
   topBarTextColor?: string;
-  categories?: Array<{ id: string, name: string, slug: string | null }>;
+  categories?: Array<{ id: string, name: string, slug: string | null, parentId?: string | null }>;
   searchBorderColor?: string;
   searchPlaceholder?: string;
   searchBtnText?: string;
@@ -425,7 +425,7 @@ export default function Header({
                     <Link 
                       key={cat.id} 
                       href={`/search?category=${cat.id}`}
-                      className="block px-6 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600"
+                      className={`block px-6 py-2 hover:bg-orange-50 hover:text-orange-600 transition ${!cat.parentId ? 'font-bold text-gray-900' : 'text-gray-700'}`}
                       onClick={() => setIsBottomCategoryOpen(false)}
                     >
                       {cat.name}
