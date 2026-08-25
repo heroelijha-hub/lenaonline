@@ -334,8 +334,8 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           images: cloudinaryImageUrls,
           stock: stock,
           type: wcProduct.type === 'variable' ? 'VARIABLE' : 'SIMPLE',
-          attributes: parsedAttributes.length > 0 ? parsedAttributes : null,
-          variations: parsedVariations.length > 0 ? parsedVariations : null,
+          attributes: parsedAttributes.length > 0 ? parsedAttributes : undefined,
+          variations: parsedVariations.length > 0 ? parsedVariations : undefined,
           categories: {
             connect: categoryIds.map(id => ({ id }))
           }
