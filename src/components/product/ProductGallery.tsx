@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type ProductGalleryProps = {
   images: string[];
@@ -8,13 +8,23 @@ type ProductGalleryProps = {
   discountLabel?: string | null;
   compareAtPrice?: number | null;
   price?: number;
+  activeVariationImage?: string | null;
 };
 
-export default function ProductGallery({ images, title, discountLabel, compareAtPrice, price }: ProductGalleryProps) {
+export default function ProductGallery({ images, title, discountLabel, compareAtPrice, price, activeVariationImage }: ProductGalleryProps) {
   const hasImages = images && images.length > 0;
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const mainImage = hasImages ? images[selectedIndex] : null;
+  // Quand une variation avec sa propre image est sélectionnée, revenir sur l'index 0
+  // pour ne pas être «bloqué» sur une miniature non liée
+  useEffect(() => {
+    if (activeVariationImage) {
+      setSelectedIndex(0);
+    }
+  }, [activeVariationImage]);
+
+  // L'image principale : si une variation a sa propre image, on la priorise
+  const mainImage = activeVariationImage || (hasImages ? images[selectedIndex] : null);
 
   return (
     <div className="w-full lg:w-1/2 flex gap-4">

@@ -22,9 +22,10 @@ interface ProductActionsProps {
     variations?: { id: string; price: string; stock?: string; image?: string; attributes: Record<string, string> }[];
   };
   enableBuyNow?: boolean;
+  onVariationChange?: (image: string | null) => void;
 }
 
-export default function ProductActions({ product, enableBuyNow = false }: ProductActionsProps) {
+export default function ProductActions({ product, enableBuyNow = false, onVariationChange }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
@@ -51,10 +52,17 @@ export default function ProductActions({ product, enableBuyNow = false }: Produc
   let currentVariation: { id: string; price: string; stock?: string; image?: string; attributes: Record<string, string> } | null = null;
   if (isVariable && Object.keys(selectedAttributes).length === attributes.length) {
     currentVariation = variations.find(v => {
-      // Check if this variation matches all selected attributes
       return Object.entries(selectedAttributes).every(([key, value]) => v.attributes[key] === value);
     }) || null;
   }
+
+  // Notifier le parent de l'image de la variation courante
+  useEffect(() => {
+    if (onVariationChange) {
+      onVariationChange(currentVariation?.image || null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentVariation?.id]);
 
   // Prix et stock dynamiques
   const currentPrice = currentVariation ? parseFloat(currentVariation.price) : product.price;
