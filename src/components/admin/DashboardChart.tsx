@@ -73,6 +73,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
           tickLine={false} 
           tick={{ fontSize: 12, fill: '#6b7280' }}
           dx={-10}
+          width={85}
         />
         <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#f97316', strokeWidth: 1, strokeDasharray: '5 5' }} />
         <Line 

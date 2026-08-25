@@ -910,5 +910,21 @@
     "label_chat": "Chat",
     "label_order": "Commande",
     "title": "Notifications"
+  },
+  "Admin": {
+    "shop_settings": "Paramètres de la Boutique",
+    "shop_settings_desc": "Gérez les paramètres globaux, la devise, les langues, etc.",
+    "regional_settings": "Paramètres Régionaux & Devises",
+    "main_currency": "Devise Principale",
+    "symbol_position": "Position du symbole de devise",
+    "right_ex": "Droite (ex: 10$)",
+    "left_space_ex": "Gauche avec espace (ex: $ 10)",
+    "right_space_ex": "Droite avec espace (ex: 10 $)",
+    "none_ex": "Aucun (ex: 1000)",
+    "comma_ex": "Virgule (ex: 1,000)",
+    "dot_ex_thousand": "Point (ex: 1.000)",
+    "space_ex": "Espace (ex: 1 000)",
+    "dot_ex_decimal": "Point (ex: 10.99)",
+    "comma_ex_decimal": "Virgule (ex: 10,99)"
   }
 }

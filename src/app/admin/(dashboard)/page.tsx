@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
   const t = await getTranslations('AdminDashboard');
+  const tOrders = await getTranslations('AdminOrders');
   const locale = await getLocale();
   const stats = await getDashboardStats();
 
@@ -129,7 +130,7 @@ export default async function AdminDashboardPage() {
                         order.status === 'SHIPPED' ? 'bg-blue-100 text-blue-700' :
                         'bg-yellow-100 text-yellow-700'
                       }`}>
-                        {order.status}
+                        {tOrders(`status_${order.status.toLowerCase()}`)}
                       </span>
                     </div>
                   </li>

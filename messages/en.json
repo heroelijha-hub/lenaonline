@@ -910,5 +910,21 @@
     "label_chat": "Chat",
     "label_order": "Order",
     "title": "Notifications"
+  },
+  "Admin": {
+    "shop_settings": "Shop Settings",
+    "shop_settings_desc": "Manage global settings, currency, languages, etc.",
+    "regional_settings": "Regional Settings & Currency",
+    "main_currency": "Main Currency",
+    "symbol_position": "Currency Symbol Position",
+    "right_ex": "Right (ex: 10$)",
+    "left_space_ex": "Left with space (ex: $ 10)",
+    "right_space_ex": "Right with space (ex: 10 $)",
+    "none_ex": "None (ex: 1000)",
+    "comma_ex": "Comma (ex: 1,000)",
+    "dot_ex_thousand": "Dot (ex: 1.000)",
+    "space_ex": "Space (ex: 1 000)",
+    "dot_ex_decimal": "Dot (ex: 10.99)",
+    "comma_ex_decimal": "Comma (ex: 10,99)"
   }
 }
