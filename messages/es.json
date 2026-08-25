@@ -785,8 +785,9 @@
     "publish": "Publicar Artículo"
   },
   "AdminPages": {
-    "manage_pages": "Páginas Personalizadas",
-    "create_page": "Crear una página",
+    "manage_pages": "Gestionar Páginas",
+    "create_page": "Crear Página",
+    "contact_system_page": "Contáctenos (Página del Sistema)",
     "edit_page": "Editar página",
     "col_title": "Título",
     "col_slug": "URL / Slug",
