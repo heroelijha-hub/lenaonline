@@ -67,6 +67,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
   const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [faviconImage, setFaviconImage] = useState(initialSettings.FAVICON_IMAGE || '');
+  const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
   const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
   
@@ -210,122 +212,124 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       formData.append('file', chatIconFile);
       const url = await uploadImage(formData);
       if (url) finalChatIcon = url;
+      const res = await uploadImage(formData);
+      if (res.url) settingsToUpdate.push({ key: 'CHAT_STORE_ICON', value: res.url });
     }
-    settingsMap['CHAT_STORE_ICON'] = finalChatIcon;
 
-    let finalLogoImage = headerLogoImage;
     if (logoFile) {
       const formData = new FormData();
       formData.append('file', logoFile);
-      const url = await uploadImage(formData);
-      if (url) finalLogoImage = url;
+      const res = await uploadImage(formData);
+      if (res.url) settingsToUpdate.push({ key: 'HEADER_LOGO_IMAGE', value: res.url });
     }
-    settingsMap['HEADER_LOGO_IMAGE'] = finalLogoImage;
-    
-    settingsMap['CHAT_ENABLED'] = chatEnabled.toString();
-    settingsMap['CHAT_STORE_NAME'] = chatStoreName;
-    
-    settingsMap['THEME_COLOR'] = themeColor;
-    settingsMap['SHOP_CARD_STYLE'] = shopCardStyle;
-    settingsMap['SHOP_CARD_BORDER_COLOR'] = shopCardBorderColor;
-    settingsMap['HEADER_ANNOUNCEMENT'] = headerAnnouncement;
-    settingsMap['HEADER_SUPPORT_PHONE'] = headerSupportPhone;
-    settingsMap['HEADER_SUPPORT_EMAIL'] = headerSupportEmail;
-    settingsMap['HEADER_MENU_LINKS'] = JSON.stringify(menuLinks);
 
-    settingsMap['MOBILE_ABOUT_TITLE'] = mobileAboutTitle;
-    settingsMap['MOBILE_ABOUT_DESC'] = mobileAboutDesc;
-    settingsMap['MOBILE_MENU_LINKS'] = JSON.stringify(mobileMenuLinks);
-    settingsMap['MOBILE_CONTACT_ADDRESS'] = mobileContactAddress;
-    settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
-    settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
-    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
-    settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
+    if (faviconFile) {
+      const formData = new FormData();
+      formData.append('file', faviconFile);
+      const res = await uploadImage(formData);
+      if (res.url) settingsToUpdate.push({ key: 'FAVICON_IMAGE', value: res.url });
+    }
+    
+    settingsToUpdate.push({ key: 'CHAT_ENABLED', value: chatEnabled.toString() });
+    settingsToUpdate.push({ key: 'CHAT_STORE_NAME', value: chatStoreName });
+    
+    settingsToUpdate.push({ key: 'THEME_COLOR', value: themeColor });
+    settingsToUpdate.push({ key: 'SHOP_CARD_STYLE', value: shopCardStyle });
+    settingsToUpdate.push({ key: 'SHOP_CARD_BORDER_COLOR', value: shopCardBorderColor });
+    settingsToUpdate.push({ key: 'HEADER_ANNOUNCEMENT', value: headerAnnouncement });
+    settingsToUpdate.push({ key: 'HEADER_SUPPORT_PHONE', value: headerSupportPhone });
+    settingsToUpdate.push({ key: 'HEADER_SUPPORT_EMAIL', value: headerSupportEmail });
+    settingsToUpdate.push({ key: 'HEADER_MENU_LINKS', value: JSON.stringify(menuLinks) });
 
-    settingsMap['ALL_CATEGORIES_BG_COLOR'] = allCategoriesBgColor;
-    settingsMap['ALL_CATEGORIES_TEXT_COLOR'] = allCategoriesTextColor;
+    settingsToUpdate.push({ key: 'MOBILE_ABOUT_TITLE', value: mobileAboutTitle });
+    settingsToUpdate.push({ key: 'MOBILE_ABOUT_DESC', value: mobileAboutDesc });
+    settingsToUpdate.push({ key: 'MOBILE_MENU_LINKS', value: JSON.stringify(mobileMenuLinks) });
+    settingsToUpdate.push({ key: 'MOBILE_CONTACT_ADDRESS', value: mobileContactAddress });
+    settingsToUpdate.push({ key: 'MOBILE_CONTACT_PHONE', value: mobileContactPhone });
+    settingsToUpdate.push({ key: 'MOBILE_CONTACT_EMAIL', value: mobileContactEmail });
+    settingsToUpdate.push({ key: 'MOBILE_CONTACT_WEBSITE', value: mobileContactWebsite });
+    settingsToUpdate.push({ key: 'MOBILE_HEADER_BORDER_COLOR', value: mobileHeaderBorderColor });
 
-    settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
-    settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
-    settingsMap['TOP_BAR_LINKS'] = JSON.stringify(topBarLinks);
+    settingsToUpdate.push({ key: 'ALL_CATEGORIES_BG_COLOR', value: allCategoriesBgColor });
+    settingsToUpdate.push({ key: 'ALL_CATEGORIES_TEXT_COLOR', value: allCategoriesTextColor });
 
-    settingsMap['SEARCH_BORDER_COLOR'] = searchBorderColor;
-    settingsMap['SEARCH_PLACEHOLDER'] = searchPlaceholder;
-    settingsMap['SEARCH_BTN_TEXT'] = searchBtnText;
-    settingsMap['SEARCH_BTN_BG_COLOR'] = searchBtnBgColor;
-    settingsMap['SEARCH_BTN_TEXT_COLOR'] = searchBtnTextColor;
-    
-    settingsMap['TAX_INCLUDED_IN_PRICE'] = taxIncludedInPrice.toString();
-    settingsMap['DEFAULT_VAT_RATE'] = defaultVatRate;
-    settingsMap['ENABLE_EU_VAT'] = enableEuVat.toString();
+    settingsToUpdate.push({ key: 'TOP_BAR_BG_COLOR', value: topBarBgColor });
+    settingsToUpdate.push({ key: 'TOP_BAR_TEXT_COLOR', value: topBarTextColor });
+    settingsToUpdate.push({ key: 'TOP_BAR_LINKS', value: JSON.stringify(topBarLinks) });
 
-    settingsMap['CONTACT_RECEIVER_EMAIL'] = contactReceiverEmail;
-    settingsMap['NEWSLETTER_SUCCESS_MESSAGE'] = newsletterSuccessMessage;
+    settingsToUpdate.push({ key: 'SEARCH_BORDER_COLOR', value: searchBorderColor });
+    settingsToUpdate.push({ key: 'SEARCH_PLACEHOLDER', value: searchPlaceholder });
+    settingsToUpdate.push({ key: 'SEARCH_BTN_TEXT', value: searchBtnText });
+    settingsToUpdate.push({ key: 'SEARCH_BTN_BG_COLOR', value: searchBtnBgColor });
+    settingsToUpdate.push({ key: 'SEARCH_BTN_TEXT_COLOR', value: searchBtnTextColor });
+    
+    settingsToUpdate.push({ key: 'TAX_INCLUDED_IN_PRICE', value: taxIncludedInPrice.toString() });
+    settingsToUpdate.push({ key: 'DEFAULT_VAT_RATE', value: defaultVatRate });
+    settingsToUpdate.push({ key: 'ENABLE_EU_VAT', value: enableEuVat.toString() });
 
-    settingsMap['SMTP_HOST'] = smtpHost;
-    settingsMap['SMTP_PORT'] = smtpPort;
-    settingsMap['SMTP_USER'] = smtpUser;
-    settingsMap['SMTP_PASS'] = smtpPass;
-    settingsMap['SMTP_FROM'] = smtpFrom;
+    settingsToUpdate.push({ key: 'CONTACT_RECEIVER_EMAIL', value: contactReceiverEmail });
+    settingsToUpdate.push({ key: 'NEWSLETTER_SUCCESS_MESSAGE', value: newsletterSuccessMessage });
+
+    settingsToUpdate.push({ key: 'SMTP_HOST', value: smtpHost });
+    settingsToUpdate.push({ key: 'SMTP_PORT', value: smtpPort });
+    settingsToUpdate.push({ key: 'SMTP_USER', value: smtpUser });
+    settingsToUpdate.push({ key: 'SMTP_PASS', value: smtpPass });
+    settingsToUpdate.push({ key: 'SMTP_FROM', value: smtpFrom });
     
-    settingsMap['ENABLE_STRIPE'] = enableStripe.toString();
-    settingsMap['ENABLE_PAYPAL'] = enablePaypal.toString();
-    settingsMap['ENABLE_BANK_TRANSFER'] = enableBankTransfer.toString();
+    settingsToUpdate.push({ key: 'ENABLE_STRIPE', value: enableStripe.toString() });
+    settingsToUpdate.push({ key: 'ENABLE_PAYPAL', value: enablePaypal.toString() });
+    settingsToUpdate.push({ key: 'ENABLE_BANK_TRANSFER', value: enableBankTransfer.toString() });
     
-    settingsMap['STRIPE_PUBLIC_KEY'] = stripePublicKey;
-    settingsMap['STRIPE_SECRET_KEY'] = stripeSecretKey;
-    settingsMap['PAYPAL_CLIENT_ID'] = paypalClientId;
-    settingsMap['PAYPAL_SECRET'] = paypalSecret;
-    settingsMap['BANK_TRANSFER_IBAN'] = bankTransferIban;
-    settingsMap['BANK_TRANSFER_BIC'] = bankTransferBic;
-    settingsMap['BANK_TRANSFER_ACCOUNT_HOLDER'] = bankTransferAccountHolder;
-    settingsMap['BANK_TRANSFER_BANK_NAME'] = bankTransferBankName;
-    settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
-    settingsMap['BANK_TRANSFER_INSTRUCTIONS'] = bankTransferInstructions;
+    settingsToUpdate.push({ key: 'STRIPE_PUBLIC_KEY', value: stripePublicKey });
+    settingsToUpdate.push({ key: 'STRIPE_SECRET_KEY', value: stripeSecretKey });
+    settingsToUpdate.push({ key: 'PAYPAL_CLIENT_ID', value: paypalClientId });
+    settingsToUpdate.push({ key: 'PAYPAL_SECRET', value: paypalSecret });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_IBAN', value: bankTransferIban });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_BIC', value: bankTransferBic });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_ACCOUNT_HOLDER', value: bankTransferAccountHolder });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_BANK_NAME', value: bankTransferBankName });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_CHECKOUT_MESSAGE', value: bankTransferCheckoutMessage });
+    settingsToUpdate.push({ key: 'BANK_TRANSFER_INSTRUCTIONS', value: bankTransferInstructions });
     
-    settingsMap['FOOTER_BG_COLOR'] = footerBgColor;
-    settingsMap['FOOTER_TEXT_COLOR'] = footerTextColor;
-    settingsMap['FOOTER_ADDRESS_1'] = footerAddress1;
-    settingsMap['FOOTER_ADDRESS_2'] = footerAddress2;
-    settingsMap['FOOTER_LOCATIONS_TITLE'] = footerLocationsTitle;
-    settingsMap['FOOTER_NEWSLETTER_TITLE'] = footerNewsletterTitle;
-    settingsMap['FOOTER_NEWSLETTER_TEXT'] = footerNewsletterText;
-    settingsMap['FOOTER_NEWSLETTER_PLACEHOLDER'] = footerNewsletterPlaceholder;
-    settingsMap['FOOTER_CALL_US_TEXT'] = footerCallUsText;
-    settingsMap['FOOTER_COPYRIGHT'] = footerCopyright;
-    settingsMap['FOOTER_SOCIAL_FACEBOOK'] = footerSocialFacebook;
-    settingsMap['FOOTER_SOCIAL_TWITTER'] = footerSocialTwitter;
-    settingsMap['FOOTER_SOCIAL_INSTAGRAM'] = footerSocialInstagram;
-    settingsMap['FOOTER_SOCIAL_LINKEDIN'] = footerSocialLinkedin;
-    settingsMap['FOOTER_COLUMNS'] = JSON.stringify(footerColumns);
+    settingsToUpdate.push({ key: 'FOOTER_BG_COLOR', value: footerBgColor });
+    settingsToUpdate.push({ key: 'FOOTER_TEXT_COLOR', value: footerTextColor });
+    settingsToUpdate.push({ key: 'FOOTER_ADDRESS_1', value: footerAddress1 });
+    settingsToUpdate.push({ key: 'FOOTER_ADDRESS_2', value: footerAddress2 });
+    settingsToUpdate.push({ key: 'FOOTER_LOCATIONS_TITLE', value: footerLocationsTitle });
+    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_TITLE', value: footerNewsletterTitle });
+    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_TEXT', value: footerNewsletterText });
+    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_PLACEHOLDER', value: footerNewsletterPlaceholder });
+    settingsToUpdate.push({ key: 'FOOTER_CALL_US_TEXT', value: footerCallUsText });
+    settingsToUpdate.push({ key: 'FOOTER_COPYRIGHT', value: footerCopyright });
+    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_FACEBOOK', value: footerSocialFacebook });
+    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_TWITTER', value: footerSocialTwitter });
+    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_INSTAGRAM', value: footerSocialInstagram });
+    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_LINKEDIN', value: footerSocialLinkedin });
+    settingsToUpdate.push({ key: 'FOOTER_COLUMNS', value: JSON.stringify(footerColumns) });
     
-    settingsMap['NOT_FOUND_TITLE'] = notFoundTitle;
-    settingsMap['NOT_FOUND_TEXT'] = notFoundText;
-    settingsMap['NOT_FOUND_CTA'] = notFoundCta;
-    settingsMap['NOT_FOUND_BG_COLOR'] = notFoundBgColor;
+    settingsToUpdate.push({ key: 'NOT_FOUND_TITLE', value: notFoundTitle });
+    settingsToUpdate.push({ key: 'NOT_FOUND_TEXT', value: notFoundText });
+    settingsToUpdate.push({ key: 'NOT_FOUND_CTA', value: notFoundCta });
+    settingsToUpdate.push({ key: 'NOT_FOUND_BG_COLOR', value: notFoundBgColor });
     
-    let finalNotFoundBgImage = notFoundBgImage;
     if (notFoundFile) {
       const formData = new FormData();
       formData.append('file', notFoundFile);
-      const url = await uploadImage(formData);
-      if (url) finalNotFoundBgImage = url;
+      const res = await uploadImage(formData);
+      if (res.url) settingsToUpdate.push({ key: 'NOT_FOUND_BG_IMAGE', value: res.url });
     }
-    settingsMap['NOT_FOUND_BG_IMAGE'] = finalNotFoundBgImage;
 
-    let finalMaintenanceImage = maintenanceImage;
     if (maintenanceFile) {
       const formData = new FormData();
       formData.append('file', maintenanceFile);
-      const url = await uploadImage(formData);
-      if (url) finalMaintenanceImage = url;
+      const res = await uploadImage(formData);
+      if (res.url) settingsToUpdate.push({ key: 'MAINTENANCE_IMAGE', value: res.url });
     }
-    settingsMap['MAINTENANCE_MODE'] = maintenanceMode.toString();
-    settingsMap['MAINTENANCE_TITLE'] = maintenanceTitle;
-    settingsMap['MAINTENANCE_MESSAGE'] = maintenanceMessage;
-    settingsMap['MAINTENANCE_IMAGE'] = finalMaintenanceImage;
+    settingsToUpdate.push({ key: 'MAINTENANCE_MODE', value: maintenanceMode.toString() });
+    settingsToUpdate.push({ key: 'MAINTENANCE_TITLE', value: maintenanceTitle });
+    settingsToUpdate.push({ key: 'MAINTENANCE_MESSAGE', value: maintenanceMessage });
 
-    await updateSettingsBatch(settingsMap);
+    await updateSettingsBatch(settingsToUpdate);
 
     setMessage(tSettings('update_success'));
     setIsLoading(false);
@@ -784,56 +788,54 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Store Logo (Upload)</label>
-            <p className="text-xs text-gray-500 mb-2">Recommended size: 150x50 pixels (transparent PNG).</p>
-            {headerLogoImage && !logoFile && (
-              <div className="flex items-center gap-4 mb-3">
-                <div className="relative inline-block">
-                  <img src={headerLogoImage} alt="Logo" className="h-10 object-contain border bg-gray-50 p-1" />
-                </div>
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setHeaderLogoImage('');
-                    setLogoFile(null);
-                  }}
-                  className="px-3 py-1.5 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
-                >
-                  Delete le logo
-                </button>
+          <div className="md:col-span-2">
+            <div className="flex flex-col sm:flex-row gap-6">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {tSettings('header_logo')}
+                </label>
+                {headerLogoImage && !logoFile && (
+                  <div className="mb-4">
+                    <img src={headerLogoImage} alt="Current Logo" className="h-12 object-contain" />
+                  </div>
+                )}
+                {logoFile && (
+                  <div className="mb-4">
+                    <img src={URL.createObjectURL(logoFile)} alt="New Logo Preview" className="h-12 object-contain" />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
+                />
+                <p className="mt-1 text-xs text-gray-500">Upload a logo to replace the store name in the header.</p>
               </div>
-            )}
-            
-            {logoFile && (
-              <div className="flex items-center gap-3 mb-3 p-2 bg-blue-50 border border-blue-100 rounded text-sm text-blue-700">
-                <span>New fichier : <strong>{logoFile.name}</strong></span>
-                <button 
-                  type="button"
-                  onClick={() => {
-                    setLogoFile(null);
-                    // Reset the file input visually
-                    const fileInput = document.getElementById('logo-upload-input') as HTMLInputElement;
-                    if (fileInput) fileInput.value = '';
-                  }}
-                  className="text-red-500 hover:text-red-700 underline text-xs font-semibold"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
 
-            <input
-              id="logo-upload-input"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setLogoFile(e.target.files[0]);
-                }
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            />
+              <div className="flex-1 border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 sm:pl-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Favicon (Icône de l'onglet)
+                </label>
+                {faviconImage && !faviconFile && (
+                  <div className="mb-4">
+                    <img src={faviconImage} alt="Current Favicon" className="w-8 h-8 object-contain rounded" />
+                  </div>
+                )}
+                {faviconFile && (
+                  <div className="mb-4">
+                    <img src={URL.createObjectURL(faviconFile)} alt="New Favicon Preview" className="w-8 h-8 object-contain rounded" />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFaviconFile(e.target.files?.[0] || null)}
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
+                />
+                <p className="mt-1 text-xs text-gray-500">Une petite image carrée (idéalement PNG ou ICO) qui s'affiche dans l'onglet du navigateur.</p>
+              </div>
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Support Phone (Header)</label>

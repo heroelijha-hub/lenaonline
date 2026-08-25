@@ -21,11 +21,23 @@ const inter = Inter({
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app"),
-  title: `${storeName} | E-commerce`,
-  description: "A complete online store",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settingsDb = await prisma.setting.findMany({
+    where: { key: 'FAVICON_IMAGE' }
+  });
+  const faviconUrl = settingsDb[0]?.value;
+
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app"),
+    title: `${storeName} | E-commerce`,
+    description: "A complete online store",
+    icons: faviconUrl ? {
+      icon: faviconUrl,
+      shortcut: faviconUrl,
+      apple: faviconUrl
+    } : undefined
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages();
