@@ -60,6 +60,21 @@ model Category {
   products Product[]  @relation("ProductCategories")
 }
 
+model Brand {
+  id       String     @id @default(uuid()) @db.Uuid
+  name     String     @unique
+  slug     String     @unique
+  logo     String?
+  products Product[]
+}
+
+model Tag {
+  id       String     @id @default(uuid()) @db.Uuid
+  name     String     @unique
+  slug     String     @unique
+  products Product[]  @relation("ProductTags")
+}
+
 model Product {
   id             String      @id @default(uuid()) @db.Uuid
   title          String
@@ -71,13 +86,15 @@ model Product {
   compareAtPrice Float?
   images         String[]
   categories     Category[]  @relation("ProductCategories")
+  brandId        String?     @db.Uuid
+  brand          Brand?      @relation(fields: [brandId], references: [id])
   stock          Int?        // Null = En stock (illimité), used for simple product
   attributes     Json?       // e.g. [{"name": "Couleur", "options": ["Rouge", "Bleu"]}]
   variations     Json?       // e.g. [{"id": "uuid", "attributes": {"Couleur": "Rouge"}, "price": 10, "stock": 5}]
   isBestSeller   Boolean     @default(false)
   isDealOfTheDay Boolean     @default(false)
   discountLabel  String?
-  tags           String[]    @default([])
+  tags           Tag[]       @relation("ProductTags")
   orderItems     OrderItem[]
   reviews        Review[]
   createdAt      DateTime    @default(now())

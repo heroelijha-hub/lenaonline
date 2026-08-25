@@ -51,6 +51,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     where: { slug },
     include: { 
       categories: true,
+      brand: true,
       reviews: {
         where: { isApproved: true },
         orderBy: { createdAt: 'desc' },
@@ -127,6 +128,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="w-full lg:w-1/2 flex flex-col">
               <h1 className="text-3xl font-bold mb-4 leading-tight">{product.title}</h1>
               
+              {/* Brand */}
+              {(product as any).brand && (
+                <div className="flex items-center gap-3 mb-4">
+                  {(product as any).brand.logo && (
+                    <img src={(product as any).brand.logo} alt={(product as any).brand.name} className="h-10 object-contain rounded-sm" />
+                  )}
+                  <span className="text-sm text-gray-500 uppercase tracking-wider font-semibold">{(product as any).brand.name}</span>
+                </div>
+              )}
+              
               {/* Reviews & Sold */}
               <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
                 {product.reviews.length > 0 && (
@@ -150,7 +161,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <div className="space-y-2 text-sm">
                 <p><span className="font-semibold text-gray-900">{t('sku')}</span> {product.id.split('-')[0].toUpperCase()}</p>
                 <p><span className="font-semibold text-gray-900">{t('categories')}</span> {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('uncategorized')}</p>
-                <p><span className="font-semibold text-gray-900">{t('tags')}</span> {storeName}, Featured</p>
+                {(product as any).brand && (
+                  <p><span className="font-semibold text-gray-900">Marque :</span> {(product as any).brand.name}</p>
+                )}
+                <p><span className="font-semibold text-gray-900">{t('tags')}</span> {product.tags?.length > 0 ? product.tags.join(', ') : `${storeName}, Featured`}</p>
               </div>
 
             </div>

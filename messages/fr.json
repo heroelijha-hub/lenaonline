@@ -492,6 +492,8 @@
     "dashboard": "Tableau de bord",
     "products": "Produits",
     "categories": "Catégories",
+    "brands": "Marques",
+    "tags": "Tags",
     "orders": "Commandes",
     "reviews": "Avis Clients",
     "abandoned_carts": "Paniers Abandonnés",

@@ -492,6 +492,8 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "categories": "Categories",
+    "brands": "Brands",
+    "tags": "Tags",
     "orders": "Orders",
     "reviews": "Reviews",
     "abandoned_carts": "Abandoned Carts",

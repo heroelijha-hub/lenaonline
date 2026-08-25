@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { createCategory } from '@/actions/admin';
-import { useTranslations } from 'next-intl';
+import { createBrandAction } from '@/actions/admin';
 
-export default function CategoryCreateForm({ categories }: { categories: any[] }) {
-  const t = useTranslations('AdminCategories');
+export default function BrandCreateForm() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [parentId, setParentId] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
   const [loading, setLoading] = useState(false);
 
   const generateSlug = (text: string) => 
@@ -29,11 +27,10 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
     const formData = new FormData();
     formData.append('name', name);
     formData.append('slug', slug);
-    if (parentId) formData.append('parentId', parentId);
-    await createCategory(formData);
+    await createBrandAction(formData, logoUrl);
     setName('');
     setSlug('');
-    setParentId('');
+    setLogoUrl('');
     setLoading(false);
   };
 
@@ -43,7 +40,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         type="text" 
         value={name}
         onChange={handleNameChange}
-        placeholder={t('name_placeholder')}
+        placeholder="Nom de la marque"
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800"
         required
       />
@@ -51,26 +48,23 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
         type="text" 
         value={slug}
         onChange={(e) => setSlug(e.target.value)}
-        placeholder={t('slug_placeholder')}
+        placeholder="Slug"
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 bg-gray-50"
         required
       />
-      <select 
-        value={parentId}
-        onChange={(e) => setParentId(e.target.value)}
+      <input 
+        type="text" 
+        value={logoUrl}
+        onChange={(e) => setLogoUrl(e.target.value)}
+        placeholder="URL du logo (Optionnel)"
         className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 bg-white"
-      >
-        <option value="">{t('no_parent_option')}</option>
-        {categories.map(c => (
-          <option key={c.id} value={c.id}>{c.displayName || c.name}</option>
-        ))}
-      </select>
+      />
       <button 
         type="submit" 
         disabled={loading}
         className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-md transition disabled:opacity-50"
       >
-        {t('add_btn')}
+        Ajouter
       </button>
     </form>
   );

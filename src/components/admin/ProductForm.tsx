@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCategories, createProduct, uploadImage } from '@/actions/admin';
+import { getCategories, getBrands, createBrandAction, createProduct, uploadImage } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -23,10 +23,17 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
   const initialAttributes = parseJSON(initialData?.attributes);
   const initialVariations = parseJSON(initialData?.variations);
-  const initialTags = parseJSON(initialData?.tags);
+  const rawTags = parseJSON(initialData?.tags);
+  const initialTags = rawTags.map((t: any) => typeof t === 'string' ? t : t.name).filter(Boolean);
 
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(initialData?.categories?.map((c: any) => c.id) || []);
+  const [brands, setBrands] = useState<any[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<string>(initialData?.brandId || '');
+  const [showNewBrand, setShowNewBrand] = useState(false);
+  const [newBrandName, setNewBrandName] = useState('');
+  const [newBrandLogo, setNewBrandLogo] = useState<File | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
@@ -56,6 +63,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
   useEffect(() => {
     getCategories().then(setCategories);
+    getBrands().then(setBrands);
   }, []);
 
   const [productType, setProductType] = useState<'SIMPLE' | 'VARIABLE'>(initialData?.type || 'SIMPLE');
@@ -88,6 +96,28 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         options: a.options.split('|').map(o => o.trim()).filter(Boolean)
       })).filter(a => a.name && a.options.length > 0);
       
+      let finalBrandId = selectedBrand;
+
+      if (showNewBrand && newBrandName) {
+        const brandFormData = new FormData();
+        brandFormData.append('name', newBrandName);
+        let logoUrl = '';
+        if (newBrandLogo) {
+          const fd = new FormData();
+          fd.append('file', newBrandLogo);
+          const secureUrl = await uploadImage(fd);
+          if (secureUrl) logoUrl = secureUrl;
+        }
+        const brandRes = await createBrandAction(brandFormData, logoUrl);
+        if (brandRes.success && brandRes.brand) {
+          finalBrandId = brandRes.brand.id;
+        }
+      }
+
+      if (finalBrandId) {
+        formData.append('brandId', finalBrandId);
+      }
+
       formData.append('attributes', JSON.stringify(formattedAttributes));
       formData.append('variations', JSON.stringify(variations));
       formData.append('tags', JSON.stringify(tags));
@@ -204,6 +234,63 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                 </label>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Marque */}
+        <div className="grid grid-cols-1 gap-6">
+          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Marque</label>
+            <select
+              value={selectedBrand}
+              onChange={(e) => {
+                if (e.target.value === 'new') {
+                  setShowNewBrand(true);
+                  setSelectedBrand('');
+                } else {
+                  setShowNewBrand(false);
+                  setSelectedBrand(e.target.value);
+                }
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 bg-white"
+            >
+              <option value="">-- Aucune marque --</option>
+              {brands.map(b => (
+                <option key={b.id} value={b.id}>{b.name}</option>
+              ))}
+              <option value="new" className="font-bold text-orange-600">+ Ajouter une nouvelle marque</option>
+            </select>
+            
+            {showNewBrand && (
+              <div className="mt-4 p-4 border border-orange-200 bg-orange-50 rounded-md space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom de la marque *</label>
+                  <input 
+                    type="text" 
+                    value={newBrandName}
+                    onChange={(e) => setNewBrandName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="Ex: Nike, Apple..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Logo (Optionnel)</label>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={(e) => setNewBrandLogo(e.target.files?.[0] || null)}
+                    className="w-full text-sm text-gray-500"
+                  />
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setShowNewBrand(false)}
+                  className="text-sm text-gray-500 hover:text-gray-700 underline"
+                >
+                  Annuler
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -404,25 +491,26 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         </div>
 
         {/* Tags */}
-        <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tags_label")}</label>
-          <div className="flex gap-2 mb-2">
-            <input 
-              type="text" 
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-                    setTags([...tags, tagInput.trim()]);
-                    setTagInput('');
+        <div className="bg-gray-50 p-4 rounded-md border border-gray-200 space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("tags_label")}</label>
+            <div className="flex gap-2 mb-2">
+              <input 
+                type="text" 
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+                      setTags([...tags, tagInput.trim()]);
+                      setTagInput('');
+                    }
                   }
-                }
-              }}
-              placeholder={t("tags_placeholder")} 
-              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
-            />
+                }}
+                placeholder={t("tags_placeholder")} 
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+              />
             <button 
               type="button" 
               onClick={() => {

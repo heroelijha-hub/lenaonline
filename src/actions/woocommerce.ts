@@ -256,6 +256,45 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
         }
       }
 
+      // Brands logic
+      let brandId: string | null = null;
+      let brandName: string | null = null;
+      let brandSlug: string | null = null;
+
+      // Check if plugin exposes .brands array
+      if (wcProduct.brands && Array.isArray(wcProduct.brands) && wcProduct.brands.length > 0) {
+        brandName = wcProduct.brands[0].name;
+        brandSlug = wcProduct.brands[0].slug;
+      } 
+      // Otherwise fallback to checking attributes (in case it's a global pa_brand attribute)
+      else if (wcProduct.attributes && Array.isArray(wcProduct.attributes)) {
+        const brandAttr = wcProduct.attributes.find((a: any) => 
+          a.name.toLowerCase() === 'brand' || 
+          a.name.toLowerCase() === 'marque' || 
+          a.name.toLowerCase() === 'brands' || 
+          a.name.toLowerCase() === 'marques'
+        );
+        if (brandAttr && brandAttr.options && brandAttr.options.length > 0) {
+          brandName = brandAttr.options[0];
+          brandSlug = brandName?.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        }
+      }
+
+      if (brandName && brandSlug) {
+        let brand = await prisma.brand.findUnique({
+          where: { name: brandName }
+        });
+        if (!brand) {
+          brand = await prisma.brand.create({
+            data: {
+              name: brandName,
+              slug: brandSlug,
+            }
+          });
+        }
+        brandId = brand.id;
+      }
+
       const cloudinaryImageUrls: string[] = [];
       if (wcProduct.images && Array.isArray(wcProduct.images)) {
         for (const wcImg of wcProduct.images) {
@@ -350,7 +389,13 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           images: cloudinaryImageUrls,
           stock: stock,
           type: wcProduct.type === 'variable' ? 'VARIABLE' : 'SIMPLE',
-          tags: tags,
+          tags: {
+            connectOrCreate: tags.map((t: string) => ({
+              where: { name: t },
+              create: { name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }
+            }))
+          },
+          brandId: brandId,
           attributes: parsedAttributes.length > 0 ? parsedAttributes : undefined,
           variations: parsedVariations.length > 0 ? parsedVariations : undefined,
           categories: {

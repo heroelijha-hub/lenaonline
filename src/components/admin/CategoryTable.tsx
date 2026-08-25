@@ -158,7 +158,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       autoFocus
                     />
                   ) : (
-                    cat.name
+                    (cat as any).displayName || cat.name
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -181,8 +181,10 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       className="px-2 py-1 border border-orange-300 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm bg-white"
                     >
                       <option value="">{t('none')}</option>
-                      {categories.filter(c => c.id !== cat.id).map(c => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
+                      {categories.filter(c => c.id !== cat.id).map(p => (
+                        <option key={p.id} value={p.id}>
+                          {(p as any).displayName || p.name}
+                        </option>
                       ))}
                     </select>
                   ) : (

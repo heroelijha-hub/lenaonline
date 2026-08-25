@@ -36,13 +36,148 @@ export async function uploadImage(formData: FormData) {
   });
 }
 
+// --- BRANDS ---
+export async function getBrands() {
+  await requireAdmin();
+  return await prisma.brand.findMany({
+    orderBy: { name: 'asc' }
+  });
+}
+
+export async function createBrandAction(formData: FormData, logoUrl?: string) {
+  await requireAdmin();
+  const name = formData.get('name') as string;
+  if (!name) return { error: "Nom requis" };
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  try {
+    const brand = await prisma.brand.create({ data: { name, slug, logo: logoUrl || null } });
+    revalidatePath('/admin/products');
+    return { success: true, brand };
+  } catch (error) {
+    return { error: "Erreur de création de marque" };
+  }
+export async function updateBrand(id: string, formData: FormData, logoUrl?: string | null) {
+  await requireAdmin();
+  const name = formData.get('name') as string;
+  let slug = formData.get('slug') as string;
+  if (!name) return { error: "Nom requis" };
+  slug = slug ? slug.toLowerCase().replace(/[^a-z0-9]+/g, '-') : name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  
+  try {
+    const data: any = { name, slug };
+    if (logoUrl !== undefined) data.logo = logoUrl;
+    await prisma.brand.update({ where: { id }, data });
+    revalidatePath('/admin/brands');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur de modification" };
+  }
+}
+
+export async function deleteBrand(id: string) {
+  await requireAdmin();
+  try {
+    await prisma.brand.delete({ where: { id } });
+    revalidatePath('/admin/brands');
+    return { success: true };
+  } catch (error) {
+    return { error: "Impossible de supprimer cette marque." };
+  }
+}
+
+export async function bulkDeleteBrands(ids: string[]) {
+  await requireAdmin();
+  try {
+    await prisma.brand.deleteMany({ where: { id: { in: ids } } });
+    revalidatePath('/admin/brands');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur lors de la suppression." };
+  }
+}
+
+// --- TAGS ---
+export async function getTags() {
+  await requireAdmin();
+  return await prisma.tag.findMany({
+    orderBy: { name: 'asc' }
+  });
+}
+
+export async function createTag(formData: FormData) {
+  await requireAdmin();
+  const name = formData.get('name') as string;
+  let slug = formData.get('slug') as string;
+  if (!name) return { error: "Nom requis" };
+  slug = slug ? slug.toLowerCase().replace(/[^a-z0-9]+/g, '-') : name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  try {
+    await prisma.tag.create({ data: { name, slug } });
+    revalidatePath('/admin/tags');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur de création" };
+  }
+}
+
+export async function updateTag(id: string, name: string, slug: string) {
+  await requireAdmin();
+  if (!name) return { error: "Nom requis" };
+  const finalSlug = slug ? slug.toLowerCase().replace(/[^a-z0-9]+/g, '-') : name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  try {
+    await prisma.tag.update({ where: { id }, data: { name, slug: finalSlug } });
+    revalidatePath('/admin/tags');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur de modification" };
+  }
+}
+
+export async function deleteTag(id: string) {
+  await requireAdmin();
+  try {
+    await prisma.tag.delete({ where: { id } });
+    revalidatePath('/admin/tags');
+    return { success: true };
+  } catch (error) {
+    return { error: "Impossible de supprimer ce tag." };
+  }
+}
+
+export async function bulkDeleteTags(ids: string[]) {
+  await requireAdmin();
+  try {
+    await prisma.tag.deleteMany({ where: { id: { in: ids } } });
+    revalidatePath('/admin/tags');
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur de suppression." };
+  }
+}
+
 // --- CATEGORIES ---
 export async function getCategories() {
   await requireAdmin();
-  return await prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     include: { parent: true, children: true },
     orderBy: { name: 'asc' }
   });
+
+  const formatHierarchical = (cats: any[], parentId: string | null = null, depth = 0): any[] => {
+    let result: any[] = [];
+    const children = cats.filter(c => (c.parentId || null) === parentId);
+    
+    for (const child of children) {
+      result.push({
+        ...child,
+        depth,
+        displayName: '— '.repeat(depth) + child.name
+      });
+      result = result.concat(formatHierarchical(cats, child.id, depth + 1));
+    }
+    return result;
+  };
+
+  return formatHierarchical(categories);
 }
 
 export async function createCategory(formData: FormData) {
@@ -146,6 +281,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const stockRaw = formData.get('stock') as string;
   const stock = stockRaw ? parseInt(stockRaw, 10) : null; // Si vide -> null (En stock)
 
+  const brandId = formData.get('brandId') as string || null;
+
   const categoryIdsRaw = formData.get('categoryIds') as string;
   const categoryIds = categoryIdsRaw ? JSON.parse(categoryIdsRaw) : [];
   const isBestSeller = formData.get('isBestSeller') === 'on';
@@ -177,8 +314,9 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         title,
         slug: uniqueSlug,
         type,
-        attributes,
-        variations,
+        brandId,
+        attributes: attributes.length > 0 ? attributes : undefined,
+        variations: variations.length > 0 ? variations : undefined,
         shortDescription,
         description,
         price,
@@ -190,7 +328,12 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
-        tags,
+        tags: {
+          connectOrCreate: tags.map((t: string) => ({
+            where: { name: t },
+            create: { name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }
+          }))
+        },
         images: imageUrls,
       }
     });
@@ -204,9 +347,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   }
 }
 
-export async function updateProduct(formData: FormData, imageUrls: string[]) {
+export async function updateProduct(id: string, formData: FormData, imageUrls: string[]) {
   await requireAdmin();
-  const id = formData.get('id') as string;
   const type = formData.get('type') as any || 'SIMPLE';
   const attributesRaw = formData.get('attributes') as string;
   const variationsRaw = formData.get('variations') as string;
@@ -221,6 +363,8 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
   
   const stockRaw = formData.get('stock') as string;
   const stock = stockRaw ? parseInt(stockRaw, 10) : null;
+
+  const brandId = formData.get('brandId') as string || null;
 
   const categoryIdsRaw = formData.get('categoryIds') as string;
   const categoryIds = categoryIdsRaw ? JSON.parse(categoryIdsRaw) : [];
@@ -249,8 +393,9 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
         title,
         ...(finalSlug ? { slug: finalSlug } : {}),
         type,
-        attributes,
-        variations,
+        brandId,
+        attributes: attributes.length > 0 ? attributes : undefined,
+        variations: variations.length > 0 ? variations : undefined,
         shortDescription,
         description,
         price,
@@ -262,7 +407,13 @@ export async function updateProduct(formData: FormData, imageUrls: string[]) {
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
-        tags,
+        tags: {
+          set: [],
+          connectOrCreate: tags.map((t: string) => ({
+            where: { name: t },
+            create: { name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }
+          }))
+        },
         images: imageUrls,
       }
     });
@@ -327,6 +478,7 @@ export async function duplicateProduct(id: string) {
       data: {
         title: newTitle,
         slug: uniqueSlug,
+        brandId: existing.brandId,
         type: existing.type,
         attributes: existing.attributes || undefined,
         variations: existing.variations || undefined,
