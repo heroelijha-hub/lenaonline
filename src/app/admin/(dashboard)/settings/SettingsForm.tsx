@@ -212,124 +212,131 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       formData.append('file', chatIconFile);
       const url = await uploadImage(formData);
       if (url) finalChatIcon = url;
-      const res = await uploadImage(formData);
-      if (res.url) settingsToUpdate.push({ key: 'CHAT_STORE_ICON', value: res.url });
     }
+    settingsMap['CHAT_STORE_ICON'] = finalChatIcon;
 
+    let finalLogoImage = headerLogoImage;
     if (logoFile) {
       const formData = new FormData();
       formData.append('file', logoFile);
-      const res = await uploadImage(formData);
-      if (res.url) settingsToUpdate.push({ key: 'HEADER_LOGO_IMAGE', value: res.url });
+      const url = await uploadImage(formData);
+      if (url) finalLogoImage = url;
     }
+    settingsMap['HEADER_LOGO_IMAGE'] = finalLogoImage;
 
+    let finalFaviconImage = faviconImage;
     if (faviconFile) {
       const formData = new FormData();
       formData.append('file', faviconFile);
-      const res = await uploadImage(formData);
-      if (res.url) settingsToUpdate.push({ key: 'FAVICON_IMAGE', value: res.url });
+      const url = await uploadImage(formData);
+      if (url) finalFaviconImage = url;
     }
+    settingsMap['FAVICON_IMAGE'] = finalFaviconImage;
     
-    settingsToUpdate.push({ key: 'CHAT_ENABLED', value: chatEnabled.toString() });
-    settingsToUpdate.push({ key: 'CHAT_STORE_NAME', value: chatStoreName });
+    settingsMap['CHAT_ENABLED'] = chatEnabled.toString();
+    settingsMap['CHAT_STORE_NAME'] = chatStoreName;
     
-    settingsToUpdate.push({ key: 'THEME_COLOR', value: themeColor });
-    settingsToUpdate.push({ key: 'SHOP_CARD_STYLE', value: shopCardStyle });
-    settingsToUpdate.push({ key: 'SHOP_CARD_BORDER_COLOR', value: shopCardBorderColor });
-    settingsToUpdate.push({ key: 'HEADER_ANNOUNCEMENT', value: headerAnnouncement });
-    settingsToUpdate.push({ key: 'HEADER_SUPPORT_PHONE', value: headerSupportPhone });
-    settingsToUpdate.push({ key: 'HEADER_SUPPORT_EMAIL', value: headerSupportEmail });
-    settingsToUpdate.push({ key: 'HEADER_MENU_LINKS', value: JSON.stringify(menuLinks) });
+    settingsMap['THEME_COLOR'] = themeColor;
+    settingsMap['SHOP_CARD_STYLE'] = shopCardStyle;
+    settingsMap['SHOP_CARD_BORDER_COLOR'] = shopCardBorderColor;
+    settingsMap['HEADER_ANNOUNCEMENT'] = headerAnnouncement;
+    settingsMap['HEADER_SUPPORT_PHONE'] = headerSupportPhone;
+    settingsMap['HEADER_SUPPORT_EMAIL'] = headerSupportEmail;
+    settingsMap['HEADER_MENU_LINKS'] = JSON.stringify(menuLinks);
 
-    settingsToUpdate.push({ key: 'MOBILE_ABOUT_TITLE', value: mobileAboutTitle });
-    settingsToUpdate.push({ key: 'MOBILE_ABOUT_DESC', value: mobileAboutDesc });
-    settingsToUpdate.push({ key: 'MOBILE_MENU_LINKS', value: JSON.stringify(mobileMenuLinks) });
-    settingsToUpdate.push({ key: 'MOBILE_CONTACT_ADDRESS', value: mobileContactAddress });
-    settingsToUpdate.push({ key: 'MOBILE_CONTACT_PHONE', value: mobileContactPhone });
-    settingsToUpdate.push({ key: 'MOBILE_CONTACT_EMAIL', value: mobileContactEmail });
-    settingsToUpdate.push({ key: 'MOBILE_CONTACT_WEBSITE', value: mobileContactWebsite });
-    settingsToUpdate.push({ key: 'MOBILE_HEADER_BORDER_COLOR', value: mobileHeaderBorderColor });
+    settingsMap['MOBILE_ABOUT_TITLE'] = mobileAboutTitle;
+    settingsMap['MOBILE_ABOUT_DESC'] = mobileAboutDesc;
+    settingsMap['MOBILE_MENU_LINKS'] = JSON.stringify(mobileMenuLinks);
+    settingsMap['MOBILE_CONTACT_ADDRESS'] = mobileContactAddress;
+    settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
+    settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
+    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
+    settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
 
-    settingsToUpdate.push({ key: 'ALL_CATEGORIES_BG_COLOR', value: allCategoriesBgColor });
-    settingsToUpdate.push({ key: 'ALL_CATEGORIES_TEXT_COLOR', value: allCategoriesTextColor });
+    settingsMap['ALL_CATEGORIES_BG_COLOR'] = allCategoriesBgColor;
+    settingsMap['ALL_CATEGORIES_TEXT_COLOR'] = allCategoriesTextColor;
 
-    settingsToUpdate.push({ key: 'TOP_BAR_BG_COLOR', value: topBarBgColor });
-    settingsToUpdate.push({ key: 'TOP_BAR_TEXT_COLOR', value: topBarTextColor });
-    settingsToUpdate.push({ key: 'TOP_BAR_LINKS', value: JSON.stringify(topBarLinks) });
+    settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
+    settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
+    settingsMap['TOP_BAR_LINKS'] = JSON.stringify(topBarLinks);
 
-    settingsToUpdate.push({ key: 'SEARCH_BORDER_COLOR', value: searchBorderColor });
-    settingsToUpdate.push({ key: 'SEARCH_PLACEHOLDER', value: searchPlaceholder });
-    settingsToUpdate.push({ key: 'SEARCH_BTN_TEXT', value: searchBtnText });
-    settingsToUpdate.push({ key: 'SEARCH_BTN_BG_COLOR', value: searchBtnBgColor });
-    settingsToUpdate.push({ key: 'SEARCH_BTN_TEXT_COLOR', value: searchBtnTextColor });
+    settingsMap['SEARCH_BORDER_COLOR'] = searchBorderColor;
+    settingsMap['SEARCH_PLACEHOLDER'] = searchPlaceholder;
+    settingsMap['SEARCH_BTN_TEXT'] = searchBtnText;
+    settingsMap['SEARCH_BTN_BG_COLOR'] = searchBtnBgColor;
+    settingsMap['SEARCH_BTN_TEXT_COLOR'] = searchBtnTextColor;
     
-    settingsToUpdate.push({ key: 'TAX_INCLUDED_IN_PRICE', value: taxIncludedInPrice.toString() });
-    settingsToUpdate.push({ key: 'DEFAULT_VAT_RATE', value: defaultVatRate });
-    settingsToUpdate.push({ key: 'ENABLE_EU_VAT', value: enableEuVat.toString() });
+    settingsMap['TAX_INCLUDED_IN_PRICE'] = taxIncludedInPrice.toString();
+    settingsMap['DEFAULT_VAT_RATE'] = defaultVatRate;
+    settingsMap['ENABLE_EU_VAT'] = enableEuVat.toString();
 
-    settingsToUpdate.push({ key: 'CONTACT_RECEIVER_EMAIL', value: contactReceiverEmail });
-    settingsToUpdate.push({ key: 'NEWSLETTER_SUCCESS_MESSAGE', value: newsletterSuccessMessage });
+    settingsMap['CONTACT_RECEIVER_EMAIL'] = contactReceiverEmail;
+    settingsMap['NEWSLETTER_SUCCESS_MESSAGE'] = newsletterSuccessMessage;
 
-    settingsToUpdate.push({ key: 'SMTP_HOST', value: smtpHost });
-    settingsToUpdate.push({ key: 'SMTP_PORT', value: smtpPort });
-    settingsToUpdate.push({ key: 'SMTP_USER', value: smtpUser });
-    settingsToUpdate.push({ key: 'SMTP_PASS', value: smtpPass });
-    settingsToUpdate.push({ key: 'SMTP_FROM', value: smtpFrom });
+    settingsMap['SMTP_HOST'] = smtpHost;
+    settingsMap['SMTP_PORT'] = smtpPort;
+    settingsMap['SMTP_USER'] = smtpUser;
+    settingsMap['SMTP_PASS'] = smtpPass;
+    settingsMap['SMTP_FROM'] = smtpFrom;
     
-    settingsToUpdate.push({ key: 'ENABLE_STRIPE', value: enableStripe.toString() });
-    settingsToUpdate.push({ key: 'ENABLE_PAYPAL', value: enablePaypal.toString() });
-    settingsToUpdate.push({ key: 'ENABLE_BANK_TRANSFER', value: enableBankTransfer.toString() });
+    settingsMap['ENABLE_STRIPE'] = enableStripe.toString();
+    settingsMap['ENABLE_PAYPAL'] = enablePaypal.toString();
+    settingsMap['ENABLE_BANK_TRANSFER'] = enableBankTransfer.toString();
     
-    settingsToUpdate.push({ key: 'STRIPE_PUBLIC_KEY', value: stripePublicKey });
-    settingsToUpdate.push({ key: 'STRIPE_SECRET_KEY', value: stripeSecretKey });
-    settingsToUpdate.push({ key: 'PAYPAL_CLIENT_ID', value: paypalClientId });
-    settingsToUpdate.push({ key: 'PAYPAL_SECRET', value: paypalSecret });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_IBAN', value: bankTransferIban });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_BIC', value: bankTransferBic });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_ACCOUNT_HOLDER', value: bankTransferAccountHolder });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_BANK_NAME', value: bankTransferBankName });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_CHECKOUT_MESSAGE', value: bankTransferCheckoutMessage });
-    settingsToUpdate.push({ key: 'BANK_TRANSFER_INSTRUCTIONS', value: bankTransferInstructions });
+    settingsMap['STRIPE_PUBLIC_KEY'] = stripePublicKey;
+    settingsMap['STRIPE_SECRET_KEY'] = stripeSecretKey;
+    settingsMap['PAYPAL_CLIENT_ID'] = paypalClientId;
+    settingsMap['PAYPAL_SECRET'] = paypalSecret;
+    settingsMap['BANK_TRANSFER_IBAN'] = bankTransferIban;
+    settingsMap['BANK_TRANSFER_BIC'] = bankTransferBic;
+    settingsMap['BANK_TRANSFER_ACCOUNT_HOLDER'] = bankTransferAccountHolder;
+    settingsMap['BANK_TRANSFER_BANK_NAME'] = bankTransferBankName;
+    settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
+    settingsMap['BANK_TRANSFER_INSTRUCTIONS'] = bankTransferInstructions;
     
-    settingsToUpdate.push({ key: 'FOOTER_BG_COLOR', value: footerBgColor });
-    settingsToUpdate.push({ key: 'FOOTER_TEXT_COLOR', value: footerTextColor });
-    settingsToUpdate.push({ key: 'FOOTER_ADDRESS_1', value: footerAddress1 });
-    settingsToUpdate.push({ key: 'FOOTER_ADDRESS_2', value: footerAddress2 });
-    settingsToUpdate.push({ key: 'FOOTER_LOCATIONS_TITLE', value: footerLocationsTitle });
-    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_TITLE', value: footerNewsletterTitle });
-    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_TEXT', value: footerNewsletterText });
-    settingsToUpdate.push({ key: 'FOOTER_NEWSLETTER_PLACEHOLDER', value: footerNewsletterPlaceholder });
-    settingsToUpdate.push({ key: 'FOOTER_CALL_US_TEXT', value: footerCallUsText });
-    settingsToUpdate.push({ key: 'FOOTER_COPYRIGHT', value: footerCopyright });
-    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_FACEBOOK', value: footerSocialFacebook });
-    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_TWITTER', value: footerSocialTwitter });
-    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_INSTAGRAM', value: footerSocialInstagram });
-    settingsToUpdate.push({ key: 'FOOTER_SOCIAL_LINKEDIN', value: footerSocialLinkedin });
-    settingsToUpdate.push({ key: 'FOOTER_COLUMNS', value: JSON.stringify(footerColumns) });
+    settingsMap['FOOTER_BG_COLOR'] = footerBgColor;
+    settingsMap['FOOTER_TEXT_COLOR'] = footerTextColor;
+    settingsMap['FOOTER_ADDRESS_1'] = footerAddress1;
+    settingsMap['FOOTER_ADDRESS_2'] = footerAddress2;
+    settingsMap['FOOTER_LOCATIONS_TITLE'] = footerLocationsTitle;
+    settingsMap['FOOTER_NEWSLETTER_TITLE'] = footerNewsletterTitle;
+    settingsMap['FOOTER_NEWSLETTER_TEXT'] = footerNewsletterText;
+    settingsMap['FOOTER_NEWSLETTER_PLACEHOLDER'] = footerNewsletterPlaceholder;
+    settingsMap['FOOTER_CALL_US_TEXT'] = footerCallUsText;
+    settingsMap['FOOTER_COPYRIGHT'] = footerCopyright;
+    settingsMap['FOOTER_SOCIAL_FACEBOOK'] = footerSocialFacebook;
+    settingsMap['FOOTER_SOCIAL_TWITTER'] = footerSocialTwitter;
+    settingsMap['FOOTER_SOCIAL_INSTAGRAM'] = footerSocialInstagram;
+    settingsMap['FOOTER_SOCIAL_LINKEDIN'] = footerSocialLinkedin;
+    settingsMap['FOOTER_COLUMNS'] = JSON.stringify(footerColumns);
     
-    settingsToUpdate.push({ key: 'NOT_FOUND_TITLE', value: notFoundTitle });
-    settingsToUpdate.push({ key: 'NOT_FOUND_TEXT', value: notFoundText });
-    settingsToUpdate.push({ key: 'NOT_FOUND_CTA', value: notFoundCta });
-    settingsToUpdate.push({ key: 'NOT_FOUND_BG_COLOR', value: notFoundBgColor });
+    settingsMap['NOT_FOUND_TITLE'] = notFoundTitle;
+    settingsMap['NOT_FOUND_TEXT'] = notFoundText;
+    settingsMap['NOT_FOUND_CTA'] = notFoundCta;
+    settingsMap['NOT_FOUND_BG_COLOR'] = notFoundBgColor;
     
+    let finalNotFoundBgImage = notFoundBgImage;
     if (notFoundFile) {
       const formData = new FormData();
       formData.append('file', notFoundFile);
-      const res = await uploadImage(formData);
-      if (res.url) settingsToUpdate.push({ key: 'NOT_FOUND_BG_IMAGE', value: res.url });
+      const url = await uploadImage(formData);
+      if (url) finalNotFoundBgImage = url;
     }
+    settingsMap['NOT_FOUND_BG_IMAGE'] = finalNotFoundBgImage;
 
+    let finalMaintenanceImage = maintenanceImage;
     if (maintenanceFile) {
       const formData = new FormData();
       formData.append('file', maintenanceFile);
-      const res = await uploadImage(formData);
-      if (res.url) settingsToUpdate.push({ key: 'MAINTENANCE_IMAGE', value: res.url });
+      const url = await uploadImage(formData);
+      if (url) finalMaintenanceImage = url;
     }
-    settingsToUpdate.push({ key: 'MAINTENANCE_MODE', value: maintenanceMode.toString() });
-    settingsToUpdate.push({ key: 'MAINTENANCE_TITLE', value: maintenanceTitle });
-    settingsToUpdate.push({ key: 'MAINTENANCE_MESSAGE', value: maintenanceMessage });
+    settingsMap['MAINTENANCE_IMAGE'] = finalMaintenanceImage;
+    settingsMap['MAINTENANCE_MODE'] = maintenanceMode.toString();
+    settingsMap['MAINTENANCE_TITLE'] = maintenanceTitle;
+    settingsMap['MAINTENANCE_MESSAGE'] = maintenanceMessage;
 
-    await updateSettingsBatch(settingsToUpdate);
+    await updateSettingsBatch(settingsMap);
 
     setMessage(tSettings('update_success'));
     setIsLoading(false);
