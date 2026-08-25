@@ -1,16 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { updateBrand, deleteBrand, bulkDeleteBrands } from '@/actions/admin';
+import { useState, useRef } from 'react';
+import { updateBrand, deleteBrand, bulkDeleteBrands, uploadImage } from '@/actions/admin';
 
 export default function BrandTable({ brands }: { brands: any[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editSlug, setEditSlug] = useState('');
   const [editLogoUrl, setEditLogoUrl] = useState('');
+  const [editLogoPreview, setEditLogoPreview] = useState('');
+  const [editUploading, setEditUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+  const editFileInputRef = useRef<HTMLInputElement>(null);
 
   const generateSlug = (text: string) => 
     text.toString().toLowerCase().trim()
@@ -23,6 +26,32 @@ export default function BrandTable({ brands }: { brands: any[] }) {
     setEditName(b.name);
     setEditSlug(b.slug || '');
     setEditLogoUrl(b.logo || '');
+    setEditLogoPreview(b.logo || '');
+    if (editFileInputRef.current) editFileInputRef.current.value = '';
+  };
+
+  const handleEditLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setEditLogoPreview(URL.createObjectURL(file));
+    setEditUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const url = await uploadImage(formData);
+      if (url) setEditLogoUrl(url);
+    } catch {
+      alert("Erreur lors de l'upload du logo.");
+      setEditLogoPreview(editLogoUrl);
+    } finally {
+      setEditUploading(false);
+    }
+  };
+
+  const handleRemoveEditLogo = () => {
+    setEditLogoUrl('');
+    setEditLogoPreview('');
+    if (editFileInputRef.current) editFileInputRef.current.value = '';
   };
 
   const handleSaveEdit = async (id: string) => {
@@ -90,7 +119,50 @@ export default function BrandTable({ brands }: { brands: any[] }) {
                 <td className="px-6 py-4 whitespace-nowrap"><input type="checkbox" checked={selectedIds.includes(b.id)} onChange={() => toggleSelect(b.id)} className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/></td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {editingId === b.id ? (
-                    <input type="text" value={editLogoUrl} onChange={(e) => setEditLogoUrl(e.target.value)} className="px-2 py-1 border border-orange-300 rounded text-sm w-32" placeholder="URL Logo"/>
+                    <div className="flex items-center gap-2">
+                      {/* Prévisualisation */}
+                      {editLogoPreview ? (
+                        <div className="relative w-9 h-9 flex-shrink-0">
+                          <img src={editLogoPreview} alt="logo" className="w-9 h-9 object-contain rounded border border-gray-200" />
+                          <button
+                            type="button"
+                            onClick={handleRemoveEditLogo}
+                            className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs hover:bg-red-600"
+                          >×</button>
+                        </div>
+                      ) : (
+                        <div className="w-9 h-9 border border-dashed border-gray-300 rounded flex items-center justify-center bg-gray-50">
+                          <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                      )}
+                      {/* Bouton upload */}
+                      <input
+                        ref={editFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleEditLogoUpload}
+                        className="hidden"
+                        id={`edit-logo-${b.id}`}
+                      />
+                      <label
+                        htmlFor={`edit-logo-${b.id}`}
+                        className={`cursor-pointer inline-flex items-center gap-1 px-2 py-1 border border-gray-300 rounded text-xs font-medium text-gray-600 bg-white hover:bg-gray-50 transition ${editUploading ? 'opacity-50 pointer-events-none' : ''}`}
+                      >
+                        {editUploading ? (
+                          <svg className="animate-spin w-3 h-3 text-orange-500" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          </svg>
+                        )}
+                        {editUploading ? 'Upload...' : 'Changer'}
+                      </label>
+                    </div>
                   ) : (
                     b.logo ? <img src={b.logo} alt={b.name} className="h-8 object-contain"/> : <span className="text-gray-300">-</span>
                   )}

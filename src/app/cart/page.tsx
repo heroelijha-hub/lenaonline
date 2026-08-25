@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useTranslations } from 'next-intl';
+import { useCurrency } from '@/components/CurrencyProvider';
 
 export default function CartPage() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('free');
   const t = useTranslations('Cart');
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     setMounted(true);
@@ -27,10 +29,6 @@ export default function CartPage() {
   if (shippingMethod === 'express') shippingCost = 53.87;
   
   const total = subtotal + (items.length > 0 ? shippingCost : 0);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans">
