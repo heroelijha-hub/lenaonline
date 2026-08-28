@@ -263,6 +263,21 @@
     "bic": "BIC :",
     "bank": "Banque :"
   },
+  "AccountAddresses": {
+    "billing_address_title": "Adresse de facturation",
+    "shipping_address_title": "Adresse de livraison",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "company_name": "Nom de l'entreprise (facultatif)",
+    "country_region": "Pays/Région",
+    "select_country": "Sélectionnez un pays...",
+    "address_1": "Adresse 1",
+    "address_2": "Adresse 2 (facultatif)",
+    "postal_code": "Code Postal",
+    "city": "Ville",
+    "phone": "Téléphone",
+    "save_address": "Enregistrer l'adresse"
+  },
   "Auth": {
     "login_title": "Connexion",
     "email_address": "Adresse e-mail",
@@ -878,8 +893,9 @@
     "taxes_vat": "Taxes & TVA",
     "store_features": "Paramètres Généraux",
     "email_server": "Serveur de Messagerie (SMTP)",
-    "payments": "Modes de Paiement (Stripe, PayPal, Virement)",
-    "design_header": "Design & Personnalisation",
+    "payments": "Paiements (Stripe, PayPal et Virement bancaire)",
+    "design_header": "Design et En-tête (Header)",
+    "header_logo": "Logo de l'en-tête (Header Logo)",
     "save_section": "Enregistrer cette section",
     "saving": "Enregistrement...",
     "update_success": "Paramètres mis à jour avec succès."

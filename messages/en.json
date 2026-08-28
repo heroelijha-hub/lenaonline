@@ -265,6 +265,21 @@
     "bic": "BIC:",
     "bank": "Bank:"
   },
+  "AccountAddresses": {
+    "billing_address_title": "Billing Address",
+    "shipping_address_title": "Shipping Address",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "company_name": "Company Name",
+    "country_region": "Country/Region",
+    "select_country": "Select a country...",
+    "address_1": "Address 1",
+    "address_2": "Address 2",
+    "postal_code": "Postal Code",
+    "city": "City",
+    "phone": "Phone",
+    "save_address": "Save Address"
+  },
   "Auth": {
     "login_title": "Login",
     "email_address": "Email address",
@@ -890,6 +905,7 @@
     "email_server": "Email Server (SMTP) - Transactional Emails",
     "payments": "Payments (Stripe, PayPal & Bank Transfer)",
     "design_header": "Design & Header",
+    "header_logo": "Header Logo",
     "save_section": "Save this section",
     "saving": "Saving...",
     "update_success": "Settings updated successfully."
