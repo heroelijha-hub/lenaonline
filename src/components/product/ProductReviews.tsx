@@ -80,10 +80,12 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
         {activeTab === 'desc' ? (
           <div className="text-sm text-gray-700 leading-relaxed space-y-6">
             {description ? (
-              <div 
-                className="prose prose-sm max-w-none" 
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} 
-              />
+              <div className="w-full overflow-x-auto">
+                <div 
+                  className="prose prose-sm max-w-none min-w-full" 
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} 
+                />
+              </div>
             ) : (
               <div className="whitespace-pre-wrap">{t('no_description')}</div>
             )}
