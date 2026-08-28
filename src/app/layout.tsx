@@ -214,8 +214,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 />
                 <BackToTop />
               </StoreLayout>
-            </PostHogProvider>
-          </CurrencyProvider>
+            </CurrencyProvider>
+          </PostHogProvider>
         </NextIntlClientProvider>
       </body>
     </html>
