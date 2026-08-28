@@ -76,7 +76,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
         </button>
       </div>
 
-      <div className="max-w-4xl mx-auto border border-gray-200 rounded-b-lg rounded-tl-lg rounded-tr-lg p-6 sm:p-10 bg-[#fafafa]">
+      <div className="w-full border border-gray-200 rounded-b-lg rounded-tl-lg rounded-tr-lg p-6 sm:p-10 bg-[#fafafa]">
         {activeTab === 'desc' ? (
           <div className="text-sm text-gray-700 leading-relaxed space-y-6">
             {description ? (
