@@ -35,6 +35,8 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
   const [maxPrice, setMaxPrice] = useState<string>('');
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isBrandsOpen, setIsBrandsOpen] = useState(false);
 
   // Initialize state from URL params
   useEffect(() => {
@@ -175,23 +177,40 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
       {/* Categories */}
       <div className="mb-8">
         <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_categories')}</h3>
-        <select 
-          className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 cursor-pointer"
-          value={selectedCategories.length > 0 ? selectedCategories[0] : ''}
-          onChange={(e) => {
-            const val = e.target.value;
-            const newCats = val ? [val] : [];
-            setSelectedCategories(newCats);
-            updateFilters(newCats, minPrice, maxPrice, selectedBrands, selectedRatings);
-          }}
-        >
-          <option value="">-- {t('filter_categories')} --</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.slug}>
-              {cat.name} {cat._count !== undefined ? `(${cat._count.products})` : ''}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <button 
+            onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-sm bg-white flex items-center justify-between focus:outline-none focus:ring-1 focus:ring-orange-500 hover:border-orange-500 transition-colors"
+          >
+            <span className="text-gray-700 truncate">
+              {selectedCategories.length > 0 
+                ? `${selectedCategories.length} sélectionné(s)` 
+                : `-- ${t('filter_categories')} --`}
+            </span>
+            <svg className={`w-4 h-4 text-gray-500 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          
+          {isCategoriesOpen && (
+            <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto p-4 space-y-3">
+              {categories.map((cat) => (
+                <label key={cat.id} className="flex items-center cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                    checked={selectedCategories.includes(cat.slug)}
+                    onChange={() => handleCategoryChange(cat.slug)}
+                  />
+                  <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1 truncate">
+                    {cat.name}
+                  </span>
+                  {cat._count !== undefined && (
+                    <span className="text-xs text-gray-400">({cat._count.products})</span>
+                  )}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <hr className="border-gray-200 mb-8" />
@@ -201,23 +220,40 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
         <>
           <div className="mb-8">
             <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_brand')}</h3>
-            <select 
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 cursor-pointer"
-              value={selectedBrands.length > 0 ? selectedBrands[0] : ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                const newBrands = val ? [val] : [];
-                setSelectedBrands(newBrands);
-                updateFilters(selectedCategories, minPrice, maxPrice, newBrands, selectedRatings);
-              }}
-            >
-              <option value="">-- {t('filter_brand')} --</option>
-              {brands.map((brand) => (
-                <option key={brand.id} value={brand.slug}>
-                  {brand.name} {brand._count !== undefined ? `(${brand._count.products})` : ''}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <button 
+                onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm bg-white flex items-center justify-between focus:outline-none focus:ring-1 focus:ring-orange-500 hover:border-orange-500 transition-colors"
+              >
+                <span className="text-gray-700 truncate">
+                  {selectedBrands.length > 0 
+                    ? `${selectedBrands.length} sélectionné(s)` 
+                    : `-- ${t('filter_brand')} --`}
+                </span>
+                <svg className={`w-4 h-4 text-gray-500 transition-transform ${isBrandsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              
+              {isBrandsOpen && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto p-4 space-y-3">
+                  {brands.map((brand) => (
+                    <label key={brand.id} className="flex items-center cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                        checked={selectedBrands.includes(brand.slug)}
+                        onChange={() => handleBrandChange(brand.slug)}
+                      />
+                      <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1 truncate">
+                        {brand.name}
+                      </span>
+                      {brand._count !== undefined && (
+                        <span className="text-xs text-gray-400">({brand._count.products})</span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <hr className="border-gray-200 mb-8" />
         </>
