@@ -94,9 +94,9 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
           <div className="space-y-10">
             {/* Liste des avis */}
             <div>
-              <h3 className="text-sm font-bold mb-2 text-gray-900">Avis</h3>
+              <h3 className="text-sm font-bold mb-2 text-gray-900">{t('reviews_tab')}</h3>
               {reviews.length === 0 ? (
-                <p className="text-gray-500 text-xs">Il n'y a pas encore d'avis.</p>
+                <p className="text-gray-500 text-xs">{t('no_reviews_yet')}</p>
               ) : (
                 <div className="space-y-8 mt-4">
                   {reviews.map(review => (
@@ -118,10 +118,10 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
             {/* Formulaire d'avis */}
             <div className="pt-2">
               <h4 className="text-sm font-bold text-gray-800 mb-1">
-                Soyez le premier à laisser votre avis sur "{productTitle || 'ce produit'}"
+                {t('be_first_to_review', { name: productTitle || 'ce produit' })}
               </h4>
               <p className="text-xs text-gray-500 mb-6">
-                Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués avec *
+                {t('email_not_published')}
               </p>
               
               {!isLoggedIn ? (
@@ -136,7 +136,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                   
                   {/* Note */}
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-800">Votre note</label>
+                    <label className="text-xs font-bold text-gray-800">{t('your_rating_text')}</label>
                     <div className="flex gap-1 cursor-pointer">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <svg 
@@ -160,7 +160,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                       onChange={e => setComment(e.target.value)}
                       rows={5}
                       className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700 bg-white"
-                      placeholder="Votre avis *"
+                      placeholder={t('your_review_placeholder')}
                     ></textarea>
                   </div>
 
@@ -168,12 +168,12 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input 
                       type="text" 
-                      placeholder="Nom *" 
+                      placeholder={t('name_placeholder')} 
                       className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700 bg-white"
                     />
                     <input 
                       type="email" 
-                      placeholder="E-mail *" 
+                      placeholder={t('email_placeholder')} 
                       className="w-full px-4 py-3 border border-gray-200 rounded-sm focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700 bg-white"
                     />
                   </div>
@@ -186,7 +186,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                       className="mt-1 w-3.5 h-3.5 text-orange-600 border-gray-300 rounded-sm focus:ring-orange-500"
                     />
                     <label htmlFor="save-info" className="text-[11px] text-gray-600 font-medium">
-                      Enregistrer mon nom, mon e-mail et mon site dans le navigateur pour mon prochain commentaire.
+                      {t('save_info')}
                     </label>
                   </div>
                   
@@ -197,7 +197,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                       disabled={loading}
                       className="bg-orange-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-orange-700 disabled:opacity-50 transition-colors text-sm"
                     >
-                      {loading ? 'Envoi...' : 'Soumettre'}
+                      {loading ? t('sending') : t('submit_review')}
                     </button>
                   </div>
                 </form>

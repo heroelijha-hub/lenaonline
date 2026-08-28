@@ -16,7 +16,7 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#', borderColor }: { icon: string, title: string, price: number, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
+const SmallCard = ({ icon, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor }: { icon: string, title: string, price: number, rating?: number, ratingText?: string, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
   <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
     <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
       {imageUrl ? (
@@ -28,6 +28,16 @@ const SmallCard = ({ icon, title, price, imageUrl, linkUrl = '#', borderColor }:
     <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
       {title}
     </h3>
+    {rating !== undefined && ratingText && (
+      <div className="flex items-center gap-1 mb-1">
+        <div className="flex">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star key={star} filled={star <= rating} />
+          ))}
+        </div>
+        <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
+      </div>
+    )}
     <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900 mt-auto" />
   </Link>
 );
@@ -159,6 +169,8 @@ export default async function BestSeller({ config }: { config?: any }) {
                 icon={["📱", "👟", "🍯", "⌚"][i]} 
                 title={p?.title || "Product placeholder"} 
                 price={p ? p.price : 18.00} 
+                rating={p?.rating || 0}
+                ratingText={p?.ratingText || ''}
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
                 borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}
@@ -192,6 +204,8 @@ export default async function BestSeller({ config }: { config?: any }) {
                 icon={["🩳", "🧀", "🎒", "👟"][i]} 
                 title={p?.title || "Product placeholder"} 
                 price={p ? p.price : 35.00} 
+                rating={p?.rating || 0}
+                ratingText={p?.ratingText || ''}
                 imageUrl={p?.imageUrl}
                 linkUrl={p ? `/product/${p.slug}` : '#'}
                 borderColor={settings.BESTSELLER_CARD_BORDER_COLOR}

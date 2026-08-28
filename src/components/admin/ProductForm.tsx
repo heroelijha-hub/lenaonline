@@ -56,7 +56,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [salePrice, setSalePrice] = useState(initialData?.compareAtPrice?.toString() || '');
   
   const priceError = (salePrice && regularPrice && Number(salePrice) >= Number(regularPrice)) 
-    ? "Le prix promotionnel doit être inférieur au prix régulier" 
+    ? t('price_error_msg') 
     : "";
 
   // Helper to slugify
@@ -183,7 +183,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         }
       }
     } catch (err) {
-      alert("Une erreur est survenue lors de l'enregistrement.");
+      alert(t('save_error'));
     } finally {
       setIsLoading(false);
     }
@@ -278,27 +278,27 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 bg-white"
             >
-              <option value="">-- Aucune marque --</option>
+              <option value="">{t('no_brand')}</option>
               {brands.map(b => (
                 <option key={b.id} value={b.id}>{b.name}</option>
               ))}
-              <option value="new" className="font-bold text-orange-600">+ Ajouter une nouvelle marque</option>
+              <option value="new" className="font-bold text-orange-600">{t('add_new_brand')}</option>
             </select>
             
             {showNewBrand && (
               <div className="mt-4 p-4 border border-orange-200 bg-orange-50 rounded-md space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom de la marque *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('brand_name_label')}</label>
                   <input 
                     type="text" 
                     value={newBrandName}
                     onChange={(e) => setNewBrandName(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Ex: Nike, Apple..."
+                    placeholder={t('brand_name_placeholder')}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Logo (Optionnel)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('brand_logo_label')}</label>
                   <input 
                     type="file" 
                     accept="image/*"
@@ -311,7 +311,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                   onClick={() => setShowNewBrand(false)}
                   className="text-sm text-gray-500 hover:text-gray-700 underline"
                 >
-                  Annuler
+                  {t('cancel_brand')}
                 </button>
               </div>
             )}

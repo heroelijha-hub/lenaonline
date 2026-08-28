@@ -30,7 +30,10 @@ export default async function SearchPage({
 
   const products = await prisma.product.findMany({
     where,
-    include: { categories: true },
+    include: { 
+      categories: true,
+      reviews: { select: { rating: true } }
+    },
     orderBy: { createdAt: 'desc' }
   });
 
