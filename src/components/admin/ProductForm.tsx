@@ -557,12 +557,12 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
           {/* Achat Combiné (Force Sales) */}
           <div className="flex flex-col h-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Achat Combiné (Force Sales)</label>
-            <p className="text-xs text-gray-500 mb-2">Produits qui seront automatiquement et obligatoirement ajoutés au panier.</p>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('force_sales')}</label>
+            <p className="text-xs text-gray-500 mb-2">{t('force_sales_desc')}</p>
             <div className="relative mb-2">
               <input 
                 type="text" 
-                placeholder="Rechercher par titre ou ID..." 
+                placeholder={t('search_product_id')}
                 value={forceSalesSearch}
                 onChange={(e) => setForceSalesSearch(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
@@ -586,7 +586,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       </div>
                     ))}
                     {allProducts.filter(p => !forceSalesIds.includes(p.id) && (p.title.toLowerCase().includes(forceSalesSearch.toLowerCase()) || p.id.includes(forceSalesSearch))).length === 0 && (
-                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">Aucun produit trouvé</div>
+                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">{t('no_product_found')}</div>
                     )}
                 </div>
               )}
@@ -610,7 +610,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       type="button" 
                       onClick={() => setForceSalesIds(forceSalesIds.filter(fid => fid !== id))}
                       className="text-red-400 hover:text-red-600 p-2 shrink-0 bg-red-50 hover:bg-red-100 rounded transition opacity-0 group-hover:opacity-100"
-                      title="Retirer"
+                      title={t('remove_item')}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
@@ -619,7 +619,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               })}
               {forceSalesIds.length === 0 && (
                 <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-200 rounded text-gray-400 text-sm py-6">
-                  Aucun produit lié
+                  {t('no_linked_product')}
                 </div>
               )}
             </div>
@@ -627,12 +627,12 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
           {/* Vendus Ensemble (Sale Together) */}
           <div className="flex flex-col h-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Vendus Ensemble (Sale Together)</label>
-            <p className="text-xs text-gray-500 mb-2">Produits suggérés sous forme de cases à cocher sur la fiche produit.</p>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('sale_together')}</label>
+            <p className="text-xs text-gray-500 mb-2">{t('sale_together_desc')}</p>
             <div className="relative mb-2">
               <input 
                 type="text" 
-                placeholder="Rechercher par titre ou ID..." 
+                placeholder={t('search_product_id')}
                 value={saleTogetherSearch}
                 onChange={(e) => setSaleTogetherSearch(e.target.value)}
                 className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
@@ -656,7 +656,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       </div>
                     ))}
                     {allProducts.filter(p => !saleTogetherIds.includes(p.id) && (p.title.toLowerCase().includes(saleTogetherSearch.toLowerCase()) || p.id.includes(saleTogetherSearch))).length === 0 && (
-                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">Aucun produit trouvé</div>
+                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">{t('no_product_found')}</div>
                     )}
                 </div>
               )}
@@ -680,7 +680,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       type="button" 
                       onClick={() => setSaleTogetherIds(saleTogetherIds.filter(fid => fid !== id))}
                       className="text-red-400 hover:text-red-600 p-2 shrink-0 bg-red-50 hover:bg-red-100 rounded transition opacity-0 group-hover:opacity-100"
-                      title="Retirer"
+                      title={t('remove_item')}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
@@ -689,7 +689,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               })}
               {saleTogetherIds.length === 0 && (
                 <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-200 rounded text-gray-400 text-sm py-6">
-                  Aucun produit lié
+                  {t('no_linked_product')}
                 </div>
               )}
             </div>

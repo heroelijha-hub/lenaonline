@@ -123,7 +123,11 @@
     "your_review": "Tu opinión *",
     "review_placeholder": "¿Qué opinas de este producto?",
     "sending": "Enviando...",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "force_sales_title": "Compra combinada obligatoria",
+    "force_sales_msg": "Estos productos son indispensables para el funcionamiento del producto principal y se añadirán automáticamente a su carrito.",
+    "frequently_bought_together": "Comprados frecuentemente juntos",
+    "total_with_options": "Total con opciones:"
   },
   "Search": {
     "search_results": "Resultados de búsqueda",
@@ -154,8 +158,9 @@
     "standard_shipping": "Envío estándar:",
     "express_shipping": "Envío exprés:",
     "shipping_update_msg": "Las opciones de envío se actualizarán durante la compra.",
-    "calculate_shipping": "Calcular costos de envío",
-    "proceed_checkout": "Proceder a finalizar compra"
+    "calculate_shipping": "Calcular los gastos de envío",
+    "proceed_checkout": "Proceder al pago",
+    "force_sales_title": "Compra combinada obligatoria"
   },
   "Contact": {
     "address_label": "Dirección",
@@ -597,8 +602,16 @@
     "delete_error": "Imposible eliminar el producto.",
     "bulk_delete_error": "Imposible eliminar los productos seleccionados.",
     "woo_import_html_error": "La API de WooCommerce devolvió una respuesta inesperada (HTML en lugar de JSON). Esto suele suceder debido a una limitación de seguridad de su servidor (cortafuegos o antispam) después de varias peticiones. Puede reiniciar la importación, se reanudará donde se detuvo.",
-    "woo_import_parse_error": "Imposible leer los datos devueltos por WooCommerce. Puede reiniciar la importación para continuar.",
-    "syncing_categories": "Sincronizando categorías..."
+    "woo_import_parse_error": "No se pueden leer los datos devueltos por WooCommerce. Puedes reiniciar la importación para continuar.",
+    "syncing_categories": "Sincronizando categorías...",
+    "force_sales": "Compra combinada (Force Sales)",
+    "force_sales_desc": "Productos que se añadirán de forma automática y obligatoria al carrito.",
+    "sale_together": "Comprados Juntos (Sale Together)",
+    "sale_together_desc": "Productos sugeridos en forma de casillas de verificación en la página del producto.",
+    "search_product_id": "Buscar por título o ID...",
+    "no_product_found": "Ningún producto encontrado",
+    "remove_item": "Retirar",
+    "no_linked_product": "Ningún producto vinculado"
   },
   "AdminCategories": {
     "manage_categories": "Gestionar Categorías",

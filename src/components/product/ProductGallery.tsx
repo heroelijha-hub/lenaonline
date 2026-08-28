@@ -33,7 +33,7 @@ export default function ProductGallery({ images, title, discountLabel, compareAt
         <button 
           onClick={() => setSelectedIndex(Math.max(0, selectedIndex - 1))}
           disabled={!hasImages || selectedIndex === 0}
-          className="w-full py-1 border border-gray-200 rounded text-gray-400 hover:bg-gray-100 flex justify-center disabled:opacity-50"
+          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
         </button>
@@ -43,19 +43,19 @@ export default function ProductGallery({ images, title, discountLabel, compareAt
             <div 
               key={idx} 
               onClick={() => setSelectedIndex(idx)}
-              className={`border-2 rounded overflow-hidden cursor-pointer h-20 w-20 flex-shrink-0 transition-colors ${idx === selectedIndex ? 'border-orange-500' : 'border-transparent hover:border-gray-300'}`}
+              className={`border-2 rounded overflow-hidden cursor-pointer h-20 w-20 flex-shrink-0 transition-colors ${idx === selectedIndex ? 'border-[#ff4500]' : 'border-transparent hover:border-[#ff4500]/50'}`}
             >
               <img src={img} alt={`thumb-${idx}`} className="w-full h-full object-cover" />
             </div>
           ))
         ) : (
-          <div className="border-2 border-orange-500 rounded h-20 w-20 bg-gray-100 flex items-center justify-center text-2xl">🛍️</div>
+          <div className="border-2 border-[#ff4500] rounded h-20 w-20 bg-gray-100 flex items-center justify-center text-2xl">🛍️</div>
         )}
         
         <button 
           onClick={() => setSelectedIndex(Math.min((images?.length || 1) - 1, selectedIndex + 1))}
           disabled={!hasImages || selectedIndex >= Math.min(4, images.length - 1)}
-          className="w-full py-1 border border-gray-200 rounded text-gray-400 hover:bg-gray-100 flex justify-center mt-auto disabled:opacity-50"
+          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center mt-auto disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
         </button>

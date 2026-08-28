@@ -124,7 +124,11 @@
     "your_review": "Votre avis *",
     "review_placeholder": "Qu'avez-vous pensé de ce produit ?",
     "sending": "Envoi...",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "force_sales_title": "Achat combiné obligatoire",
+    "force_sales_msg": "Ces produits sont indispensables au fonctionnement du produit principal et seront ajoutés automatiquement à votre panier.",
+    "frequently_bought_together": "Fréquemment achetés ensemble",
+    "total_with_options": "Total avec options:"
   },
   "Search": {
     "search_results": "Résultats de recherche",
@@ -156,7 +160,8 @@
     "express_shipping": "Livraison expresse:",
     "shipping_update_msg": "Les options de livraison seront mises à jour lors de la commande.",
     "calculate_shipping": "Calculer les frais d'expédition",
-    "proceed_checkout": "Valider La Commande"
+    "proceed_checkout": "Procéder au paiement",
+    "force_sales_title": "Achat combiné obligatoire"
   },
   "Contact": {
     "address_label": "Adresse",
@@ -601,7 +606,15 @@
     "bulk_delete_error": "Impossible de supprimer les produits sélectionnés.",
     "woo_import_html_error": "L'API WooCommerce a retourné une réponse inattendue (HTML au lieu de JSON). Cela arrive souvent suite à une limitation de sécurité de votre hébergeur (pare-feu ou anti-spam) après plusieurs requêtes. Vous pouvez relancer l'importation, elle reprendra là où elle s'est arrêtée.",
     "woo_import_parse_error": "Impossible de lire les données renvoyées par WooCommerce. Vous pouvez relancer l'importation pour continuer.",
-    "syncing_categories": "Synchronisation des catégories en cours..."
+    "syncing_categories": "Synchronisation des catégories...",
+    "force_sales": "Achat Combiné (Force Sales)",
+    "force_sales_desc": "Produits qui seront automatiquement et obligatoirement ajoutés au panier.",
+    "sale_together": "Vendus Ensemble (Sale Together)",
+    "sale_together_desc": "Produits suggérés sous forme de cases à cocher sur la fiche produit.",
+    "search_product_id": "Rechercher par titre ou ID...",
+    "no_product_found": "Aucun produit trouvé",
+    "remove_item": "Retirer",
+    "no_linked_product": "Aucun produit lié"
   },
   "AdminCategories": {
     "manage_categories": "Gestion des Catégories",

@@ -183,7 +183,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
         {/* Total dynamique si des produits saleTogether sont cochés */}
         {selectedSaleTogether.length > 0 && (
           <div className="text-sm font-semibold text-gray-600 mt-2 bg-gray-50 p-2 rounded-md inline-block">
-            Total avec options: <span className="text-red-600 ml-1">{formatPrice(
+            {t('total_with_options')} <span className="text-red-600 ml-1">{formatPrice(
               (currentPrice * quantity) + 
               (product.saleTogether || []).filter(st => selectedSaleTogether.includes(st.id)).reduce((acc, curr) => acc + curr.price, 0)
             )}</span>
@@ -196,7 +196,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
         <div className="mb-6 border-2 border-orange-500 bg-orange-50 rounded-lg p-4">
           <h4 className="text-sm font-bold text-orange-600 uppercase tracking-wide mb-3 flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-            Achat combiné obligatoire
+            {t('force_sales_title')}
           </h4>
           <div className="space-y-3">
             {product.forceSales.map(fs => (
@@ -210,7 +210,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
             ))}
           </div>
           <p className="text-xs text-orange-700 mt-3 leading-relaxed">
-            Ces produits sont indispensables au fonctionnement du produit principal et seront ajoutés automatiquement à votre panier.
+            {t('force_sales_msg')}
           </p>
         </div>
       )}
@@ -319,7 +319,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       {/* Sale Together UI */}
       {product.saleTogether && product.saleTogether.length > 0 && (
         <div className="mb-8 border border-gray-200 rounded-lg p-4 bg-gray-50/50">
-          <h4 className="text-sm font-bold text-gray-900 mb-4">Fréquemment achetés ensemble</h4>
+          <h4 className="text-sm font-bold text-gray-900 mb-4">{t('frequently_bought_together')}</h4>
           <div className="space-y-3">
             {product.saleTogether.map(st => (
               <label key={st.id} className="flex items-center gap-3 cursor-pointer p-2 hover:bg-white rounded transition border border-transparent hover:border-gray-200">

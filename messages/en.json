@@ -124,7 +124,11 @@
     "your_review": "Your review *",
     "review_placeholder": "What did you think of this product?",
     "sending": "Sending...",
-    "submit": "Submit"
+    "submit": "Submit",
+    "force_sales_title": "Mandatory combined purchase",
+    "force_sales_msg": "These products are essential for the operation of the main product and will be automatically added to your cart.",
+    "frequently_bought_together": "Frequently bought together",
+    "total_with_options": "Total with options:"
   },
   "Search": {
     "search_results": "Search Results",
@@ -156,7 +160,8 @@
     "express_shipping": "Express shipping:",
     "shipping_update_msg": "Shipping options will be updated during checkout.",
     "calculate_shipping": "Calculate shipping costs",
-    "proceed_checkout": "Proceed to Checkout"
+    "proceed_checkout": "Proceed to Checkout",
+    "force_sales_title": "Mandatory combined purchase"
   },
   "Contact": {
     "address_label": "Address",
@@ -601,7 +606,15 @@
     "bulk_delete_error": "Unable to delete selected products.",
     "woo_import_html_error": "The WooCommerce API returned an unexpected response (HTML instead of JSON). This often happens due to a security limitation of your host (firewall or anti-spam) after several requests. You can restart the import, it will resume where it stopped.",
     "woo_import_parse_error": "Unable to read data returned by WooCommerce. You can restart the import to continue.",
-    "syncing_categories": "Syncing categories..."
+    "syncing_categories": "Syncing categories...",
+    "force_sales": "Combined Purchase (Force Sales)",
+    "force_sales_desc": "Products that will be automatically and obligatorily added to the cart.",
+    "sale_together": "Frequently Bought Together (Sale Together)",
+    "sale_together_desc": "Products suggested as checkboxes on the product page.",
+    "search_product_id": "Search by title or ID...",
+    "no_product_found": "No product found",
+    "remove_item": "Remove",
+    "no_linked_product": "No linked product"
   },
   "AdminCategories": {
     "manage_categories": "Manage Categories",

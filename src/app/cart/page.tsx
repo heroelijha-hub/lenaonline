@@ -102,7 +102,7 @@ export default function CartPage() {
                         )}
                         {item.forcedByItemId && (
                           <div className="text-xs font-semibold text-orange-600 mt-1">
-                            Achat combiné obligatoire
+                            {t('force_sales_title')}
                           </div>
                         )}
                       </div>
