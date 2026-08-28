@@ -52,9 +52,10 @@ type StoreLayoutProps = {
     allCategoriesBgColor?: string;
     allCategoriesTextColor?: string;
   };
+  userRole?: 'ADMIN' | 'CUSTOMER' | null;
 };
 
-export default function StoreLayout({ children, settings }: StoreLayoutProps) {
+export default function StoreLayout({ children, settings, userRole }: StoreLayoutProps) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
 
@@ -79,6 +80,7 @@ export default function StoreLayout({ children, settings }: StoreLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Header 
+        userRole={userRole}
         announcement={settings.announcement} 
         logoImage={settings.logoImage} 
         menuLinks={settings.menuLinks}

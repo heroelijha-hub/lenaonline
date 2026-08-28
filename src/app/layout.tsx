@@ -13,6 +13,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
 import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { Toaster } from 'react-hot-toast';
+import { createClient } from '@/utils/supabase/server';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,6 +43,17 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages();
   const locale = await getLocale();
+  
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
+  if (session) {
+    const dbUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+    if (dbUser) {
+      userRole = dbUser.role;
+    }
+  }
   
   const settingsDb = await prisma.setting.findMany();
   const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
@@ -190,9 +202,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <CurrencyProvider options={currencyOptions}>
-            <PostHogProvider>
-              <StoreLayout settings={storeSettings}>
+          <PostHogProvider>
+            <CurrencyProvider options={currencyOptions}>
+              <StoreLayout settings={storeSettings} userRole={userRole}>
                 <Toaster position="bottom-right" />
                 {children}
                 <ChatWidget 

@@ -6,6 +6,8 @@
   },
   "Header": {
     "login": "Login",
+    "my_account": "Dashboard",
+    "admin_dashboard": "Admin Dashboard",
     "all_categories": "All categories",
     "search_placeholder": "Search products...",
     "search_button": "Search",

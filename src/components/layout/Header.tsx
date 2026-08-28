@@ -41,6 +41,7 @@ type HeaderProps = {
   mobileHeaderBorderColor?: string;
   allCategoriesBgColor?: string;
   allCategoriesTextColor?: string;
+  userRole?: 'ADMIN' | 'CUSTOMER' | null;
 };
 
 export default function Header({ 
@@ -72,6 +73,7 @@ export default function Header({
   mobileHeaderBorderColor = '#d1d5db',
   allCategoriesBgColor = '#111827',
   allCategoriesTextColor = '#ffffff',
+  userRole = null,
 }: HeaderProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -214,13 +216,26 @@ export default function Header({
               {link.label}
             </Link>
           ))}
-          <button 
-            onClick={() => setIsLoginModalOpen(true)}
-            className="flex items-center hover:opacity-75 transition"
-          >
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            {t('login')}
-          </button>
+          
+          {userRole ? (
+            <Link 
+              href={userRole === 'ADMIN' ? '/admin' : '/account'}
+              className="flex items-center hover:opacity-75 transition text-orange-600 font-semibold"
+            >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {userRole === 'ADMIN' ? t('admin_dashboard') : t('my_account')}
+            </Link>
+          ) : (
+            <button 
+              onClick={() => setIsLoginModalOpen(true)}
+              className="flex items-center hover:opacity-75 transition"
+            >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+              {t('login')}
+            </button>
+          )}
         </div>
       </div>
 

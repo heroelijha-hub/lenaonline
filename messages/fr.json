@@ -6,6 +6,8 @@
   },
   "Header": {
     "login": "Connexion",
+    "my_account": "Tableau de bord",
+    "admin_dashboard": "Tableau de bord",
     "all_categories": "Toutes catégories",
     "search_placeholder": "Rechercher des produits...",
     "search_button": "Rechercher",

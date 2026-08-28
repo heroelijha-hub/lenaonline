@@ -5,8 +5,10 @@
     "cart": "Tu carrito"
   },
   "Header": {
-    "login": "Iniciar sesión",
-    "all_categories": "Todas las categorías",
+    "login": "Acceso",
+    "my_account": "Panel",
+    "admin_dashboard": "Panel de administración",
+    "all_categories": "Todas las categorias",
     "search_placeholder": "Buscar productos...",
     "search_button": "Buscar",
     "searching": "Buscando...",
