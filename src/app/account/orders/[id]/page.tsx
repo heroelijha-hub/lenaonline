@@ -160,6 +160,18 @@ export default async function OrderDetailsPage({
   const currentStatus = statusLabels[order.status] || order.status;
   const orderId = order.id.split('-')[0].toUpperCase();
 
+  const paymentMethodLabels: Record<string, string> = {
+    STRIPE: t('payment_stripe'),
+    BANK_TRANSFER: t('payment_bank_transfer')
+  };
+  const currentPaymentMethod = paymentMethodLabels[order.paymentMethod] || order.paymentMethod;
+
+  // Fallback for shipping address if it wasn't provided distinctly
+  if (!formattedShippingAddress && formattedBillingAddress) {
+    formattedShippingAddress = formattedBillingAddress;
+    customerNameShipping = customerNameBilling;
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-8">
       
@@ -231,7 +243,7 @@ export default async function OrderDetailsPage({
             <tr>
               <td className="border border-gray-200 p-4 font-bold text-gray-900">{t('payment')} :</td>
               <td className="border border-gray-200 p-4 font-bold text-gray-900">
-                {order.paymentMethod}
+                {currentPaymentMethod}
               </td>
             </tr>
           </tbody>

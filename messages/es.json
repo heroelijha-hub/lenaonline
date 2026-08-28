@@ -313,7 +313,11 @@
     "shipping_address": "Dirección de envío",
     "tracking_number": "Número de seguimiento",
     "buyer_info": "Comprador",
-    "payment": "Pago"
+    "payment": "Pago",
+    "order_intro": "El pedido #{id} se realizó el {date} y actualmente está {status}.",
+    "product": "Producto",
+    "payment_stripe": "Tarjeta de crédito (Stripe)",
+    "payment_bank_transfer": "Transferencia bancaria"
   },
   "AccountAddresses": {
     "addresses_intro": "Las siguientes direcciones se utilizarán en la página de pago por defecto.",

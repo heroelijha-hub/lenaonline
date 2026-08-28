@@ -316,7 +316,11 @@
     "shipping_address": "Shipping address",
     "tracking_number": "Tracking number",
     "buyer_info": "Buyer",
-    "payment": "Payment"
+    "payment": "Payment",
+    "order_intro": "Order #{id} was placed on {date} and is currently {status}.",
+    "product": "Product",
+    "payment_stripe": "Credit Card (Stripe)",
+    "payment_bank_transfer": "Bank Transfer"
   },
   "AccountAddresses": {
     "addresses_intro": "The following addresses will be used on the checkout page by default.",
