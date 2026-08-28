@@ -175,24 +175,23 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
       {/* Categories */}
       <div className="mb-8">
         <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_categories')}</h3>
-        <div className="space-y-3">
+        <select 
+          className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 cursor-pointer"
+          value={selectedCategories.length > 0 ? selectedCategories[0] : ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            const newCats = val ? [val] : [];
+            setSelectedCategories(newCats);
+            updateFilters(newCats, minPrice, maxPrice, selectedBrands, selectedRatings);
+          }}
+        >
+          <option value="">-- {t('filter_categories')} --</option>
           {categories.map((cat) => (
-            <label key={cat.id} className="flex items-center cursor-pointer group">
-              <input
-                type="checkbox"
-                className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-                checked={selectedCategories.includes(cat.slug)}
-                onChange={() => handleCategoryChange(cat.slug)}
-              />
-              <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1">
-                {cat.name}
-              </span>
-              {cat._count !== undefined && (
-                <span className="text-xs text-gray-400">({cat._count.products})</span>
-              )}
-            </label>
+            <option key={cat.id} value={cat.slug}>
+              {cat.name} {cat._count !== undefined ? `(${cat._count.products})` : ''}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       <hr className="border-gray-200 mb-8" />
@@ -202,24 +201,23 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
         <>
           <div className="mb-8">
             <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_brand')}</h3>
-            <div className="space-y-3">
+            <select 
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 cursor-pointer"
+              value={selectedBrands.length > 0 ? selectedBrands[0] : ''}
+              onChange={(e) => {
+                const val = e.target.value;
+                const newBrands = val ? [val] : [];
+                setSelectedBrands(newBrands);
+                updateFilters(selectedCategories, minPrice, maxPrice, newBrands, selectedRatings);
+              }}
+            >
+              <option value="">-- {t('filter_brand')} --</option>
               {brands.map((brand) => (
-                <label key={brand.id} className="flex items-center cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-                    checked={selectedBrands.includes(brand.slug)}
-                    onChange={() => handleBrandChange(brand.slug)}
-                  />
-                  <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1">
-                    {brand.name}
-                  </span>
-                  {brand._count !== undefined && (
-                    <span className="text-xs text-gray-400">({brand._count.products})</span>
-                  )}
-                </label>
+                <option key={brand.id} value={brand.slug}>
+                  {brand.name} {brand._count !== undefined ? `(${brand._count.products})` : ''}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
           <hr className="border-gray-200 mb-8" />
         </>
