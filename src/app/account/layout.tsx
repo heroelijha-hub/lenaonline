@@ -30,7 +30,9 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
           <aside className="w-full md:w-1/4 flex-shrink-0">
             <nav className="space-y-2">
               {navItems.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = item.href === '/account' 
+                  ? pathname === '/account'
+                  : pathname.startsWith(item.href);
                 return (
                   <Link
                     key={item.id}

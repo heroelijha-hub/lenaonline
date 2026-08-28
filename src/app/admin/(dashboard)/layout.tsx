@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import NotificationBell from '@/components/layout/NotificationBell';
+import AdminSidebarNav from '@/components/admin/AdminSidebarNav';
 import { getTranslations } from 'next-intl/server';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -39,53 +40,23 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               {t('title')}
             </Link>
           </div>
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            <Link href="/admin" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('dashboard')}
-            </Link>
-            <Link href="/admin/products" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('products')}
-            </Link>
-            <Link href="/admin/categories" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('categories')}
-            </Link>
-            <Link href="/admin/brands" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('brands')}
-            </Link>
-            <Link href="/admin/tags" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('tags')}
-            </Link>
-            <Link href="/admin/orders" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('orders')}
-            </Link>
-            <Link href="/admin/reviews" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('reviews')}
-            </Link>
-            <Link href="/admin/abandoned-carts" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('abandoned_carts')}
-            </Link>
-            <Link href="/admin/coupons" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('coupons')}
-            </Link>
-            <Link href="/admin/landing" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('landing_page')}
-            </Link>
-            <Link href="/admin/chat" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('customer_chat')}
-            </Link>
-            <Link href="/admin/blogs" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('blog')}
-            </Link>
-            <Link href="/admin/pages" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-orange-50 hover:text-orange-600 transition">
-              {t('pages')}
-            </Link>
-            <Link href="/admin/settings" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              {t('settings')}
-            </Link>
-            <Link href="/admin/shipping" className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100">
-              {t('shipping')}
-            </Link>
-          </nav>
+          <AdminSidebarNav links={[
+            { href: '/admin', label: t('dashboard') },
+            { href: '/admin/products', label: t('products') },
+            { href: '/admin/categories', label: t('categories') },
+            { href: '/admin/brands', label: t('brands') },
+            { href: '/admin/tags', label: t('tags') },
+            { href: '/admin/orders', label: t('orders') },
+            { href: '/admin/reviews', label: t('reviews') },
+            { href: '/admin/abandoned-carts', label: t('abandoned_carts') },
+            { href: '/admin/coupons', label: t('coupons') },
+            { href: '/admin/landing', label: t('landing_page') },
+            { href: '/admin/chat', label: t('customer_chat') },
+            { href: '/admin/blogs', label: t('blog') },
+            { href: '/admin/pages', label: t('pages') },
+            { href: '/admin/settings', label: t('settings') },
+            { href: '/admin/shipping', label: t('shipping') },
+          ]} />
         </div>
       </aside>
 
