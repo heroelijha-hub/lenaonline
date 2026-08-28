@@ -76,7 +76,7 @@ export default async function OrderDetailsPage({
   const totalItems = order.orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
   let formattedAddress = order.destinationAddress;
-  let customerName = user.name || "";
+  let customerName = user.email ? user.email.split('@')[0] : "";
   let customerPhone = "";
   
   if (formattedAddress && formattedAddress.startsWith('{')) {
