@@ -435,7 +435,8 @@
     "add_to_cart": "Ajouter au panier",
     "quick_view": "Aperçu rapide",
     "add_to_wishlist": "Ajouter aux favoris",
-    "general": "Général"
+    "general": "Général",
+    "select_options": "Sélectionner les options"
   },
   "StoreLocator": {
     "page_title": "Nos Magasins",

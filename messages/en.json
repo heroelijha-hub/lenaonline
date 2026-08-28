@@ -435,7 +435,8 @@
     "add_to_cart": "Add to cart",
     "quick_view": "Quick view",
     "add_to_wishlist": "Add to wishlist",
-    "general": "General"
+    "general": "General",
+    "select_options": "Select options"
   },
   "StoreLocator": {
     "page_title": "Our Stores",

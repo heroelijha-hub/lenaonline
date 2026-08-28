@@ -436,7 +436,8 @@
     "add_to_cart": "Añadir al carrito",
     "quick_view": "Vista rápida",
     "add_to_wishlist": "Añadir a lista de deseos",
-    "general": "General"
+    "general": "General",
+    "select_options": "Seleccionar opciones"
   },
   "StoreLocator": {
     "page_title": "Nuestras Tiendas",
@@ -549,7 +550,9 @@
     "pages": "Páginas",
     "settings": "Configuración",
     "shipping": "Envío",
-    "sign_out": "Cerrar sesión"
+    "sign_out": "Cerrar sesión",
+    "brands": "Marcas",
+    "tags": "Etiquetas"
   },
   "AdminDashboard": {
     "title": "Panel de control",
