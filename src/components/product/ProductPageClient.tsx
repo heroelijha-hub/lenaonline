@@ -92,7 +92,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
                   {[1, 2, 3, 4, 5].map(i => <Star key={i} filled={i <= Math.round(avgRating)} />)}
                 </div>
                 <span className="ml-1 text-gray-600">
-                  {t?.customer_reviews?.replace('{count}', String(reviews.length)) ?? `${reviews.length} avis`}
+                  {t?.customer_reviews ?? `${reviews.length} avis`}
                 </span>
               </div>
               <span className="border-l border-gray-300 h-4"></span>

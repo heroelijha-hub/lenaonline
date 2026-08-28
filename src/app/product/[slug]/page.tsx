@@ -112,7 +112,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 categories: t('categories'),
                 tags: t('tags'),
                 sold: t('sold'),
-                customer_reviews: t.raw('customer_reviews') as string,
+                customer_reviews: t('customer_reviews', { count: product.reviews.length }),
                 uncategorized: t('uncategorized'),
               }}
             />
