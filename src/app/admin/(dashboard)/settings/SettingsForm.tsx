@@ -123,7 +123,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Main Street, London');
   const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
   const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@mystore.com');
-  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.mystore.com');
+  const [mobileContact{tSettings('contact_website')}, setMobileContact{tSettings('contact_website')}] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.mystore.com');
   const [mobileHeaderBorderColor, setMobileHeaderBorderColor] = useState(initialSettings.MOBILE_HEADER_BORDER_COLOR || '#d1d5db');
 
   // All Categories Button Settings
@@ -181,7 +181,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [notFoundBgImage, setNotFoundBgImage] = useState(initialSettings.NOT_FOUND_BG_IMAGE || '');
   const [notFoundFile, setNotFoundFile] = useState<File | null>(null);
 
-  // Maintenance Page Settings
+  // {tSettings('maintenance_page')} Settings
   const [maintenanceMode, setMaintenanceMode] = useState(initialSettings.MAINTENANCE_MODE === 'true');
   const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site under maintenance');
   const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!');
@@ -256,7 +256,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['MOBILE_CONTACT_ADDRESS'] = mobileContactAddress;
     settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
     settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
-    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
+    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContact{tSettings('contact_website')};
     settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
 
     settingsMap['ALL_CATEGORIES_BG_COLOR'] = allCategoriesBgColor;
@@ -379,7 +379,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('languages_translation')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Active Language (Site)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('active_language_site')}</label>
             <select
               value={activeLanguage}
               onChange={(e) => setActiveLanguage(e.target.value)}
@@ -391,15 +391,15 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Translation scope</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('translation_scope_label')}</label>
             <select
               value={translationScope}
               onChange={(e) => setTranslationScope(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
             >
-              <option value="frontend_only">Option 1: Client side only (Admin stays in English)</option>
-              <option value="admin_only">Option 2: Admin only (Client stays in English)</option>
-              <option value="all">Option 3: Everything is translated</option>
+              <option value="frontend_only">{tSettings('translation_scope_opt1')}</option>
+              <option value="admin_only">{tSettings('translation_scope_opt2')}</option>
+              <option value="all">{tSettings('translation_scope_opt3')}</option>
             </select>
           </div>
         </div>
@@ -419,7 +419,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-xs text-gray-500">This is the default currency used to display prices.</p>
+            <p className="mt-2 text-xs text-gray-500">{tSettings('default_currency_desc')}</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{t("symbol_position")}</label>
@@ -435,7 +435,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Thousands separator</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('thousand_separator')}</label>
             <select
               value={thousandSeparator}
               onChange={(e) => setThousandSeparator(e.target.value)}
@@ -448,7 +448,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Decimal separator</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('decimal_separator')}</label>
             <select
               value={decimalSeparator}
               onChange={(e) => setDecimalSeparator(e.target.value)}
@@ -474,7 +474,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="taxIncludedInPrice" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Catalog prices include all taxes (VAT-inclusive)
+              {tSettings('tax_inclusive')}
             </label>
           </div>
           <div className="flex items-center gap-3">
@@ -486,11 +486,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="enableEuVat" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Apply dynamic VAT based on EU country (coming soon at Checkout)
+              {tSettings('dynamic_eu_vat')}
             </label>
           </div>
           <div className="w-full md:w-1/2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Default VAT rate (%)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('default_vat_rate')}</label>
             <input
               type="number"
               step="0.1"
@@ -500,7 +500,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="Ex: 20"
             />
-            <p className="mt-2 text-xs text-gray-500">Rate applied if dynamic VAT is disabled or client country is unknown.</p>
+            <p className="mt-2 text-xs text-gray-500">{tSettings('default_vat_desc')}</p>
           </div>
         </div>
         <SectionSaveButton />
@@ -518,13 +518,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="enableBuyNow" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Enable the "Buy Now" button (Quick purchase) on product pages
+              {tSettings('enable_buy_now')}
             </label>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Receiving Email (Contact & Newsletter)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('receiving_email')}</label>
               <input
                 type="email"
                 value={contactReceiverEmail}
@@ -532,10 +532,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="admin@mystore.com"
               />
-              <p className="mt-2 text-xs text-gray-500">The e-mail address that will receive contact form messages and registration notifications.</p>
+              <p className="mt-2 text-xs text-gray-500">{tSettings('receiving_email_desc')}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Success Message (Newsletter)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('newsletter_success_msg')}</label>
               <textarea
                 value={newsletterSuccessMessage}
                 onChange={(e) => setNewsletterSuccessMessage(e.target.value)}
@@ -543,14 +543,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Thank you for subscribing!"
               />
-              <p className="mt-2 text-xs text-gray-500">Message displayed to the user after a successful subscription.</p>
+              <p className="mt-2 text-xs text-gray-500">{tSettings('newsletter_success_desc')}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
-            <h4 className="text-md font-bold text-gray-900 md:col-span-2">Product Page Shipping Info</h4>
+            <h4 className="text-md font-bold text-gray-900 md:col-span-2">{tSettings('product_shipping_info')}</h4>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 1 (Location Icon)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('shipping_line_1')}</label>
               <input
                 type="text"
                 value={shippingInfo1}
@@ -559,7 +559,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 2 (Globe Icon)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('shipping_line_2')}</label>
               <input
                 type="text"
                 value={shippingInfo2}
@@ -568,7 +568,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 3 (Truck Icon)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('shipping_line_3')}</label>
               <input
                 type="text"
                 value={shippingInfo3}
@@ -577,7 +577,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 4 (Return Icon)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('shipping_line_4')}</label>
               <input
                 type="text"
                 value={shippingInfo4}
@@ -592,10 +592,10 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('email_server')}</h3>
-        <p className="text-sm text-gray-500 mb-4">Configure these settings so the store can automatically send emails (Order confirmation, Shipping, Cancellation).</p>
+        <p className="text-sm text-gray-500 mb-4">{tSettings('smtp_desc')}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">SMTP Host (ex: smtp.gmail.com)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('smtp_host')}</label>
             <input
               type="text"
               value={smtpHost}
@@ -605,7 +605,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">SMTP Port (ex: 587 or 465)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('smtp_port')}</label>
             <input
               type="text"
               value={smtpPort}
@@ -615,7 +615,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Username (Login Email)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('smtp_username')}</label>
             <input
               type="text"
               value={smtpUser}
@@ -625,7 +625,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Password (App Password)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('smtp_password')}</label>
             <input
               type="password"
               value={smtpPass}
@@ -635,7 +635,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Sender Email (From: ...)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('smtp_sender_email')}</label>
             <input
               type="text"
               value={smtpFrom}
@@ -650,17 +650,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
       <div className="pt-4">
         <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('payments')}</h3>
-        <p className="text-sm text-gray-500 mb-4">Check "Enable this mode" to make the payment method visible at checkout.</p>
+        <p className="text-sm text-gray-500 mb-4">{tSettings('payment_enable_desc')}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">Stripe Configuration (Credit Cards)</h4>
+            <h4 className="text-md font-bold text-gray-900">{tSettings('stripe_config')}</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enableStripe} onChange={(e) => setEnableStripe(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
+              <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Public Key (Publishable Key)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('stripe_public_key')}</label>
             <input
               type="text"
               value={stripePublicKey}
@@ -670,7 +670,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Secret Key</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('stripe_secret_key')}</label>
             <input
               type="password"
               value={stripeSecretKey}
@@ -681,14 +681,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
 
           <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">PayPal Configuration</h4>
+            <h4 className="text-md font-bold text-gray-900">{tSettings('paypal_config')}</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enablePaypal} onChange={(e) => setEnablePaypal(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
+              <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">PayPal Client ID</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('paypal_client_id')}</label>
             <input
               type="text"
               value={paypalClientId}
@@ -698,7 +698,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">PayPal Secret</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('paypal_secret')}</label>
             <input
               type="password"
               value={paypalSecret}
@@ -709,14 +709,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
 
           <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
-            <h4 className="text-md font-bold text-gray-900">Bank Transfer Configuration</h4>
+            <h4 className="text-md font-bold text-gray-900">{tSettings('bank_transfer_config')}</h4>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={enableBankTransfer} onChange={(e) => setEnableBankTransfer(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-              <span className="text-sm font-medium text-gray-700">Enable this mode</span>
+              <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
             </label>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">IBAN</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('iban')}</label>
             <input
               type="text"
               value={bankTransferIban}
@@ -726,7 +726,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">BIC / SWIFT</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bic_swift')}</label>
             <input 
               type="text" 
               value={bankTransferBic}
@@ -736,27 +736,27 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Account Holder</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('account_holder')}</label>
             <input
               type="text"
               value={bankTransferAccountHolder}
               onChange={(e) => setBankTransferAccountHolder(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Company or person name"
+              placeholder=tSettings('bank_account_holder_ph')
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bank_name')}</label>
             <input
               type="text"
               value={bankTransferBankName}
               onChange={(e) => setBankTransferBankName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Ex: BNP Paribas"
+              placeholder=tSettings('bank_name_ph')
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Message to display at checkout</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('checkout_message')}</label>
             <textarea
               value={bankTransferCheckoutMessage}
               onChange={(e) => setBankTransferCheckoutMessage(e.target.value)}
@@ -766,7 +766,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Instructions (sent to the client)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('instructions_client')}</label>
             <textarea
               value={bankTransferInstructions}
               onChange={(e) => setBankTransferInstructions(e.target.value)}
@@ -784,21 +784,21 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
         
         {/* Product Card Settings */}
         <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-          <h4 className="text-md font-bold text-gray-900 mb-4">Product Cards (Shop & Category pages)</h4>
+          <h4 className="text-md font-bold text-gray-900 mb-4">{tSettings('product_cards_settings')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Card Style</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('card_style')}</label>
               <select
                 value={shopCardStyle}
                 onChange={(e) => setShopCardStyle(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               >
-                <option value="design1">Design 1 (Hover actions in center)</option>
-                <option value="design2">Design 2 (Cart button at bottom, Hover top-right)</option>
+                <option value="design1">{tSettings('card_design_1')}</option>
+                <option value="design2">{tSettings('card_design_2')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Card Border Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('card_border_color')}</label>
               <div className="flex items-center gap-3">
                 <input
                   type="color"
@@ -820,7 +820,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Main Store Color (Theme)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('main_theme_color')}</label>
             <div className="flex items-center gap-3">
               <input
                 type="color"
@@ -838,7 +838,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Top Banner Message</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('top_banner_message')}</label>
             <input
               type="text"
               value={headerAnnouncement}
@@ -862,7 +862,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                       onClick={() => setHeaderLogoImage('')} 
                       className="text-sm text-red-600 hover:text-red-800 hover:underline font-medium px-2 py-1"
                     >
-                      Supprimer
+                      {tSettings('delete_btn')}
                     </button>
                   </div>
                 )}
@@ -877,12 +877,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
                   className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
                 />
-                <p className="mt-1 text-xs text-gray-500">Upload a logo to replace the store name in the header.</p>
+                <p className="mt-1 text-xs text-gray-500">{tSettings('logo_desc')}</p>
               </div>
 
               <div className="flex-1 border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 sm:pl-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Favicon (Icône de l'onglet)
+                  {tSettings('favicon_label')}
                 </label>
                 {faviconImage && !faviconFile && (
                   <div className="mb-4 flex items-center gap-4">
@@ -894,7 +894,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                       onClick={() => setFaviconImage('')} 
                       className="text-sm text-red-600 hover:text-red-800 hover:underline font-medium px-2 py-1"
                     >
-                      Supprimer
+                      {tSettings('delete_btn')}
                     </button>
                   </div>
                 )}
@@ -909,12 +909,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   onChange={(e) => setFaviconFile(e.target.files?.[0] || null)}
                   className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
                 />
-                <p className="mt-1 text-xs text-gray-500">Une petite image carrée (idéalement PNG ou ICO) qui s'affiche dans l'onglet du navigateur.</p>
+                <p className="mt-1 text-xs text-gray-500">{tSettings('favicon_desc')}</p>
               </div>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Support Phone (Header)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('support_phone')}</label>
             <input
               type="text"
               value={headerSupportPhone}
@@ -923,7 +923,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Support Email (Header)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('support_email')}</label>
             <input
               type="email"
               value={headerSupportEmail}
@@ -936,33 +936,33 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Search Bar (Ajax)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('search_bar_ajax')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Border color</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('border_color')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={searchBorderColor} onChange={e => setSearchBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Input text (Placeholder)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('input_placeholder')}</label>
             <input type="text" value={searchPlaceholder} onChange={e => setSearchPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Button text</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('button_text')}</label>
             <input type="text" value={searchBtnText} onChange={e => setSearchBtnText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Button background color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('button_bg_color')}</label>
               <div className="flex items-center gap-2">
                 <input type="color" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={searchBtnBgColor} onChange={e => setSearchBtnBgColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Text color (button)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('text_color_btn')}</label>
               <div className="flex items-center gap-2">
                 <input type="color" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="h-10 w-12 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={searchBtnTextColor} onChange={e => setSearchBtnTextColor(e.target.value)} className="px-2 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full text-sm" />
@@ -974,12 +974,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Navigation Links (Menu)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('nav_links_menu')}</h3>
         <div className="space-y-4">
           {menuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Link name</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('link_name')}</label>
                 <input
                   type="text"
                   value={link.label}
@@ -992,7 +992,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('url_link')}</label>
                 <input
                   type="text"
                   value={link.url}
@@ -1033,29 +1033,29 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Mobile Navigation (Hamburger)</h3>
-        <p className="text-sm text-gray-500 mb-4">Configure the side menu (Drawer) that opens on mobile.</p>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('mobile_nav_title')}</h3>
+        <p className="text-sm text-gray-500 mb-4">{tSettings('mobile_nav_desc')}</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-gray-800 mb-2">"About" Section</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{tSettings('about_section_title')}</h4>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('page_title')}</label>
             <input type="text" value={mobileAboutTitle} onChange={e => setMobileAboutTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('description_label')}</label>
             <textarea value={mobileAboutDesc} onChange={e => setMobileAboutDesc(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
         </div>
 
         <div className="space-y-4 mb-6">
-          <h4 className="font-semibold text-gray-800">Mobile menu links</h4>
+          <h4 className="font-semibold text-gray-800">{tSettings('mobile_menu_links_title')}</h4>
           {mobileMenuLinks.map((link, idx) => (
             <div key={idx} className="flex items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Link name</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('link_name')}</label>
                 <input
                   type="text"
                   value={link.label}
@@ -1068,7 +1068,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('url_link')}</label>
                 <input
                   type="text"
                   value={link.url}
@@ -1102,38 +1102,38 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Add a mobile link
+            {tSettings('add_mobile_link_btn')}
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-gray-800 mb-2">Contact Section</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{tSettings('contact_section_title')}</h4>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_address')}</label>
             <input type="text" value={mobileContactAddress} onChange={e => setMobileContactAddress(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_phone')}</label>
             <input type="text" value={mobileContactPhone} onChange={e => setMobileContactPhone(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_email')}</label>
             <input type="text" value={mobileContactEmail} onChange={e => setMobileContactEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Website (without https://)</label>
-            <input type="text" value={mobileContactWebsite} onChange={e => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_website')} (without https://)</label>
+            <input type="text" value={mobileContact{tSettings('contact_website')}} onChange={e => setMobileContact{tSettings('contact_website')}(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mt-6 mb-6">
           <div className="md:col-span-2">
-            <h4 className="font-semibold text-gray-800 mb-2">Design</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{tSettings('design_title')}</h4>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Border color (Mobile Header)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('mobile_header_border_color')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={mobileHeaderBorderColor} onChange={e => setMobileHeaderBorderColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -1145,17 +1145,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">All Categories Button</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('all_categories_btn_title')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Background color</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bg_color_label')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={allCategoriesBgColor} onChange={e => setAllCategoriesBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={allCategoriesBgColor} onChange={e => setAllCategoriesBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Text color</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('text_color_label')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={allCategoriesTextColor} onChange={e => setAllCategoriesTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={allCategoriesTextColor} onChange={e => setAllCategoriesTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -1166,17 +1166,17 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Top Bar Links and Colors</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('topbar_links_colors')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Background color (Top Bar)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('topbar_bg_color')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={topBarBgColor} onChange={e => setTopBarBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Text color (Top Bar)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('topbar_text_color')}</label>
             <div className="flex items-center gap-3">
               <input type="color" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
               <input type="text" value={topBarTextColor} onChange={e => setTopBarTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-full" />
@@ -1187,7 +1187,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           {topBarLinks.map((link, idx) => (
             <div key={idx} className="flex flex-wrap items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1 min-w-[120px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Icon</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('icon_label')}</label>
                 <select
                   value={link.icon}
                   onChange={(e) => {
@@ -1199,13 +1199,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 >
                   <option value="location">Location</option>
                   <option value="truck">Delivery truck</option>
-                  <option value="phone">Phone</option>
+                  <option value="phone">{tSettings('contact_phone')}</option>
                   <option value="star">Star</option>
-                  <option value="mail">Email</option>
+                  <option value="mail">{tSettings('contact_email')}</option>
                 </select>
               </div>
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Text</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('text_label')}</label>
                 <input
                   type="text"
                   value={link.label}
@@ -1218,7 +1218,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 />
               </div>
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL / Link</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{tSettings('url_link')}</label>
                 <input
                   type="text"
                   value={link.url}
@@ -1252,14 +1252,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             className="flex items-center text-orange-600 hover:text-orange-700 font-medium text-sm transition"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-            Add a Top Bar link
+            {tSettings('add_topbar_link_btn')}
           </button>
         </div>
         <SectionSaveButton />
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Chat Settings</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('chat_settings_title')}</h3>
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <input
@@ -1270,12 +1270,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="chatEnabled" className="text-sm font-medium text-gray-700 cursor-pointer">
-              Enable Chat module for customers
+              {tSettings('enable_chat_module')}
             </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Store Name (Chat)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('chat_store_name')}</label>
               <input
                 type="text"
                 value={chatStoreName}
@@ -1285,8 +1285,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Chat Icon (Upload)</label>
-              <p className="text-xs text-gray-500 mb-2">Recommended size: 64x64 pixels (Square).</p>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('chat_icon_upload')}</label>
+              <p className="text-xs text-gray-500 mb-2">{tSettings('chat_icon_desc')}</p>
               {chatStoreIcon && !chatIconFile && (
                 <div className="relative inline-block mb-2">
                   <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 object-cover rounded-full border" />
@@ -1316,19 +1316,19 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Footer</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('footer_title')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="md:col-span-2 grid grid-cols-2 gap-6 pb-4 border-b">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Footer Background Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Footer {tSettings('bg_color')}</label>
               <div className="flex items-center gap-3">
                 <input type="color" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={footerBgColor} onChange={e => setFooterBgColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Main Text Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Main {tSettings('text_color')}</label>
               <div className="flex items-center gap-3">
                 <input type="color" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="h-10 w-16 p-1 border border-gray-300 rounded-md cursor-pointer" />
                 <input type="text" value={footerTextColor} onChange={e => setFooterTextColor(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 w-32" />
@@ -1336,30 +1336,30 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Address 1 (Store 1)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_addr1')}</label>
             <input type="text" value={footerAddress1} onChange={e => setFooterAddress1(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Address 2 (Store 2 - Optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_addr2')}</label>
             <input type="text" value={footerAddress2} onChange={e => setFooterAddress2(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter Text</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_newsletter_text')}</label>
             <textarea value={footerNewsletterText} onChange={e => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <h4 className="text-md font-medium text-gray-800 mb-4">Interface Texts (Titles and Labels)</h4>
+            <h4 className="text-md font-medium text-gray-800 mb-4">{tSettings('interface_texts')}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Addresses Title (ex: Our Locations)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('addresses_title_ph')}</label>
                 <input type="text" value={footerLocationsTitle} onChange={e => setFooterLocationsTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter Title (ex: Newsletter)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_newsletter_title')} (ex: Newsletter)</label>
                 <input type="text" value={footerNewsletterTitle} onChange={e => setFooterNewsletterTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email Placeholder Text (ex: Enter your email...)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('email_placeholder_ph')}</label>
                 <input type="text" value={footerNewsletterPlaceholder} onChange={e => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>
@@ -1370,12 +1370,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Copyright Text (ex: © 2026 Shopelios)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_copyright')} (ex: © 2026 Shopelios)</label>
             <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
         </div>
 
-        <h4 className="text-md font-medium text-gray-800 mb-3">Social Networks (URL)</h4>
+        <h4 className="text-md font-medium text-gray-800 mb-3">{tSettings('social_networks_title')}</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
@@ -1395,7 +1395,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
 
-        <h4 className="text-md font-medium text-gray-800 mb-3">Footer Link Columns</h4>
+        <h4 className="text-md font-medium text-gray-800 mb-3">{tSettings('footer_link_columns')}</h4>
         <div className="space-y-6">
           {footerColumns.map((col, cIdx) => (
             <div key={cIdx} className="bg-gray-50 p-4 border rounded-md">
@@ -1409,7 +1409,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     setFooterColumns(newCols);
                   }}
                   className="font-bold px-3 py-1.5 border border-gray-300 rounded focus:ring-orange-500 w-1/2"
-                  placeholder="Column Title (ex: Contact Us)"
+                  placeholder="{tSettings('column_title')} (ex: Contact Us)"
                 />
                 <button 
                   type="button" 
@@ -1420,7 +1420,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   }}
                   className="text-red-500 hover:text-red-700 text-sm"
                 >
-                  Delete column
+                  {tSettings('delete_column_btn')}
                 </button>
               </div>
               
@@ -1448,14 +1448,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   const newCols = [...footerColumns];
                   newCols[cIdx].links.push({ label: 'New lien', url: '#' });
                   setFooterColumns(newCols);
-                }} className="text-orange-600 text-xs mt-2">+ Add a link</button>
+                }} className="text-orange-600 text-xs mt-2">{tSettings('add_a_link_btn')}</button>
               </div>
             </div>
           ))}
           <button type="button" onClick={() => {
             setFooterColumns([...footerColumns, { title: 'Nouvelle Colonne', links: [] }]);
           }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm transition">
-            + Add a column
+            {tSettings('add_a_column_btn')}
           </button>
         </div>
         <SectionSaveButton />
@@ -1473,22 +1473,22 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
             />
             <label htmlFor="maintenanceMode" className="ml-3 text-base font-bold text-orange-900 cursor-pointer">
-              Enable maintenance mode (Blocks public access to the site)
+              {tSettings('enable_maintenance_mode')}
             </label>
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Page Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('page_title_label')}</label>
             <input type="text" value={maintenanceTitle} onChange={e => setMaintenanceTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Explanation Message</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('explanation_msg_label')}</label>
             <textarea value={maintenanceMessage} onChange={e => setMaintenanceMessage(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Illustration Image (Upload)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('illustration_image_upload')}</label>
             {maintenanceImage && !maintenanceFile && (
               <div className="relative inline-block mb-2">
                 <img src={maintenanceImage} alt="Maintenance" className="h-20 object-contain border bg-white p-1" />
@@ -1517,18 +1517,18 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       </div>
 
       <div className="pt-4">
-        <h3 className="text-lg font-bold text-red-600 mb-4">404 Page (Not Found)</h3>
+        <h3 className="text-lg font-bold text-red-600 mb-4">{tSettings('not_found_page')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Page Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('page_title_label')}</label>
             <input type="text" value={notFoundTitle} onChange={e => setNotFoundTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Explanation Text</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('explanation_text_label')}</label>
             <textarea value={notFoundText} onChange={e => setNotFoundText(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Return button text (CTA)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('return_btn_text')}</label>
             <input type="text" value={notFoundCta} onChange={e => setNotFoundCta(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div>
@@ -1539,7 +1539,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             </div>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Background image (Upload)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bg_image_upload')}</label>
             {notFoundBgImage && !notFoundFile && (
               <div className="relative inline-block mb-2">
                 <img src={notFoundBgImage} alt="404 BG" className="h-20 object-cover border bg-gray-50 p-1" />
