@@ -123,7 +123,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Main Street, London');
   const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+33 1 23 45 67 89');
   const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@mystore.com');
-  const [mobileContact{tSettings('contact_website')}, setMobileContact{tSettings('contact_website')}] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.mystore.com');
+  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.mystore.com');
   const [mobileHeaderBorderColor, setMobileHeaderBorderColor] = useState(initialSettings.MOBILE_HEADER_BORDER_COLOR || '#d1d5db');
 
   // All Categories Button Settings
@@ -256,7 +256,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['MOBILE_CONTACT_ADDRESS'] = mobileContactAddress;
     settingsMap['MOBILE_CONTACT_PHONE'] = mobileContactPhone;
     settingsMap['MOBILE_CONTACT_EMAIL'] = mobileContactEmail;
-    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContact{tSettings('contact_website')};
+    settingsMap['MOBILE_CONTACT_WEBSITE'] = mobileContactWebsite;
     settingsMap['MOBILE_HEADER_BORDER_COLOR'] = mobileHeaderBorderColor;
 
     settingsMap['ALL_CATEGORIES_BG_COLOR'] = allCategoriesBgColor;
@@ -1124,7 +1124,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_website')} (without https://)</label>
-            <input type="text" value={mobileContact{tSettings('contact_website')}} onChange={e => setMobileContact{tSettings('contact_website')}(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
+            <input type="text" value={mobileContactWebsite} onChange={e => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" placeholder="www.votresite.com" />
           </div>
         </div>
 
