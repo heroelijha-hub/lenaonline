@@ -387,6 +387,7 @@
     "filter_categories": "Filtrar por categorías",
     "filter_price": "Filtrar por precio",
     "filter_brand": "Filtrar por marca",
+    "items_selected": "{count} seleccionado(s)",
     "min_price": "Precio Min",
     "max_price": "Precio Max",
     "apply_price": "Aplicar precio",

@@ -184,7 +184,7 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
           >
             <span className="text-gray-700 truncate">
               {selectedCategories.length > 0 
-                ? `${selectedCategories.length} sélectionné(s)` 
+                ? t('items_selected', { count: selectedCategories.length }) 
                 : `-- ${t('filter_categories')} --`}
             </span>
             <svg className={`w-4 h-4 text-gray-500 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -227,7 +227,7 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
               >
                 <span className="text-gray-700 truncate">
                   {selectedBrands.length > 0 
-                    ? `${selectedBrands.length} sélectionné(s)` 
+                    ? t('items_selected', { count: selectedBrands.length }) 
                     : `-- ${t('filter_brand')} --`}
                 </span>
                 <svg className={`w-4 h-4 text-gray-500 transition-transform ${isBrandsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>

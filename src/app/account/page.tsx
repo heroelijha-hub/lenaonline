@@ -23,7 +23,7 @@ export default async function AccountDashboard() {
     <div className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-gray-100 h-full">
       <p className="text-gray-700 mb-6">
         {t.rich('hello', {
-          username: () => username,
+          username: username,
           str: (chunks) => <strong>{chunks}</strong>
         })}
         <LogoutLink />
