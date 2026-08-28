@@ -191,7 +191,7 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
           </button>
           
           {isCategoriesOpen && (
-            <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto p-4 space-y-3">
+            <div className="mt-2 bg-white border border-gray-200 rounded-md max-h-60 overflow-y-auto p-4 space-y-3">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center cursor-pointer group">
                   <input
@@ -234,7 +234,7 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
               </button>
               
               {isBrandsOpen && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto p-4 space-y-3">
+                <div className="mt-2 bg-white border border-gray-200 rounded-md max-h-60 overflow-y-auto p-4 space-y-3">
                   {brands.map((brand) => (
                     <label key={brand.id} className="flex items-center cursor-pointer group">
                       <input
