@@ -23,9 +23,10 @@ interface ProductActionsProps {
   };
   enableBuyNow?: boolean;
   onVariationChange?: (image: string | null) => void;
+  shippingInfo?: string[];
 }
 
-export default function ProductActions({ product, enableBuyNow = false, onVariationChange }: ProductActionsProps) {
+export default function ProductActions({ product, enableBuyNow = false, onVariationChange, shippingInfo }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
@@ -195,6 +196,42 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       <p className="text-teal-600 font-semibold mb-6">
         {currentStock === null ? t('in_stock') : t('in_stock_count', { count: currentStock })}
       </p>
+
+      {/* Shipping Info */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8 space-y-3">
+        {shippingInfo?.[0] && (
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+              {shippingInfo[0]}
+            </div>
+          </div>
+        )}
+        {shippingInfo?.[1] && (
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+              {shippingInfo[1]}
+            </div>
+          </div>
+        )}
+        {shippingInfo?.[2] && (
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} /></svg>
+            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+              {shippingInfo[2]}
+            </div>
+          </div>
+        )}
+        {shippingInfo?.[3] && (
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+              {shippingInfo[3]}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Actions (Quantity + Cart + Buy) */}
       <div className="flex flex-col gap-4 mb-8">

@@ -50,10 +50,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const t = await getTranslations('Product');
 
-  const setting = await prisma.setting.findUnique({
-    where: { key: 'ENABLE_BUY_NOW_BUTTON' }
-  });
-  const enableBuyNow = setting?.value === 'true';
+  const settingsDb = await prisma.setting.findMany();
+  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const enableBuyNow = settingsMap.ENABLE_BUY_NOW_BUTTON === 'true';
+  const shippingInfo = [
+    settingsMap.SHIPPING_INFO_1 || '3-5 business days in Germany',
+    settingsMap.SHIPPING_INFO_2 || '5-10 business days in the Eurozone',
+    settingsMap.SHIPPING_INFO_3 || 'Free shipping: Orders over €200.00',
+    settingsMap.SHIPPING_INFO_4 || 'Free returns: within 30 days',
+  ];
 
   if (!product) {
     return notFound();
@@ -98,6 +103,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               product={product as any}
               enableBuyNow={enableBuyNow}
               storeName={storeName}
+              shippingInfo={shippingInfo}
               translations={{
                 sku: t('sku'),
                 categories: t('categories'),

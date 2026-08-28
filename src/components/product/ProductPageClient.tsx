@@ -42,9 +42,10 @@ interface ProductPageClientProps {
     customer_reviews: string;
     uncategorized: string;
   };
+  shippingInfo?: string[];
 }
 
-export default function ProductPageClient({ product, enableBuyNow = false, storeName = 'My Store', translations }: ProductPageClientProps) {
+export default function ProductPageClient({ product, enableBuyNow = false, storeName = 'My Store', translations, shippingInfo }: ProductPageClientProps) {
   // L'image active de la galerie, pilotée par la variation sélectionnée
   const [variationImage, setVariationImage] = useState<string | null>(null);
 
@@ -107,6 +108,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
           product={product as any}
           enableBuyNow={enableBuyNow}
           onVariationChange={(image: string | null) => setVariationImage(image)}
+          shippingInfo={shippingInfo}
         />
 
         {/* Méta */}

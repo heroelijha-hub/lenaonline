@@ -27,7 +27,7 @@ export default function ProductGallery({ images, title, discountLabel, compareAt
   const mainImage = activeVariationImage || (hasImages ? images[selectedIndex] : null);
 
   return (
-    <div className="w-full lg:w-1/2 flex gap-4">
+    <div className="w-full lg:w-1/2 flex gap-4 lg:self-start lg:sticky lg:top-8">
       {/* Thumbnails (Vertical) */}
       <div className="flex flex-col gap-3 w-20">
         <button 

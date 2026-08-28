@@ -38,6 +38,12 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com');
   const [newsletterSuccessMessage, setNewsletterSuccessMessage] = useState(initialSettings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!');
 
+  // Shipping Info settings
+  const [shippingInfo1, setShippingInfo1] = useState(initialSettings.SHIPPING_INFO_1 || '3-5 business days in Germany');
+  const [shippingInfo2, setShippingInfo2] = useState(initialSettings.SHIPPING_INFO_2 || '5-10 business days in the Eurozone');
+  const [shippingInfo3, setShippingInfo3] = useState(initialSettings.SHIPPING_INFO_3 || 'Free shipping: Orders over €200.00');
+  const [shippingInfo4, setShippingInfo4] = useState(initialSettings.SHIPPING_INFO_4 || 'Free returns: within 30 days');
+
   // SMTP Settings
   const [smtpHost, setSmtpHost] = useState(initialSettings.SMTP_HOST || '');
   const [smtpPort, setSmtpPort] = useState(initialSettings.SMTP_PORT || '');
@@ -272,6 +278,11 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     settingsMap['CONTACT_RECEIVER_EMAIL'] = contactReceiverEmail;
     settingsMap['NEWSLETTER_SUCCESS_MESSAGE'] = newsletterSuccessMessage;
+
+    settingsMap['SHIPPING_INFO_1'] = shippingInfo1;
+    settingsMap['SHIPPING_INFO_2'] = shippingInfo2;
+    settingsMap['SHIPPING_INFO_3'] = shippingInfo3;
+    settingsMap['SHIPPING_INFO_4'] = shippingInfo4;
 
     settingsMap['SMTP_HOST'] = smtpHost;
     settingsMap['SMTP_PORT'] = smtpPort;
@@ -533,6 +544,46 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 placeholder="Thank you for subscribing!"
               />
               <p className="mt-2 text-xs text-gray-500">Message displayed to the user after a successful subscription.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+            <h4 className="text-md font-bold text-gray-900 md:col-span-2">Product Page Shipping Info</h4>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 1 (Location Icon)</label>
+              <input
+                type="text"
+                value={shippingInfo1}
+                onChange={(e) => setShippingInfo1(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 2 (Globe Icon)</label>
+              <input
+                type="text"
+                value={shippingInfo2}
+                onChange={(e) => setShippingInfo2(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 3 (Truck Icon)</label>
+              <input
+                type="text"
+                value={shippingInfo3}
+                onChange={(e) => setShippingInfo3(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Line 4 (Return Icon)</label>
+              <input
+                type="text"
+                value={shippingInfo4}
+                onChange={(e) => setShippingInfo4(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
             </div>
           </div>
         </div>
