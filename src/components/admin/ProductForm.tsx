@@ -37,6 +37,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [forceSalesIds, setForceSalesIds] = useState<string[]>(initialData?.forceSales?.map((p: any) => p.id) || []);
   const [saleTogetherIds, setSaleTogetherIds] = useState<string[]>(initialData?.saleTogether?.map((p: any) => p.id) || []);
+  const [forceSalesSearch, setForceSalesSearch] = useState('');
+  const [saleTogetherSearch, setSaleTogetherSearch] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -556,8 +558,24 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Achat Combiné (Force Sales)</label>
             <p className="text-xs text-gray-500 mb-2">Produits qui seront automatiquement et obligatoirement ajoutés au panier.</p>
+            <input 
+              type="text" 
+              placeholder="Rechercher par titre ou ID..." 
+              value={forceSalesSearch}
+              onChange={(e) => setForceSalesSearch(e.target.value)}
+              className="w-full px-3 py-1.5 mb-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
             <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
-              {allProducts.map((prod) => (
+              {allProducts
+                .filter(p => p.title.toLowerCase().includes(forceSalesSearch.toLowerCase()) || p.id.includes(forceSalesSearch))
+                .sort((a, b) => {
+                  const aSelected = forceSalesIds.includes(a.id);
+                  const bSelected = forceSalesIds.includes(b.id);
+                  if (aSelected && !bSelected) return -1;
+                  if (!aSelected && bSelected) return 1;
+                  return a.title.localeCompare(b.title);
+                })
+                .map((prod) => (
                 <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
                   <input 
                     type="checkbox" 
@@ -579,8 +597,24 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Vendus Ensemble (Sale Together)</label>
             <p className="text-xs text-gray-500 mb-2">Produits suggérés sous forme de cases à cocher sur la fiche produit.</p>
+            <input 
+              type="text" 
+              placeholder="Rechercher par titre ou ID..." 
+              value={saleTogetherSearch}
+              onChange={(e) => setSaleTogetherSearch(e.target.value)}
+              className="w-full px-3 py-1.5 mb-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+            />
             <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
-              {allProducts.map((prod) => (
+              {allProducts
+                .filter(p => p.title.toLowerCase().includes(saleTogetherSearch.toLowerCase()) || p.id.includes(saleTogetherSearch))
+                .sort((a, b) => {
+                  const aSelected = saleTogetherIds.includes(a.id);
+                  const bSelected = saleTogetherIds.includes(b.id);
+                  if (aSelected && !bSelected) return -1;
+                  if (!aSelected && bSelected) return 1;
+                  return a.title.localeCompare(b.title);
+                })
+                .map((prod) => (
                 <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
                   <input 
                     type="checkbox" 
