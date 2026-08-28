@@ -386,6 +386,7 @@
     "try_modifying_filters": "Intenta modificar tus filtros para encontrar lo que buscas.",
     "filter_categories": "Filtrar por categorías",
     "filter_price": "Filtrar por precio",
+    "filter_brand": "Filtrar por marca",
     "min_price": "Precio Min",
     "max_price": "Precio Max",
     "apply_price": "Aplicar precio",

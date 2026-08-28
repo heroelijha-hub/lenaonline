@@ -25,6 +25,9 @@ export default async function ShopPage({
   const categoryParams = params.category;
   const categories = Array.isArray(categoryParams) ? categoryParams : categoryParams ? [categoryParams] : [];
   
+  const brandParams = params.brand;
+  const brandsFilter = Array.isArray(brandParams) ? brandParams : brandParams ? [brandParams] : [];
+  
   const minPrice = params.minPrice ? parseFloat(params.minPrice as string) : undefined;
   const maxPrice = params.maxPrice ? parseFloat(params.maxPrice as string) : undefined;
   
@@ -42,6 +45,10 @@ export default async function ShopPage({
     where.categories = { some: { slug: { in: categories } } };
   }
   
+  if (brandsFilter.length > 0) {
+    where.brand = { slug: { in: brandsFilter } };
+  }
+  
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.price = {};
     if (minPrice !== undefined) where.price.gte = minPrice;
@@ -50,6 +57,16 @@ export default async function ShopPage({
 
   // Fetch all categories for the filter sidebar with product counts
   const allCategories = await prisma.category.findMany({
+    include: {
+      _count: {
+        select: { products: true }
+      }
+    },
+    orderBy: { name: 'asc' }
+  });
+
+  // Fetch all brands for the filter sidebar with product counts
+  const allBrands = await prisma.brand.findMany({
     include: {
       _count: {
         select: { products: true }
@@ -115,6 +132,14 @@ export default async function ShopPage({
       _count: c._count
     }));
 
+  const validBrands = allBrands
+    .map(b => ({
+      id: b.id,
+      name: b.name,
+      slug: b.slug,
+      _count: b._count
+    }));
+
   const view = (params.view as 'grid' | 'list') || 'grid';
 
   return (
@@ -133,7 +158,7 @@ export default async function ShopPage({
           
           {/* Left Sidebar (Filters) */}
           <aside className="w-full lg:w-1/4 flex-shrink-0">
-            <ShopFilters categories={validCategories} />
+            <ShopFilters categories={validCategories} brands={validBrands} />
           </aside>
 
           {/* Main Content (Products) */}

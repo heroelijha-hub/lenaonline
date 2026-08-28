@@ -11,11 +11,19 @@ interface Category {
   _count?: { products: number };
 }
 
-interface ShopFiltersProps {
-  categories: Category[];
+interface Brand {
+  id: string;
+  name: string;
+  slug: string;
+  _count?: { products: number };
 }
 
-export default function ShopFilters({ categories }: ShopFiltersProps) {
+interface ShopFiltersProps {
+  categories: Category[];
+  brands: Brand[];
+}
+
+export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -25,6 +33,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
 
   // Initialize state from URL params
@@ -38,6 +47,9 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     const max = searchParams.get('maxPrice');
     if (max) setMaxPrice(max);
 
+    const brnds = searchParams.getAll('brand');
+    if (brnds.length > 0) setSelectedBrands(brnds);
+
     const ratings = searchParams.getAll('rating').map(Number);
     if (ratings.length > 0) setSelectedRatings(ratings);
   }, [searchParams]);
@@ -47,6 +59,7 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     cats: string[], 
     min: string, 
     max: string, 
+    brnds: string[],
     ratings: number[]
   ) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -63,6 +76,9 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     if (max) params.set('maxPrice', max);
     else params.delete('maxPrice');
 
+    params.delete('brand');
+    brnds.forEach(b => params.append('brand', b));
+
     params.delete('rating');
     ratings.forEach(r => params.append('rating', r.toString()));
 
@@ -74,11 +90,11 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
       ? selectedCategories.filter(c => c !== slug)
       : [...selectedCategories, slug];
     setSelectedCategories(newCats);
-    updateFilters(newCats, minPrice, maxPrice, selectedRatings);
+    updateFilters(newCats, minPrice, maxPrice, selectedBrands, selectedRatings);
   };
 
   const handlePriceApply = () => {
-    updateFilters(selectedCategories, minPrice, maxPrice, selectedRatings);
+    updateFilters(selectedCategories, minPrice, maxPrice, selectedBrands, selectedRatings);
   };
 
   const handlePriceKeyDown = (e: React.KeyboardEvent) => {
@@ -87,12 +103,20 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
     }
   };
 
+  const handleBrandChange = (slug: string) => {
+    const newBrands = selectedBrands.includes(slug)
+      ? selectedBrands.filter(b => b !== slug)
+      : [...selectedBrands, slug];
+    setSelectedBrands(newBrands);
+    updateFilters(selectedCategories, minPrice, maxPrice, newBrands, selectedRatings);
+  };
+
   const handleRatingChange = (rating: number) => {
     const newRatings = selectedRatings.includes(rating)
       ? selectedRatings.filter(r => r !== rating)
       : [...selectedRatings, rating];
     setSelectedRatings(newRatings);
-    updateFilters(selectedCategories, minPrice, maxPrice, newRatings);
+    updateFilters(selectedCategories, minPrice, maxPrice, selectedBrands, newRatings);
   };
 
   // Helper for rendering stars
@@ -111,31 +135,6 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
 
   return (
     <div className="w-full">
-      {/* Categories */}
-      <div className="mb-8">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_categories')}</h3>
-        <div className="space-y-3">
-          {categories.map((cat) => (
-            <label key={cat.id} className="flex items-center cursor-pointer group">
-              <input
-                type="checkbox"
-                className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-                checked={selectedCategories.includes(cat.slug)}
-                onChange={() => handleCategoryChange(cat.slug)}
-              />
-              <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1">
-                {cat.name}
-              </span>
-              {cat._count !== undefined && (
-                <span className="text-xs text-gray-400">({cat._count.products})</span>
-              )}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <hr className="border-gray-200 mb-8" />
-
       {/* Price */}
       <div className="mb-8">
         <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_price')}</h3>
@@ -172,6 +171,59 @@ export default function ShopFilters({ categories }: ShopFiltersProps) {
       </div>
 
       <hr className="border-gray-200 mb-8" />
+
+      {/* Categories */}
+      <div className="mb-8">
+        <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_categories')}</h3>
+        <div className="space-y-3">
+          {categories.map((cat) => (
+            <label key={cat.id} className="flex items-center cursor-pointer group">
+              <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                checked={selectedCategories.includes(cat.slug)}
+                onChange={() => handleCategoryChange(cat.slug)}
+              />
+              <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1">
+                {cat.name}
+              </span>
+              {cat._count !== undefined && (
+                <span className="text-xs text-gray-400">({cat._count.products})</span>
+              )}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <hr className="border-gray-200 mb-8" />
+
+      {/* Brand */}
+      {brands.length > 0 && (
+        <>
+          <div className="mb-8">
+            <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_brand')}</h3>
+            <div className="space-y-3">
+              {brands.map((brand) => (
+                <label key={brand.id} className="flex items-center cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                    checked={selectedBrands.includes(brand.slug)}
+                    onChange={() => handleBrandChange(brand.slug)}
+                  />
+                  <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1">
+                    {brand.name}
+                  </span>
+                  {brand._count !== undefined && (
+                    <span className="text-xs text-gray-400">({brand._count.products})</span>
+                  )}
+                </label>
+              ))}
+            </div>
+          </div>
+          <hr className="border-gray-200 mb-8" />
+        </>
+      )}
 
       {/* Ratings */}
       <div className="mb-8">

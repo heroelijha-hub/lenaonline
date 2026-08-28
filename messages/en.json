@@ -389,6 +389,7 @@
     "try_modifying_filters": "Try modifying your filters to find what you are looking for.",
     "filter_categories": "Filter by categories",
     "filter_price": "Filter by price",
+    "filter_brand": "Filter by brand",
     "min_price": "Min Price",
     "max_price": "Max Price",
     "apply_price": "Apply price",
