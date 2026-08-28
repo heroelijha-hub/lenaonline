@@ -325,7 +325,21 @@
   "AccountAddresses": {
     "addresses_intro": "The following addresses will be used on the checkout page by default.",
     "add_btn": "Add",
-    "no_address_set": "You have not set up this type of address yet."
+    "no_address_set": "You have not set up this type of address yet.",
+    "billing_address_title": "Billing address",
+    "shipping_address_title": "Shipping address",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "company_name": "Company name (optional)",
+    "country_region": "Country / Region",
+    "select_country": "Select a country/region...",
+    "address_1": "Street address",
+    "address_2": "Apartment, suite, unit, etc. (optional)",
+    "postal_code": "Postcode / ZIP",
+    "city": "Town / City",
+    "phone": "Phone",
+    "email": "Email address",
+    "save_address": "Save address"
   },
   "AccountDetails": {
     "save_success": "Changes saved.",

@@ -322,7 +322,21 @@
   "AccountAddresses": {
     "addresses_intro": "Las siguientes direcciones se utilizarán en la página de pago por defecto.",
     "add_btn": "Añadir",
-    "no_address_set": "Aún no has configurado este tipo de dirección."
+    "no_address_set": "Aún no ha configurado este tipo de dirección.",
+    "billing_address_title": "Dirección de facturación",
+    "shipping_address_title": "Dirección de envío",
+    "first_name": "Nombre",
+    "last_name": "Apellidos",
+    "company_name": "Nombre de la empresa (opcional)",
+    "country_region": "País / Región",
+    "select_country": "Seleccionar un país/región...",
+    "address_1": "Dirección de la calle",
+    "address_2": "Apartamento, habitación, etc. (opcional)",
+    "postal_code": "Código postal",
+    "city": "Localidad / Ciudad",
+    "phone": "Teléfono",
+    "email": "Dirección de correo electrónico",
+    "save_address": "Guardar dirección"
   },
   "AccountDetails": {
     "save_success": "Cambios guardados.",
