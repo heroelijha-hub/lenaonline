@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import { updateSetting } from '@/actions/settings';
-import { uploadImage } from '@/actions/admin';
+import { uploadImage, getMinimalProducts } from '@/actions/admin';
 import Cookies from 'js-cookie';
 
 export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners' | 'ProductGrid';
@@ -43,6 +43,13 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [editingId, setEditingId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [globalFont, setGlobalFont] = useState(initialSettings.GLOBAL_FONT_FAMILY || 'Inter');
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [productSearch, setProductSearch] = useState('');
+
+  useEffect(() => {
+    getMinimalProducts().then(setAllProducts).catch(console.error);
+  }, []);
+
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
 
@@ -667,6 +674,78 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               </select>
             </div>
           )}
+
+          {section.settings.filterType === 'MANUAL' && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-1">Select Specific Products</label>
+              
+              <input 
+                type="text" 
+                placeholder="Search products by title..." 
+                value={productSearch}
+                onChange={(e) => setProductSearch(e.target.value)}
+                className="w-full border rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500 mb-2"
+              />
+              
+              {productSearch && (
+                <div className="max-h-40 overflow-y-auto border border-gray-200 rounded-md bg-white shadow-sm mb-4">
+                  {allProducts
+                    .filter(p => p.title.toLowerCase().includes(productSearch.toLowerCase()))
+                    .slice(0, 10)
+                    .map(p => (
+                      <div 
+                        key={p.id} 
+                        className="px-3 py-2 text-sm cursor-pointer hover:bg-orange-50 border-b last:border-b-0 flex items-center gap-3"
+                        onClick={() => {
+                          const currentIds = section.settings.productIds || [];
+                          if (!currentIds.includes(p.id)) {
+                            updateSectionSettings(section.id, 'productIds', [...currentIds, p.id]);
+                          }
+                          setProductSearch('');
+                        }}
+                      >
+                        {p.images && p.images[0] && (
+                           <img src={p.images[0]} alt="" className="w-8 h-8 object-cover rounded" />
+                        )}
+                        <span className="font-medium truncate">{p.title}</span>
+                      </div>
+                  ))}
+                  {allProducts.filter(p => p.title.toLowerCase().includes(productSearch.toLowerCase())).length === 0 && (
+                    <div className="px-3 py-2 text-sm text-gray-500">No products found.</div>
+                  )}
+                </div>
+              )}
+              
+              {/* Selected Products List */}
+              <div className="flex flex-col gap-2 mt-2">
+                {(section.settings.productIds || []).map((id: string) => {
+                  const prod = allProducts.find(p => p.id === id);
+                  if (!prod) return null;
+                  return (
+                    <div key={id} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md p-2 shadow-sm">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        {prod.images && prod.images[0] && (
+                          <img src={prod.images[0]} alt="" className="w-8 h-8 object-cover rounded flex-shrink-0" />
+                        )}
+                        <span className="text-sm font-medium truncate">{prod.title}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newIds = section.settings.productIds.filter((pid: string) => pid !== id);
+                          updateSectionSettings(section.id, 'productIds', newIds);
+                        }}
+                        className="text-red-500 hover:text-red-700 p-1 flex-shrink-0"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
         </div>
       );
     }

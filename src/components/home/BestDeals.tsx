@@ -30,7 +30,7 @@ export default async function BestDeals({ config }: { config?: any }) {
   const filterType = config?.filterType || 'ON_SALE';
   const categoryId = config?.categoryId || undefined;
   
-  const dbProducts = await getFilteredProducts(filterType, categoryId, 6);
+  const dbProducts = await getFilteredProducts(filterType, categoryId, 6, config?.productIds);
   const settingsDb = await prisma.setting.findMany();
   const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   

@@ -37,7 +37,7 @@ export default async function ProductGrid({ config }: ProductGridProps) {
   } = config;
 
   const maxNum = parseInt(maxProducts, 10) || 12;
-  const products = await getFilteredProducts(filterType, categoryId, maxNum);
+  const products = await getFilteredProducts(filterType, categoryId, maxNum, (config as any).productIds);
 
   if (products.length === 0) {
     return null; // Do not render section if no products

@@ -20,7 +20,17 @@ export async function getBestSellers() {
   });
 }
 
-export async function getFilteredProducts(filterType: string, categoryId?: string, limit: number = 8) {
+export async function getFilteredProducts(filterType: string, categoryId?: string, limit: number = 8, productIds?: string[]) {
+  if (filterType === 'MANUAL' && productIds && productIds.length > 0) {
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      include: { categories: true, reviews: { where: { isApproved: true } } },
+      take: limit,
+    });
+    // Sort products based on productIds array order
+    return products.sort((a, b) => productIds.indexOf(a.id) - productIds.indexOf(b.id));
+  }
+
   let where: any = {};
   let orderBy: any = { createdAt: 'desc' };
 
