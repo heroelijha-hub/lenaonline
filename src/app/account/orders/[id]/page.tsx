@@ -75,6 +75,32 @@ export default async function OrderDetailsPage({
 
   const totalItems = order.orderItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  let formattedAddress = order.destinationAddress;
+  if (formattedAddress && formattedAddress.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(formattedAddress);
+      // Handle the case where the whole checkout state was saved
+      const addrObj = parsed.shipping || parsed.billing || parsed;
+      
+      const parts = [];
+      if (addrObj.firstName || addrObj.lastName) {
+        parts.push(`${addrObj.firstName || ''} ${addrObj.lastName || ''}`.trim());
+      }
+      if (addrObj.address1) parts.push(addrObj.address1);
+      if (addrObj.address2) parts.push(addrObj.address2);
+      if (addrObj.postalCode || addrObj.city) {
+        parts.push(`${addrObj.postalCode || ''} ${addrObj.city || ''}`.trim());
+      }
+      if (addrObj.country) parts.push(addrObj.country);
+      
+      if (parts.length > 0) {
+        formattedAddress = parts.filter(Boolean).join('\n');
+      }
+    } catch (e) {
+      // Keep raw string if parsing fails
+    }
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
@@ -169,7 +195,7 @@ export default async function OrderDetailsPage({
               <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
                 <h3 className="text-md font-bold text-gray-900 mb-3">{t('shipping_address')}</h3>
                 <p className="text-sm text-gray-600 whitespace-pre-wrap">
-                  {order.destinationAddress}
+                  {formattedAddress}
                 </p>
                 {order.destinationCountry && (
                   <p className="text-sm text-gray-600 mt-1">{order.destinationCountry}</p>
