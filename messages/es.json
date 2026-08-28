@@ -139,7 +139,8 @@
     "name_placeholder": "Nombre *",
     "email_placeholder": "Correo electrónico *",
     "save_info": "Guardar mi nombre, correo electrónico y sitio web en este navegador para la próxima vez que comente.",
-    "submit_review": "Enviar"
+    "submit_review": "Enviar",
+    "brand": "Marca:"
   },
   "Search": {
     "search_results": "Resultados de búsqueda",

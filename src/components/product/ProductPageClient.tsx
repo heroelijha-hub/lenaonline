@@ -41,6 +41,7 @@ interface ProductPageClientProps {
     sold: string;
     customer_reviews: string;
     uncategorized: string;
+    brand: string;
   };
   shippingInfo?: string[];
 }
@@ -124,7 +125,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
               : (t?.uncategorized ?? 'Non catégorisé')}
           </p>
           {product.brand && !product.brand.logo && (
-            <p><span className="font-semibold text-gray-900">Marque : </span>{product.brand.name}</p>
+            <p><span className="font-semibold text-gray-900">{t?.brand ?? 'Marque :'} </span>{product.brand.name}</p>
           )}
           {product.tags && product.tags.length > 0 && (
             <p>

@@ -138,7 +138,8 @@
     "name_placeholder": "Name *",
     "email_placeholder": "Email *",
     "save_info": "Save my name, email, and website in this browser for the next time I comment.",
-    "submit_review": "Submit"
+    "submit_review": "Submit",
+    "brand": "Brand:"
   },
   "Search": {
     "search_results": "Search Results",

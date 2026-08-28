@@ -138,7 +138,8 @@
     "email_placeholder": "E-mail *",
     "save_info": "Enregistrer mon nom, mon e-mail et mon site dans le navigateur pour mon prochain commentaire.",
     "submit_review": "Soumettre",
-    "sending": "Envoi..."
+    "sending": "Envoi...",
+    "brand": "Marque :"
   },
   "Search": {
     "search_results": "Résultats de recherche",

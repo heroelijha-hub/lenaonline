@@ -114,6 +114,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 sold: t('sold'),
                 customer_reviews: t('customer_reviews', { count: product.reviews.length }),
                 uncategorized: t('uncategorized'),
+                brand: t('brand')
               }}
             />
           </div>
