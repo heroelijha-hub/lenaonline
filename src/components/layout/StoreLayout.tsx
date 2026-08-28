@@ -60,9 +60,8 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
   const isAdmin = pathname?.startsWith('/admin');
 
   const isPreview = pathname?.startsWith('/preview');
-  const isLogin = pathname?.startsWith('/login');
 
-  if (isAdmin || isPreview || isLogin) {
+  if (isAdmin || isPreview) {
     return <>{children}</>;
   }
 
