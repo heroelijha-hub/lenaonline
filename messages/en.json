@@ -314,7 +314,9 @@
     "subtotal": "Subtotal",
     "total": "Total",
     "shipping_address": "Shipping address",
-    "tracking_number": "Tracking number"
+    "tracking_number": "Tracking number",
+    "buyer_info": "Buyer",
+    "payment": "Payment"
   },
   "AccountAddresses": {
     "addresses_intro": "The following addresses will be used on the checkout page by default.",

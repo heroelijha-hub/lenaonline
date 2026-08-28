@@ -312,7 +312,9 @@
     "subtotal": "Sous-total",
     "total": "Total",
     "shipping_address": "Adresse de livraison",
-    "tracking_number": "Numéro de suivi"
+    "tracking_number": "Numéro de suivi",
+    "buyer_info": "Acheteur",
+    "payment": "Paiement"
   },
   "AccountAddresses": {
     "addresses_intro": "Les adresses suivantes seront utilisées par défaut sur la page de paiement.",

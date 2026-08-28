@@ -311,7 +311,9 @@
     "subtotal": "Subtotal",
     "total": "Total",
     "shipping_address": "Dirección de envío",
-    "tracking_number": "Número de seguimiento"
+    "tracking_number": "Número de seguimiento",
+    "buyer_info": "Comprador",
+    "payment": "Pago"
   },
   "AccountAddresses": {
     "addresses_intro": "Las siguientes direcciones se utilizarán en la página de pago por defecto.",
