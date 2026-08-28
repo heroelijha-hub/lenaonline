@@ -41,6 +41,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       categories: true,
       brand: true,
       tags: true,
+      forceSales: true,
+      saleTogether: true,
       reviews: {
         where: { isApproved: true },
         orderBy: { createdAt: 'desc' },

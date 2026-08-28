@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCategories, getBrands, createBrandAction, createProduct, uploadImage } from '@/actions/admin';
+import { getCategories, getBrands, createBrandAction, createProduct, uploadImage, getMinimalProducts } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -34,6 +34,10 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [newBrandName, setNewBrandName] = useState('');
   const [newBrandLogo, setNewBrandLogo] = useState<File | null>(null);
 
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [forceSalesIds, setForceSalesIds] = useState<string[]>(initialData?.forceSales?.map((p: any) => p.id) || []);
+  const [saleTogetherIds, setSaleTogetherIds] = useState<string[]>(initialData?.saleTogether?.map((p: any) => p.id) || []);
+
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
@@ -64,7 +68,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   useEffect(() => {
     getCategories().then(setCategories);
     getBrands().then(setBrands);
-  }, []);
+    getMinimalProducts().then(prods => {
+      // Exclude current product if editing
+      setAllProducts(prods.filter((p: any) => p.id !== initialData?.id));
+    });
+  }, [initialData?.id]);
 
   const [productType, setProductType] = useState<'SIMPLE' | 'VARIABLE'>(initialData?.type || 'SIMPLE');
   const [attributes, setAttributes] = useState<Array<{ name: string, options: string }>>(
@@ -121,6 +129,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       formData.append('attributes', JSON.stringify(formattedAttributes));
       formData.append('variations', JSON.stringify(variations));
       formData.append('tags', JSON.stringify(tags));
+      formData.append('forceSalesIds', JSON.stringify(forceSalesIds));
+      formData.append('saleTogetherIds', JSON.stringify(saleTogetherIds));
       
       // Prevent original submit if textareas were still present
       formData.delete('shortDescription');
@@ -540,6 +550,56 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             {tags.length === 0 && <p className="text-xs text-gray-500 italic">{t('no_tags_yet')}</p>}
           </div>
         </div>
+
+        {/* Force Sales & Sale Together */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Achat Combiné (Force Sales)</label>
+            <p className="text-xs text-gray-500 mb-2">Produits qui seront automatiquement et obligatoirement ajoutés au panier.</p>
+            <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
+              {allProducts.map((prod) => (
+                <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                  <input 
+                    type="checkbox" 
+                    checked={forceSalesIds.includes(prod.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) setForceSalesIds([...forceSalesIds, prod.id]);
+                      else setForceSalesIds(forceSalesIds.filter(id => id !== prod.id));
+                    }}
+                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                  />
+                  {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-6 h-6 object-cover rounded" />}
+                  {prod.title}
+                </label>
+              ))}
+              {allProducts.length === 0 && <p className="text-xs text-gray-500">Aucun autre produit disponible.</p>}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Vendus Ensemble (Sale Together)</label>
+            <p className="text-xs text-gray-500 mb-2">Produits suggérés sous forme de cases à cocher sur la fiche produit.</p>
+            <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
+              {allProducts.map((prod) => (
+                <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                  <input 
+                    type="checkbox" 
+                    checked={saleTogetherIds.includes(prod.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) setSaleTogetherIds([...saleTogetherIds, prod.id]);
+                      else setSaleTogetherIds(saleTogetherIds.filter(id => id !== prod.id));
+                    }}
+                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                  />
+                  {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-6 h-6 object-cover rounded" />}
+                  {prod.title}
+                </label>
+              ))}
+              {allProducts.length === 0 && <p className="text-xs text-gray-500">Aucun autre produit disponible.</p>}
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* Flags / Labels */}

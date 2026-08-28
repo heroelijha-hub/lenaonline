@@ -10,11 +10,12 @@ export interface CartItem {
   image: string;
   quantity: number;
   attributes?: Record<string, string>; // e.g. { Couleur: "Rouge", Taille: "M" }
+  forcedByItemId?: string; // id of the item that forces this product
 }
 
 interface CartStore {
   items: CartItem[];
-  addItem: (item: CartItem) => void;
+  addItem: (item: CartItem, forceSalesItems?: CartItem[]) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -34,21 +35,35 @@ export const useCartStore = create<CartStore>()(
       coupon: null,
       setCoupon: (coupon) => set({ coupon }),
       items: [],
-      addItem: (item) => {
-        const items = get().items;
-        const existingItem = items.find((i) => i.id === item.id);
-        if (existingItem) {
-          set({
-            items: items.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-            ),
-          });
-        } else {
-          set({ items: [...items, item] });
-        }
+      addItem: (item, forceSalesItems = []) => {
+        const currentItems = get().items;
+        const newItems = [...currentItems];
+
+        const addItemLogic = (itemToAdd: CartItem) => {
+          const existingIdx = newItems.findIndex((i) => i.id === itemToAdd.id);
+          if (existingIdx !== -1) {
+            newItems[existingIdx] = { 
+              ...newItems[existingIdx], 
+              quantity: newItems[existingIdx].quantity + itemToAdd.quantity 
+            };
+          } else {
+            newItems.push(itemToAdd);
+          }
+        };
+
+        addItemLogic(item);
+        forceSalesItems.forEach(fsItem => {
+          // ensure forcedByItemId is set to main item id
+          addItemLogic({ ...fsItem, forcedByItemId: item.id });
+        });
+
+        set({ items: newItems });
       },
       removeItem: (id) =>
-        set((state) => ({ items: state.items.filter((i) => i.id !== id) })),
+        set((state) => ({ 
+          // Retirer l'item et aussi tous les items qui étaient forcés par celui-ci
+          items: state.items.filter((i) => i.id !== id && i.forcedByItemId !== id) 
+        })),
       updateQuantity: (id, quantity) =>
         set((state) => ({
           items: state.items.map((i) =>

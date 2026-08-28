@@ -266,6 +266,14 @@ export async function getProducts() {
   });
 }
 
+export async function getMinimalProducts() {
+  await requireAdmin();
+  return await prisma.product.findMany({
+    select: { id: true, title: true, images: true },
+    orderBy: { title: 'asc' }
+  });
+}
+
 export async function createProduct(formData: FormData, imageUrls: string[]) {
   await requireAdmin();
   const type = formData.get('type') as any || 'SIMPLE';
@@ -290,6 +298,12 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
+  
+  const forceSalesRaw = formData.get('forceSalesIds') as string;
+  const forceSalesIds = forceSalesRaw ? JSON.parse(forceSalesRaw) : [];
+  
+  const saleTogetherRaw = formData.get('saleTogetherIds') as string;
+  const saleTogetherIds = saleTogetherRaw ? JSON.parse(saleTogetherRaw) : [];
   
   const tagsRaw = formData.get('tags') as string;
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
@@ -337,6 +351,12 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
           }))
         },
         images: imageUrls,
+        forceSales: {
+          connect: forceSalesIds.map((id: string) => ({ id }))
+        },
+        saleTogether: {
+          connect: saleTogetherIds.map((id: string) => ({ id }))
+        },
       }
     });
 
@@ -373,6 +393,12 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
+
+  const forceSalesRaw = formData.get('forceSalesIds') as string;
+  const forceSalesIds = forceSalesRaw ? JSON.parse(forceSalesRaw) : [];
+  
+  const saleTogetherRaw = formData.get('saleTogetherIds') as string;
+  const saleTogetherIds = saleTogetherRaw ? JSON.parse(saleTogetherRaw) : [];
 
   const tagsRaw = formData.get('tags') as string;
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
@@ -417,6 +443,12 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
           }))
         },
         images: imageUrls,
+        forceSales: {
+          set: forceSalesIds.map((id: string) => ({ id }))
+        },
+        saleTogether: {
+          set: saleTogetherIds.map((id: string) => ({ id }))
+        },
       }
     });
     revalidatePath('/admin/products');

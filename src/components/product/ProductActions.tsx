@@ -20,6 +20,8 @@ interface ProductActionsProps {
     images: string[];
     attributes?: { name: string; options: string[] }[];
     variations?: { id: string; price: string; stock?: string; image?: string; attributes: Record<string, string> }[];
+    forceSales?: any[];
+    saleTogether?: any[];
   };
   enableBuyNow?: boolean;
   onVariationChange?: (image: string | null) => void;
@@ -34,6 +36,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
   const [addedItemName, setAddedItemName] = useState<string | null>(null);
   const [wishlistedItemName, setWishlistedItemName] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [selectedSaleTogether, setSelectedSaleTogether] = useState<string[]>([]);
   const t = useTranslations('Product');
 
   useEffect(() => {
@@ -71,22 +74,39 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
     ? (currentVariation.stock ? parseInt(currentVariation.stock) : null) 
     : product.stock;
 
+  const getCartItemBase = (prod: any, price: number, qty: number = 1, currentVar: any = null, attrs: any = undefined) => ({
+    id: currentVar ? `${prod.id}-${currentVar.id}` : prod.id,
+    productId: prod.id,
+    variationId: currentVar?.id,
+    title: prod.title,
+    price: price,
+    image: currentVar?.image || prod.images?.[0] || '',
+    quantity: qty,
+    attributes: attrs,
+  });
+
+  const getLinkedItemsForCart = (qty: number) => {
+    // Les forceSales sont forcés et prennent la quantité du produit principal
+    const fsItems = (product.forceSales || []).map(fs => getCartItemBase(fs, fs.price, qty));
+    
+    // Les saleTogether cochés
+    const stItems = (product.saleTogether || [])
+      .filter(st => selectedSaleTogether.includes(st.id))
+      .map(st => getCartItemBase(st, st.price, 1)); // ou `qty` selon la logique métier, mettons 1 par défaut pour un accessoire
+
+    return [...fsItems, ...stItems];
+  };
+
   const handleAddToCart = () => {
     if (isVariable && !currentVariation) {
       alert(t('select_options_cart'));
       return;
     }
 
-    cartStore.addItem({
-      id: currentVariation ? `${product.id}-${currentVariation.id}` : product.id,
-      productId: product.id,
-      variationId: currentVariation?.id,
-      title: product.title,
-      price: currentPrice,
-      image: currentVariation?.image || product.images?.[0] || '',
-      quantity,
-      attributes: currentVariation ? selectedAttributes : undefined,
-    });
+    const mainItem = getCartItemBase(product, currentPrice, quantity, currentVariation, currentVariation ? selectedAttributes : undefined);
+    const linkedItems = getLinkedItemsForCart(quantity);
+    
+    cartStore.addItem(mainItem, linkedItems);
     
     setAddedItemName(product.title);
     setTimeout(() => {
@@ -100,16 +120,10 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       return;
     }
 
-    cartStore.addItem({
-      id: currentVariation ? `${product.id}-${currentVariation.id}` : product.id,
-      productId: product.id,
-      variationId: currentVariation?.id,
-      title: product.title,
-      price: currentPrice,
-      image: currentVariation?.image || product.images?.[0] || '',
-      quantity,
-      attributes: currentVariation ? selectedAttributes : undefined,
-    });
+    const mainItem = getCartItemBase(product, currentPrice, quantity, currentVariation, currentVariation ? selectedAttributes : undefined);
+    const linkedItems = getLinkedItemsForCart(quantity);
+    
+    cartStore.addItem(mainItem, linkedItems);
     
     router.push('/checkout');
   };
@@ -158,12 +172,48 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       )}
 
       {/* Price Display */}
-      <div className="mb-6">
-        {product.compareAtPrice && !currentVariation && (
-          <span className="text-2xl text-gray-400 line-through mr-3">{formatPrice(product.compareAtPrice)}</span>
+      <div className="mb-6 flex flex-col gap-1">
+        <div className="flex items-center">
+          {product.compareAtPrice && !currentVariation && (
+            <span className="text-2xl text-gray-400 line-through mr-3">{formatPrice(product.compareAtPrice)}</span>
+          )}
+          <span className="text-3xl font-bold text-red-600">{formatPrice(currentPrice)}</span>
+        </div>
+        
+        {/* Total dynamique si des produits saleTogether sont cochés */}
+        {selectedSaleTogether.length > 0 && (
+          <div className="text-sm font-semibold text-gray-600 mt-2 bg-gray-50 p-2 rounded-md inline-block">
+            Total avec options: <span className="text-red-600 ml-1">{formatPrice(
+              (currentPrice * quantity) + 
+              (product.saleTogether || []).filter(st => selectedSaleTogether.includes(st.id)).reduce((acc, curr) => acc + curr.price, 0)
+            )}</span>
+          </div>
         )}
-        <span className="text-3xl font-bold text-red-600">{formatPrice(currentPrice)}</span>
       </div>
+
+      {/* Force Sales UI */}
+      {product.forceSales && product.forceSales.length > 0 && (
+        <div className="mb-6 border-2 border-orange-500 bg-orange-50 rounded-lg p-4">
+          <h4 className="text-sm font-bold text-orange-600 uppercase tracking-wide mb-3 flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            Achat combiné obligatoire
+          </h4>
+          <div className="space-y-3">
+            {product.forceSales.map(fs => (
+              <div key={fs.id} className="flex items-center gap-3 bg-white p-2 rounded shadow-sm border border-orange-100">
+                {fs.images?.[0] && <img src={fs.images[0]} alt={fs.title} className="w-12 h-12 object-cover rounded" />}
+                <div>
+                  <div className="text-sm font-medium text-gray-900 leading-tight">{fs.title}</div>
+                  <div className="text-sm font-bold text-gray-700">{formatPrice(fs.price)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-orange-700 mt-3 leading-relaxed">
+            Ces produits sont indispensables au fonctionnement du produit principal et seront ajoutés automatiquement à votre panier.
+          </p>
+        </div>
+      )}
 
       {/* Attributes Selection (Only if Variable) */}
       {isVariable && attributes.length > 0 && (
@@ -234,7 +284,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       </div>
 
       {/* Actions (Quantity + Cart + Buy) */}
-      <div className="flex flex-col gap-4 mb-8">
+      <div className="flex flex-col gap-4 mb-6">
         <div className="flex gap-4 w-full">
           {/* Qty */}
           <div className="flex border border-gray-300 rounded-md overflow-hidden bg-gray-50 w-32 shrink-0">
@@ -265,6 +315,33 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
           </button>
         )}
       </div>
+
+      {/* Sale Together UI */}
+      {product.saleTogether && product.saleTogether.length > 0 && (
+        <div className="mb-8 border border-gray-200 rounded-lg p-4 bg-gray-50/50">
+          <h4 className="text-sm font-bold text-gray-900 mb-4">Fréquemment achetés ensemble</h4>
+          <div className="space-y-3">
+            {product.saleTogether.map(st => (
+              <label key={st.id} className="flex items-center gap-3 cursor-pointer p-2 hover:bg-white rounded transition border border-transparent hover:border-gray-200">
+                <input 
+                  type="checkbox"
+                  checked={selectedSaleTogether.includes(st.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) setSelectedSaleTogether(prev => [...prev, st.id]);
+                    else setSelectedSaleTogether(prev => prev.filter(id => id !== st.id));
+                  }}
+                  className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
+                />
+                {st.images?.[0] && <img src={st.images[0]} alt={st.title} className="w-12 h-12 object-cover rounded bg-white border border-gray-100" />}
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-gray-900 leading-tight line-clamp-1">{st.title}</div>
+                  <div className="text-sm font-bold text-gray-700">{formatPrice(st.price)}</div>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Secondary Actions */}
       <div className="flex flex-wrap gap-3 mb-8">

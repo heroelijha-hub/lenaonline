@@ -97,6 +97,13 @@ model Product {
   tags           Tag[]       @relation("ProductTags")
   orderItems     OrderItem[]
   reviews        Review[]
+  
+  forceSales     Product[] @relation("ForceSales")
+  forcedBy       Product[] @relation("ForceSales")
+  
+  saleTogether   Product[] @relation("SaleTogether")
+  soldTogetherBy Product[] @relation("SaleTogether")
+
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }

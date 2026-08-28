@@ -68,13 +68,15 @@ export default function CartPage() {
                       
                       {/* Remove Button */}
                       <div className="col-span-1 flex justify-center w-full md:w-auto mb-2 md:mb-0">
-                        <button 
-                          onClick={() => removeItem(item.id)}
-                          className="text-red-600 hover:text-red-800"
-                          title={t('remove')}
-                        >
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
-                        </button>
+                        {!item.forcedByItemId && (
+                          <button 
+                            onClick={() => removeItem(item.id)}
+                            className="text-red-600 hover:text-red-800"
+                            title={t('remove')}
+                          >
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
+                          </button>
+                        )}
                       </div>
 
                       {/* Image */}
@@ -98,6 +100,11 @@ export default function CartPage() {
                             {Object.entries(item.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')}
                           </div>
                         )}
+                        {item.forcedByItemId && (
+                          <div className="text-xs font-semibold text-orange-600 mt-1">
+                            Achat combiné obligatoire
+                          </div>
+                        )}
                       </div>
                       
                       {/* Price */}
@@ -107,10 +114,11 @@ export default function CartPage() {
                       
                       {/* Quantity */}
                       <div className="col-span-2 flex justify-center">
-                        <div className="flex items-center border border-gray-300">
+                        <div className={`flex items-center border ${item.forcedByItemId ? 'border-gray-200 opacity-50' : 'border-gray-300'}`}>
                           <button 
-                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                            onClick={() => !item.forcedByItemId && updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 transition bg-gray-50"
+                            disabled={!!item.forcedByItemId}
                           >
                             -
                           </button>
@@ -121,8 +129,9 @@ export default function CartPage() {
                             className="w-10 py-1.5 text-center text-sm font-medium border-x border-gray-300 outline-none"
                           />
                           <button 
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => !item.forcedByItemId && updateQuantity(item.id, item.quantity + 1)}
                             className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 transition bg-gray-50"
+                            disabled={!!item.forcedByItemId}
                           >
                             +
                           </button>
