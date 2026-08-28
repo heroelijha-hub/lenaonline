@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import NotificationBell from '@/components/layout/NotificationBell';
 import AdminSidebarNav from '@/components/admin/AdminSidebarNav';
 import { getTranslations } from 'next-intl/server';
+import AutoLogout from '@/components/AutoLogout';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const t = await getTranslations('AdminLayout');
@@ -32,6 +33,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      <AutoLogout redirectUrl="/admin/login" timeoutMs={15 * 60 * 1000} />
       {/* Sidebar Admin */}
       <aside className="w-64 bg-white border-r border-gray-200">
         <div className="h-full flex flex-col">

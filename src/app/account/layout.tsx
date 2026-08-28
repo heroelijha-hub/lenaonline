@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { logoutUser } from '@/actions/auth';
 import { useTranslations } from 'next-intl';
+import AutoLogout from '@/components/AutoLogout';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,6 +24,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gray-50">
+      <AutoLogout redirectUrl="/login" timeoutMs={15 * 60 * 1000} />
       <main className="flex-grow max-w-7xl mx-auto w-full px-4 py-12">
         <div className="flex flex-col md:flex-row gap-8">
           
