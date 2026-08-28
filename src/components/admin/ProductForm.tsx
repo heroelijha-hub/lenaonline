@@ -555,81 +555,143 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         {/* Force Sales & Sale Together */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-md border border-gray-200">
-          <div>
+          {/* Achat Combiné (Force Sales) */}
+          <div className="flex flex-col h-full">
             <label className="block text-sm font-medium text-gray-700 mb-1">Achat Combiné (Force Sales)</label>
             <p className="text-xs text-gray-500 mb-2">Produits qui seront automatiquement et obligatoirement ajoutés au panier.</p>
-            <input 
-              type="text" 
-              placeholder="Rechercher par titre ou ID..." 
-              value={forceSalesSearch}
-              onChange={(e) => setForceSalesSearch(e.target.value)}
-              className="w-full px-3 py-1.5 mb-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            />
-            <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
-              {allProducts
-                .filter(p => p.title.toLowerCase().includes(forceSalesSearch.toLowerCase()) || p.id.includes(forceSalesSearch))
-                .sort((a, b) => {
-                  const aSelected = forceSalesIds.includes(a.id);
-                  const bSelected = forceSalesIds.includes(b.id);
-                  if (aSelected && !bSelected) return -1;
-                  if (!aSelected && bSelected) return 1;
-                  return a.title.localeCompare(b.title);
-                })
-                .map((prod) => (
-                <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
-                  <input 
-                    type="checkbox" 
-                    checked={forceSalesIds.includes(prod.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) setForceSalesIds([...forceSalesIds, prod.id]);
-                      else setForceSalesIds(forceSalesIds.filter(id => id !== prod.id));
-                    }}
-                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
-                  />
-                  {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-6 h-6 object-cover rounded" />}
-                  {prod.title}
-                </label>
-              ))}
-              {allProducts.length === 0 && <p className="text-xs text-gray-500">Aucun autre produit disponible.</p>}
+            <div className="relative mb-2">
+              <input 
+                type="text" 
+                placeholder="Rechercher par titre ou ID..." 
+                value={forceSalesSearch}
+                onChange={(e) => setForceSalesSearch(e.target.value)}
+                className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
+              {forceSalesSearch.trim() !== '' && (
+                <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto top-full mt-1">
+                  {allProducts
+                    .filter(p => !forceSalesIds.includes(p.id) && (p.title.toLowerCase().includes(forceSalesSearch.toLowerCase()) || p.id.includes(forceSalesSearch)))
+                    .slice(0, 20)
+                    .map(prod => (
+                      <div 
+                        key={prod.id} 
+                        onClick={() => {
+                          setForceSalesIds([...forceSalesIds, prod.id]);
+                          setForceSalesSearch('');
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer border-b border-gray-100 text-sm transition"
+                      >
+                        {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-8 h-8 object-cover rounded border border-gray-100" />}
+                        <span className="line-clamp-1 text-gray-800">{prod.title}</span>
+                      </div>
+                    ))}
+                    {allProducts.filter(p => !forceSalesIds.includes(p.id) && (p.title.toLowerCase().includes(forceSalesSearch.toLowerCase()) || p.id.includes(forceSalesSearch))).length === 0 && (
+                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">Aucun produit trouvé</div>
+                    )}
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 flex flex-col gap-2 overflow-y-auto max-h-60 pr-1">
+              {forceSalesIds.map(id => {
+                const prod = allProducts.find(p => p.id === id);
+                if (!prod) return null;
+                return (
+                  <div key={id} className="flex items-center justify-between bg-white border border-orange-200 rounded p-2 text-sm shadow-sm group">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      {prod.images?.[0] ? (
+                        <img src={prod.images[0]} alt="" className="w-10 h-10 object-cover rounded border border-gray-100 shrink-0" />
+                      ) : (
+                        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center shrink-0 text-gray-400 text-xs">img</div>
+                      )}
+                      <span className="line-clamp-2 text-gray-700 font-medium leading-tight">{prod.title}</span>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setForceSalesIds(forceSalesIds.filter(fid => fid !== id))}
+                      className="text-red-400 hover:text-red-600 p-2 shrink-0 bg-red-50 hover:bg-red-100 rounded transition opacity-0 group-hover:opacity-100"
+                      title="Retirer"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>
+                  </div>
+                );
+              })}
+              {forceSalesIds.length === 0 && (
+                <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-200 rounded text-gray-400 text-sm py-6">
+                  Aucun produit lié
+                </div>
+              )}
             </div>
           </div>
 
-          <div>
+          {/* Vendus Ensemble (Sale Together) */}
+          <div className="flex flex-col h-full">
             <label className="block text-sm font-medium text-gray-700 mb-1">Vendus Ensemble (Sale Together)</label>
             <p className="text-xs text-gray-500 mb-2">Produits suggérés sous forme de cases à cocher sur la fiche produit.</p>
-            <input 
-              type="text" 
-              placeholder="Rechercher par titre ou ID..." 
-              value={saleTogetherSearch}
-              onChange={(e) => setSaleTogetherSearch(e.target.value)}
-              className="w-full px-3 py-1.5 mb-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            />
-            <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-white flex flex-col gap-2">
-              {allProducts
-                .filter(p => p.title.toLowerCase().includes(saleTogetherSearch.toLowerCase()) || p.id.includes(saleTogetherSearch))
-                .sort((a, b) => {
-                  const aSelected = saleTogetherIds.includes(a.id);
-                  const bSelected = saleTogetherIds.includes(b.id);
-                  if (aSelected && !bSelected) return -1;
-                  if (!aSelected && bSelected) return 1;
-                  return a.title.localeCompare(b.title);
-                })
-                .map((prod) => (
-                <label key={prod.id} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
-                  <input 
-                    type="checkbox" 
-                    checked={saleTogetherIds.includes(prod.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) setSaleTogetherIds([...saleTogetherIds, prod.id]);
-                      else setSaleTogetherIds(saleTogetherIds.filter(id => id !== prod.id));
-                    }}
-                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
-                  />
-                  {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-6 h-6 object-cover rounded" />}
-                  {prod.title}
-                </label>
-              ))}
-              {allProducts.length === 0 && <p className="text-xs text-gray-500">Aucun autre produit disponible.</p>}
+            <div className="relative mb-2">
+              <input 
+                type="text" 
+                placeholder="Rechercher par titre ou ID..." 
+                value={saleTogetherSearch}
+                onChange={(e) => setSaleTogetherSearch(e.target.value)}
+                className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+              />
+              {saleTogetherSearch.trim() !== '' && (
+                <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-y-auto top-full mt-1">
+                  {allProducts
+                    .filter(p => !saleTogetherIds.includes(p.id) && (p.title.toLowerCase().includes(saleTogetherSearch.toLowerCase()) || p.id.includes(saleTogetherSearch)))
+                    .slice(0, 20)
+                    .map(prod => (
+                      <div 
+                        key={prod.id} 
+                        onClick={() => {
+                          setSaleTogetherIds([...saleTogetherIds, prod.id]);
+                          setSaleTogetherSearch('');
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-orange-50 cursor-pointer border-b border-gray-100 text-sm transition"
+                      >
+                        {prod.images?.[0] && <img src={prod.images[0]} alt="" className="w-8 h-8 object-cover rounded border border-gray-100" />}
+                        <span className="line-clamp-1 text-gray-800">{prod.title}</span>
+                      </div>
+                    ))}
+                    {allProducts.filter(p => !saleTogetherIds.includes(p.id) && (p.title.toLowerCase().includes(saleTogetherSearch.toLowerCase()) || p.id.includes(saleTogetherSearch))).length === 0 && (
+                      <div className="px-3 py-3 text-sm text-gray-500 text-center italic">Aucun produit trouvé</div>
+                    )}
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 flex flex-col gap-2 overflow-y-auto max-h-60 pr-1">
+              {saleTogetherIds.map(id => {
+                const prod = allProducts.find(p => p.id === id);
+                if (!prod) return null;
+                return (
+                  <div key={id} className="flex items-center justify-between bg-white border border-gray-200 rounded p-2 text-sm shadow-sm group">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      {prod.images?.[0] ? (
+                        <img src={prod.images[0]} alt="" className="w-10 h-10 object-cover rounded border border-gray-100 shrink-0" />
+                      ) : (
+                        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center shrink-0 text-gray-400 text-xs">img</div>
+                      )}
+                      <span className="line-clamp-2 text-gray-700 font-medium leading-tight">{prod.title}</span>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setSaleTogetherIds(saleTogetherIds.filter(fid => fid !== id))}
+                      className="text-red-400 hover:text-red-600 p-2 shrink-0 bg-red-50 hover:bg-red-100 rounded transition opacity-0 group-hover:opacity-100"
+                      title="Retirer"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>
+                  </div>
+                );
+              })}
+              {saleTogetherIds.length === 0 && (
+                <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-200 rounded text-gray-400 text-sm py-6">
+                  Aucun produit lié
+                </div>
+              )}
             </div>
           </div>
         </div>
