@@ -282,4 +282,5 @@ export default async function OrderDetailsPage({
       )}
 
     </div>
+  );
 }
