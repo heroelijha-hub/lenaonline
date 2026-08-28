@@ -52,6 +52,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
   const [description, setDescription] = useState(initialData?.description || '');
   
+  const [regularPrice, setRegularPrice] = useState(initialData?.price?.toString() || '');
+  const [salePrice, setSalePrice] = useState(initialData?.compareAtPrice?.toString() || '');
+  
+  const priceError = (salePrice && regularPrice && Number(salePrice) >= Number(regularPrice)) 
+    ? "Le prix promotionnel doit être inférieur au prix régulier" 
+    : "";
+
   // Helper to slugify
   const generateSlug = (text: string) => 
     text.toString().toLowerCase().trim()
@@ -98,6 +105,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     setIsLoading(true);
 
     try {
+      if (priceError) {
+        setIsLoading(false);
+        return;
+      }
+      
       const formData = new FormData(e.currentTarget);
       
       // Formatting attributes and variations to send as JSON string
@@ -310,11 +322,23 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-3 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('regular_price_label')}</label>
-            <input type="number" step="0.01" name="price" defaultValue={initialData?.price} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <input 
+              type="number" step="0.01" name="price" 
+              value={regularPrice} 
+              onChange={(e) => setRegularPrice(e.target.value)} 
+              required 
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t("sale_price")}</label>
-            <input type="number" step="0.01" name="compareAtPrice" defaultValue={initialData?.compareAtPrice} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <input 
+              type="number" step="0.01" name="compareAtPrice" 
+              value={salePrice} 
+              onChange={(e) => setSalePrice(e.target.value)} 
+              className={`w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500 ${priceError ? 'border-red-500' : 'border-gray-300'}`} 
+            />
+            {priceError && <p className="text-red-500 text-xs font-semibold mt-1">{priceError}</p>}
           </div>
           {productType === 'SIMPLE' && (
             <div>
