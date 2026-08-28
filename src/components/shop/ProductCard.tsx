@@ -16,6 +16,7 @@ interface ProductCardProps {
     discountLabel?: string | null;
     categories?: { name: string, slug?: string | null }[] | null;
     reviews?: { rating: number }[];
+    type?: string;
   };
   view?: 'grid' | 'list';
   cardStyle?: 'design1' | 'design2';
