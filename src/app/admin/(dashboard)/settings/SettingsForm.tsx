@@ -742,7 +742,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               value={bankTransferAccountHolder}
               onChange={(e) => setBankTransferAccountHolder(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder=tSettings('bank_account_holder_ph')
+              placeholder={tSettings('bank_account_holder_ph')}
             />
           </div>
           <div className="md:col-span-2">
@@ -752,7 +752,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               value={bankTransferBankName}
               onChange={(e) => setBankTransferBankName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              placeholder=tSettings('bank_name_ph')
+              placeholder={tSettings('bank_name_ph')}
             />
           </div>
           <div className="md:col-span-2">
