@@ -306,7 +306,15 @@
     "actions_th": "Actions",
     "no_orders": "You have not placed any orders yet.",
     "for_x_products": "for {count} product(s)",
-    "view_order": "View order"
+    "view_order": "View order",
+    "order_details": "Order details",
+    "items_ordered": "Items ordered",
+    "quantity": "Quantity",
+    "order_summary": "Order summary",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "shipping_address": "Shipping address",
+    "tracking_number": "Tracking number"
   },
   "AccountAddresses": {
     "addresses_intro": "The following addresses will be used on the checkout page by default.",

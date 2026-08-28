@@ -304,7 +304,15 @@
     "actions_th": "Actions",
     "no_orders": "Vous n'avez pas encore passé de commande.",
     "for_x_products": "pour {count} produit(s)",
-    "view_order": "Voir la commande"
+    "view_order": "Voir la commande",
+    "order_details": "Détails de la commande",
+    "items_ordered": "Articles commandés",
+    "quantity": "Quantité",
+    "order_summary": "Résumé de la commande",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "shipping_address": "Adresse de livraison",
+    "tracking_number": "Numéro de suivi"
   },
   "AccountAddresses": {
     "addresses_intro": "Les adresses suivantes seront utilisées par défaut sur la page de paiement.",
