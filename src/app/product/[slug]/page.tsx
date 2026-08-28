@@ -40,6 +40,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     include: { 
       categories: true,
       brand: true,
+      tags: true,
       reviews: {
         where: { isApproved: true },
         orderBy: { createdAt: 'desc' },
@@ -118,6 +119,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {/* Tabs Section (Description & Reviews) */}
           <ProductReviews 
             productId={product.id}
+            productTitle={product.title}
             reviews={product.reviews as any}
             description={product.description}
             isLoggedIn={isLoggedIn}

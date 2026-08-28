@@ -126,12 +126,12 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
           {product.brand && !product.brand.logo && (
             <p><span className="font-semibold text-gray-900">Marque : </span>{product.brand.name}</p>
           )}
-          <p>
-            <span className="font-semibold text-gray-900">{t?.tags ?? 'Tags :'} </span>
-            {product.tags && product.tags.length > 0
-              ? product.tags.map((tag: any) => tag.name).join(', ')
-              : `${storeName}, Featured`}
-          </p>
+          {product.tags && product.tags.length > 0 && (
+            <p>
+              <span className="font-semibold text-gray-900">{t?.tags ?? 'Tags :'} </span>
+              {product.tags.map((tag: any) => tag.name).join(', ')}
+            </p>
+          )}
         </div>
       </div>
     </>
