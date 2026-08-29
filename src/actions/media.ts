@@ -76,6 +76,19 @@ export async function deleteMediaAction(id: string) {
   }
 }
 
+export async function deleteMultipleMediaAction(ids: string[]) {
+  await requireAdmin();
+  
+  try {
+    await prisma.media.deleteMany({ where: { id: { in: ids } } });
+    revalidatePath('/admin/media');
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error deleting multiple media:', error);
+    return { success: false, error: 'Erreur lors de la suppression des médias' };
+  }
+}
+
 export async function uploadMediaAction(formData: FormData) {
   await requireAdmin();
   
