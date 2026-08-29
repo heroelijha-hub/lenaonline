@@ -43,7 +43,26 @@ export async function sendMessage(sessionId: string, sender: ChatSender, content
   // Create notification
   const { createNotification } = await import('./notification');
   if (sender === ChatSender.CUSTOMER) {
-    // Notify Admin
+    // Notify Admin via Email
+    try {
+      const allSettings = await prisma.setting.findMany();
+      const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+      const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
+      const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://shopelios.com';
+      
+      const { sendAdminNewChatMessageEmail } = await import('@/lib/mailer');
+      sendAdminNewChatMessageEmail(
+        updatedSession.guestName || 'Visiteur',
+        updatedSession.guestEmail,
+        content,
+        adminEmail,
+        storeUrl
+      ).catch(e => console.error('Chat admin email failed', e));
+    } catch (e) {
+      console.error('Failed to send chat email', e);
+    }
+
+    // Notify Admin via push notification
     await createNotification({
       isAdmin: true,
       type: 'CHAT',

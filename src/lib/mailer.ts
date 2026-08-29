@@ -400,3 +400,46 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
   }
 }
 
+
+// 7. Admin New Chat Message Notification
+export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail: string | null, messageContent: string, adminEmail: string, storeUrl: string) {
+  try {
+    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    
+    const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : "";
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
+        ${logoHtml}
+        <h1 style="font-size: 24px; color: #1a1a1a;">Nouveau message de support</h1>
+        <p>Un visiteur vient de laisser un message sur le chat de votre boutique.</p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
+          <tr>
+            <td style="padding: 10px;"><strong>De :</strong></td>
+            <td style="padding: 10px;">${guestName || "Visiteur"} ${guestEmail ? `(${guestEmail})` : ""}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; vertical-align: top;"><strong>Message :</strong></td>
+            <td style="padding: 10px; font-style: italic;">"${messageContent}"</td>
+          </tr>
+        </table>
+        
+        <p style="margin-top: 30px;">
+          <a href="${storeUrl}/admin/chat" style="background-color: #000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
+            Ouvrir le Chat Admin
+          </a>
+        </p>
+      </div>
+    `;
+
+    return sendEmail({
+      to: adminEmail,
+      subject: `[Support Chat] Nouveau message de ${guestName || "Visiteur"}`,
+      html
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
