@@ -551,7 +551,8 @@
     "pages": "Pages",
     "settings": "Paramètres",
     "shipping": "Livraison",
-    "sign_out": "Déconnexion"
+    "sign_out": "Déconnexion",
+    "media": "Médias"
   },
   "AdminDashboard": {
     "title": "Tableau de bord",
@@ -656,7 +657,8 @@
     "search_product_id": "Rechercher par titre ou ID...",
     "no_product_found": "Aucun produit trouvé",
     "remove_item": "Retirer",
-    "no_linked_product": "Aucun produit lié"
+    "no_linked_product": "Aucun produit lié",
+    "browse_library": "Parcourir la Bibliothèque"
   },
   "AdminCategories": {
     "manage_categories": "Gestion des Catégories",
@@ -1133,5 +1135,33 @@
     "space_ex": "Espace (ex: 1 000)",
     "dot_ex_decimal": "Point (ex: 10.99)",
     "comma_ex_decimal": "Virgule (ex: 10,99)"
+  },
+  "AdminMedia": {
+    "title": "Bibliothèque de médias",
+    "add_media": "Ajouter un média",
+    "uploading": "Upload en cours...",
+    "search": "Rechercher (Titre, Texte alternatif)...",
+    "loading": "Chargement...",
+    "no_media": "Aucun média trouvé.",
+    "details": "Détails du média",
+    "file_url": "URL du fichier",
+    "copy": "Copier",
+    "copied": "Copié!",
+    "media_title": "Titre",
+    "alt_text": "Texte alternatif (SEO & Accessibilité)",
+    "legend": "Légende",
+    "description": "Description",
+    "link": "Lien personnalisé",
+    "delete": "Supprimer",
+    "update": "Mettre à jour",
+    "delete_confirm": "Voulez-vous vraiment supprimer ce média ?",
+    "update_success": "Média mis à jour avec succès",
+    "upload_error": "Erreur lors de l'upload",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page {page}",
+    "select_media": "Sélectionner un Média",
+    "select": "Sélectionner",
+    "close": "Fermer"
   }
 }

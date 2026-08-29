@@ -552,7 +552,8 @@
     "shipping": "Envío",
     "sign_out": "Cerrar sesión",
     "brands": "Marcas",
-    "tags": "Etiquetas"
+    "tags": "Etiquetas",
+    "media": "Medios"
   },
   "AdminDashboard": {
     "title": "Panel de control",
@@ -665,7 +666,8 @@
     "search_product_id": "Buscar por título o ID...",
     "no_product_found": "Ningún producto encontrado",
     "remove_item": "Retirar",
-    "no_linked_product": "Ningún producto vinculado"
+    "no_linked_product": "Ningún producto vinculado",
+    "browse_library": "Explorar Biblioteca"
   },
   "AdminCategories": {
     "manage_categories": "Gestionar Categorías",
@@ -1142,5 +1144,33 @@
     "space_ex": "Espacio (ej: 1 000)",
     "dot_ex_decimal": "Punto (ej: 10.99)",
     "comma_ex_decimal": "Coma (ej: 10,99)"
+  },
+  "AdminMedia": {
+    "title": "Biblioteca de Medios",
+    "add_media": "Añadir Medio",
+    "uploading": "Subiendo...",
+    "search": "Buscar (Título, Texto alternativo)...",
+    "loading": "Cargando...",
+    "no_media": "No se encontraron medios.",
+    "details": "Detalles del Medio",
+    "file_url": "URL del Archivo",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "media_title": "Título",
+    "alt_text": "Texto alternativo (SEO y Accesibilidad)",
+    "legend": "Leyenda",
+    "description": "Descripción",
+    "link": "Enlace Personalizado",
+    "delete": "Eliminar",
+    "update": "Actualizar",
+    "delete_confirm": "¿Estás seguro de que deseas eliminar este medio?",
+    "update_success": "Medio actualizado con éxito",
+    "upload_error": "Error de subida",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page}",
+    "select_media": "Seleccionar Medio",
+    "select": "Seleccionar",
+    "close": "Cerrar"
   }
 }

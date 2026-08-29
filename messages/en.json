@@ -551,7 +551,8 @@
     "pages": "Pages",
     "settings": "Settings",
     "shipping": "Shipping",
-    "sign_out": "Sign out"
+    "sign_out": "Sign out",
+    "media": "Media"
   },
   "AdminDashboard": {
     "title": "Dashboard",
@@ -664,7 +665,8 @@
     "search_product_id": "Search by title or ID...",
     "no_product_found": "No product found",
     "remove_item": "Remove",
-    "no_linked_product": "No linked product"
+    "no_linked_product": "No linked product",
+    "browse_library": "Browse Library"
   },
   "AdminCategories": {
     "manage_categories": "Manage Categories",
@@ -1141,5 +1143,33 @@
     "space_ex": "Space (ex: 1 000)",
     "dot_ex_decimal": "Dot (ex: 10.99)",
     "comma_ex_decimal": "Comma (ex: 10,99)"
+  },
+  "AdminMedia": {
+    "title": "Media Library",
+    "add_media": "Add Media",
+    "uploading": "Uploading...",
+    "search": "Search (Title, Alt text)...",
+    "loading": "Loading...",
+    "no_media": "No media found.",
+    "details": "Media Details",
+    "file_url": "File URL",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "media_title": "Title",
+    "alt_text": "Alt text (SEO & Accessibility)",
+    "legend": "Caption",
+    "description": "Description",
+    "link": "Custom Link",
+    "delete": "Delete",
+    "update": "Update",
+    "delete_confirm": "Are you sure you want to delete this media?",
+    "update_success": "Media updated successfully",
+    "upload_error": "Upload error",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page}",
+    "select_media": "Select Media",
+    "select": "Select",
+    "close": "Close"
   }
 }

@@ -513,7 +513,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               onClick={() => setShowMediaPicker(true)}
               className="px-4 py-2 border border-gray-300 rounded-md text-sm font-semibold bg-gray-50 text-gray-700 hover:bg-gray-100 h-[42px]"
             >
-              Parcourir la Bibliothèque
+              {t('browse_library')}
             </button>
           </div>
           {imageFiles.length > 0 && (
