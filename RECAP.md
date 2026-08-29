@@ -7,6 +7,8 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Base de données** : PostgreSQL (hébergé sur Supabase)
 - **ORM** : Prisma
 - **Style** : Tailwind CSS (Responsive Mobile-First)
+- **Internationalisation** : `next-intl` (Français, Anglais, Espagnol)
+- **Génération PDF** : `pdfkit`
 
 ---
 
@@ -34,6 +36,7 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Moyens de paiement dynamiques** : Le client ne voit que les moyens de paiement activés par l'administrateur (Stripe, PayPal, ou Virement Bancaire).
 - **Virement Bancaire** : Affichage d'un message dynamique (configuré depuis l'admin) contenant les instructions bancaires (IBAN, etc.) lors du passage à la caisse.
 - **Gestion des Zones d'Expédition** : Prise en compte de l'adresse de facturation/livraison pour le calcul des frais de livraison dynamiques.
+- **Gestion fine du Stock** : Décrémentation automatique du stock (global ou par déclinaison) lors du passage de commande.
 
 ### 4. Landing Page / Accueil
 - **Section BestSeller & Promo** : 
@@ -45,8 +48,8 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Section Avis Clients (Testimonials)** :
   - Alimentée dynamiquement depuis la base de données avec de vrais avis approuvés, remplaçant les placeholders par défaut.
 
-### 5. Internationalisation et Langue
-- **Projet strictement en Anglais** : L'ensemble de l'interface (Espace Admin, Espace Client, Landing Page, Messages d'erreur, Auth et Checkout) a été intégralement traduit de Français à Anglais pour correspondre au marché visé.
+### 5. Internationalisation (i18n)
+- **Multilingue complet** : L'ensemble de l'interface du Storefront, de l'espace Administrateur, et des Emails ont été intégralement traduits via un système de dictionnaires JSON (Français, Anglais, Espagnol).
 
 ---
 
@@ -58,18 +61,41 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
   - Couleurs (Thème, Top Bar, Bouton de recherche, Footer, etc.).
   - Textes et Liens (Annonces, Réseaux Sociaux, Menus de navigation).
   - Logos et Images (Logo principal, Icône de chat, Image de maintenance).
-- **Modes de paiement (Toggles)** :
-  - Possibilité d'activer/désactiver Stripe, PayPal, et le Virement Bancaire d'un simple clic.
-  - Champs dédiés pour saisir l'IBAN, le titulaire du compte, et les instructions de virement.
+- **Modes de paiement (Toggles)** : Activation à la volée de Stripe, PayPal, et Virement Bancaire.
 
-### 2. Gestion des Produits
-- Intégration d'un **Éditeur de Texte Riche (Rich Text Editor)** basé sur `react-quill` pour faciliter la rédaction des descriptions de produits avec du formatage (gras, italique, puces, etc.).
-- Correction des conflits de versions liés à React 19 pour assurer des déploiements fluides sur Vercel.
+### 2. Gestion des Produits & Import WooCommerce
+- **Éditeur Riche** : Intégration d'un éditeur basé sur `react-quill` pour faciliter la rédaction des descriptions de produits.
+- **Importation WooCommerce Intelligente** : Limitation de la taille des lots (batch sizing) et exécution parallélisée asynchrone pour importer massivement des centaines de produits et d'images de manière stable (protection contre les timeouts 503 Vercel).
 
-### 3. Landing Page Builder (Éditeur)
-- **Constructeur visuel (Drag & Drop / Reorder)** : Les sections de la page d'accueil peuvent être remontées ou descendues avec des flèches directionnelles intuitives (côte à côte).
-- **Duplication de section** : Possibilité de cloner (dupliquer) une section en un clic via le bouton bleu.
-- **Configuration Responsive** : Chaque section gère ses propres paramètres de colonnes/affichage pour Mobile, Tablette et Ordinateur de bureau.
+### 3. Gestion des Médias & Corbeille (Soft Delete)
+- **Médiathèque (Media Library) améliorée** :
+  - Possibilité de sélectionner plusieurs images pour une suppression groupée.
+  - Encadrements visuels clairs (bordures noires) autour des images sélectionnées.
+- **Corbeille (Trash) & Soft Delete** :
+  - Suppression douce ("soft delete") pour les Produits et Médias. Rien n'est supprimé définitivement par erreur. 
+  - L'administrateur dispose d'une page de Corbeille complète pour restaurer les éléments ou les supprimer de manière irréversible.
+- **Sidebar Admin** : Menu de navigation clair, récemment enrichi d'icônes contextuelles pour chaque onglet.
+
+### 4. Landing Page Builder (Éditeur)
+- **Constructeur visuel (Drag & Drop / Reorder)** : Les sections peuvent être remontées ou descendues avec des flèches directionnelles.
+- **Duplication** : Clonage d'une section en un clic.
+- **Configuration Responsive** : Paramètres d'affichage spécifiques (Mobile, Tablette, Desktop).
+
+---
+
+## 📩 Emails Transactionnels & Automatisations (Cron)
+
+### 1. Communications Clients
+- **Confirmation de commande & Facture PDF** : Le client reçoit sa confirmation avec une Facture PDF professionnelle générée dynamiquement (avec logo, liste détaillée des articles et prix).
+- **Suivi des statuts** : Notifications automatiques lors du changement de statut de la commande (Expédiée, Livrée, Annulée).
+- **Panier Abandonné** : Relance automatisée contenant un résumé visuel clair des articles délaissés, avec un lien pour reprendre l'achat.
+- **Demande d'avis (Review Request)** :
+  - Tâche CRON (via Vercel) exécutée quotidiennement pour détecter les commandes marquées "Livrées" depuis exactement 7 jours.
+  - Le client reçoit un email l'invitant à noter les produits commandés.
+
+### 2. Alertes Administrateur
+- **Message du Support Chat** : Dès qu'un visiteur écrit un message dans le Live Chat, un email contenant son message complet est expédié à l'administrateur avec un raccourci direct vers le dashboard.
+- **Alerte de Stock Faible** : Dès qu'un produit (ou sa déclinaison) franchit à la baisse le seuil d'alerte défini dans les Settings, un email rouge urgent prévient le gérant pour organiser le réassort.
 
 ---
 
@@ -77,17 +103,10 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 
 ### 1. Protection Anti-DDoS et Rate Limiting
 - **Edge Middleware** : Mise en place d'un intercepteur de requêtes Next.js tournant à l'Edge (Cloudflare/Vercel).
-- **Redis (Upstash)** : Limiteur de débit (`Ratelimit.slidingWindow`) configuré pour bloquer les tentatives de hacking (Brute force) ou envois massifs de requêtes qui chercheraient à faire tomber le site (shutdown).
+- **Redis (Upstash)** : Limiteur de débit (`Ratelimit.slidingWindow`) configuré pour bloquer les tentatives de hacking (Brute force) ou envois massifs de requêtes.
 - Retourne dynamiquement un écran HTML de blocage ("429 Too Many Requests") en cas d'abus.
 
-### 2. Mesures futures prévues
-- Intégration de Cloudflare côté nom de domaine (Gestion DNS et anti-bot layer 7).
-- Intégration de Google reCAPTCHA sur les formulaires sensibles une fois les clés API générées.
-- Outil de Live Supervision pour surveiller les visiteurs en temps réel.
-
----
-
-## 🚀 DevOps et Déploiement
-- Déploiement automatisé sur **Vercel**.
+### 2. DevOps et Déploiement
+- Déploiement automatisé sur **Vercel** (avec résolution des soucis liés à l'architecture Turbopack / Next.js pour l'installation serveur de `pdfkit`).
+- Nettoyage préventif des scripts via des opérations correctives Node.js (`\0` sanitization).
 - Synchronisation continue avec **GitHub**.
-- Fichier `.npmrc` configuré pour passer outre les erreurs de dépendances obsolètes (`legacy-peer-deps=true`) afin de garantir des builds stables sans interruption.
