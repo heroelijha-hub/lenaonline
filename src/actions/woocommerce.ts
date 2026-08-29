@@ -297,26 +297,31 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
 
       const cloudinaryImageUrls: string[] = [];
       if (wcProduct.images && Array.isArray(wcProduct.images)) {
-        for (const wcImg of wcProduct.images) {
-          if (wcImg.src) {
-            const secureUrl = await uploadImageFromUrlToCloudinary(wcImg.src);
-            if (secureUrl) {
-              await prisma.media.upsert({
-                where: { url: secureUrl },
-                update: {
-                  title: wcImg.name || wcImg.title || null,
-                  altText: wcImg.alt || null,
-                },
-                create: {
-                  url: secureUrl,
-                  title: wcImg.name || wcImg.title || null,
-                  altText: wcImg.alt || null,
-                }
-              });
-              cloudinaryImageUrls.push(secureUrl);
-            }
+        const uploadPromises = wcProduct.images.map(async (wcImg: any) => {
+          if (!wcImg.src) return null;
+          const secureUrl = await uploadImageFromUrlToCloudinary(wcImg.src);
+          if (secureUrl) {
+            await prisma.media.upsert({
+              where: { url: secureUrl },
+              update: {
+                title: wcImg.name || wcImg.title || null,
+                altText: wcImg.alt || null,
+              },
+              create: {
+                url: secureUrl,
+                title: wcImg.name || wcImg.title || null,
+                altText: wcImg.alt || null,
+              }
+            });
+            return secureUrl;
           }
-        }
+          return null;
+        });
+
+        const results = await Promise.all(uploadPromises);
+        results.forEach((url) => {
+          if (url) cloudinaryImageUrls.push(url as string);
+        });
       }
 
       const baseSlug = wcProduct.slug || wcProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');

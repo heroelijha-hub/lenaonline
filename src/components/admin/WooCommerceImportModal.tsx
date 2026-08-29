@@ -55,8 +55,8 @@ export default function WooCommerceImportModal() {
         return;
       }
 
-      // 2. Import in batches to avoid Vercel timeout (5 items per page)
-      const perPage = 5;
+      // 2. Import in batches to avoid Vercel timeout (1 item per page)
+      const perPage = 1;
       const totalPages = Math.ceil(total / perPage);
       let totalImported = 0;
 
