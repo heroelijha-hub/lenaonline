@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     for (const order of eligibleOrders) {
       if (order.user?.email) {
         // Send email
-        const userName = order.user.name || 'Client';
+        const userName = 'Client';
         await sendReviewRequestEmail(order, order.user.email, userName, storeUrl);
 
         // Update database
