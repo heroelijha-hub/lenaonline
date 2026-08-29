@@ -261,6 +261,7 @@ export async function bulkDeleteCategories(ids: string[]) {
 export async function getProducts() {
   await requireAdmin();
   return await prisma.product.findMany({
+    where: { isDeleted: false },
     include: { categories: true },
     orderBy: { createdAt: 'desc' }
   });
@@ -269,6 +270,7 @@ export async function getProducts() {
 export async function getMinimalProducts() {
   await requireAdmin();
   return await prisma.product.findMany({
+    where: { isDeleted: false },
     select: { id: true, title: true, images: true },
     orderBy: { title: 'asc' }
   });
@@ -463,14 +465,38 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
 export async function deleteProduct(id: string) {
   await requireAdmin();
   try {
-    await prisma.orderItem.deleteMany({ where: { productId: id } });
-    await prisma.review.deleteMany({ where: { productId: id } });
-    await prisma.product.delete({ where: { id } });
+    const product = await prisma.product.findUnique({ where: { id } });
+    if (!product) return { error: "Product not found" };
+
+    // Soft delete the product
+    await prisma.product.update({ 
+      where: { id },
+      data: { isDeleted: true, deletedAt: new Date() }
+    });
+
+    // Handle exclusive media
+    for (const imageUrl of product.images) {
+       const isUsedElsewhere = await prisma.product.findFirst({
+         where: {
+           isDeleted: false,
+           id: { not: id },
+           images: { has: imageUrl }
+         }
+       });
+       if (!isUsedElsewhere) {
+         await prisma.media.updateMany({
+           where: { url: imageUrl, isDeleted: false },
+           data: { isDeleted: true, deletedAt: new Date() }
+         });
+       }
+    }
+
     revalidatePath('/admin/products');
     revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error(error);
+    const { getTranslations } = await import('next-intl/server');
     const t = await getTranslations('AdminProducts');
     return { error: t('delete_error') };
   }
@@ -479,20 +505,39 @@ export async function deleteProduct(id: string) {
 export async function bulkDeleteProducts(ids: string[]) {
   await requireAdmin();
   try {
-    await prisma.orderItem.deleteMany({ where: { productId: { in: ids } } });
-    await prisma.review.deleteMany({ where: { productId: { in: ids } } });
-    await prisma.product.deleteMany({
-      where: {
-        id: {
-          in: ids
+    const products = await prisma.product.findMany({ where: { id: { in: ids } } });
+    
+    // Soft delete the products
+    await prisma.product.updateMany({
+      where: { id: { in: ids } },
+      data: { isDeleted: true, deletedAt: new Date() }
+    });
+
+    // Handle exclusive media
+    for (const product of products) {
+      for (const imageUrl of product.images) {
+        const isUsedElsewhere = await prisma.product.findFirst({
+          where: {
+            isDeleted: false,
+            id: { notIn: ids },
+            images: { has: imageUrl }
+          }
+        });
+        if (!isUsedElsewhere) {
+          await prisma.media.updateMany({
+            where: { url: imageUrl, isDeleted: false },
+            data: { isDeleted: true, deletedAt: new Date() }
+          });
         }
       }
-    });
+    }
+
     revalidatePath('/admin/products');
     revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error(error);
+    const { getTranslations } = await import('next-intl/server');
     const t = await getTranslations('AdminProducts');
     return { error: t('bulk_delete_error') };
   }

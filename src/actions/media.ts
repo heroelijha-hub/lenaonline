@@ -16,14 +16,15 @@ export async function getMediaList(page = 1, limit = 20, search = '') {
   await requireAdmin();
   const skip = (page - 1) * limit;
 
-  const where = search
+  const where: any = search
     ? {
+        isDeleted: false,
         OR: [
           { title: { contains: search, mode: 'insensitive' as const } },
           { altText: { contains: search, mode: 'insensitive' as const } },
         ],
       }
-    : {};
+    : { isDeleted: false };
 
   const [items, total] = await Promise.all([
     prisma.media.findMany({
@@ -67,7 +68,10 @@ export async function deleteMediaAction(id: string) {
     const media = await prisma.media.findUnique({ where: { id } });
     if (!media) return { success: false, error: 'Média introuvable' };
 
-    await prisma.media.delete({ where: { id } });
+    await prisma.media.update({ 
+      where: { id },
+      data: { isDeleted: true, deletedAt: new Date() }
+    });
     revalidatePath('/admin/media');
     return { success: true };
   } catch (error: any) {
@@ -80,7 +84,10 @@ export async function deleteMultipleMediaAction(ids: string[]) {
   await requireAdmin();
   
   try {
-    await prisma.media.deleteMany({ where: { id: { in: ids } } });
+    await prisma.media.updateMany({ 
+      where: { id: { in: ids } },
+      data: { isDeleted: true, deletedAt: new Date() }
+    });
     revalidatePath('/admin/media');
     return { success: true };
   } catch (error: any) {

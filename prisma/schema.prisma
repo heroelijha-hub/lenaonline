@@ -106,6 +106,8 @@ model Product {
 
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
+  isDeleted      Boolean     @default(false)
+  deletedAt      DateTime?
 }
 
 model Setting {
@@ -328,5 +330,7 @@ model Media {
   link        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  isDeleted   Boolean  @default(false)
+  deletedAt   DateTime?
 }
 

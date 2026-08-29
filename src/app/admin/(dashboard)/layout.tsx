@@ -57,6 +57,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             { href: '/admin/blogs', label: t('blog') },
             { href: '/admin/pages', label: t('pages') },
             { href: '/admin/media', label: t('media') },
+            { href: '/admin/trash', label: 'Corbeille' },
             { href: '/admin/settings', label: t('settings') },
             { href: '/admin/shipping', label: t('shipping') },
           ]} />
