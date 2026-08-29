@@ -628,9 +628,14 @@ export async function getOrders() {
 export async function updateOrderStatus(orderId: string, status: any) {
   await requireAdmin();
   try {
+    const dataToUpdate: any = { status };
+    if (status === 'DELIVERED') {
+      dataToUpdate.deliveredAt = new Date();
+    }
+
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
-      data: { status },
+      data: dataToUpdate,
       include: { user: true }
     });
 

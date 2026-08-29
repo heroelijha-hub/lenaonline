@@ -295,3 +295,53 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
   }
 }
 
+ 
+ 
+// 5. Review Request Email
+export async function sendReviewRequestEmail(order: any, userEmail: string, userName: string, storeUrl: string) {
+  try {
+    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    
+    const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : "";
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
+        ${logoHtml}
+        <h1 style="font-size: 24px; color: #1a1a1a;">How was your purchase?</h1>
+        <p>Hello ${userName || "Customer"},</p>
+        <p>We hope you are enjoying your recent purchase from our store!</p>
+        <p>Your opinion is very important to us and helps other customers make the right choice.</p>
+        
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Leave a review for your items</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+          ${order.orderItems?.map((item: any) => `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 15px 0;">
+                <strong>${item.product?.title || "Product"}</strong>
+              </td>
+              <td style="padding: 15px 0; text-align: right;">
+                <a href="${storeUrl}/product/${item.product?.slug || item.product?.id}" style="background-color: #ea580c; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">
+                  Leave a Review
+                </a>
+              </td>
+            </tr>
+          `).join("") || ""}
+        </table>
+        
+        <p style="margin-top: 40px; color: #666; font-size: 14px;">
+          Thank you for taking the time to share your feedback.
+        </p>
+      </div>
+    `;
+
+    return sendEmail({
+      to: userEmail,
+      subject: `Leave a review for your recent order #${order.id.slice(-6).toUpperCase()}`,
+      html
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
