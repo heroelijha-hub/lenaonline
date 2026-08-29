@@ -11,8 +11,17 @@ import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({
-    where: { slug }
+  const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
+  const encodedSlugUpper = encodeURIComponent(slug);
+
+  const product = await prisma.product.findFirst({
+    where: { 
+      OR: [
+        { slug: slug },
+        { slug: encodedSlugLower },
+        { slug: encodedSlugUpper }
+      ]
+    }
   });
   
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
@@ -35,8 +44,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  const product = await prisma.product.findUnique({
-    where: { slug },
+  const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
+  const encodedSlugUpper = encodeURIComponent(slug);
+
+  const product = await prisma.product.findFirst({
+    where: { 
+      OR: [
+        { slug: slug },
+        { slug: encodedSlugLower },
+        { slug: encodedSlugUpper }
+      ]
+    },
     include: { 
       categories: true,
       brand: true,
