@@ -166,9 +166,10 @@ export default async function BestDeals({ config }: { config?: any }) {
             </Link>
           </div>
           {/* Image */}
-          {settings.PROMO_1_IMAGE ? (
+          {settings.PROMO_1_IMAGE && (
              <img src={settings.PROMO_1_IMAGE} alt="Promo 1" className="absolute right-0 top-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
-          ) : (
+          )}
+          {!settings.PROMO_1_IMAGE && !settings.PROMO_1_BG_IMAGE && (
             <div className="absolute right-[-10%] sm:right-[-5%] top-4 w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center z-10">
                <div className="w-20 h-24 sm:w-24 sm:h-28 bg-zinc-800 rounded-3xl border-[6px] border-zinc-700 shadow-xl rotate-12 z-20 flex items-center justify-center -mr-4">
                    <span className="text-white text-xs font-mono">09:28</span>
@@ -215,9 +216,10 @@ export default async function BestDeals({ config }: { config?: any }) {
             </Link>
           </div>
           {/* Image */}
-          {settings.PROMO_2_IMAGE ? (
+          {settings.PROMO_2_IMAGE && (
              <img src={settings.PROMO_2_IMAGE} alt="Promo 2" className="absolute right-0 bottom-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
-          ) : (
+          )}
+          {!settings.PROMO_2_IMAGE && !settings.PROMO_2_BG_IMAGE && (
             <div className="absolute right-2 sm:right-4 bottom-0 w-[45%] sm:w-1/2 h-[90%] flex items-end justify-center space-x-1 z-10">
                 <div className="w-12 h-32 sm:w-16 sm:h-40 bg-teal-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10 -ml-2 sm:-ml-4"></div>
                 <div className="w-12 h-36 sm:w-16 sm:h-44 bg-amber-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-20"></div>
