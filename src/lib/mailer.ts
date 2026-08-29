@@ -32,7 +32,7 @@ async function getTransporter() {
 }
 
 // General email sender
-export async function sendEmail({ to, subject, html }: { to: string, subject: string, html: string }) {
+export async function sendEmail({ to, subject, html, attachments }: { to: string, subject: string, html: string, attachments?: any[] }) {
   try {
     const { transporter, from } = await getTransporter();
     
@@ -41,6 +41,7 @@ export async function sendEmail({ to, subject, html }: { to: string, subject: st
       to,
       subject,
       html,
+      attachments,
     });
 
     console.log("Message sent: %s", info.messageId);
@@ -111,10 +112,24 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
       </div>
     `;
 
+    const { generateInvoicePDF } = await import('./pdfGenerator');
+    let pdfAttachment: any = null;
+    try {
+      const pdfBuffer = await generateInvoicePDF(order);
+      pdfAttachment = {
+        filename: `facture-${order.id.slice(-6).toUpperCase()}.pdf`,
+        content: pdfBuffer,
+        contentType: 'application/pdf'
+      };
+    } catch (pdfErr) {
+      console.error('Failed to generate PDF invoice', pdfErr);
+    }
+
     return sendEmail({
       to: userEmail,
       subject: `Confirmation de commande #${order.id.slice(-6).toUpperCase()}`,
-      html
+      html,
+      attachments: pdfAttachment ? [pdfAttachment] : []
     });
   } catch (e) {
     console.error(e);
@@ -295,8 +310,8 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
   }
 }
 
- 
- 
+
+
 // 5. Review Request Email
 export async function sendReviewRequestEmail(order: any, userEmail: string, userName: string, storeUrl: string) {
   try {
