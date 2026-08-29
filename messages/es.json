@@ -553,7 +553,8 @@
     "sign_out": "Cerrar sesión",
     "brands": "Marcas",
     "tags": "Etiquetas",
-    "media": "Medios"
+    "media": "Medios",
+    "trash": "Papelera"
   },
   "AdminDashboard": {
     "title": "Panel de control",
@@ -1172,5 +1173,26 @@
     "select_media": "Seleccionar Medio",
     "select": "Seleccionar",
     "close": "Cerrar"
+  },
+  "AdminTrash": {
+    "title": "Papelera",
+    "empty_trash": "Vaciar papelera",
+    "empty_trash_confirm": "¿Realmente quieres VACIAR LA PAPELERA? Esta acción es irreversible.",
+    "empty_trash_success": "Papelera vaciada con éxito.",
+    "tab_products": "Productos",
+    "tab_media": "Medios",
+    "no_products": "No hay productos en la papelera.",
+    "no_media": "No hay medios en la papelera.",
+    "product": "Producto",
+    "deleted_at": "Eliminado el",
+    "actions": "Acciones",
+    "restore": "Restaurar",
+    "restore_product_success": "Producto restaurado con éxito.",
+    "restore_media_success": "Medio restaurado con éxito.",
+    "delete_permanently": "Eliminar definitivamente",
+    "delete": "Eliminar",
+    "delete_product_confirm": "¿Realmente quieres eliminar este producto DEFINITIVAMENTE? Esta acción es irreversible.",
+    "delete_media_confirm": "¿Realmente quieres eliminar este medio DEFINITIVAMENTE? Esta acción es irreversible.",
+    "na": "N/A"
   }
 }

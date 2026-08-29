@@ -552,7 +552,8 @@
     "settings": "Paramètres",
     "shipping": "Livraison",
     "sign_out": "Déconnexion",
-    "media": "Médias"
+    "media": "Médias",
+    "trash": "Corbeille"
   },
   "AdminDashboard": {
     "title": "Tableau de bord",
@@ -1163,5 +1164,26 @@
     "select_media": "Sélectionner un Média",
     "select": "Sélectionner",
     "close": "Fermer"
+  },
+  "AdminTrash": {
+    "title": "Corbeille",
+    "empty_trash": "Vider la corbeille",
+    "empty_trash_confirm": "Voulez-vous vraiment VIDER TOUTE LA CORBEILLE ? Cette action est irréversible.",
+    "empty_trash_success": "Corbeille vidée avec succès.",
+    "tab_products": "Produits",
+    "tab_media": "Médias",
+    "no_products": "Aucun produit dans la corbeille.",
+    "no_media": "Aucun média dans la corbeille.",
+    "product": "Produit",
+    "deleted_at": "Supprimé le",
+    "actions": "Actions",
+    "restore": "Restaurer",
+    "restore_product_success": "Produit restauré avec succès.",
+    "restore_media_success": "Média restauré avec succès.",
+    "delete_permanently": "Supprimer définitivement",
+    "delete": "Supprimer",
+    "delete_product_confirm": "Voulez-vous vraiment supprimer ce produit DÉFINITIVEMENT ? Cette action est irréversible.",
+    "delete_media_confirm": "Voulez-vous vraiment supprimer ce média DÉFINITIVEMENT ? Cette action est irréversible.",
+    "na": "N/A"
   }
 }

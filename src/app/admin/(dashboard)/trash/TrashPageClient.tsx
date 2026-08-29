@@ -2,19 +2,21 @@
 
 import { useState } from 'react';
 import { restoreProduct, restoreMedia, permanentlyDeleteProduct, permanentlyDeleteMedia, emptyTrash } from '@/actions/trash';
+import { useTranslations } from 'next-intl';
 
 export default function TrashPageClient({ initialProducts, initialMedia }: { initialProducts: any[], initialMedia: any[] }) {
   const [products, setProducts] = useState(initialProducts);
   const [media, setMedia] = useState(initialMedia);
   const [activeTab, setActiveTab] = useState<'products' | 'media'>('products');
   const [loading, setLoading] = useState(false);
+  const t = useTranslations('AdminTrash');
 
   const handleRestoreProduct = async (id: string) => {
     setLoading(true);
     const res = await restoreProduct(id);
     if (res.success) {
       setProducts(products.filter(p => p.id !== id));
-      alert('Produit restauré avec succès.');
+      alert(t('restore_product_success'));
     } else {
       alert(res.error);
     }
@@ -26,7 +28,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
     const res = await restoreMedia(id);
     if (res.success) {
       setMedia(media.filter(m => m.id !== id));
-      alert('Média restauré avec succès.');
+      alert(t('restore_media_success'));
     } else {
       alert(res.error);
     }
@@ -34,7 +36,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
   };
 
   const handleDeleteProduct = async (id: string) => {
-    if (!confirm('Voulez-vous vraiment supprimer ce produit DÉFINITIVEMENT ? Cette action est irréversible.')) return;
+    if (!confirm(t('delete_product_confirm'))) return;
     setLoading(true);
     const res = await permanentlyDeleteProduct(id);
     if (res.success) {
@@ -46,7 +48,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
   };
 
   const handleDeleteMedia = async (id: string) => {
-    if (!confirm('Voulez-vous vraiment supprimer ce média DÉFINITIVEMENT ? Cette action est irréversible.')) return;
+    if (!confirm(t('delete_media_confirm'))) return;
     setLoading(true);
     const res = await permanentlyDeleteMedia(id);
     if (res.success) {
@@ -58,15 +60,15 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
   };
 
   const handleEmptyTrash = async () => {
-    if (!confirm('Voulez-vous vraiment VIDER TOUTE LA CORBEILLE ? Cette action est irréversible.')) return;
+    if (!confirm(t('empty_trash_confirm'))) return;
     setLoading(true);
     const res = await emptyTrash();
     if (res.success) {
       setProducts([]);
       setMedia([]);
-      alert('Corbeille vidée avec succès.');
+      alert(t('empty_trash_success'));
     } else {
-      alert(res.error);
+      alert(res.error || t('empty_trash_error'));
     }
     setLoading(false);
   };
@@ -74,13 +76,13 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Corbeille</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
         <button 
           onClick={handleEmptyTrash} 
           disabled={loading || (products.length === 0 && media.length === 0)}
           className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 disabled:opacity-50"
         >
-          Vider la corbeille
+          {t('empty_trash')}
         </button>
       </div>
 
@@ -89,27 +91,27 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
           className={`py-2 px-4 ${activeTab === 'products' ? 'border-b-2 border-primary font-bold text-primary' : 'text-gray-500 hover:text-black'}`}
           onClick={() => setActiveTab('products')}
         >
-          Produits ({products.length})
+          {t('tab_products')} ({products.length})
         </button>
         <button 
           className={`py-2 px-4 ${activeTab === 'media' ? 'border-b-2 border-primary font-bold text-primary' : 'text-gray-500 hover:text-black'}`}
           onClick={() => setActiveTab('media')}
         >
-          Médias ({media.length})
+          {t('tab_media')} ({media.length})
         </button>
       </div>
 
       {activeTab === 'products' && (
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {products.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">Aucun produit dans la corbeille.</div>
+            <div className="p-8 text-center text-gray-500">{t('no_products')}</div>
           ) : (
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-100 border-b">
-                  <th className="p-4 font-semibold text-gray-600">Produit</th>
-                  <th className="p-4 font-semibold text-gray-600">Supprimé le</th>
-                  <th className="p-4 font-semibold text-gray-600 text-right">Actions</th>
+                  <th className="p-4 font-semibold text-gray-600">{t('product')}</th>
+                  <th className="p-4 font-semibold text-gray-600">{t('deleted_at')}</th>
+                  <th className="p-4 font-semibold text-gray-600 text-right">{t('actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +128,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
                       <span className="font-medium text-gray-800">{product.title}</span>
                     </td>
                     <td className="p-4 text-gray-600">
-                      {product.deletedAt ? new Date(product.deletedAt).toLocaleDateString() : 'N/A'}
+                      {product.deletedAt ? new Date(product.deletedAt).toLocaleDateString() : t('na')}
                     </td>
                     <td className="p-4 text-right space-x-3">
                       <button 
@@ -134,14 +136,14 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
                         disabled={loading}
                         className="text-green-600 font-medium hover:underline disabled:opacity-50"
                       >
-                        Restaurer
+                        {t('restore')}
                       </button>
                       <button 
                         onClick={() => handleDeleteProduct(product.id)} 
                         disabled={loading}
                         className="text-red-600 font-medium hover:underline disabled:opacity-50"
                       >
-                        Supprimer définitivement
+                        {t('delete_permanently')}
                       </button>
                     </td>
                   </tr>
@@ -155,7 +157,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
       {activeTab === 'media' && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {media.length === 0 ? (
-            <div className="col-span-full p-8 text-center text-gray-500 bg-white rounded-lg shadow">Aucun média dans la corbeille.</div>
+            <div className="col-span-full p-8 text-center text-gray-500 bg-white rounded-lg shadow">{t('no_media')}</div>
           ) : (
             media.map(m => (
               <div key={m.id} className="relative aspect-square border rounded overflow-hidden group bg-gray-100">
@@ -166,14 +168,14 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
                     disabled={loading}
                     className="bg-green-500 text-white text-xs px-3 py-1 rounded hover:bg-green-600"
                   >
-                    Restaurer
+                    {t('restore')}
                   </button>
                   <button 
                     onClick={() => handleDeleteMedia(m.id)} 
                     disabled={loading}
                     className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600"
                   >
-                    Supprimer
+                    {t('delete')}
                   </button>
                 </div>
               </div>

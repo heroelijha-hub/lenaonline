@@ -552,7 +552,8 @@
     "settings": "Settings",
     "shipping": "Shipping",
     "sign_out": "Sign out",
-    "media": "Media"
+    "media": "Media",
+    "trash": "Trash"
   },
   "AdminDashboard": {
     "title": "Dashboard",
@@ -1171,5 +1172,26 @@
     "select_media": "Select Media",
     "select": "Select",
     "close": "Close"
+  },
+  "AdminTrash": {
+    "title": "Trash",
+    "empty_trash": "Empty trash",
+    "empty_trash_confirm": "Do you really want to EMPTY THE TRASH? This action is irreversible.",
+    "empty_trash_success": "Trash emptied successfully.",
+    "tab_products": "Products",
+    "tab_media": "Media",
+    "no_products": "No products in the trash.",
+    "no_media": "No media in the trash.",
+    "product": "Product",
+    "deleted_at": "Deleted at",
+    "actions": "Actions",
+    "restore": "Restore",
+    "restore_product_success": "Product restored successfully.",
+    "restore_media_success": "Media restored successfully.",
+    "delete_permanently": "Delete permanently",
+    "delete": "Delete",
+    "delete_product_confirm": "Do you really want to PERMANENTLY delete this product? This action is irreversible.",
+    "delete_media_confirm": "Do you really want to PERMANENTLY delete this media? This action is irreversible.",
+    "na": "N/A"
   }
 }
