@@ -210,6 +210,48 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
 
         sendAdminOrderNotification(fullOrder, adminEmail, { name: firstName + ' ' + lastName, email: user.email }).catch(e => console.error('Admin email failed', e));
         
+        // Stock Decrement and Low Stock Alert
+        try {
+          const threshold = parseInt(settingsMap['LOW_STOCK_THRESHOLD'] || '5', 10);
+          const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://shopelios.com';
+          const { sendLowStockAlertEmail } = await import('@/lib/mailer');
+
+          for (const item of verifiedItems) {
+            const product = await prisma.product.findUnique({ where: { id: item.productId } });
+            if (!product) continue;
+
+            let currentStock = null;
+            let variationName = null;
+
+            if (item.variationId && product.variations) {
+              const variations = product.variations as any[];
+              const variationIndex = variations.findIndex(v => v.id === item.variationId);
+              if (variationIndex !== -1 && variations[variationIndex].stock !== null) {
+                variations[variationIndex].stock = Math.max(0, variations[variationIndex].stock - item.quantity);
+                currentStock = variations[variationIndex].stock;
+                variationName = Object.values(variations[variationIndex].attributes || {}).join(', ');
+                
+                await prisma.product.update({
+                  where: { id: product.id },
+                  data: { variations }
+                });
+              }
+            } else if (product.stock !== null) {
+              currentStock = Math.max(0, product.stock - item.quantity);
+              await prisma.product.update({
+                where: { id: product.id },
+                data: { stock: currentStock }
+              });
+            }
+
+            if (currentStock !== null && currentStock <= threshold) {
+              sendLowStockAlertEmail(product.title, variationName, currentStock, threshold, adminEmail, storeUrl, product.id).catch(e => console.error('Low stock alert failed', e));
+            }
+          }
+        } catch (stockErr) {
+          console.error('Failed to decrement stock and send alerts', stockErr);
+        }
+        
         // Push notification in-app
         createNotification({
           isAdmin: true,

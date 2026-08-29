@@ -360,3 +360,43 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
   }
 }
 
+
+// 6. Admin Low Stock Alert
+export async function sendLowStockAlertEmail(productTitle: string, variationName: string | null, currentStock: number, threshold: number, adminEmail: string, storeUrl: string, productId: string) {
+  try {
+    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    
+    const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : "";
+
+    const productName = variationName ? `${productTitle} (${variationName})` : productTitle;
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
+        ${logoHtml}
+        <h1 style="font-size: 24px; color: #dc2626;">Alerte : Stock Faible</h1>
+        <p>Bonjour,</p>
+        <p>Le stock du produit suivant est pass� sous le seuil d'alerte (${threshold} unit�s).</p>
+        
+        <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #991b1b;">${productName}</h3>
+          <p style="margin-bottom: 0; font-size: 16px;"><strong>Stock restant : <span style="color: #dc2626;">${currentStock}</span></strong></p>
+        </div>
+        
+        <p style="margin-top: 30px;">
+          <a href="${storeUrl}/admin/products/${productId}/edit" style="background-color: #ea580c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
+            G�rer le stock
+          </a>
+        </p>
+      </div>
+    `;
+
+    return sendEmail({
+      to: adminEmail,
+      subject: `[Alerte Stock] ${productName} - Plus que ${currentStock} en stock`,
+      html
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
