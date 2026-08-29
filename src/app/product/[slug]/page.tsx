@@ -14,12 +14,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
   const encodedSlugUpper = encodeURIComponent(slug);
 
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch (e) {}
+
   const product = await prisma.product.findFirst({
     where: { 
       OR: [
         { slug: slug },
         { slug: encodedSlugLower },
-        { slug: encodedSlugUpper }
+        { slug: encodedSlugUpper },
+        { slug: decodedSlug }
       ]
     }
   });
@@ -47,12 +53,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
   const encodedSlugUpper = encodeURIComponent(slug);
 
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch (e) {}
+
   const product = await prisma.product.findFirst({
     where: { 
       OR: [
         { slug: slug },
         { slug: encodedSlugLower },
-        { slug: encodedSlugUpper }
+        { slug: encodedSlugUpper },
+        { slug: decodedSlug }
       ]
     },
     include: { 
