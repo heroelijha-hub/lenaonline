@@ -186,7 +186,7 @@ export default function ProductGridCard({
       <div className="p-4 flex flex-col flex-1">
         <div className="flex-1 flex flex-col">
           <p className="text-xs text-gray-400 font-medium mb-1 truncate">
-            {product.category?.name || 'General'}
+            {product.categories && product.categories.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : 'General'}
           </p>
           <h3 className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 mb-2 group-hover:text-orange-600 transition">
             {product.title}
