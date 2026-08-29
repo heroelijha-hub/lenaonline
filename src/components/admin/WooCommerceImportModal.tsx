@@ -61,6 +61,11 @@ export default function WooCommerceImportModal() {
       let totalImported = 0;
 
       for (let page = 1; page <= totalPages; page++) {
+        // Dispatch custom event to prevent auto-logout during long imports
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('user-activity'));
+        }
+        
         const batchRes = await importWooCommerceProductsBatch(url, consumerKey, consumerSecret, page, perPage);
         
         if (!batchRes.success) {

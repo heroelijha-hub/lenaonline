@@ -29,8 +29,8 @@ export default function AutoLogout({ timeoutMs = 15 * 60 * 1000, redirectUrl }: 
     // Initialize the timer on mount
     resetTimer();
 
-    // List of events that indicate user activity
-    const events = ['mousemove', 'mousedown', 'keypress', 'touchmove', 'scroll'];
+    // List of events that indicate user activity (including custom events)
+    const events = ['mousemove', 'mousedown', 'keypress', 'touchmove', 'scroll', 'user-activity'];
     
     const handleActivity = () => {
       resetTimer();
