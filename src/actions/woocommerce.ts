@@ -301,6 +301,18 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           if (wcImg.src) {
             const secureUrl = await uploadImageFromUrlToCloudinary(wcImg.src);
             if (secureUrl) {
+              await prisma.media.upsert({
+                where: { url: secureUrl },
+                update: {
+                  title: wcImg.name || wcImg.title || null,
+                  altText: wcImg.alt || null,
+                },
+                create: {
+                  url: secureUrl,
+                  title: wcImg.name || wcImg.title || null,
+                  altText: wcImg.alt || null,
+                }
+              });
               cloudinaryImageUrls.push(secureUrl);
             }
           }
@@ -361,7 +373,21 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
               let varImage = undefined;
               if (wcVar.image && wcVar.image.src) {
                 const secureUrl = await uploadImageFromUrlToCloudinary(wcVar.image.src);
-                if (secureUrl) varImage = secureUrl;
+                if (secureUrl) {
+                  varImage = secureUrl;
+                  await prisma.media.upsert({
+                    where: { url: secureUrl },
+                    update: {
+                      title: wcVar.image.name || wcVar.image.title || null,
+                      altText: wcVar.image.alt || null,
+                    },
+                    create: {
+                      url: secureUrl,
+                      title: wcVar.image.name || wcVar.image.title || null,
+                      altText: wcVar.image.alt || null,
+                    }
+                  });
+                }
               }
 
               return {

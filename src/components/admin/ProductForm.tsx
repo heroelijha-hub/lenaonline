@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getCategories, getBrands, createBrandAction, createProduct, uploadImage, getMinimalProducts } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
+import MediaPickerModal from './MediaPickerModal';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
@@ -44,6 +45,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
   const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
   const isEditing = !!initialData;
 
   const [title, setTitle] = useState(initialData?.title || '');
@@ -495,18 +497,37 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               ))}
             </div>
           )}
-          <input 
-            type="file" 
-            multiple
-            accept="image/*"
-            onChange={(e) => {
-              const files = Array.from(e.target.files || []).slice(0, 20);
-              setImageFiles(files);
-            }}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
-          />
+          <div className="flex items-center gap-4">
+            <input 
+              type="file" 
+              multiple
+              accept="image/*"
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []).slice(0, 20);
+                setImageFiles(files);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
+            />
+            <button 
+              type="button" 
+              onClick={() => setShowMediaPicker(true)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-semibold bg-gray-50 text-gray-700 hover:bg-gray-100 h-[42px]"
+            >
+              Parcourir la Bibliothèque
+            </button>
+          </div>
           {imageFiles.length > 0 && (
             <p className="mt-2 text-sm text-gray-500">{imageFiles.length} {t('new_files_selected')}</p>
+          )}
+
+          {showMediaPicker && (
+            <MediaPickerModal 
+              onClose={() => setShowMediaPicker(false)} 
+              onSelect={(url) => {
+                setExistingImages([...existingImages, url]);
+                setShowMediaPicker(false);
+              }} 
+            />
           )}
         </div>
 
