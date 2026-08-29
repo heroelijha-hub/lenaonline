@@ -56,6 +56,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             { href: '/admin/chat', label: t('customer_chat') },
             { href: '/admin/blogs', label: t('blog') },
             { href: '/admin/pages', label: t('pages') },
+            { href: '/admin/media', label: 'Médias' },
             { href: '/admin/settings', label: t('settings') },
             { href: '/admin/shipping', label: t('shipping') },
           ]} />
