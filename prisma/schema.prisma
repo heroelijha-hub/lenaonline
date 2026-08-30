@@ -108,6 +108,8 @@ model Product {
   updatedAt      DateTime    @updatedAt
   isDeleted      Boolean     @default(false)
   deletedAt      DateTime?
+
+  @@index([isDeleted])
 }
 
 model Setting {
@@ -146,6 +148,8 @@ model Order {
 
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
+
+  @@index([userId, status])
 }
 
 model OrderItem {
@@ -199,6 +203,8 @@ model ChatMessage {
   content   String      @db.Text
   isRead    Boolean     @default(false)
   createdAt DateTime    @default(now())
+
+  @@index([sessionId, createdAt])
 }
 
 enum NotificationType {
@@ -217,6 +223,8 @@ model Notification {
   link      String?          // Optional URL to redirect to when clicked
   isRead    Boolean          @default(false)
   createdAt DateTime         @default(now())
+
+  @@index([isRead, isAdmin])
 }
 
 model ShippingZone {
@@ -321,6 +329,8 @@ model AbandonedCart {
   lastActive       DateTime @default(now())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([status, lastActive])
 }
 
 model Media {

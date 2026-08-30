@@ -147,13 +147,13 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       couponCode: couponCode || null,
     };
 
-    // Create the order with SERVER-VERIFIED total
+    // Create the order with SERVER-VERIFIED total (status PENDING for all methods)
     const order = await prisma.order.create({
       data: {
         userId: user.id,
         total: verifiedTotal,
         paymentMethod: paymentMethod as any,
-        status: paymentMethod === 'BANK_TRANSFER' ? 'PENDING' : 'PENDING',
+        status: 'PENDING',
         orderItems: {
           create: verifiedItems.map(item => ({
             productId: item.productId,
@@ -167,119 +167,31 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       }
     });
 
+    // Fetch settings once for currency and payment config
+    const allSettings = await prisma.setting.findMany();
+    const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+    const storeCurrencyCode = settingsMap.currency || 'EUR';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://shopelios.com';
 
-    // Check and recover abandoned cart if it exists
-    try {
-      await prisma.abandonedCart.updateMany({
-        where: { email: user.email, status: 'ABANDONED' },
-        data: {
-          status: 'RECOVERED',
-          recoveredOrderId: order.id,
-          updatedAt: new Date()
-        }
-      });
-    } catch (e) {
-      console.error('Failed to mark abandoned cart as recovered', e);
-    }
+    // ===== PAYMENT METHOD HANDLING =====
+    // For STRIPE and PAYPAL: finalization (emails, stock, notifications) is deferred
+    // to the webhook/capture handler AFTER payment is confirmed.
+    // For BANK_TRANSFER: finalize immediately since no online payment is needed.
 
-    try {
-      const { sendClientOrderConfirmation, sendAdminOrderNotification } = await import('@/lib/mailer');
-      const { createNotification } = await import('@/actions/notification');
-      
-      const fullOrder = await prisma.order.findUnique({
-        where: { id: order.id },
-        include: { orderItems: { include: { product: true } } }
-      });
-      if (fullOrder) {
-        // Send emails
-        sendClientOrderConfirmation(fullOrder, user.email, firstName + ' ' + lastName).catch(e => console.error('Client email failed', e));
-        
-        const allSettings = await prisma.setting.findMany();
-        const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
-        const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
-        
-        const { formatPriceNumber, defaultCurrencyOptions } = await import('@/lib/formatPrice');
-        const currencyOptions = {
-          currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
-          currencyPosition: (settingsMap.currencyPosition as any) || defaultCurrencyOptions.currencyPosition,
-          thousandSeparator: settingsMap.thousandSeparator !== undefined ? settingsMap.thousandSeparator : defaultCurrencyOptions.thousandSeparator,
-          decimalSeparator: settingsMap.decimalSeparator || defaultCurrencyOptions.decimalSeparator,
-          taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
-          defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
-        };
-
-        sendAdminOrderNotification(fullOrder, adminEmail, { name: firstName + ' ' + lastName, email: user.email }).catch(e => console.error('Admin email failed', e));
-        
-        // Stock Decrement and Low Stock Alert
-        try {
-          const threshold = parseInt(settingsMap['LOW_STOCK_THRESHOLD'] || '5', 10);
-          const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://shopelios.com';
-          const { sendLowStockAlertEmail } = await import('@/lib/mailer');
-
-          for (const item of verifiedItems) {
-            const product = await prisma.product.findUnique({ where: { id: item.productId } });
-            if (!product) continue;
-
-            let currentStock = null;
-            let variationName = null;
-
-            if (item.variationId && product.variations) {
-              const variations = product.variations as any[];
-              const variationIndex = variations.findIndex(v => v.id === item.variationId);
-              if (variationIndex !== -1 && variations[variationIndex].stock !== null) {
-                variations[variationIndex].stock = Math.max(0, variations[variationIndex].stock - item.quantity);
-                currentStock = variations[variationIndex].stock;
-                variationName = Object.values(variations[variationIndex].attributes || {}).join(', ');
-                
-                await prisma.product.update({
-                  where: { id: product.id },
-                  data: { variations }
-                });
-              }
-            } else if (product.stock !== null) {
-              currentStock = Math.max(0, product.stock - item.quantity);
-              await prisma.product.update({
-                where: { id: product.id },
-                data: { stock: currentStock }
-              });
-            }
-
-            if (currentStock !== null && currentStock <= threshold) {
-              sendLowStockAlertEmail(product.title, variationName, currentStock, threshold, adminEmail, storeUrl, product.id).catch(e => console.error('Low stock alert failed', e));
-            }
-          }
-        } catch (stockErr) {
-          console.error('Failed to decrement stock and send alerts', stockErr);
-        }
-        
-        // Push notification in-app
-        createNotification({
-          isAdmin: true,
-          type: 'ORDER',
-          message: JSON.stringify({ key: 'new_order_from', name: `${firstName} ${lastName}`, amount: formatPriceNumber(verifiedTotal, currencyOptions) }),
-          link: `/admin/orders/${order.id}`,
-        }).catch(e => console.error('Notification failed', e));
-      }
-    } catch (e) {
-      console.error('Email/Notification sending setup failed', e);
-    }
-
-    // Handle payment method specific logic
     if (paymentMethod === 'STRIPE') {
-      const stripeSecret = await prisma.setting.findUnique({ where: { key: 'STRIPE_SECRET_KEY' } });
-      if (!stripeSecret?.value) {
+      const stripeSecretKey = settingsMap['STRIPE_SECRET_KEY'];
+      if (!stripeSecretKey) {
         return { error: "Card payment (Stripe) has not been configured by the administrator yet." };
       }
 
-      const Stripe = require('stripe');
-      const stripe = new Stripe(stripeSecret.value, { apiVersion: '2023-10-16' });
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
+      const { default: Stripe } = await import('stripe');
+      const stripe = new Stripe(stripeSecretKey);
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: verifiedItems.map(item => ({
           price_data: {
-            currency: 'eur',
+            currency: storeCurrencyCode.toLowerCase(),
             product_data: {
               name: item.title,
               images: item.image ? [item.image] : [],
@@ -300,17 +212,19 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         data: { stripeSessionId: session.id }
       });
 
+      // NOTE: Emails, stock, notifications will be handled by the Stripe webhook
+      // at /api/stripe/webhook after payment confirmation.
       return { success: true, orderId: order.id, redirectUrl: session.url };
     } 
     else if (paymentMethod === 'PAYPAL') {
-      const clientId = await prisma.setting.findUnique({ where: { key: 'PAYPAL_CLIENT_ID' } });
-      const secret = await prisma.setting.findUnique({ where: { key: 'PAYPAL_SECRET' } });
+      const paypalClientId = settingsMap['PAYPAL_CLIENT_ID'];
+      const paypalSecret = settingsMap['PAYPAL_SECRET'];
       
-      if (!clientId?.value || !secret?.value) {
+      if (!paypalClientId || !paypalSecret) {
         return { error: "PayPal payment has not been configured by the administrator yet." };
       }
       
-      const auth = Buffer.from(`${clientId.value}:${secret.value}`).toString('base64');
+      const auth = Buffer.from(`${paypalClientId}:${paypalSecret}`).toString('base64');
       const tokenRes = await fetch('https://api-m.paypal.com/v1/oauth2/token', {
         method: 'POST',
         body: 'grant_type=client_credentials',
@@ -324,12 +238,6 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       if (!tokenData.access_token) {
         return { error: "PayPal authentication error. Check the keys in Admin." };
       }
-      
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shopelios.com';
-      // Retrieve settings for currency code
-      const allSettings2 = await prisma.setting.findMany();
-      const settingsMap2 = allSettings2.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
-      const storeCurrencyCode = settingsMap2.currency || 'USD';
 
       const orderRes = await fetch('https://api-m.paypal.com/v2/checkout/orders', {
         method: 'POST',
@@ -347,7 +255,9 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
             }
           }],
           application_context: {
-            return_url: `${baseUrl}/checkout/success?orderId=${order.id}`,
+            // Redirect to capture route instead of success page
+            // The capture route will verify payment before showing success
+            return_url: `${baseUrl}/api/paypal/capture?orderId=${order.id}`,
             cancel_url: `${baseUrl}/checkout`
           }
         })
@@ -357,13 +267,18 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       const approveLink = orderData.links?.find((l: any) => l.rel === 'approve');
       
       if (approveLink) {
+        // NOTE: Emails, stock, notifications will be handled by the PayPal capture
+        // route at /api/paypal/capture after payment confirmation.
         return { success: true, orderId: order.id, redirectUrl: approveLink.href };
       } else {
         return { error: "Unable to create PayPal payment session." };
       }
     } 
     else {
-      // BANK_TRANSFER
+      // BANK_TRANSFER — Finalize immediately (no online payment to confirm)
+      const { finalizeOrder } = await import('@/lib/orderFinalizer');
+      finalizeOrder(order.id).catch(e => console.error('Bank transfer finalization failed', e));
+      
       return { success: true, orderId: order.id, redirectUrl: '/checkout/success?orderId=' + order.id };
     }
 

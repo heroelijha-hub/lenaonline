@@ -1,6 +1,17 @@
 import nodemailer from 'nodemailer';
 import prisma from '@/lib/prisma';
 
+// HTML escape utility to prevent XSS in email templates
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // Fetch SMTP settings from DB
 async function getTransporter() {
   const settingsDb = await prisma.setting.findMany({
@@ -44,7 +55,7 @@ export async function sendEmail({ to, subject, html, attachments }: { to: string
       attachments,
     });
 
-    console.log("Message sent: %s", info.messageId);
+    // Message sent successfully
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Error sending email: ", error);
@@ -74,7 +85,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Merci pour votre commande</h1>
-        <p>Bonjour ${userName || 'Client'},</p>
+        <p>Bonjour ${escapeHtml(userName) || 'Client'},</p>
         <p>Nous avons bien reçu votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
         <p>Elle est en cours de traitement et sera expédiée très prochainement.</p>
         
@@ -147,7 +158,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Nouvelle Commande : Nr. ${order.id.slice(-6).toUpperCase()}</h1>
-        <p>Vous avez reçu une nouvelle commande de <strong>${customerDetails.name || 'un client'}</strong> :</p>
+        <p>Vous avez reçu une nouvelle commande de <strong>${escapeHtml(customerDetails.name) || 'un client'}</strong> :</p>
         
         <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Résumé de la commande</h3>
         <p style="color: #666; font-size: 13px;">Commande N° ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
@@ -179,8 +190,8 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
           <tr>
             <td style="vertical-align: top; width: 50%;">
               <strong>Client / Contact</strong><br/>
-              ${customerDetails.name || ''}<br/>
-              ${customerDetails.email || ''}
+              ${escapeHtml(customerDetails.name) || ''}<br/>
+              ${escapeHtml(customerDetails.email) || ''}
             </td>
             <td style="vertical-align: top; width: 50%;">
               <strong>Paiement</strong><br/>
@@ -264,7 +275,7 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Panier abandonné</h1>
-        <p>Bonjour ${userName || 'Client'},</p>
+        <p>Bonjour ${escapeHtml(userName) || 'Client'},</p>
         <p>Nous avons remarqué que vous avez laissé des articles dans votre panier. Ils vous attendent !</p>
         
         <div style="margin: 20px 0;">
@@ -319,7 +330,7 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Comment s'est passée votre commande ?</h1>
-        <p>Bonjour ${userName || "Client"},</p>
+        <p>Bonjour ${escapeHtml(userName) || "Client"},</p>
         <p>Nous espérons que vous profitez bien des articles de votre récente commande sur notre boutique !</p>
         <p>Votre avis est très important pour nous et aide d'autres clients à faire le bon choix.</p>
         
@@ -371,16 +382,16 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
         ${logoHtml}
         <h1 style="font-size: 24px; color: #dc2626;">Alerte : Stock Faible</h1>
         <p>Bonjour,</p>
-        <p>Le stock du produit suivant est pass� sous le seuil d'alerte (${threshold} unit�s).</p>
+        <p>Le stock du produit suivant est passé sous le seuil d'alerte (${threshold} unités).</p>
         
         <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #991b1b;">${productName}</h3>
+          <h3 style="margin-top: 0; color: #991b1b;">${escapeHtml(productName)}</h3>
           <p style="margin-bottom: 0; font-size: 16px;"><strong>Stock restant : <span style="color: #dc2626;">${currentStock}</span></strong></p>
         </div>
         
         <p style="margin-top: 30px;">
           <a href="${storeUrl}/admin/products/${productId}/edit" style="background-color: #ea580c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            G�rer le stock
+            Gérer le stock
           </a>
         </p>
       </div>
@@ -409,15 +420,16 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Nouveau message de support</h1>
         <p>Un visiteur vient de laisser un message sur le chat de votre boutique.</p>
+
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
           <tr>
             <td style="padding: 10px;"><strong>De :</strong></td>
-            <td style="padding: 10px;">${guestName || "Visiteur"} ${guestEmail ? `(${guestEmail})` : ""}</td>
+            <td style="padding: 10px;">${escapeHtml(guestName) || "Visiteur"} ${guestEmail ? `(${escapeHtml(guestEmail)})` : ""}</td>
           </tr>
           <tr>
             <td style="padding: 10px; vertical-align: top;"><strong>Message :</strong></td>
-            <td style="padding: 10px; font-style: italic;">"${messageContent}"</td>
+            <td style="padding: 10px; font-style: italic;">"${escapeHtml(messageContent)}"</td>
           </tr>
         </table>
         
@@ -431,7 +443,7 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
 
     return sendEmail({
       to: adminEmail,
-      subject: `[Support Chat] Nouveau message de ${guestName || "Visiteur"}`,
+      subject: `[Support Chat] Nouveau message de ${escapeHtml(guestName) || "Visiteur"}`,
       html
     });
   } catch (e) {

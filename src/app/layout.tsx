@@ -179,7 +179,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      lang="fr"
+      lang={locale}
       className={`${inter.variable} h-full antialiased`}
     >
       <head>

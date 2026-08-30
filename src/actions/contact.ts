@@ -35,10 +35,26 @@ export async function submitContactMessage(formData: FormData) {
     const contactSettings = await getContactSettings();
     const receiverEmail = contactSettings.formRecipient;
 
-    console.log(`[CONTACT] Sending email to: ${receiverEmail}`);
-    console.log(`[CONTACT] From: ${name} <${email}>`);
-    console.log(`[CONTACT] Subject: ${subject}`);
-    console.log(`[CONTACT] Message: ${message}`);
+    // Send email to the configured admin/receiver
+    try {
+      const { sendEmail } = await import('@/lib/mailer');
+      await sendEmail({
+        to: receiverEmail,
+        subject: subject ? `[Contact] ${subject}` : `[Contact] Message from ${name}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+            <h2>New Contact Message</h2>
+            <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
+            ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+            ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
+            <hr/>
+            <p>${message.replace(/\n/g, '<br/>')}</p>
+          </div>
+        `,
+      });
+    } catch (emailErr) {
+      console.error('[CONTACT] Failed to send email:', emailErr);
+    }
 
     return { success: true, message: 'Your message has been sent successfully!' };
   } catch (error) {
@@ -60,8 +76,8 @@ export async function submitNewsletter(formData: FormData) {
     const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
     const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!';
 
-    console.log(`[NEWSLETTER] New subscription: ${email}`);
-    console.log(`[NEWSLETTER] Notification sent to: ${receiverEmail}`);
+    // Newsletter subscription recorded — email notification can be added via SMTP mailer
+
 
     return { success: true, message: successMsg };
   } catch (error) {

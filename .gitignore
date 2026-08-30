@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# maintenance/migration scripts (one-off)
+fix_*.js
+add_*_translations.js
+translate*.js
+scan_french.js
+replace_components.js
+test_orders.js
+update*translations*.js
+audit_french.txt
