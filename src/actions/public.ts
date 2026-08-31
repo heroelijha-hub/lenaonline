@@ -1,55 +1,68 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { unstable_cache } from 'next/cache';
 
-export async function getBestDeals() {
-  return await prisma.product.findMany({
-    where: { isDealOfTheDay: true },
-    include: { categories: true, reviews: { where: { isApproved: true } } },
-    take: 4,
-    orderBy: { createdAt: 'desc' }
-  });
-}
-
-export async function getBestSellers() {
-  return await prisma.product.findMany({
-    where: { isBestSeller: true },
-    include: { categories: true, reviews: { where: { isApproved: true } } },
-    take: 10,
-    orderBy: { createdAt: 'desc' }
-  });
-}
-
-export async function getFilteredProducts(filterType: string, categoryId?: string, limit: number = 8, productIds?: string[]) {
-  if (filterType === 'MANUAL' && productIds && productIds.length > 0) {
-    const products = await prisma.product.findMany({
-      where: { id: { in: productIds } },
+export const getBestDeals = unstable_cache(
+  async () => {
+    return await prisma.product.findMany({
+      where: { isDealOfTheDay: true },
       include: { categories: true, reviews: { where: { isApproved: true } } },
-      take: limit,
+      take: 4,
+      orderBy: { createdAt: 'desc' }
     });
-    // Sort products based on productIds array order
-    return products.sort((a, b) => productIds.indexOf(a.id) - productIds.indexOf(b.id));
-  }
+  },
+  ['public-best-deals'],
+  { tags: ['products'], revalidate: 3600 }
+);
 
-  let where: any = {};
-  let orderBy: any = { createdAt: 'desc' };
+export const getBestSellers = unstable_cache(
+  async () => {
+    return await prisma.product.findMany({
+      where: { isBestSeller: true },
+      include: { categories: true, reviews: { where: { isApproved: true } } },
+      take: 10,
+      orderBy: { createdAt: 'desc' }
+    });
+  },
+  ['public-best-sellers'],
+  { tags: ['products'], revalidate: 3600 }
+);
 
-  if (filterType === 'ON_SALE') {
-    where.isDealOfTheDay = true; // For now, we use this as ON_SALE
-  } else if (filterType === 'POPULAR') {
-    where.isBestSeller = true;
-  } else if (filterType === 'CATEGORY' && categoryId) {
-    where.categories = { some: { id: categoryId } };
-  }
-  // NEWEST is the default (empty where, order by createdAt desc)
+export const getFilteredProducts = async (filterType: string, categoryId?: string, limit: number = 8, productIds?: string[]) => {
+  return unstable_cache(
+    async () => {
+      if (filterType === 'MANUAL' && productIds && productIds.length > 0) {
+        const products = await prisma.product.findMany({
+          where: { id: { in: productIds } },
+          include: { categories: true, reviews: { where: { isApproved: true } } },
+          take: limit,
+        });
+        return products.sort((a, b) => productIds.indexOf(a.id) - productIds.indexOf(b.id));
+      }
 
-  return await prisma.product.findMany({
-    where,
-    include: { categories: true, reviews: { where: { isApproved: true } } },
-    take: limit,
-    orderBy
-  });
-}
+      let where: any = {};
+      let orderBy: any = { createdAt: 'desc' };
+
+      if (filterType === 'ON_SALE') {
+        where.isDealOfTheDay = true;
+      } else if (filterType === 'POPULAR') {
+        where.isBestSeller = true;
+      } else if (filterType === 'CATEGORY' && categoryId) {
+        where.categories = { some: { id: categoryId } };
+      }
+
+      return await prisma.product.findMany({
+        where,
+        include: { categories: true, reviews: { where: { isApproved: true } } },
+        take: limit,
+        orderBy
+      });
+    },
+    ['filtered-products', filterType, categoryId || 'all', limit.toString(), (productIds || []).join(',')],
+    { tags: ['products'], revalidate: 3600 }
+  )();
+};
 
 export async function searchProducts(query: string, categoryId?: string, limit: number = 5) {
   if (!query || query.trim().length === 0) return [];

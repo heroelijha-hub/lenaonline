@@ -11,7 +11,7 @@ import { SectionConfig, SectionType } from '@/app/admin/(dashboard)/landing/Land
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const settings = await getSettings();
+  const settings = await import('@/lib/cache').then(m => m.getCachedSettings());
   
   let layout: SectionConfig[] = [];
   try {

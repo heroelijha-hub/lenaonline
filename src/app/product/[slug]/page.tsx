@@ -9,26 +9,12 @@ import { getTranslations } from 'next-intl/server';
 
 import { Metadata } from 'next';
 
+import { getCachedProductBySlug, getCachedSettings, getCachedRelatedProducts } from '@/lib/cache';
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
-  const encodedSlugUpper = encodeURIComponent(slug);
-
-  let decodedSlug = slug;
-  try {
-    decodedSlug = decodeURIComponent(slug);
-  } catch (e) {}
-
-  const product = await prisma.product.findFirst({
-    where: { 
-      OR: [
-        { slug: slug },
-        { slug: encodedSlugLower },
-        { slug: encodedSlugUpper },
-        { slug: decodedSlug }
-      ]
-    }
-  });
+  
+  const product = await getCachedProductBySlug(slug);
   
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
@@ -50,41 +36,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
-  const encodedSlugUpper = encodeURIComponent(slug);
-
-  let decodedSlug = slug;
-  try {
-    decodedSlug = decodeURIComponent(slug);
-  } catch (e) {}
-
-  const product = await prisma.product.findFirst({
-    where: { 
-      OR: [
-        { slug: slug },
-        { slug: encodedSlugLower },
-        { slug: encodedSlugUpper },
-        { slug: decodedSlug }
-      ]
-    },
-    include: { 
-      categories: true,
-      brand: true,
-      tags: true,
-      forceSales: true,
-      saleTogether: true,
-      reviews: {
-        where: { isApproved: true },
-        orderBy: { createdAt: 'desc' },
-        include: { user: { select: { email: true } } }
-      }
-    }
-  });
+  const product = await getCachedProductBySlug(slug);
 
   const t = await getTranslations('Product');
 
-  const settingsDb = await prisma.setting.findMany();
-  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const settingsMap = await getCachedSettings();
   const enableBuyNow = settingsMap.ENABLE_BUY_NOW_BUTTON === 'true';
   const shippingInfo = [
     settingsMap.SHIPPING_INFO_1 || '3-5 business days in Germany',
@@ -98,14 +54,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   }
 
   // Related products (same category)
-  const relatedProducts = await prisma.product.findMany({
-    where: { 
-      categories: { some: { id: { in: product.categories.map((c: any) => c.id) } } }, 
-      id: { not: product.id } 
-    },
-    include: { categories: true },
-    take: 4,
-  });
+  const categoryIds = product.categories.map((c: any) => c.id);
+  const relatedProducts = await getCachedRelatedProducts(categoryIds, product.id);
 
   // Check if logged in
   const supabase = await createClient();

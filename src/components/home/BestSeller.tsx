@@ -80,8 +80,7 @@ export default async function BestSeller({ config }: { config?: any }) {
   const categoryId = config?.categoryId || undefined;
 
   const dbProducts = await getFilteredProducts(filterType, categoryId, 10, config?.productIds);
-  const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const settings = await import('@/lib/cache').then(m => m.getCachedSettings());
   
   if (config) {
     Object.assign(settings, config);
