@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { getFilteredProducts } from '@/actions/public';
 import Price from '@/components/Price';
 import { getTranslations } from 'next-intl/server';
+import { AddToCartBtn, AddToCartBtnBig, WishlistBtn, QuickviewBtn } from './BestSellerActions';
 
 // ... (Star component kept the same)
 const Star = ({ filled = true }: { filled?: boolean }) => (
@@ -16,9 +17,10 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ icon, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor }: { icon: string, title: string, price: number, rating?: number, ratingText?: string, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
-  <Link href={linkUrl} className="flex flex-col group cursor-pointer h-full">
-    <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
+const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor }: { product?: any, icon: string, title: string, price: number, rating?: number, ratingText?: string, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
+  <div className="flex flex-col h-full relative group">
+    <Link href={linkUrl} className="flex flex-col flex-1 cursor-pointer">
+      <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       ) : (
@@ -38,17 +40,29 @@ const SmallCard = ({ icon, title, price, rating, ratingText, imageUrl, linkUrl =
         <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
       </div>
     )}
-    <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900 mt-auto" />
-  </Link>
+    </Link>
+    <div className="flex items-center justify-between mt-auto pt-2">
+      <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
+      {product && <AddToCartBtn product={product} />}
+    </div>
+  </div>
 );
 
 const BigCard = ({ 
-  icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor 
+  product, icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor 
 }: { 
-  icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string, borderColor?: string 
+  product?: any, icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string, borderColor?: string 
 }) => (
-  <Link href={linkUrl} className="border rounded-xl p-5 flex flex-col h-full group cursor-pointer hover:shadow-lg transition bg-white" style={{ borderColor: borderColor || '#e5e7eb' }}>
-    <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
+  <div className="border rounded-xl p-5 flex flex-col h-full group bg-white relative transition hover:shadow-lg" style={{ borderColor: borderColor || '#e5e7eb' }}>
+    
+    {/* Action buttons (Wishlist, Quickview) on top right */}
+    <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto">
+      {product && <WishlistBtn product={product} />}
+      {product && <QuickviewBtn product={product} />}
+    </div>
+
+    <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
+      <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
       {imageUrl ? (
         <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
       ) : (
@@ -70,9 +84,12 @@ const BigCard = ({
           <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
         </div>
       )}
+    </Link>
+    <div className="flex items-center justify-between mt-auto">
       <Price amount={price} className="font-bold text-gray-900" />
+      {product && <AddToCartBtnBig product={product} />}
     </div>
-  </Link>
+  </div>
 );
 
 export default async function BestSeller({ config }: { config?: any }) {
@@ -146,6 +163,7 @@ export default async function BestSeller({ config }: { config?: any }) {
         {/* Column 1: Big Card */}
         <div className="col-span-1">
           <BigCard 
+            product={bigProduct1}
             icon={bigProduct1?.imagePlaceholder || "👟"} 
             category={bigProduct1?.category || "Cosmetics"} 
             title={bigProduct1?.title || "Comfortable Regular Comfort Sports Sneakers"} 
@@ -165,6 +183,7 @@ export default async function BestSeller({ config }: { config?: any }) {
             return (
               <SmallCard 
                 key={i}
+                product={p}
                 icon={["📱", "👟", "🍯", "⌚"][i]} 
                 title={p?.title || "Product placeholder"} 
                 price={p ? p.price : 18.00} 
@@ -181,6 +200,7 @@ export default async function BestSeller({ config }: { config?: any }) {
         {/* Column 3: Big Card */}
         <div className="col-span-1">
           <BigCard 
+            product={bigProduct2}
             icon="🧀" 
             category={bigProduct2?.category || "Cosmetics"} 
             title={bigProduct2?.title || "Comfortable Regular Comfort Sports Sneakers"} 
@@ -200,6 +220,7 @@ export default async function BestSeller({ config }: { config?: any }) {
             return (
               <SmallCard 
                 key={i}
+                product={p}
                 icon={["🩳", "🧀", "🎒", "👟"][i]} 
                 title={p?.title || "Product placeholder"} 
                 price={p ? p.price : 35.00} 
