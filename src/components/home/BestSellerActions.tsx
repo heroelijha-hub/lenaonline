@@ -13,6 +13,7 @@ export const AddToCartBtn = ({ product }: { product: any }) => {
     e.stopPropagation();
     cartStore.addItem({
       id: product.id,
+      productId: product.id,
       title: product.title,
       price: product.price,
       quantity: 1,
@@ -44,6 +45,7 @@ export const AddToCartBtnBig = ({ product }: { product: any }) => {
     e.stopPropagation();
     cartStore.addItem({
       id: product.id,
+      productId: product.id,
       title: product.title,
       price: product.price,
       quantity: 1,
