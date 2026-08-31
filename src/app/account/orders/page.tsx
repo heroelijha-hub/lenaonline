@@ -40,16 +40,16 @@ export default async function OrdersPage() {
     redirect('/login');
   }
 
-  const user = await prisma.user.findUnique({
+  const dbUser = await prisma.user.findUnique({
     where: { email: user.email! }
   });
 
-  if (!user) {
+  if (!dbUser) {
     redirect('/login');
   }
 
   const orders = await prisma.order.findMany({
-    where: { userId: user.id },
+    where: { userId: dbUser.id },
     orderBy: { createdAt: 'desc' },
     include: {
       orderItems: {

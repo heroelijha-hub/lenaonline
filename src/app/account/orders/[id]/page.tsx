@@ -25,11 +25,11 @@ export default async function OrderDetailsPage({
     redirect('/login');
   }
 
-  const user = await prisma.user.findUnique({
+  const dbUser = await prisma.user.findUnique({
     where: { email: user.email! }
   });
 
-  if (!user) {
+  if (!dbUser) {
     redirect('/login');
   }
 
@@ -47,7 +47,7 @@ export default async function OrderDetailsPage({
     notFound();
   }
 
-  if (order.userId !== user.id) {
+  if (order.userId !== dbUser.id) {
     redirect('/account/orders'); // unauthorized
   }
 
