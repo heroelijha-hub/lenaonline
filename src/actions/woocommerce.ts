@@ -477,10 +477,10 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
     revalidatePath('/admin/products');
     revalidatePath('/');
     
-    // Import `revalidateTag` dynamically since we can't easily add it to the top without breaking the chunk
-    const { revalidateTag } = await import('next/cache');
-    revalidateTag('products');
-    revalidateTag('categories');
+    // Import `updateTag` dynamically since we can't easily add it to the top without breaking the chunk
+    const { updateTag } = await import('next/cache');
+    updateTag('products');
+    updateTag('categories');
 
     return { success: true, count: importedCount };
 

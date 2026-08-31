@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag as refreshCacheTag } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
@@ -121,7 +121,7 @@ export async function createTag(formData: FormData) {
   }
 }
 
-export async function updateTag(id: string, name: string, slug: string) {
+export async function refreshCacheTag(id: string, name: string, slug: string) {
   await requireAdmin();
   if (!name) return { error: "Nom requis" };
   const finalSlug = slug ? slug.toLowerCase().replace(/[^a-z0-9]+/g, '-') : name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -198,7 +198,7 @@ export async function createCategory(formData: FormData) {
   try {
     await prisma.category.create({ data: { name, slug, parentId } });
     revalidatePath('/admin/categories');
-    revalidateTag('categories');
+    refreshCacheTag('categories');
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
@@ -221,7 +221,7 @@ export async function updateCategory(id: string, name: string, slug?: string, pa
     });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');
-    revalidateTag('categories');
+    refreshCacheTag('categories');
     return { success: true };
   } catch (error) {
     return { error: "Error updating." };
@@ -234,7 +234,7 @@ export async function deleteCategory(id: string) {
     await prisma.category.delete({ where: { id } });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');
-    revalidateTag('categories');
+    refreshCacheTag('categories');
     return { success: true };
   } catch (error) {
     return { error: "Error: This category may contain products." };
@@ -253,7 +253,7 @@ export async function bulkDeleteCategories(ids: string[]) {
     });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');
-    revalidateTag('categories');
+    refreshCacheTag('categories');
     return { success: true };
   } catch (error) {
     const t = await getTranslations('AdminCategories');
@@ -368,8 +368,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
 
     revalidatePath('/admin/products');
     revalidatePath('/');
-    revalidateTag('products');
-    revalidateTag(`product-${uniqueSlug}`);
+    refreshCacheTag('products');
+    refreshCacheTag(`product-${uniqueSlug}`);
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -461,8 +461,8 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
     });
     revalidatePath('/admin/products');
     revalidatePath('/');
-    revalidateTag('products');
-    revalidateTag(`product-${finalSlug || providedSlug}`); // Try to invalidate both if they differ, though finalSlug should be used
+    refreshCacheTag('products');
+    refreshCacheTag(`product-${finalSlug || providedSlug}`); // Try to invalidate both if they differ, though finalSlug should be used
     return { success: true };
   } catch (error: any) {
     console.error(error);
@@ -501,8 +501,8 @@ export async function deleteProduct(id: string) {
 
     revalidatePath('/admin/products');
     revalidatePath('/');
-    revalidateTag('products');
-    revalidateTag(`product-${product.slug}`);
+    refreshCacheTag('products');
+    refreshCacheTag(`product-${product.slug}`);
     return { success: true };
   } catch (error: any) {
     console.error(error);
