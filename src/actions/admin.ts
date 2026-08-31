@@ -121,7 +121,7 @@ export async function createTag(formData: FormData) {
   }
 }
 
-export async function refreshCacheTag(id: string, name: string, slug: string) {
+export async function updateTag(id: string, name: string, slug: string) {
   await requireAdmin();
   if (!name) return { error: "Nom requis" };
   const finalSlug = slug ? slug.toLowerCase().replace(/[^a-z0-9]+/g, '-') : name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
