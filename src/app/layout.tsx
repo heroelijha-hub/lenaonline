@@ -45,11 +45,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = await getLocale();
   
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
   let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
   if (session) {
-    const dbUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
     if (dbUser) {
       userRole = dbUser.role;
     }

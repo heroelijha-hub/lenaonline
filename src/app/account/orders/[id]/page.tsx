@@ -16,17 +16,17 @@ export default async function OrderDetailsPage({
   const { id } = await params;
   
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
   const t = await getTranslations('AccountOrders');
   const locale = await getLocale();
 
-  if (!session) {
+  if (!user) {
     redirect('/login');
   }
 
   const user = await prisma.user.findUnique({
-    where: { email: session.user.email! }
+    where: { email: user.email! }
   });
 
   if (!user) {

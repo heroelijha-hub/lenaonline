@@ -109,8 +109,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   // Check if logged in
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  const isLoggedIn = !!session;
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
 
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'My Store';
 

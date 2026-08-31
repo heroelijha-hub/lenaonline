@@ -8,9 +8,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function AccountReviewsPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session) {
+  if (!user) {
     redirect('/login');
   }
 
@@ -18,7 +18,7 @@ export default async function AccountReviewsPage() {
   const locale = await getLocale();
 
   const reviews = await prisma.review.findMany({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: { product: true },
     orderBy: { createdAt: 'desc' }
   });

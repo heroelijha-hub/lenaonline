@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function OrdersPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
   const t = await getTranslations('AccountOrders');
   const locale = await getLocale();
@@ -36,12 +36,12 @@ export default async function OrdersPage() {
     CANCELLED: 'bg-red-100 text-red-800'
   };
 
-  if (!session) {
+  if (!user) {
     redirect('/login');
   }
 
   const user = await prisma.user.findUnique({
-    where: { email: session.user.email! }
+    where: { email: user.email! }
   });
 
   if (!user) {

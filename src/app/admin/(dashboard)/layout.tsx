@@ -18,15 +18,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   // 2. Check current session
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session) {
+  if (!user) {
     redirect('/admin/login');
   }
 
   // 3. Verify user role
-  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
-  if (!user || user.role !== 'ADMIN') {
+  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+  if (!dbUser || dbUser.role !== 'ADMIN') {
     // Optionally sign out the non-admin user
     redirect('/admin/login');
   }
