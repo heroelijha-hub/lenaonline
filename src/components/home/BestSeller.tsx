@@ -17,81 +17,95 @@ const Star = ({ filled = true }: { filled?: boolean }) => (
   </svg>
 );
 
-const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor }: { product?: any, icon: string, title: string, price: number, rating?: number, ratingText?: string, imageUrl?: string, linkUrl?: string, borderColor?: string }) => (
-  <div className="flex flex-col h-full relative group">
-    <Link href={linkUrl} className="flex flex-col flex-1 cursor-pointer">
-      <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
-      {imageUrl ? (
-        <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-      ) : (
-        <div className="text-3xl sm:text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
-      )}
-    </div>
-    <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
-      {title}
-    </h3>
-    {rating !== undefined && ratingText && (
-      <div className="flex items-center gap-1 mb-1">
-        <div className="flex">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <Star key={star} filled={star <= rating} />
-          ))}
-        </div>
-        <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
-      </div>
-    )}
-    </Link>
-    <div className="flex items-center justify-between mt-auto pt-2">
-      <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
-      {product && <AddToCartBtn product={product} />}
-    </div>
-  </div>
-);
+const DummyProduct = {
+  id: 'dummy-123',
+  title: 'Demo Product',
+  price: 29.99,
+  imageUrl: 'https://via.placeholder.com/150',
+  slug: 'demo-product'
+};
 
-const BigCard = ({ 
-  product, icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor 
-}: { 
-  product?: any, icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string, borderColor?: string 
-}) => (
-  <div className="border rounded-xl p-5 flex flex-col h-full group bg-white relative transition hover:shadow-lg" style={{ borderColor: borderColor || '#e5e7eb' }}>
-    
-    {/* Action buttons (Wishlist, Quickview) on top right */}
-    <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto">
-      {product && <WishlistBtn product={product} />}
-      {product && <QuickviewBtn product={product} />}
-    </div>
-
-    <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
-      <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
+const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor }: { product?: any, icon: string, title: string, price: number, rating?: number, ratingText?: string, imageUrl?: string, linkUrl?: string, borderColor?: string }) => {
+  const p = product || { ...DummyProduct, title, price, imageUrl };
+  return (
+    <div className="flex flex-col h-full relative group">
+      <Link href={linkUrl} className="flex flex-col flex-1 cursor-pointer">
+        <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
         {imageUrl ? (
-          <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
         ) : (
-          <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
+          <div className="text-3xl sm:text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
         )}
       </div>
-      <div className="mt-auto">
-      <p className="text-xs text-gray-500 mb-1">{category}</p>
-      <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
+      <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
         {title}
       </h3>
-      {ratingText && (
-        <div className="flex items-center gap-1 mb-2">
+      {rating !== undefined && ratingText && (
+        <div className="flex items-center gap-1 mb-1">
           <div className="flex">
             {[1, 2, 3, 4, 5].map((star) => (
               <Star key={star} filled={star <= rating} />
             ))}
           </div>
-          <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
+          <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
         </div>
       )}
+      </Link>
+      <div className="flex items-center justify-between mt-auto pt-2">
+        <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
+        <AddToCartBtn product={p} />
       </div>
-    </Link>
-    <div className="flex items-center justify-between mt-auto">
-      <Price amount={price} className="font-bold text-gray-900" />
-      {product && <AddToCartBtnBig product={product} />}
     </div>
-  </div>
-);
+  );
+};
+
+const BigCard = ({ 
+  product, icon, category, title, price, rating, ratingText, imageUrl, linkUrl = '#', borderColor 
+}: { 
+  product?: any, icon: string, category: string, title: string, price: number, rating: number, ratingText: string, imageUrl?: string, linkUrl?: string, borderColor?: string 
+}) => {
+  const p = product || { ...DummyProduct, title, price, imageUrl };
+  return (
+    <div className="border rounded-xl p-5 flex flex-col h-full group bg-white relative transition hover:shadow-lg" style={{ borderColor: borderColor || '#e5e7eb' }}>
+      
+      {/* Action buttons (Wishlist, Quickview) on top right */}
+      <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto">
+        <WishlistBtn product={p} />
+        <QuickviewBtn product={p} />
+      </div>
+
+      <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
+        <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
+          {imageUrl ? (
+            <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+          ) : (
+            <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
+          )}
+        </div>
+        <div className="mt-auto">
+        <p className="text-xs text-gray-500 mb-1">{category}</p>
+        <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
+          {title}
+        </h3>
+        {ratingText && (
+          <div className="flex items-center gap-1 mb-2">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star key={star} filled={star <= rating} />
+              ))}
+            </div>
+            <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
+          </div>
+        )}
+        </div>
+      </Link>
+      <div className="flex items-center justify-between mt-auto">
+        <Price amount={price} className="font-bold text-gray-900" />
+        <AddToCartBtnBig product={p} />
+      </div>
+    </div>
+  );
+};
 
 export default async function BestSeller({ config }: { config?: any }) {
   const filterType = config?.filterType || 'POPULAR';
