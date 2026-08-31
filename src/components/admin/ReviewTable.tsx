@@ -11,7 +11,9 @@ type Review = {
   isApproved: boolean;
   createdAt: Date;
   product: { title: string; slug: string };
-  user: { email: string };
+  reviewerName?: string | null;
+  reviewerEmail?: string | null;
+  user?: { email: string } | null;
 };
 
 export default function ReviewTable({ reviews }: { reviews: Review[] }) {
@@ -65,7 +67,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                 {review.product.title}
               </td>
               <td className="px-6 py-4">
-                {review.user.email}
+                {review.reviewerEmail || review.user?.email || review.reviewerName || 'Anonyme'}
               </td>
               <td className="px-6 py-4 min-w-[300px]">
                 {editingId === review.id ? (

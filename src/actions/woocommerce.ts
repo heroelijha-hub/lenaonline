@@ -409,7 +409,7 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
         }
       }
 
-      await prisma.product.create({
+      const createdProduct = await prisma.product.create({
         data: {
           title: wcProduct.name,
           slug: uniqueSlug,
@@ -434,6 +434,42 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           }
         }
       });
+
+      // Import reviews
+      try {
+        const reviewsResponse = await fetch(`${apiUrl}/reviews?product=${wcProduct.id}`, {
+          headers: {
+            'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+            'Content-Type': 'application/json'
+          },
+          cache: 'no-store'
+        });
+
+        if (reviewsResponse.ok) {
+          const wcReviews = await reviewsResponse.json();
+          if (Array.isArray(wcReviews) && wcReviews.length > 0) {
+            const reviewsToInsert = wcReviews
+              .filter(r => r.status === 'approved')
+              .map(r => ({
+                productId: createdProduct.id,
+                reviewerName: r.reviewer || null,
+                reviewerEmail: r.reviewer_email || null,
+                rating: r.rating || 5,
+                comment: r.review ? r.review.replace(/(<([^>]+)>)/gi, "") : '', // Strip HTML
+                isApproved: true,
+                createdAt: new Date(r.date_created)
+              }));
+            
+            if (reviewsToInsert.length > 0) {
+              await prisma.review.createMany({
+                data: reviewsToInsert
+              });
+            }
+          }
+        }
+      } catch (err) {
+        console.error(`Failed to fetch reviews for product ${wcProduct.id}`, err);
+      }
 
       importedCount++;
     }

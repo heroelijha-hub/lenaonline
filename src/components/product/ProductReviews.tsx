@@ -10,9 +10,11 @@ type Review = {
   rating: number;
   comment: string;
   createdAt: Date;
-  user: {
+  reviewerName?: string | null;
+  reviewerEmail?: string | null;
+  user?: {
     email: string;
-  };
+  } | null;
 };
 
 type ProductReviewsProps = {
@@ -105,7 +107,9 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                         <div className="flex">
                           {[1,2,3,4,5].map(i => <Star key={i} filled={i <= review.rating} />)}
                         </div>
-                        <span className="text-sm font-bold text-gray-900">{review.user.email.split('@')[0]}</span>
+                        <span className="text-sm font-bold text-gray-900">
+                          {review.reviewerName || (review.user?.email ? review.user.email.split('@')[0] : 'Anonyme')}
+                        </span>
                         <span className="text-xs text-gray-500">- {new Date(review.createdAt).toLocaleDateString(locale)}</span>
                       </div>
                       <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
