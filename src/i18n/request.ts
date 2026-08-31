@@ -43,6 +43,8 @@ export default getRequestConfig(async () => {
     messages = (await import('../../messages/fr.json')).default;
   } else if (locale === 'es') {
     messages = (await import('../../messages/es.json')).default;
+  } else if (locale === 'de') {
+    messages = (await import('../../messages/de.json')).default;
   } else {
     messages = (await import('../../messages/en.json')).default;
   }

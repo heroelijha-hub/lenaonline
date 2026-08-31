@@ -388,6 +388,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               <option value="en">English</option>
               <option value="fr">French (Français)</option>
               <option value="es">Spanish (Español)</option>
+              <option value="de">German (Deutsch)</option>
             </select>
           </div>
           <div>
