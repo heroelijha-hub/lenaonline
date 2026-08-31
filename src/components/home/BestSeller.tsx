@@ -63,13 +63,13 @@ const BigCard = ({
 
     <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
       <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
-      {imageUrl ? (
-        <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
-      ) : (
-        <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
-      )}
-    </div>
-    <div className="mt-auto">
+        {imageUrl ? (
+          <img src={imageUrl} alt={title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+        ) : (
+          <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
+        )}
+      </div>
+      <div className="mt-auto">
       <p className="text-xs text-gray-500 mb-1">{category}</p>
       <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
         {title}
@@ -84,6 +84,7 @@ const BigCard = ({
           <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
         </div>
       )}
+      </div>
     </Link>
     <div className="flex items-center justify-between mt-auto">
       <Price amount={price} className="font-bold text-gray-900" />

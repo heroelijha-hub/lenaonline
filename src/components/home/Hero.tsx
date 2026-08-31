@@ -211,31 +211,198 @@ export default async function Hero({ config }: { config?: any }) {
     </div>
   );
 
+  const isStyle2 = settings.HERO_LAYOUT === 'STYLE_2';
+
+  const block1Style2 = (
+    <div 
+      className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[400px] border border-gray-100 group flex w-full"
+      style={{
+        backgroundColor: settings.HERO_1_BG_COLOR || '#f0f4f8',
+        backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="z-20 w-full sm:w-[85%] md:w-3/4 lg:w-2/3 h-full flex flex-col justify-between">
+        <div>
+          {settings.HERO_1_SUBTITLE && (
+            <span 
+              className="inline-block bg-red-600 text-white font-bold tracking-wider mb-6 px-4 py-2 relative text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+              style={{
+                ...getResponsiveVars('HERO_1_SUBTITLE', {m: '14px', t: '16px', d: '18px'}),
+                clipPath: 'polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%)'
+              }}
+            >
+              {settings.HERO_1_SUBTITLE || t('hero_1_subtitle')}
+            </span>
+          )}
+          <h2 
+            className="font-black italic tracking-wide leading-relaxed mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+            style={getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '36px', d: '46px'})}
+          >
+            <span className="bg-[#107c41] text-white px-3 py-1.5 box-decoration-clone leading-[1.6]" style={{ backgroundColor: settings.HERO_1_TEXT_COLOR || '#107c41' }}>
+               {settings.HERO_1_TITLE || t('hero_1_title')}
+            </span>
+          </h2>
+        </div>
+        <div className="mt-8">
+          <Link 
+            href={settings.HERO_1_LINK || '/#'} 
+            className="inline-block bg-white hover:bg-gray-50 text-gray-900 font-bold px-8 py-3.5 rounded-full shadow-lg transition-transform transform hover:scale-105"
+            style={{
+              backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#ffffff',
+              color: settings.HERO_1_BTN_TEXT_COLOR || '#111827'
+            }}
+          >
+            {settings.HERO_1_CTA || t('shop_now')}
+          </Link>
+        </div>
+      </div>
+      {settings.HERO_1_IMAGE && (
+        <img src={settings.HERO_1_IMAGE} alt="Hero 1" className="absolute right-0 bottom-0 w-3/4 md:w-2/3 lg:w-[55%] h-[90%] object-contain object-right-bottom group-hover:scale-105 transition-transform duration-700 z-10 pointer-events-none" />
+      )}
+    </div>
+  );
+
+  const block2Style2 = (
+    <div 
+      className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
+      style={{
+        backgroundColor: settings.HERO_2_BG_COLOR || '#f5ebeb',
+        backgroundImage: settings.HERO_2_BG_IMAGE ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="z-20 w-[55%] flex flex-col h-full justify-center">
+        <h2 
+          className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={{...getResponsiveVars('HERO_2_TITLE', {m: '18px', t: '20px', d: '22px'}), color: settings.HERO_2_TEXT_COLOR || '#dc2626'}}
+        >
+          {settings.HERO_2_TITLE || t('hero_2_title')}
+        </h2>
+        <p 
+          className="font-black text-slate-900 mb-5 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={getResponsiveVars('HERO_2_SUBTITLE', {m: '22px', t: '26px', d: '30px'})}
+        >
+          {settings.HERO_2_SUBTITLE || t('hero_2_subtitle')}
+        </p>
+        <div>
+          <Link 
+            href={settings.HERO_2_LINK || '/#'} 
+            className="inline-block bg-white hover:bg-gray-50 text-gray-900 font-bold px-6 py-2.5 rounded-full shadow-md transition-transform transform hover:scale-105"
+            style={{
+              backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#ffffff',
+              color: settings.HERO_2_BTN_TEXT_COLOR || '#111827'
+            }}
+          >
+            {settings.HERO_2_CTA || 'Kaufen'}
+          </Link>
+        </div>
+      </div>
+      {settings.HERO_2_IMAGE && (
+        <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
+          <img src={settings.HERO_2_IMAGE} alt="Hero 2" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
+        </div>
+      )}
+    </div>
+  );
+
+  const block3Style2 = (
+    <div 
+      className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
+      style={{
+        backgroundColor: settings.HERO_3_BG_COLOR || '#f3ebd6',
+        backgroundImage: settings.HERO_3_BG_IMAGE ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="z-20 w-[55%] flex flex-col h-full justify-center">
+        <h2 
+          className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={{...getResponsiveVars('HERO_3_TITLE', {m: '18px', t: '20px', d: '22px'}), color: settings.HERO_3_TEXT_COLOR || '#dc2626'}}
+        >
+          {settings.HERO_3_TITLE || t('hero_3_title')}
+        </h2>
+        <p 
+          className="font-black text-slate-900 mb-5 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={getResponsiveVars('HERO_3_SUBTITLE', {m: '22px', t: '26px', d: '30px'})}
+        >
+          {settings.HERO_3_SUBTITLE || t('hero_3_subtitle')}
+        </p>
+        <div>
+          <Link 
+            href={settings.HERO_3_LINK || '/#'} 
+            className="inline-block bg-white hover:bg-gray-50 text-gray-900 font-bold px-6 py-2.5 rounded-full shadow-md transition-transform transform hover:scale-105"
+            style={{
+              backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#ffffff',
+              color: settings.HERO_3_BTN_TEXT_COLOR || '#111827'
+            }}
+          >
+            {settings.HERO_3_CTA || 'Kaufen'}
+          </Link>
+        </div>
+      </div>
+      {settings.HERO_3_IMAGE && (
+        <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
+          <img src={settings.HERO_3_IMAGE} alt="Hero 3" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-6 font-sans">
       {/* DESKTOP VIEW */}
-      <div className="hidden lg:grid grid-cols-12 gap-6 h-[600px]">
-        <div className="col-span-4 h-full">
-          {block1}
-        </div>
-        <div className="col-span-8 flex flex-col gap-6 h-full">
-          <div className="grid grid-cols-2 gap-6 h-[50%]">
-            {block2}
-            {block3}
+      {isStyle2 ? (
+        <div className="hidden lg:grid grid-cols-12 gap-6 h-[600px]">
+          <div className="col-span-8 h-full">
+            {block1Style2}
           </div>
-          <div className="h-[50%]">
-            {block4}
+          <div className="col-span-4 flex flex-col gap-6 h-full">
+            <div className="h-[48%]">
+              {block2Style2}
+            </div>
+            <div className="h-[48%] mt-auto">
+              {block3Style2}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="hidden lg:grid grid-cols-12 gap-6 h-[600px]">
+          <div className="col-span-4 h-full">
+            {block1}
+          </div>
+          <div className="col-span-8 flex flex-col gap-6 h-full">
+            <div className="grid grid-cols-2 gap-6 h-[50%]">
+              {block2}
+              {block3}
+            </div>
+            <div className="h-[50%]">
+              {block4}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MOBILE VIEW (AutoSlider) */}
-      <HeroMobileSliderWrapper>
-        {settings.HERO_1_HIDE_MOBILE !== 'true' && block1}
-        {settings.HERO_2_HIDE_MOBILE !== 'true' && block2}
-        {settings.HERO_3_HIDE_MOBILE !== 'true' && block3}
-        {settings.HERO_4_HIDE_MOBILE !== 'true' && block4}
-      </HeroMobileSliderWrapper>
+      {isStyle2 ? (
+        <HeroMobileSliderWrapper>
+          {block1Style2}
+          <div className="flex flex-col gap-4 h-full w-full">
+            <div className="flex-1 min-h-[250px]">{block2Style2}</div>
+            <div className="flex-1 min-h-[250px]">{block3Style2}</div>
+          </div>
+        </HeroMobileSliderWrapper>
+      ) : (
+        <HeroMobileSliderWrapper>
+          {settings.HERO_1_HIDE_MOBILE !== 'true' && block1}
+          {settings.HERO_2_HIDE_MOBILE !== 'true' && block2}
+          {settings.HERO_3_HIDE_MOBILE !== 'true' && block3}
+          {settings.HERO_4_HIDE_MOBILE !== 'true' && block4}
+        </HeroMobileSliderWrapper>
+      )}
     </section>
   );
 }

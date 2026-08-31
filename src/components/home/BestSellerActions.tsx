@@ -13,11 +13,10 @@ export const AddToCartBtn = ({ product }: { product: any }) => {
     e.stopPropagation();
     cartStore.addItem({
       id: product.id,
-      name: product.title,
+      title: product.title,
       price: product.price,
       quantity: 1,
       image: product.imageUrl,
-      slug: product.slug,
     });
     cartStore.setIsOpen(true);
   };
@@ -45,11 +44,10 @@ export const AddToCartBtnBig = ({ product }: { product: any }) => {
     e.stopPropagation();
     cartStore.addItem({
       id: product.id,
-      name: product.title,
+      title: product.title,
       price: product.price,
       quantity: 1,
       image: product.imageUrl,
-      slug: product.slug,
     });
     cartStore.setIsOpen(true);
   };

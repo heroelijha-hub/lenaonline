@@ -481,13 +481,40 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     }
 
     if (section.type === 'Hero') {
+      const isStyle2 = section.settings.HERO_LAYOUT === 'STYLE_2';
       return (
         <div className="p-4 bg-gray-50 border rounded space-y-4">
+          <div className="mb-4 bg-white p-3 border rounded shadow-sm">
+            <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">🎨 Layout Design</h4>
+            <div className="flex flex-col gap-2">
+              <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                <input 
+                  type="radio" 
+                  name={`layout-${section.id}`}
+                  checked={!isStyle2}
+                  onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_1')}
+                  className="text-orange-600 focus:ring-orange-500"
+                />
+                <span>Style 1 (4 Blocks)</span>
+              </label>
+              <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                <input 
+                  type="radio" 
+                  name={`layout-${section.id}`}
+                  checked={isStyle2}
+                  onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_2')}
+                  className="text-orange-600 focus:ring-orange-500"
+                />
+                <span>Style 2 (3 Blocks - Modern)</span>
+              </label>
+            </div>
+          </div>
+
           <div className="mb-4 bg-white p-3 border rounded shadow-sm">
             <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">📱 Mobile Display</h4>
             <p className="text-xs text-gray-500 mb-3">Select the blocks you want to <strong>display</strong> on the mobile version :</p>
             <div className="grid grid-cols-2 gap-3">
-              {[1, 2, 3, 4].map(num => (
+              {[1, 2, 3, ...(isStyle2 ? [] : [4])].map(num => (
                 <label key={num} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-2 rounded border hover:bg-gray-100 transition">
                   <input 
                     type="checkbox" 
@@ -499,23 +526,26 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 </label>
               ))}
             </div>
+            {isStyle2 && (
+              <p className="text-xs text-gray-500 mt-2 italic">Note: In Style 2, blocks 2 and 3 are stacked in the same slide on mobile to preserve proportions.</p>
+            )}
           </div>
           
-          <p className="text-sm text-gray-500 mb-4">The main header contains 4 blocks. Edit the main texts below.</p>
+          <p className="text-sm text-gray-500 mb-4">Edit the main texts and designs below.</p>
           
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Left)</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
-              {renderResponsiveInput(section, 'Subtitle', 'HERO_1_SUBTITLE', 'Supper Discount')}
-              {renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
+              {renderResponsiveInput(section, 'Subtitle / Badge', 'HERO_1_SUBTITLE', 'Supper Discount')}
+              {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
               <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 1)}
             </div>
 
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 2 (Top Center)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 2 (Top Right)' : 'Bloc 2 (Top Center)'}</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_2_TITLE', 'Heavy On Features...')}
               {renderResponsiveInput(section, 'Subtitle', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
@@ -524,7 +554,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             </div>
 
             <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 3 (Top Right)</h4>
+              <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 3 (Bottom Right)' : 'Bloc 3 (Top Right)'}</h4>
               {renderResponsiveInput(section, 'Title', 'HERO_3_TITLE', 'Sale 10% Off')}
               {renderResponsiveInput(section, 'Subtitle', 'HERO_3_SUBTITLE', 'New Product')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
@@ -532,14 +562,16 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {renderHeroBlockConfig(section, 3)}
             </div>
 
-            <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bottom Right)</h4>
-              {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...')}
-              {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...')}
-              <label className="block text-[11px] font-medium mb-1">Button</label>
-              <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
-              {renderHeroBlockConfig(section, 4)}
-            </div>
+            {!isStyle2 && (
+              <div className="border p-3 rounded bg-white">
+                <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bottom Right)</h4>
+                {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...')}
+                {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...')}
+                <label className="block text-[11px] font-medium mb-1">Button</label>
+                <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
+                {renderHeroBlockConfig(section, 4)}
+              </div>
+            )}
           </div>
         </div>
       );
