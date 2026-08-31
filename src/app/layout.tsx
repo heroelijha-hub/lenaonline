@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { data: { user } } = await supabase.auth.getUser();
   
   let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
-  if (session) {
+  if (user) {
     const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
     if (dbUser) {
       userRole = dbUser.role;
