@@ -536,7 +536,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Left)</h4>
-              {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'Apple Iphone 17 Pro Max')}
+              {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS! FÜR EINEN KOMFORTABLEN, WIRTSCHAFTLICHEN UND UMWELTFREUNDLICHEN WINTER.')}
               {renderResponsiveInput(section, 'Subtitle / Badge', 'HERO_1_SUBTITLE', 'Supper Discount')}
               {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Button</label>

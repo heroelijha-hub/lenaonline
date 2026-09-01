@@ -237,10 +237,14 @@ export default async function Hero({ config }: { config?: any }) {
             </span>
           )}
           <h2 
-            className="font-black italic tracking-wide leading-relaxed mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-            style={getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '36px', d: '46px'})}
+            className="font-black italic tracking-wide leading-relaxed mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)] drop-shadow-md" 
+            style={{
+              ...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '36px', d: '46px'}),
+              WebkitTextStroke: '2px white',
+              paintOrder: 'stroke fill'
+            }}
           >
-            <span className="bg-[#107c41] text-white px-3 py-1.5 box-decoration-clone leading-[1.6]" style={{ backgroundColor: settings.HERO_1_TEXT_COLOR || '#107c41' }}>
+            <span className="text-[#107c41] leading-[1.6]" style={{ color: settings.HERO_1_TEXT_COLOR || '#107c41' }}>
                {settings.HERO_1_TITLE || t('hero_1_title')}
             </span>
           </h2>
