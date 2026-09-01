@@ -23,7 +23,7 @@ export default async function Hero({ config }: { config?: any }) {
 
   const block1 = (
     <div 
-      className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col items-center text-center h-full min-h-[400px] lg:min-h-0 border border-gray-100 group flex w-full"
+      className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col items-center text-center h-full min-h-[300px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#FFF5EE',
         backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
@@ -215,7 +215,7 @@ export default async function Hero({ config }: { config?: any }) {
 
   const block1Style2 = (
     <div 
-      className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[400px] border border-gray-100 group flex w-full"
+      className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[300px] border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#f0f4f8',
         backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
@@ -360,7 +360,7 @@ export default async function Hero({ config }: { config?: any }) {
     <section className="max-w-7xl mx-auto px-4 w-full py-6 font-sans">
       {/* DESKTOP VIEW */}
       {isStyle2 ? (
-        <div className="hidden lg:grid grid-cols-12 gap-6 h-[600px]">
+        <div className="hidden lg:grid grid-cols-12 gap-6 h-[400px]">
           <div className="col-span-8 h-full">
             {block1Style2}
           </div>
@@ -374,7 +374,7 @@ export default async function Hero({ config }: { config?: any }) {
           </div>
         </div>
       ) : (
-        <div className="hidden lg:grid grid-cols-12 gap-6 h-[600px]">
+        <div className="hidden lg:grid grid-cols-12 gap-6 h-[400px]">
           <div className="col-span-4 h-full">
             {block1}
           </div>
