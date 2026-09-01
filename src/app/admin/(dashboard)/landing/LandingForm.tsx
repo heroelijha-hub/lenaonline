@@ -518,8 +518,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 <label key={num} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-2 rounded border hover:bg-gray-100 transition">
                   <input 
                     type="checkbox" 
-                    checked={section.settings[`HERO_${num}_HIDE_MOBILE`] !== 'true'} 
-                    onChange={e => updateSectionSettings(section.id, `HERO_${num}_HIDE_MOBILE`, e.target.checked ? 'false' : 'true')}
+                    checked={section.settings[isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`] !== 'true'} 
+                    onChange={e => updateSectionSettings(section.id, isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`, e.target.checked ? 'false' : 'true')}
                     className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
                   />
                   <span className="font-medium">Show Block {num}</span>
@@ -536,29 +536,29 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Left)</h4>
-              {renderResponsiveInput(section, 'Title', 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS! FÜR EINEN KOMFORTABLEN, WIRTSCHAFTLICHEN UND UMWELTFREUNDLICHEN WINTER.')}
-              {renderResponsiveInput(section, 'Subtitle / Badge', 'HERO_1_SUBTITLE', 'Supper Discount')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_1_TITLE' : 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS! FÜR EINEN KOMFORTABLEN, WIRTSCHAFTLICHEN UND UMWELTFREUNDLICHEN WINTER.')}
+              {renderResponsiveInput(section, 'Subtitle / Badge', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE' : 'HERO_1_SUBTITLE', 'Supper Discount')}
               {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
-              <input type="text" value={section.settings.HERO_1_CTA || ''} onChange={e => updateSectionSettings(section.id, 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
+              <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA'] || ''} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 1)}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 2 (Top Right)' : 'Bloc 2 (Top Center)'}</h4>
-              {renderResponsiveInput(section, 'Title', 'HERO_2_TITLE', 'Heavy On Features...')}
-              {renderResponsiveInput(section, 'Subtitle', 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_2_TITLE' : 'HERO_2_TITLE', 'Heavy On Features...')}
+              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE' : 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
-              <input type="text" value={section.settings.HERO_2_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
+              <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA'] || 'Shop Now'} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 2)}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 3 (Bottom Right)' : 'Bloc 3 (Top Right)'}</h4>
-              {renderResponsiveInput(section, 'Title', 'HERO_3_TITLE', 'Sale 10% Off')}
-              {renderResponsiveInput(section, 'Subtitle', 'HERO_3_SUBTITLE', 'New Product')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_3_TITLE' : 'HERO_3_TITLE', 'Sale 10% Off')}
+              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE' : 'HERO_3_SUBTITLE', 'New Product')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
-              <input type="text" value={section.settings.HERO_3_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
+              <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA'] || 'Shop Now'} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
               {renderHeroBlockConfig(section, 3)}
             </div>
 
