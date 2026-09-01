@@ -124,6 +124,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         footerSocialInstagram={settings.footerSocialInstagram}
         footerSocialLinkedin={settings.footerSocialLinkedin}
         footerColumns={settings.footerColumns}
+        categories={settings.categories}
       />
     </div>
   );

@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function main() { await prisma.setting.upsert({ where: { key: 'CHAT_ENABLED' }, update: { value: 'true' }, create: { key: 'CHAT_ENABLED', value: 'true' }}); console.log('Enabled chat'); } main().catch(console.error).finally(() => prisma.$disconnect());
