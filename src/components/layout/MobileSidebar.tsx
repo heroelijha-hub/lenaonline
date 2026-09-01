@@ -8,6 +8,7 @@ type MobileSidebarProps = {
   isOpen: boolean;
   onClose: () => void;
   logoImage?: string;
+  logoHeight?: string;
   aboutTitle: string;
   aboutDesc: string;
   menuLinks: Array<{ label: string, url: string }>;
@@ -22,6 +23,7 @@ export default function MobileSidebar({
   isOpen,
   onClose,
   logoImage,
+  logoHeight = '64',
   aboutTitle,
   aboutDesc,
   menuLinks,
@@ -73,7 +75,7 @@ export default function MobileSidebar({
         <div className="p-6 border-b border-gray-100">
           <Link href="/" onClick={onClose} className="block">
             {logoImage ? (
-              <img src={logoImage} alt="Logo" className="h-10 object-contain" />
+              <img src={logoImage} alt="Logo" className="object-contain" style={{ height: `${logoHeight}px` }} />
             ) : (
               <span className="text-2xl font-extrabold text-gray-900">LOGO</span>
             )}

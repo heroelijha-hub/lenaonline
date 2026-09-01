@@ -18,6 +18,8 @@ import Price from '@/components/Price';
 type HeaderProps = {
   announcement?: string;
   logoImage?: string;
+  headerLogoHeight?: string;
+  mobileLogoHeight?: string;
   menuLinks?: Array<{ label: string, url: string }>;
   topBarLinks?: Array<{ label: string, icon: string, url: string }>;
   topBarBgColor?: string;
@@ -47,6 +49,8 @@ type HeaderProps = {
 export default function Header({ 
   announcement = 'Welcome to My Store', 
   logoImage = '',
+  headerLogoHeight = '80',
+  mobileLogoHeight = '64',
   menuLinks = [],
   topBarLinks = [
     { label: 'Store Locator', icon: 'location', url: '/store-locator' },
@@ -245,7 +249,7 @@ export default function Header({
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Shopelios Logo" className="h-16 sm:h-20 md:h-24 object-contain" />
+              <img src={logoImage} alt="Shopelios Logo" className="object-contain" style={{ height: `${headerLogoHeight}px` }} />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
@@ -512,6 +516,7 @@ export default function Header({
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         logoImage={logoImage}
+        logoHeight={mobileLogoHeight}
         aboutTitle={mobileAboutTitle}
         aboutDesc={mobileAboutDesc}
         menuLinks={mobileMenuLinks}

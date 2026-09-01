@@ -10,6 +10,8 @@ type StoreLayoutProps = {
   settings: {
     announcement: string;
     logoImage: string;
+    headerLogoHeight?: string;
+    mobileLogoHeight?: string;
     supportPhone: string;
     supportEmail: string;
     menuLinks: Array<{ label: string, url: string }>;
@@ -93,6 +95,8 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         userRole={userRole}
         announcement={settings.announcement} 
         logoImage={settings.logoImage} 
+        headerLogoHeight={settings.headerLogoHeight}
+        mobileLogoHeight={settings.mobileLogoHeight}
         menuLinks={settings.menuLinks}
         categories={settings.categories}
         searchBorderColor={settings.searchBorderColor}

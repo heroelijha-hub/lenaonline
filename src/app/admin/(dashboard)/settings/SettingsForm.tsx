@@ -72,6 +72,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316'); // Default to orange-500
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
   const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
+  const [headerLogoHeight, setHeaderLogoHeight] = useState(initialSettings.HEADER_LOGO_HEIGHT || '80');
+  const [mobileLogoHeight, setMobileLogoHeight] = useState(initialSettings.MOBILE_LOGO_HEIGHT || '64');
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconImage, setFaviconImage] = useState(initialSettings.FAVICON_IMAGE || '');
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
@@ -244,6 +246,8 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
       if (url) finalLogoImage = url;
     }
     settingsMap['HEADER_LOGO_IMAGE'] = finalLogoImage;
+    settingsMap['HEADER_LOGO_HEIGHT'] = headerLogoHeight;
+    settingsMap['MOBILE_LOGO_HEIGHT'] = mobileLogoHeight;
 
     let finalFaviconImage = faviconImage;
     if (faviconFile) {
@@ -914,6 +918,16 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
                 />
                 <p className="mt-1 text-xs text-gray-500">{tSettings('logo_desc')}</p>
+                <div className="mt-4 flex gap-4">
+                  <div className="flex-1">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Hauteur (Desktop) en px</label>
+                    <input type="number" value={headerLogoHeight} onChange={e => setHeaderLogoHeight(e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Hauteur (Mobile) en px</label>
+                    <input type="number" value={mobileLogoHeight} onChange={e => setMobileLogoHeight(e.target.value)} className="w-full px-2 py-1 border rounded text-sm" />
+                  </div>
+                </div>
               </div>
 
               <div className="flex-1 border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 sm:pl-6">
