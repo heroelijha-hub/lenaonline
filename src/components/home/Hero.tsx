@@ -26,7 +26,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col items-center text-center h-full min-h-[400px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#FFF5EE',
-        backgroundImage: settings.HERO_1_BG_IMAGE ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -61,7 +61,7 @@ export default async function Hero({ config }: { config?: any }) {
           {settings.HERO_1_CTA || t('shop_now')}
         </Link>
       </div>
-      {settings.HERO_1_IMAGE ? (
+      {settings.HERO_1_IMAGE && settings.HERO_1_SHOW_IMAGE !== 'false' ? (
         <img src={settings.HERO_1_IMAGE} alt="Hero 1" className="absolute bottom-0 w-4/5 object-contain max-h-[60%] group-hover:scale-105 transition-transform duration-500 z-0" />
       ) : (
         <div className="absolute bottom-[-10%] w-full h-[60%] bg-orange-400 rounded-t-3xl mt-auto translate-y-10 group-hover:translate-y-4 transition-transform duration-500">
@@ -82,7 +82,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group h-full min-h-[300px] lg:min-h-0 flex w-full"
       style={{
         backgroundColor: settings.HERO_2_BG_COLOR || '#F8F9FA',
-        backgroundImage: settings.HERO_2_BG_IMAGE ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -111,7 +111,7 @@ export default async function Hero({ config }: { config?: any }) {
           {settings.HERO_2_CTA || t('shop_now')}
         </Link>
       </div>
-      {settings.HERO_2_IMAGE ? (
+      {settings.HERO_2_IMAGE && settings.HERO_2_SHOW_IMAGE !== 'false' ? (
         <img src={settings.HERO_2_IMAGE} alt="Hero 2" className="absolute -right-4 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
       ) : (
         <div className="absolute -right-12 sm:-right-8 top-1/2 -translate-y-1/2 w-40 h-40 sm:w-48 sm:h-48 rounded-full border-8 border-gray-200 bg-white shadow-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500 z-10">
@@ -126,7 +126,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group h-full min-h-[300px] lg:min-h-0 flex w-full"
       style={{
         backgroundColor: settings.HERO_3_BG_COLOR || '#F8F9FA',
-        backgroundImage: settings.HERO_3_BG_IMAGE ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -155,7 +155,7 @@ export default async function Hero({ config }: { config?: any }) {
           {settings.HERO_3_CTA || t('shop_now')}
         </Link>
       </div>
-      {settings.HERO_3_IMAGE ? (
+      {settings.HERO_3_IMAGE && settings.HERO_3_SHOW_IMAGE !== 'false' ? (
         <img src={settings.HERO_3_IMAGE} alt="Hero 3" className="absolute right-0 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
       ) : (
         <div className="absolute -right-4 sm:right-0 top-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40 bg-zinc-800 rounded-3xl sm:translate-x-4 shadow-2xl flex items-center justify-center group-hover:-translate-x-2 transition-transform duration-500 z-10">
@@ -170,7 +170,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center h-full min-h-[300px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_4_BG_COLOR || '#FFF5EE',
-        backgroundImage: settings.HERO_4_BG_IMAGE ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -199,7 +199,7 @@ export default async function Hero({ config }: { config?: any }) {
           {settings.HERO_4_CTA || t('shop_now')}
         </Link>
       </div>
-      {settings.HERO_4_IMAGE ? (
+      {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' ? (
         <img src={settings.HERO_4_IMAGE} alt="Hero 4" className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" />
       ) : (
         <div className="absolute -right-10 sm:right-4 md:right-16 -bottom-10 w-56 h-56 sm:w-64 sm:h-64 transition-transform duration-500 group-hover:-translate-y-4 z-10 scale-75 sm:scale-100 origin-bottom-right">
@@ -218,7 +218,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[400px] border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_1_BG_COLOR || '#f0f4f8',
-        backgroundImage: settings.STYLE2_HERO_1_BG_IMAGE ? `url(${settings.STYLE2_HERO_1_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_1_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -262,7 +262,7 @@ export default async function Hero({ config }: { config?: any }) {
           </Link>
         </div>
       </div>
-      {settings.STYLE2_HERO_1_IMAGE && (
+      {settings.STYLE2_HERO_1_IMAGE && settings.STYLE2_HERO_1_SHOW_IMAGE !== 'false' && (
         <img src={settings.STYLE2_HERO_1_IMAGE} alt="Hero 1" className="absolute right-0 bottom-0 w-3/4 md:w-2/3 lg:w-[55%] h-[90%] object-contain object-right-bottom group-hover:scale-105 transition-transform duration-700 z-10 pointer-events-none" />
       )}
     </div>
@@ -273,7 +273,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_2_BG_COLOR || '#f5ebeb',
-        backgroundImage: settings.STYLE2_HERO_2_BG_IMAGE ? `url(${settings.STYLE2_HERO_2_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_2_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -304,7 +304,7 @@ export default async function Hero({ config }: { config?: any }) {
           </Link>
         </div>
       </div>
-      {settings.STYLE2_HERO_2_IMAGE && (
+      {settings.STYLE2_HERO_2_IMAGE && settings.STYLE2_HERO_2_SHOW_IMAGE !== 'false' && (
         <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
           <img src={settings.STYLE2_HERO_2_IMAGE} alt="Hero 2" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>
@@ -317,7 +317,7 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_3_BG_COLOR || '#f3ebd6',
-        backgroundImage: settings.STYLE2_HERO_3_BG_IMAGE ? `url(${settings.STYLE2_HERO_3_BG_IMAGE})` : undefined,
+        backgroundImage: (settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_3_BG_IMAGE})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -348,7 +348,7 @@ export default async function Hero({ config }: { config?: any }) {
           </Link>
         </div>
       </div>
-      {settings.STYLE2_HERO_3_IMAGE && (
+      {settings.STYLE2_HERO_3_IMAGE && settings.STYLE2_HERO_3_SHOW_IMAGE !== 'false' && (
         <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
           <img src={settings.STYLE2_HERO_3_IMAGE} alt="Hero 3" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>

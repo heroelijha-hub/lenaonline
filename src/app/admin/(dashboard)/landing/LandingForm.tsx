@@ -189,44 +189,52 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     );
   };
 
-  const renderHeroBlockConfig = (section: SectionConfig, blockNum: number) => {
+  const renderHeroBlockConfig = (section: SectionConfig, blockNum: number, prefix: string = 'HERO') => {
     return (
       <div className="border-t border-gray-200 mt-3 pt-3">
         <h5 className="font-bold text-sm mb-2 text-red-600">Design, Links & Media</h5>
         <label className="block text-[11px] font-medium mb-1">Redirect Link (URL)</label>
-        <input type="text" value={section.settings[`HERO_${blockNum}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_LINK`, e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-3" placeholder="/product/..." />
+        <input type="text" value={section.settings[`${prefix}_${blockNum}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_LINK`, e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-3" placeholder="/product/..." />
         
         <div className="flex flex-col gap-3 mb-3">
+          <div className="flex items-center gap-2 mb-1">
+            <input type="checkbox" checked={section.settings[`${prefix}_${blockNum}_SHOW_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_SHOW_IMAGE`, e.target.checked ? 'true' : 'false')} />
+            <label className="text-[11px] font-bold text-red-600">Afficher l'Image Principale</label>
+          </div>
+          <div className="flex items-center gap-2 mb-1">
+            <input type="checkbox" checked={section.settings[`${prefix}_${blockNum}_SHOW_BG_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_SHOW_BG_IMAGE`, e.target.checked ? 'true' : 'false')} />
+            <label className="text-[11px] font-bold text-red-600">Afficher l'Image de Fond (BG)</label>
+          </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
             <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
-            {section.settings[`HERO_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`HERO_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `HERO_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
+            {section.settings[`${prefix}_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
             <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
               Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `HERO_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
+              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
             </label>
-            {section.settings[`HERO_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`HERO_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `HERO_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
+            {section.settings[`${prefix}_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
         
         <div className="grid grid-cols-3 gap-2 mb-3">
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Fond</label>
-            <input type="color" value={section.settings[`HERO_${blockNum}_BG_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+            <input type="color" value={section.settings[`${prefix}_${blockNum}_BG_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Background</label>
-            <input type="color" value={section.settings[`HERO_${blockNum}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+            <input type="color" value={section.settings[`${prefix}_${blockNum}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BTN_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Text</label>
-            <input type="color" value={section.settings[`HERO_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `HERO_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
+            <input type="color" value={section.settings[`${prefix}_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
       </div>
@@ -541,7 +549,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
               <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA'] || ''} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
-              {renderHeroBlockConfig(section, 1)}
+              {renderHeroBlockConfig(section, 1, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
 
             <div className="border p-3 rounded bg-white">
@@ -550,7 +558,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE' : 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
               <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA'] || 'Shop Now'} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
-              {renderHeroBlockConfig(section, 2)}
+              {renderHeroBlockConfig(section, 2, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
 
             <div className="border p-3 rounded bg-white">
@@ -559,7 +567,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
               {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE' : 'HERO_3_SUBTITLE', 'New Product')}
               <label className="block text-[11px] font-medium mb-1">Button</label>
               <input type="text" value={section.settings[isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA'] || 'Shop Now'} onChange={e => updateSectionSettings(section.id, isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
-              {renderHeroBlockConfig(section, 3)}
+              {renderHeroBlockConfig(section, 3, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
 
             {!isStyle2 && (
@@ -569,7 +577,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...')}
                 <label className="block text-[11px] font-medium mb-1">Button</label>
                 <input type="text" value={section.settings.HERO_4_CTA || 'Shop Now'} onChange={e => updateSectionSettings(section.id, 'HERO_4_CTA', e.target.value)} className="w-full border rounded px-2 py-1 text-sm mb-2" placeholder="Shop Now" />
-                {renderHeroBlockConfig(section, 4)}
+                {renderHeroBlockConfig(section, 4, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
               </div>
             )}
           </div>
