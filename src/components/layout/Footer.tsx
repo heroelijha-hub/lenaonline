@@ -29,14 +29,14 @@ export default function Footer({
   supportEmail = 'info@maca.topgartengeraete.de',
   footerBgColor = '#278a54',
   footerTextColor = '#ffffff',
-  footerAddress1 = '17 Rue des Marronniers, 31240 L''Union, FRANCE',
+  footerAddress1 = '17 Rue des Marronniers, 31240 L\'Union, FRANCE',
   footerAddress2 = '',
   footerLocationsTitle = 'Our Locations',
   footerNewsletterTitle = 'Unser Newsletter',
-  footerNewsletterText = 'Erhalten Sie 20€ Rabatt, wenn Sie sich für unseren Newsletter anmelden!',
+  footerNewsletterText = 'Erhalten Sie 20â‚¬ Rabatt, wenn Sie sich fÃ¼r unseren Newsletter anmelden!',
   footerNewsletterPlaceholder = 'Geben Sie Ihre Email ein',
   footerCallUsText = 'Call Us Now',
-  footerCopyright = '© 2026 My Store. All rights reserved.',
+  footerCopyright = 'Â© 2026 My Store. All rights reserved.',
   footerSocialFacebook = '#',
   footerSocialTwitter = '#',
   footerSocialInstagram = '#',
@@ -59,12 +59,12 @@ export default function Footer({
           {/* Column 1: Info */}
           <div className="lg:col-span-1">
             <div className="mb-6 flex items-center">
-              <span className="text-orange-500 font-bold text-xl mr-2">?? TOP KAMIN</span>
+              <span className="text-orange-500 font-bold text-xl mr-2">ðŸ”¥ TOP KAMIN</span>
               <span className="text-xs uppercase opacity-70 tracking-widest mt-1">BRENNSTOFFE</span>
             </div>
             
             <p className="text-sm mb-8 leading-relaxed opacity-90">
-              Unsere Verpflichtungen : Qualität : Produkte, die aufgrund ihrer Leistung und ihrer Übereinstimmung mit den Umweltstandards ausgewählt wurden. Ökologie : Nachhaltige und verantwortungsvolle Heizlösungen. Nähe : Ein Team, das auf Ihre Bedürfnisse hört und bereit ist, Sie bei Ihren Projekten zu beraten und zu begleiten. Service : Schnelle Lieferung und ein Kundenservice, der immer für Sie da ist.
+              Unsere Verpflichtungen : QualitÃ¤t : Produkte, die aufgrund ihrer Leistung und ihrer Ãœbereinstimmung mit den Umweltstandards ausgewÃ¤hlt wurden. Ã–kologie : Nachhaltige und verantwortungsvolle HeizlÃ¶sungen. NÃ¤he : Ein Team, das auf Ihre BedÃ¼rfnisse hÃ¶rt und bereit ist, Sie bei Ihren Projekten zu beraten und zu begleiten. Service : Schnelle Lieferung und ein Kundenservice, der immer fÃ¼r Sie da ist.
             </p>
             
             <div className="space-y-4 text-sm opacity-90">
@@ -88,11 +88,11 @@ export default function Footer({
             <h3 className="font-bold text-lg mb-6 text-white">Rechtliche Links</h3>
             <ul className="space-y-4 text-sm opacity-90">
               <li><Link href="/pages/agb" className="hover:text-yellow-400 transition">AGB</Link></li>
-              <li><Link href="/pages/about" className="hover:text-yellow-400 transition">Über uns</Link></li>
+              <li><Link href="/pages/about" className="hover:text-yellow-400 transition">Ãœber uns</Link></li>
               <li><Link href="/pages/impressum" className="hover:text-yellow-400 transition">Impressum</Link></li>
               <li><Link href="/pages/shipping" className="hover:text-yellow-400 transition">Versandrichtlinien</Link></li>
               <li><Link href="/pages/payment" className="hover:text-yellow-400 transition">Zahlungpolitik</Link></li>
-              <li><Link href="/pages/returns" className="hover:text-yellow-400 transition">Rückgabe- und Rückerstattungsrichtlinie</Link></li>
+              <li><Link href="/pages/returns" className="hover:text-yellow-400 transition">RÃ¼ckgabe- und RÃ¼ckerstattungsrichtlinie</Link></li>
               <li><Link href="/contact" className="hover:text-yellow-400 transition">Kontakt</Link></li>
             </ul>
           </div>
@@ -117,7 +117,7 @@ export default function Footer({
               {categories && categories.length > 0 ? (
                 categories.slice(0, 10).map((cat) => (
                   <li key={cat.id}>
-                    <Link href={/category/\} className="hover:text-yellow-400 transition">
+                    <Link href={`/category/${cat.slug}`} className="hover:text-yellow-400 transition">
                       {cat.name}
                     </Link>
                   </li>
@@ -130,10 +130,10 @@ export default function Footer({
                   <li><Link href="#" className="hover:text-yellow-400 transition">Holzbriketts</Link></li>
                   <li><Link href="#" className="hover:text-yellow-400 transition">BRENNHOLZ</Link></li>
                   <li><Link href="#" className="hover:text-yellow-400 transition">Kaminholz</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">KAMINE & ÖFEN</Link></li>
+                  <li><Link href="#" className="hover:text-yellow-400 transition">KAMINE &amp; Ã–FEN</Link></li>
                   <li><Link href="#" className="hover:text-yellow-400 transition">KAMINBAUSATZ</Link></li>
                   <li><Link href="#" className="hover:text-yellow-400 transition">PELLETKESSEL</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">HOLZHERD / KÜCHENHERD</Link></li>
+                  <li><Link href="#" className="hover:text-yellow-400 transition">HOLZHERD / KÃœCHENHERD</Link></li>
                 </>
               )}
             </ul>
