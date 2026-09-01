@@ -93,8 +93,10 @@ export async function importWooCommerceCategories(url: string, consumerKey: stri
 
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text().catch(() => 'Impossible de lire le corps de la réponse');
+        console.error(`WooCommerce API HTML response: ${text.substring(0, 500)}...`);
         const t = await getTranslations('AdminCategories');
-        throw new Error(t('woo_import_cat_html_error'));
+        throw new Error(t('woo_import_cat_html_error') + ` (Content-Type: ${contentType})`);
       }
 
       const cats = await response.json();
@@ -209,9 +211,10 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
 
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-      console.error("Non-JSON response from WooCommerce API.");
+      const text = await response.text().catch(() => 'Impossible de lire le corps de la réponse');
+      console.error(`WooCommerce API HTML response (products): ${text.substring(0, 200)}...`);
       const t = await getTranslations('AdminProducts');
-      throw new Error(t('woo_import_html_error'));
+      throw new Error(t('woo_import_prod_html_error') + ` (Content-Type: ${contentType})`);
     }
 
     let products;
