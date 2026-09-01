@@ -4,9 +4,14 @@ import prisma from '@/lib/prisma';
 import { OrderStatus } from '@prisma/client';
 import { requireAdmin } from '@/lib/auth';
 import { getLocale } from 'next-intl/server';
+import { redirect } from 'next/navigation';
 
 export async function getDashboardStats() {
-  await requireAdmin();
+  try {
+    await requireAdmin();
+  } catch (err) {
+    redirect('/admin/login');
+  }
   const locale = await getLocale();
   try {
     // 1. Global KPIs
