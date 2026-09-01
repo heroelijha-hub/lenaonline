@@ -22,6 +22,17 @@ type FooterProps = {
   footerSocialLinkedin?: string;
   footerColumns?: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
   categories?: Array<{ id: string, name: string, slug: string | null }>;
+  footerLogoImage?: string;
+  footerDescription?: string;
+  footerShowAddress?: boolean;
+  footerShowEmail?: boolean;
+  footerShowPhone?: boolean;
+  footerPaymentAmex?: boolean;
+  footerPaymentApplePay?: boolean;
+  footerPaymentGooglePay?: boolean;
+  footerPaymentMastercard?: boolean;
+  footerPaymentVisa?: boolean;
+  footerPaymentOpay?: boolean;
 };
 
 export default function Footer({ 
@@ -42,7 +53,18 @@ export default function Footer({
   footerSocialInstagram = '#',
   footerSocialLinkedin = '#',
   footerColumns = [],
-  categories = []
+  categories = [],
+  footerLogoImage = '',
+  footerDescription = 'Unsere Verpflichtungen : Qualität : Produkte, die aufgrund ihrer Leistung und ihrer Übereinstimmung mit den Umweltstandards ausgewählt wurden. Ökologie : Nachhaltige und verantwortungsvolle Heizlösungen. Nähe : Ein Team, das auf Ihre Bedürfnisse hört und bereit ist, Sie bei Ihren Projekten zu beraten und zu begleiten. Service : Schnelle Lieferung und ein Kundenservice, der immer für Sie da ist.',
+  footerShowAddress = true,
+  footerShowEmail = true,
+  footerShowPhone = true,
+  footerPaymentAmex = true,
+  footerPaymentApplePay = true,
+  footerPaymentGooglePay = true,
+  footerPaymentMastercard = true,
+  footerPaymentVisa = true,
+  footerPaymentOpay = true
 }: FooterProps) {
   const t = useTranslations('Footer');
 
@@ -59,25 +81,37 @@ export default function Footer({
           {/* Column 1: Info */}
           <div className="lg:col-span-1">
             <div className="mb-6 flex items-center">
-              <span className="text-orange-500 font-bold text-xl mr-2">🔥 TOP KAMIN</span>
-              <span className="text-xs uppercase opacity-70 tracking-widest mt-1">BRENNSTOFFE</span>
+              {footerLogoImage ? (
+                <img src={footerLogoImage} alt="Footer Logo" className="max-h-12 object-contain" />
+              ) : (
+                <>
+                  <span className="text-orange-500 font-bold text-xl mr-2">🔥 TOP KAMIN</span>
+                  <span className="text-xs uppercase opacity-70 tracking-widest mt-1">BRENNSTOFFE</span>
+                </>
+              )}
             </div>
             
             <p className="text-sm mb-8 leading-relaxed opacity-90">
-              Unsere Verpflichtungen : Qualität : Produkte, die aufgrund ihrer Leistung und ihrer Übereinstimmung mit den Umweltstandards ausgewählt wurden. Ökologie : Nachhaltige und verantwortungsvolle Heizlösungen. Nähe : Ein Team, das auf Ihre Bedürfnisse hört und bereit ist, Sie bei Ihren Projekten zu beraten und zu begleiten. Service : Schnelle Lieferung und ein Kundenservice, der immer für Sie da ist.
+              {footerDescription}
             </p>
             
             <div className="space-y-4 text-sm opacity-90">
-              {footerAddress1 && (
+              {footerShowAddress && footerAddress1 && (
                 <div className="flex items-start">
                   <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   <p>{footerAddress1}</p>
                 </div>
               )}
-              {supportEmail && (
+              {footerShowEmail && supportEmail && (
                 <div className="flex items-start">
                   <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                   <p>{supportEmail}</p>
+                </div>
+              )}
+              {footerShowPhone && supportPhone && (
+                <div className="flex items-start">
+                  <svg className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  <p>{supportPhone}</p>
                 </div>
               )}
             </div>
@@ -158,6 +192,33 @@ export default function Footer({
             </form>
           </div>
 
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-white/20 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between">
+          <div className="text-sm opacity-90 mb-4 md:mb-0">
+            {footerCopyright}
+          </div>
+          <div className="flex items-center space-x-2">
+            {footerPaymentAmex && (
+              <div className="bg-white px-2 py-1 rounded text-blue-800 font-bold text-xs uppercase shadow-sm">Amex</div>
+            )}
+            {footerPaymentApplePay && (
+              <div className="bg-white px-2 py-1 rounded text-black font-bold text-xs shadow-sm">Pay</div>
+            )}
+            {footerPaymentGooglePay && (
+              <div className="bg-white px-2 py-1 rounded text-gray-700 font-bold text-xs shadow-sm">G Pay</div>
+            )}
+            {footerPaymentMastercard && (
+              <div className="bg-white px-2 py-1 rounded text-red-600 font-bold text-xs shadow-sm">Master</div>
+            )}
+            {footerPaymentOpay && (
+              <div className="bg-white px-2 py-1 rounded text-blue-600 font-bold text-xs shadow-sm">OPay</div>
+            )}
+            {footerPaymentVisa && (
+              <div className="bg-white px-2 py-1 rounded text-blue-900 font-bold text-xs uppercase shadow-sm">Visa</div>
+            )}
+          </div>
         </div>
 
       </div>

@@ -29,6 +29,17 @@ type StoreLayoutProps = {
     footerSocialLinkedin: string;
     footerColumns: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
     categories?: Array<{ id: string, name: string, slug: string | null }>;
+    footerLogoImage?: string;
+    footerDescription?: string;
+    footerShowAddress?: boolean;
+    footerShowEmail?: boolean;
+    footerShowPhone?: boolean;
+    footerPaymentAmex?: boolean;
+    footerPaymentApplePay?: boolean;
+    footerPaymentGooglePay?: boolean;
+    footerPaymentMastercard?: boolean;
+    footerPaymentVisa?: boolean;
+    footerPaymentOpay?: boolean;
     maintenanceMode?: boolean;
     maintenanceTitle?: string;
     maintenanceMessage?: string;
@@ -125,6 +136,17 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         footerSocialLinkedin={settings.footerSocialLinkedin}
         footerColumns={settings.footerColumns}
         categories={settings.categories}
+        footerLogoImage={settings.footerLogoImage}
+        footerDescription={settings.footerDescription}
+        footerShowAddress={settings.footerShowAddress}
+        footerShowEmail={settings.footerShowEmail}
+        footerShowPhone={settings.footerShowPhone}
+        footerPaymentAmex={settings.footerPaymentAmex}
+        footerPaymentApplePay={settings.footerPaymentApplePay}
+        footerPaymentGooglePay={settings.footerPaymentGooglePay}
+        footerPaymentMastercard={settings.footerPaymentMastercard}
+        footerPaymentVisa={settings.footerPaymentVisa}
+        footerPaymentOpay={settings.footerPaymentOpay}
       />
     </div>
   );

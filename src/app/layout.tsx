@@ -138,6 +138,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerSocialInstagram: settingsMap.FOOTER_SOCIAL_INSTAGRAM || '#',
     footerSocialLinkedin: settingsMap.FOOTER_SOCIAL_LINKEDIN || '#',
     footerColumns: footerColumns,
+    footerLogoImage: settingsMap.FOOTER_LOGO_IMAGE || '',
+    footerDescription: settingsMap.FOOTER_DESCRIPTION || 'Unsere Verpflichtungen : Qualität : Produkte, die aufgrund ihrer Leistung und ihrer Übereinstimmung mit den Umweltstandards ausgewählt wurden. Ökologie : Nachhaltige und verantwortungsvolle Heizlösungen. Nähe : Ein Team, das auf Ihre Bedürfnisse hört und bereit ist, Sie bei Ihren Projekten zu beraten und zu begleiten. Service : Schnelle Lieferung und ein Kundenservice, der immer für Sie da ist.',
+    footerShowAddress: settingsMap.FOOTER_SHOW_ADDRESS !== 'false',
+    footerShowEmail: settingsMap.FOOTER_SHOW_EMAIL !== 'false',
+    footerShowPhone: settingsMap.FOOTER_SHOW_PHONE !== 'false',
+    footerPaymentAmex: settingsMap.FOOTER_PAYMENT_AMEX !== 'false',
+    footerPaymentApplePay: settingsMap.FOOTER_PAYMENT_APPLE_PAY !== 'false',
+    footerPaymentGooglePay: settingsMap.FOOTER_PAYMENT_GOOGLE_PAY !== 'false',
+    footerPaymentMastercard: settingsMap.FOOTER_PAYMENT_MASTERCARD !== 'false',
+    footerPaymentVisa: settingsMap.FOOTER_PAYMENT_VISA !== 'false',
+    footerPaymentOpay: settingsMap.FOOTER_PAYMENT_OPAY !== 'false',
     categories: await prisma.category.findMany({ 
       where: { products: { some: {} } },
       select: { id: true, name: true, slug: true, parentId: true } 

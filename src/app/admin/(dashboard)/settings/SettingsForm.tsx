@@ -145,6 +145,21 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   // Footer settings
   const [footerBgColor, setFooterBgColor] = useState(initialSettings.FOOTER_BG_COLOR || '#0B162C');
   const [footerTextColor, setFooterTextColor] = useState(initialSettings.FOOTER_TEXT_COLOR || '#d1d5db');
+  
+  const [footerLogoImage, setFooterLogoImage] = useState(initialSettings.FOOTER_LOGO_IMAGE || '');
+  const [footerLogoFile, setFooterLogoFile] = useState<File | null>(null);
+  const [footerDescription, setFooterDescription] = useState(initialSettings.FOOTER_DESCRIPTION || 'Unsere Verpflichtungen : Qualität...');
+  const [footerShowAddress, setFooterShowAddress] = useState(initialSettings.FOOTER_SHOW_ADDRESS !== 'false');
+  const [footerShowEmail, setFooterShowEmail] = useState(initialSettings.FOOTER_SHOW_EMAIL !== 'false');
+  const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
+  
+  const [footerPaymentAmex, setFooterPaymentAmex] = useState(initialSettings.FOOTER_PAYMENT_AMEX !== 'false');
+  const [footerPaymentApplePay, setFooterPaymentApplePay] = useState(initialSettings.FOOTER_PAYMENT_APPLE_PAY !== 'false');
+  const [footerPaymentGooglePay, setFooterPaymentGooglePay] = useState(initialSettings.FOOTER_PAYMENT_GOOGLE_PAY !== 'false');
+  const [footerPaymentMastercard, setFooterPaymentMastercard] = useState(initialSettings.FOOTER_PAYMENT_MASTERCARD !== 'false');
+  const [footerPaymentVisa, setFooterPaymentVisa] = useState(initialSettings.FOOTER_PAYMENT_VISA !== 'false');
+  const [footerPaymentOpay, setFooterPaymentOpay] = useState(initialSettings.FOOTER_PAYMENT_OPAY !== 'false');
+
   const [footerAddress1, setFooterAddress1] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
   const [footerAddress2, setFooterAddress2] = useState(initialSettings.FOOTER_ADDRESS_2 || '17 Princess Road, London, Greater London NW1 8JR, UK');
   const [footerLocationsTitle, setFooterLocationsTitle] = useState(initialSettings.FOOTER_LOCATIONS_TITLE || 'Our Locations');
@@ -305,6 +320,26 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
     settingsMap['BANK_TRANSFER_INSTRUCTIONS'] = bankTransferInstructions;
     
+    let finalFooterLogoImage = footerLogoImage;
+    if (footerLogoFile) {
+      const formData = new FormData();
+      formData.append('file', footerLogoFile);
+      const url = await uploadImage(formData);
+      if (url) finalFooterLogoImage = url;
+    }
+    settingsMap['FOOTER_LOGO_IMAGE'] = finalFooterLogoImage;
+    settingsMap['FOOTER_DESCRIPTION'] = footerDescription;
+    settingsMap['FOOTER_SHOW_ADDRESS'] = footerShowAddress.toString();
+    settingsMap['FOOTER_SHOW_EMAIL'] = footerShowEmail.toString();
+    settingsMap['FOOTER_SHOW_PHONE'] = footerShowPhone.toString();
+
+    settingsMap['FOOTER_PAYMENT_AMEX'] = footerPaymentAmex.toString();
+    settingsMap['FOOTER_PAYMENT_APPLE_PAY'] = footerPaymentApplePay.toString();
+    settingsMap['FOOTER_PAYMENT_GOOGLE_PAY'] = footerPaymentGooglePay.toString();
+    settingsMap['FOOTER_PAYMENT_MASTERCARD'] = footerPaymentMastercard.toString();
+    settingsMap['FOOTER_PAYMENT_VISA'] = footerPaymentVisa.toString();
+    settingsMap['FOOTER_PAYMENT_OPAY'] = footerPaymentOpay.toString();
+
     settingsMap['FOOTER_BG_COLOR'] = footerBgColor;
     settingsMap['FOOTER_TEXT_COLOR'] = footerTextColor;
     settingsMap['FOOTER_ADDRESS_1'] = footerAddress1;
@@ -1336,6 +1371,36 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
               </div>
             </div>
           </div>
+          <div className="md:col-span-2 border-b pb-4">
+            <h4 className="text-md font-medium text-gray-800 mb-4">Footer Column 1 (Logo & Info)</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Footer Logo</label>
+                {footerLogoImage && !footerLogoFile && (
+                  <div className="mb-2 flex items-center gap-4">
+                    <div className="bg-gray-50 p-2 border border-gray-200 rounded">
+                      <img src={footerLogoImage} alt="Footer Logo" className="h-10 object-contain" />
+                    </div>
+                    <button type="button" onClick={() => setFooterLogoImage('')} className="text-sm text-red-600 hover:underline">Delete</button>
+                  </div>
+                )}
+                {footerLogoFile && (
+                  <div className="mb-2"><img src={URL.createObjectURL(footerLogoFile)} alt="Preview" className="h-10 object-contain" /></div>
+                )}
+                <input type="file" accept="image/*" onChange={e => setFooterLogoFile(e.target.files?.[0] || null)} className="w-full text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description Text</label>
+                <textarea value={footerDescription} onChange={e => setFooterDescription(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="block text-sm font-medium text-gray-700">Show Icons in Info Section</label>
+                <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerShowAddress} onChange={e => setFooterShowAddress(e.target.checked)} /> Show Address Icon/Text</label>
+                <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerShowEmail} onChange={e => setFooterShowEmail(e.target.checked)} /> Show Email Icon/Text</label>
+                <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerShowPhone} onChange={e => setFooterShowPhone(e.target.checked)} /> Show Phone Icon/Text</label>
+              </div>
+            </div>
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_addr1')}</label>
             <input type="text" value={footerAddress1} onChange={e => setFooterAddress1(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
@@ -1371,8 +1436,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           
           <div className="md:col-span-2 border-t pt-4 mt-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_copyright')} (ex: © 2026 Shopelios)</label>
-            <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <h4 className="text-md font-medium text-gray-800 mb-4">Bottom Bar</h4>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_copyright')} (ex: © 2026 Shopelios)</label>
+                <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Show Payment Icons</label>
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentAmex} onChange={e => setFooterPaymentAmex(e.target.checked)} /> Amex</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentApplePay} onChange={e => setFooterPaymentApplePay(e.target.checked)} /> Apple Pay</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentGooglePay} onChange={e => setFooterPaymentGooglePay(e.target.checked)} /> Google Pay</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentMastercard} onChange={e => setFooterPaymentMastercard(e.target.checked)} /> Mastercard</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentVisa} onChange={e => setFooterPaymentVisa(e.target.checked)} /> Visa</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={footerPaymentOpay} onChange={e => setFooterPaymentOpay(e.target.checked)} /> OPay</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
