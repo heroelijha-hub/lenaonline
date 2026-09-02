@@ -81,7 +81,7 @@ export default function BestDealsCard({
           
           {/* Image or Placeholder */}
           {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.title} width={600} height={600} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+            <Image src={product.imageUrl} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
           ) : (
             <div className="text-7xl group-hover:scale-110 transition duration-500">
               {product.imagePlaceholder}

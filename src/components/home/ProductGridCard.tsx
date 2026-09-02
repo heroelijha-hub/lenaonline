@@ -87,7 +87,7 @@ export default function ProductGridCard({
       {/* Image Container */}
       <div className="block relative bg-gray-50 aspect-square p-6 overflow-hidden">
         {image ? (
-          <Image src={image} alt={product.title} width={600} height={600} className="w-full h-full object-contain transition duration-300 group-hover:opacity-80" />
+          <Image src={image} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain transition duration-300 group-hover:opacity-80" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-5xl">🛒</div>
         )}

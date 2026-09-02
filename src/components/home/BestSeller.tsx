@@ -33,7 +33,7 @@ const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, 
       <Link href={linkUrl} className="flex flex-col flex-1 cursor-pointer">
         <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
         {imageUrl ? (
-          <Image src={imageUrl} alt={title} width={600} height={600} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
         ) : (
           <div className="text-3xl sm:text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
         )}
@@ -78,7 +78,7 @@ const BigCard = ({
       <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
         <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
           {imageUrl ? (
-            <Image src={imageUrl} alt={title} width={600} height={600} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+            <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
           ) : (
             <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
           )}

@@ -156,7 +156,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
               alt={product.title} 
               width={500}
               height={500}
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
             <div className="text-4xl text-gray-200">🛍️</div>
@@ -234,7 +234,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             alt={product.title} 
             width={500}
             height={500}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="text-6xl text-gray-200">🛍️</div>
