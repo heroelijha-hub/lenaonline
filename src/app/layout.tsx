@@ -4,9 +4,7 @@ import "./globals.css";
 import prisma from "@/lib/prisma";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import { defaultCurrencyOptions } from "@/lib/formatPrice";
-import dynamic from "next/dynamic";
-const ChatWidget = dynamic(() => import("@/components/chat/ChatWidget"), { ssr: false });
-const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: false });
+import DeferredWidgets from "@/components/layout/DeferredWidgets";
 import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import { cookies } from 'next/headers';
@@ -219,12 +217,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <StoreLayout settings={storeSettings} userRole={userRole}>
                 <Toaster position="bottom-right" />
                 {children}
-                <ChatWidget 
-                  enabled={settingsMap.CHAT_ENABLED !== 'false'} 
-                  storeName={settingsMap.CHAT_STORE_NAME || 'Support'} 
-                  storeIcon={settingsMap.CHAT_STORE_ICON || ''} 
+                <DeferredWidgets 
+                  chatEnabled={settingsMap.CHAT_ENABLED !== 'false'} 
+                  chatStoreName={settingsMap.CHAT_STORE_NAME || 'Support'} 
+                  chatStoreIcon={settingsMap.CHAT_STORE_ICON || ''} 
                 />
-                <BackToTop />
               </StoreLayout>
             </CurrencyProvider>
           </PostHogProvider>
