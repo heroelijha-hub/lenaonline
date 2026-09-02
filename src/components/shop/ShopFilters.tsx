@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import Price from '@/components/Price';
 
 interface Category {
   id: string;
@@ -191,7 +192,7 @@ export default function ShopFilters({ categories, brands, globalMinPrice = 0, gl
         </div>
         
         <div className="mt-4 text-sm text-gray-700 font-medium">
-          Preis: €{sliderMin} — €{sliderMax}
+          Preis: <Price amount={sliderMin} showTax={false} /> — <Price amount={sliderMax} showTax={false} />
         </div>
       </div>
 
