@@ -19,8 +19,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       import('posthog-js').then((m) => {
         const posthog = m.default;
         if (!posthog.__loaded) {
-          posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-            api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+          posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+            api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
             person_profiles: 'identified_only',
             capture_pageview: false,
             session_recording: {
