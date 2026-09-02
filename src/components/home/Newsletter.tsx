@@ -1,14 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { submitNewsletter } from '@/actions/contact';
 import { useTranslations } from 'next-intl';
-import DOMPurify from 'dompurify';
 
 export default function Newsletter({ config }: { config?: any }) {
   const t = useTranslations('Home');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [sanitizedTitle, setSanitizedTitle] = useState('');
+
+  useEffect(() => {
+    import('dompurify').then((m) => {
+      setSanitizedTitle(m.default.sanitize(config?.title || t.raw('newsletter_title')));
+    });
+  }, [config?.title, t]);
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
     return {
@@ -44,7 +50,7 @@ export default function Newsletter({ config }: { config?: any }) {
           <h2 
             className="font-bold text-gray-900 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
             style={getResponsiveVars('title', {m: '24px', t: '24px', d: '24px'})}
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(config?.title || t.raw('newsletter_title')) }}
+            dangerouslySetInnerHTML={{ __html: sanitizedTitle || '' }}
           />
           <p className="text-gray-500 text-sm">
             {t('newsletter_desc')}
