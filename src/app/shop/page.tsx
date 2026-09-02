@@ -65,6 +65,14 @@ export default async function ShopPage({
     orderBy: { name: 'asc' }
   });
 
+  // Get global min/max price for the slider
+  const priceAgg = await prisma.product.aggregate({
+    _min: { price: true },
+    _max: { price: true }
+  });
+  const globalMinPrice = Math.floor(priceAgg._min?.price || 0);
+  const globalMaxPrice = Math.ceil(priceAgg._max?.price || 1000);
+
   // Fetch all brands for the filter sidebar with product counts
   const allBrands = await prisma.brand.findMany({
     include: {
@@ -158,7 +166,7 @@ export default async function ShopPage({
           
           {/* Left Sidebar (Filters) */}
           <aside className="w-full lg:w-1/4 flex-shrink-0">
-            <ShopFilters categories={validCategories} brands={validBrands} />
+            <ShopFilters categories={validCategories} brands={validBrands} globalMinPrice={globalMinPrice} globalMaxPrice={globalMaxPrice} />
           </aside>
 
           {/* Main Content (Products) */}

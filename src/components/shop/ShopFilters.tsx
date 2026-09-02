@@ -21,9 +21,11 @@ interface Brand {
 interface ShopFiltersProps {
   categories: Category[];
   brands: Brand[];
+  globalMinPrice?: number;
+  globalMaxPrice?: number;
 }
 
-export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
+export default function ShopFilters({ categories, brands, globalMinPrice = 0, globalMaxPrice = 1000 }: ShopFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -33,6 +35,8 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
+  const [sliderMin, setSliderMin] = useState<number>(globalMinPrice);
+  const [sliderMax, setSliderMax] = useState<number>(globalMaxPrice);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
@@ -44,10 +48,12 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
     if (cats.length > 0) setSelectedCategories(cats);
     
     const min = searchParams.get('minPrice');
-    if (min) setMinPrice(min);
+    if (min) { setMinPrice(min); setSliderMin(Number(min)); }
+    else { setMinPrice(''); setSliderMin(globalMinPrice); }
     
     const max = searchParams.get('maxPrice');
-    if (max) setMaxPrice(max);
+    if (max) { setMaxPrice(max); setSliderMax(Number(max)); }
+    else { setMaxPrice(''); setSliderMax(globalMaxPrice); }
 
     const brnds = searchParams.getAll('brand');
     if (brnds.length > 0) setSelectedBrands(brnds);
@@ -140,36 +146,53 @@ export default function ShopFilters({ categories, brands }: ShopFiltersProps) {
       {/* Price */}
       <div className="mb-8">
         <h3 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">{t('filter_price')}</h3>
-        <div className="flex items-center space-x-2">
-          <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">{t('min_price')}</label>
-            <input
-              type="number"
-              min="0"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-              onKeyDown={handlePriceKeyDown}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="text-xs text-gray-500 mb-1 block">{t('max_price')}</label>
-            <input
-              type="number"
-              min="0"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              onKeyDown={handlePriceKeyDown}
-              className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-            />
-          </div>
+        
+        <div className="relative pt-6 pb-2 mb-2">
+          {/* Track background */}
+          <div className="absolute top-7 left-0 right-0 h-1.5 bg-gray-200 rounded"></div>
+          
+          {/* Active track */}
+          <div 
+            className="absolute top-7 h-1.5 bg-orange-500 rounded"
+            style={{
+              left: `${Math.max(0, ((sliderMin - globalMinPrice) / Math.max(1, (globalMaxPrice - globalMinPrice))) * 100)}%`,
+              right: `${Math.max(0, 100 - ((sliderMax - globalMinPrice) / Math.max(1, (globalMaxPrice - globalMinPrice))) * 100)}%`
+            }}
+          ></div>
+          
+          <input
+            type="range"
+            min={globalMinPrice}
+            max={globalMaxPrice}
+            value={sliderMin}
+            onChange={(e) => {
+              const val = Math.min(Number(e.target.value), sliderMax - 1);
+              setSliderMin(val);
+            }}
+            onMouseUp={() => updateFilters(selectedCategories, sliderMin.toString(), sliderMax.toString(), selectedBrands, selectedRatings)}
+            onTouchEnd={() => updateFilters(selectedCategories, sliderMin.toString(), sliderMax.toString(), selectedBrands, selectedRatings)}
+            className="absolute top-5 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:bg-orange-500 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-none shadow-sm"
+            style={{ zIndex: sliderMin > globalMaxPrice - 100 ? 5 : 3 }}
+          />
+          <input
+            type="range"
+            min={globalMinPrice}
+            max={globalMaxPrice}
+            value={sliderMax}
+            onChange={(e) => {
+              const val = Math.max(Number(e.target.value), sliderMin + 1);
+              setSliderMax(val);
+            }}
+            onMouseUp={() => updateFilters(selectedCategories, sliderMin.toString(), sliderMax.toString(), selectedBrands, selectedRatings)}
+            onTouchEnd={() => updateFilters(selectedCategories, sliderMin.toString(), sliderMax.toString(), selectedBrands, selectedRatings)}
+            className="absolute top-5 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:bg-orange-500 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-none shadow-sm"
+            style={{ zIndex: 4 }}
+          />
         </div>
-        <button 
-          onClick={handlePriceApply}
-          className="mt-4 w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded transition-colors"
-        >
-          {t('apply_price')}
-        </button>
+        
+        <div className="mt-4 text-sm text-gray-700 font-medium">
+          Preis: €{sliderMin} — €{sliderMax}
+        </div>
       </div>
 
       <hr className="border-gray-200 mb-8" />
