@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { slugify, unescapeHtml } from '@/lib/utils';
 import { requireAdmin } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
@@ -115,14 +116,14 @@ export async function importWooCommerceCategories(url: string, consumerKey: stri
 
     for (const wcCat of allCategories) {
       let category = await prisma.category.findUnique({
-        where: { name: wcCat.name }
+        where: { name: unescapeHtml(wcCat.name) }
       });
 
       if (!category) {
         category = await prisma.category.create({
           data: {
-            name: wcCat.name,
-            slug: wcCat.slug || wcCat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            name: unescapeHtml(wcCat.name),
+            slug: wcCat.slug || slugify(unescapeHtml(wcCat.name)),
           }
         });
       }
@@ -245,13 +246,13 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
       if (wcProduct.categories && Array.isArray(wcProduct.categories)) {
         for (const wcCat of wcProduct.categories) {
           let category = await prisma.category.findUnique({
-            where: { name: wcCat.name }
+            where: { name: unescapeHtml(wcCat.name) }
           });
           if (!category) {
             category = await prisma.category.create({
               data: {
-                name: wcCat.name,
-                slug: wcCat.slug || wcCat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                name: unescapeHtml(wcCat.name),
+                slug: wcCat.slug || slugify(unescapeHtml(wcCat.name)),
               }
             });
           }
@@ -285,12 +286,12 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
 
       if (brandName && brandSlug) {
         let brand = await prisma.brand.findUnique({
-          where: { name: brandName }
+          where: { name: unescapeHtml(brandName) }
         });
         if (!brand) {
           brand = await prisma.brand.create({
             data: {
-              name: brandName,
+              name: unescapeHtml(brandName),
               slug: brandSlug,
             }
           });
@@ -426,7 +427,7 @@ export async function importWooCommerceProductsBatch(url: string, consumerKey: s
           tags: {
             connectOrCreate: tags.map((t: string) => ({
               where: { name: t },
-              create: { name: t, slug: t.toLowerCase().replace(/[^a-z0-9]+/g, '-') }
+              create: { name: t, slug: slugify(t) }
             }))
           },
           brandId: brandId,
