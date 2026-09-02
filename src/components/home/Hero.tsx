@@ -36,6 +36,7 @@ export default async function Hero({ config }: { config?: any }) {
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
       )}
+
       <div className="z-10 relative mt-4">
         <span 
           className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
@@ -60,7 +61,6 @@ export default async function Hero({ config }: { config?: any }) {
           className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
           style={{
             backgroundColor: settings.HERO_1_BTN_BG_COLOR || undefined,
-
             color: settings.HERO_1_BTN_TEXT_COLOR || undefined
           }}
         >
@@ -166,15 +166,43 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center h-full min-h-[300px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_4_BG_COLOR || '#FFF5EE',
-        
-        
-        
       }}
     >
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
       )}
+      <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
+        <h2 
+          className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={{...getResponsiveVars('HERO_4_TITLE', {m: '22px', t: '26px', d: '30px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
+        >
+          {settings.HERO_4_TITLE || t('hero_4_title')}
+        </h2>
+        <p 
+          className="text-slate-600 mb-6 font-medium text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
+        >
+          {settings.HERO_4_SUBTITLE || t('hero_4_subtitle')}
+        </p>
+        <Link 
+          href={settings.HERO_4_LINK || '/#'} 
+          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
+          style={{
+            backgroundColor: settings.HERO_4_BTN_BG_COLOR || undefined,
+            color: settings.HERO_4_BTN_TEXT_COLOR || undefined
+          }}
+        >
+          {settings.HERO_4_CTA || t('shop_now')}
+        </Link>
+      </div>
+      {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' && (
+        <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" priority />
+      )}
+    </div>
+  );
+
+  const isStyle2 = settings.HERO_LAYOUT === 'STYLE_2';
 
   const block1Style2 = (
     <div 
