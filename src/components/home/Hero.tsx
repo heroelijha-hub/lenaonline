@@ -27,11 +27,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col items-center text-center h-full min-h-[400px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#FFF5EE',
-        backgroundImage: (settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_1_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-10 relative mt-4">
         <span 
           className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
@@ -83,11 +87,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group h-full min-h-[300px] lg:min-h-0 flex w-full"
       style={{
         backgroundColor: settings.HERO_2_BG_COLOR || '#F8F9FA',
-        backgroundImage: (settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_2_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
           className="text-gray-500 font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
@@ -127,11 +135,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center border border-gray-100 group h-full min-h-[300px] lg:min-h-0 flex w-full"
       style={{
         backgroundColor: settings.HERO_3_BG_COLOR || '#F8F9FA',
-        backgroundImage: (settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_3_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
           className="text-red-500 font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
@@ -171,11 +183,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex-col justify-center h-full min-h-[300px] lg:min-h-0 border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.HERO_4_BG_COLOR || '#FFF5EE',
-        backgroundImage: (settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false') ? `url(${settings.HERO_4_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
         <h2 
           className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
@@ -219,11 +235,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[400px] border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_1_BG_COLOR || '#f0f4f8',
-        backgroundImage: (settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_1_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-full sm:w-[85%] md:w-3/4 lg:w-2/3 h-full flex flex-col justify-between">
         <div>
           {settings.STYLE2_HERO_1_SUBTITLE && (
@@ -274,11 +294,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_2_BG_COLOR || '#f5ebeb',
-        backgroundImage: (settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_2_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
           className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
@@ -318,11 +342,15 @@ export default async function Hero({ config }: { config?: any }) {
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_3_BG_COLOR || '#f3ebd6',
-        backgroundImage: (settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false') ? `url(${settings.STYLE2_HERO_3_BG_IMAGE})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        
+        
+        
       }}
     >
+      
+      {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
+        <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+      )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
           className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
