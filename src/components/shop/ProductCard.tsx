@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Price from '@/components/Price';
@@ -151,9 +151,11 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <HoverActions />
           
           {image ? (
-            <img 
+            <Image 
               src={image} 
               alt={product.title} 
+              width={500}
+              height={500}
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
@@ -227,9 +229,11 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         <HoverActions />
         
         {image ? (
-          <img 
+          <Image 
             src={image} 
             alt={product.title} 
+            width={500}
+            height={500}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
