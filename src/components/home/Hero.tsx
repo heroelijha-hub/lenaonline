@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import HeroMobileSliderWrapper from './HeroMobileSliderWrapper';
@@ -62,7 +63,7 @@ export default async function Hero({ config }: { config?: any }) {
         </Link>
       </div>
       {settings.HERO_1_IMAGE && settings.HERO_1_SHOW_IMAGE !== 'false' ? (
-        <img src={settings.HERO_1_IMAGE} alt="Hero 1" className="absolute bottom-0 w-4/5 object-contain max-h-[60%] group-hover:scale-105 transition-transform duration-500 z-0" />
+        <Image src={settings.HERO_1_IMAGE} alt="Hero 1" width={800} height={800} className="absolute bottom-0 w-4/5 object-contain max-h-[60%] group-hover:scale-105 transition-transform duration-500 z-0" priority />
       ) : (
         <div className="absolute bottom-[-10%] w-full h-[60%] bg-orange-400 rounded-t-3xl mt-auto translate-y-10 group-hover:translate-y-4 transition-transform duration-500">
           <div className="absolute top-4 left-1/2 -translate-x-1/2 w-4/5 h-full bg-orange-500 rounded-3xl shadow-xl border-4 border-orange-300">
@@ -112,7 +113,7 @@ export default async function Hero({ config }: { config?: any }) {
         </Link>
       </div>
       {settings.HERO_2_IMAGE && settings.HERO_2_SHOW_IMAGE !== 'false' ? (
-        <img src={settings.HERO_2_IMAGE} alt="Hero 2" className="absolute -right-4 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
+        <Image src={settings.HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="absolute -right-4 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" priority />
       ) : (
         <div className="absolute -right-12 sm:-right-8 top-1/2 -translate-y-1/2 w-40 h-40 sm:w-48 sm:h-48 rounded-full border-8 border-gray-200 bg-white shadow-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500 z-10">
            <div className="text-center font-bold text-2xl sm:text-3xl">12<br/>9 3<br/>6</div>
@@ -156,7 +157,7 @@ export default async function Hero({ config }: { config?: any }) {
         </Link>
       </div>
       {settings.HERO_3_IMAGE && settings.HERO_3_SHOW_IMAGE !== 'false' ? (
-        <img src={settings.HERO_3_IMAGE} alt="Hero 3" className="absolute right-0 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" />
+        <Image src={settings.HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="absolute right-0 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" priority />
       ) : (
         <div className="absolute -right-4 sm:right-0 top-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40 bg-zinc-800 rounded-3xl sm:translate-x-4 shadow-2xl flex items-center justify-center group-hover:-translate-x-2 transition-transform duration-500 z-10">
            <span className="text-zinc-600 font-bold text-xl sm:text-2xl -rotate-90">XBOOM</span>
@@ -200,7 +201,7 @@ export default async function Hero({ config }: { config?: any }) {
         </Link>
       </div>
       {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' ? (
-        <img src={settings.HERO_4_IMAGE} alt="Hero 4" className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" />
+        <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" priority />
       ) : (
         <div className="absolute -right-10 sm:right-4 md:right-16 -bottom-10 w-56 h-56 sm:w-64 sm:h-64 transition-transform duration-500 group-hover:-translate-y-4 z-10 scale-75 sm:scale-100 origin-bottom-right">
           <div className="absolute inset-x-8 top-0 h-32 border-[12px] border-red-500 rounded-t-[4rem] border-b-0"></div>
@@ -263,7 +264,7 @@ export default async function Hero({ config }: { config?: any }) {
         </div>
       </div>
       {settings.STYLE2_HERO_1_IMAGE && settings.STYLE2_HERO_1_SHOW_IMAGE !== 'false' && (
-        <img src={settings.STYLE2_HERO_1_IMAGE} alt="Hero 1" className="absolute right-0 bottom-0 w-3/4 md:w-2/3 lg:w-[55%] h-[90%] object-contain object-right-bottom group-hover:scale-105 transition-transform duration-700 z-10 pointer-events-none" />
+        <Image src={settings.STYLE2_HERO_1_IMAGE} alt="Hero 1" width={800} height={800} className="absolute right-0 bottom-0 w-3/4 md:w-2/3 lg:w-[55%] h-[90%] object-contain object-right-bottom group-hover:scale-105 transition-transform duration-700 z-10 pointer-events-none" />
       )}
     </div>
   );
@@ -306,7 +307,7 @@ export default async function Hero({ config }: { config?: any }) {
       </div>
       {settings.STYLE2_HERO_2_IMAGE && settings.STYLE2_HERO_2_SHOW_IMAGE !== 'false' && (
         <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
-          <img src={settings.STYLE2_HERO_2_IMAGE} alt="Hero 2" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
+          <Image src={settings.STYLE2_HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>
       )}
     </div>
@@ -350,7 +351,7 @@ export default async function Hero({ config }: { config?: any }) {
       </div>
       {settings.STYLE2_HERO_3_IMAGE && settings.STYLE2_HERO_3_SHOW_IMAGE !== 'false' && (
         <div className="absolute right-0 h-full w-1/2 p-2 sm:p-4 flex items-center justify-end z-10 pointer-events-none">
-          <img src={settings.STYLE2_HERO_3_IMAGE} alt="Hero 3" className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
+          <Image src={settings.STYLE2_HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>
       )}
     </div>

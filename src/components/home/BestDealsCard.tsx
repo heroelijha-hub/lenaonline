@@ -1,3 +1,4 @@
+import Image from 'next/image';
 'use client';
 
 import Link from 'next/link';
@@ -80,7 +81,7 @@ export default function BestDealsCard({
           
           {/* Image or Placeholder */}
           {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.title} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+            <Image src={product.imageUrl} alt={product.title} width={600} height={600} className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
           ) : (
             <div className="text-7xl group-hover:scale-110 transition duration-500">
               {product.imagePlaceholder}
