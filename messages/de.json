@@ -143,7 +143,7 @@
   },
   "Search": {
     "search_results": "Suchergebnisse",
-    "products_found": "{count, plural, =0 {Keine Produkte gefunden} =1 {1 Produkt gefunden} andere {# Produkte gefunden}} für „{q}“",
+    "products_found": "{count, plural, =0 {Keine Produkte gefunden} =1 {1 Produkt gefunden} other {# Produkte gefunden}} für „{q}“",
     "in_category": "in dieser Kategorie.",
     "no_results": "Keine Ergebnisse",
     "no_products_match": "Wir konnten keine Produkte finden, die Ihrer Suche entsprechen.",
