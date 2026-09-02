@@ -60,30 +60,7 @@ export default async function Hero({ config }: { config?: any }) {
           className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
           style={{
             backgroundColor: settings.HERO_1_BTN_BG_COLOR || undefined,
-      <div className="z-10 relative mt-4">
-        <span 
-          className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
-          style={getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
-        >
-          {settings.HERO_1_SUBTITLE || t('hero_1_subtitle')}
-        </span>
-        <h2 
-          className="font-bold text-slate-800 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-          style={{...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '32px', d: '36px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_1_TITLE || t('hero_1_title')}
-        </h2>
-        <p 
-          className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-          style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_1_PRICE || t('hero_1_price')}
-        </p>
-        <Link 
-          href={settings.HERO_1_LINK || '/#'} 
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
-          style={{
-            backgroundColor: settings.HERO_1_BTN_BG_COLOR || undefined,
+
             color: settings.HERO_1_BTN_TEXT_COLOR || undefined
           }}
         >
