@@ -1331,7 +1331,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 value={chatStoreName}
                 onChange={(e) => setChatStoreName(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                placeholder="Ex: Support Shopelios"
+                placeholder="Ex: Support Top Kamin Brennstoffe"
               />
             </div>
             <div>
@@ -1453,7 +1453,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <h4 className="text-md font-medium text-gray-800 mb-4">Bottom Bar</h4>
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_copyright')} (ex: © 2026 Shopelios)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_copyright')} (ex: © 2026 Top Kamin Brennstoffe)</label>
                 <input type="text" value={footerCopyright} onChange={e => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
               </div>
               <div>

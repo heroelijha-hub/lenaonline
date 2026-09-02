@@ -3,7 +3,7 @@ import { getSettings } from '@/actions/settings';
 import SettingsForm from './SettingsForm';
 
 export const metadata = {
-  title: 'Settings | Shopelios Admin',
+  title: 'Settings | Top Kamin Brennstoffe Admin',
 };
 
 export default async function SettingsPage() {

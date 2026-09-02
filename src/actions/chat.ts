@@ -89,7 +89,7 @@ export async function sendMessage(sessionId: string, sender: ChatSender, content
       const allSettings = await prisma.setting.findMany();
       const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
       const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
-      const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://shopelios.com';
+      const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.topkaminbrennstoffe.com';
       
       const { sendAdminNewChatMessageEmail } = await import('@/lib/mailer');
       sendAdminNewChatMessageEmail(

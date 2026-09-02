@@ -26,7 +26,7 @@ async function uploadImageFromUrlToCloudinary(imageUrl: string): Promise<string 
 
     return new Promise<string>((resolve, reject) => {
       cloudinary.uploader.upload_stream(
-        { folder: 'shopelios/woocommerce-import' },
+        { folder: 'topkaminbrennstoffe/woocommerce-import' },
         (error, result) => {
           if (error || !result) {
             console.error("Cloudinary upload error:", error);

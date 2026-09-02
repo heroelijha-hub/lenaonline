@@ -1,6 +1,6 @@
 {
   "Frontend": {
-    "welcome": "Bienvenido a Shopelios",
+    "welcome": "Bienvenido a Top Kamin Brennstoffe",
     "shop": "Comprar ahora",
     "cart": "Tu carrito"
   },
@@ -405,7 +405,7 @@
     "newsletter_placeholder": "Introduce tu correo...",
     "call_us": "Llámanos ahora",
     "email": "Correo",
-    "copyright": "© 2026 Shopelios Todos los derechos reservados."
+    "copyright": "© 2026 Top Kamin Brennstoffe Todos los derechos reservados."
   },
   "Messages": {
     "success": "Acción exitosa",
@@ -536,7 +536,7 @@
     "logging_in": "Iniciando sesión..."
   },
   "AdminLayout": {
-    "title": "Shopelios Admin",
+    "title": "Top Kamin Brennstoffe Admin",
     "dashboard": "Panel de control",
     "products": "Productos",
     "categories": "Categorías",

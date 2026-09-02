@@ -1,6 +1,6 @@
 {
   "Frontend": {
-    "welcome": "Willkommen bei Shopelios",
+    "welcome": "Willkommen bei Top Kamin Brennstoffe",
     "shop": "Jetzt einkaufen",
     "cart": "Ihr Warenkorb"
   },
@@ -404,7 +404,7 @@
     "newsletter_placeholder": "Geben Sie Ihre E-Mail-Adresse ein...",
     "call_us": "Rufen Sie uns jetzt an",
     "email": "E-Mail",
-    "copyright": "© 2026 Shopelios Alle Rechte vorbehalten."
+    "copyright": "© 2026 Top Kamin Brennstoffe Alle Rechte vorbehalten."
   },
   "Messages": {
     "success": "Aktion erfolgreich",
@@ -535,7 +535,7 @@
     "logging_in": "Einloggen..."
   },
   "AdminLayout": {
-    "title": "Shopelios-Administrator",
+    "title": "Top Kamin Brennstoffe-Administrator",
     "dashboard": "Armaturenbrett",
     "products": "Produkte",
     "categories": "Kategorien",

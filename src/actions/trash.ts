@@ -104,7 +104,7 @@ export async function permanentlyDeleteMedia(id: string) {
     const filename = filenameWithExt.split('.')[0];
     const folder = urlParts[urlParts.length - 2]; 
     
-    // Assuming standard upload config without complex nested folders, just shopelios/media
+    // Assuming standard upload config without complex nested folders, just topkaminbrennstoffe/media
     let publicId = filename;
     if (folder && folder !== 'upload' && !folder.startsWith('v')) {
        // if we have a folder structure

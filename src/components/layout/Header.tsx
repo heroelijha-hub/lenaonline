@@ -249,7 +249,7 @@ export default function Header({
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Shopelios Logo" className="object-contain" style={{ height: `${headerLogoHeight}px` }} />
+              <img src={logoImage} alt="Top Kamin Brennstoffe Logo" className="object-contain" style={{ height: `${headerLogoHeight}px` }} />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}

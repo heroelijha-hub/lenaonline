@@ -108,7 +108,7 @@ export async function uploadMediaAction(formData: FormData) {
 
     const secureUrl = await new Promise<string>((resolve, reject) => {
       cloudinary.uploader.upload_stream(
-        { folder: 'shopelios/media' },
+        { folder: 'topkaminbrennstoffe/media' },
         (error, result) => {
           if (error || !result) reject(error);
           else resolve(result.secure_url);
