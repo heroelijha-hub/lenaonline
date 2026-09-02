@@ -39,17 +39,15 @@ export default async function Hero({ config }: { config?: any }) {
 
       <div className="z-10 relative mt-4">
         <span 
-          className="text-red-500 font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
-          style={getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
-        >
-          {settings.HERO_1_SUBTITLE || t('hero_1_subtitle')}
-        </span>
+          className="font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          style={{...getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_1_SUBTITLE_COLOR || '#ef4444'}}
+          dangerouslySetInnerHTML={{ __html: settings.HERO_1_SUBTITLE || t('hero_1_subtitle') }}
+        />
         <h2 
           className="font-bold text-slate-800 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '32px', d: '36px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_1_TITLE || t('hero_1_title')}
-        </h2>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_1_TITLE || t('hero_1_title') }}
+        />
         <p 
           className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
@@ -58,14 +56,14 @@ export default async function Hero({ config }: { config?: any }) {
         </p>
         <Link 
           href={settings.HERO_1_LINK || '/#'} 
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
+          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={{
-            backgroundColor: settings.HERO_1_BTN_BG_COLOR || undefined,
-            color: settings.HERO_1_BTN_TEXT_COLOR || undefined
+            ...getResponsiveVars('HERO_1_CTA', {m: '16px', t: '16px', d: '16px'}),
+            backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#f97316',
+            color: settings.HERO_1_BTN_TEXT_COLOR || '#111827'
           }}
-        >
-          {settings.HERO_1_CTA || t('shop_now')}
-        </Link>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_1_CTA || t('shop_now') }}
+        />
       </div>
       {settings.HERO_1_IMAGE && settings.HERO_1_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_1_IMAGE} alt="Hero 1" width={800} height={800} className="absolute bottom-0 w-4/5 object-contain max-h-[60%] group-hover:scale-105 transition-transform duration-500 z-0" priority />
@@ -89,27 +87,25 @@ export default async function Hero({ config }: { config?: any }) {
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="text-gray-500 font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
-          style={getResponsiveVars('HERO_2_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
-        >
-          {settings.HERO_2_SUBTITLE || t('hero_2_subtitle')}
-        </span>
+          className="font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          style={{...getResponsiveVars('HERO_2_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_2_SUBTITLE_COLOR || '#6b7280'}}
+          dangerouslySetInnerHTML={{ __html: settings.HERO_2_SUBTITLE || t('hero_2_subtitle') }}
+        />
         <h2 
           className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_2_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_2_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_2_TITLE || t('hero_2_title')}
-        </h2>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_2_TITLE || t('hero_2_title') }}
+        />
         <Link 
           href={settings.HERO_2_LINK || '/#'} 
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105"
+          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={{
-            backgroundColor: settings.HERO_2_BTN_BG_COLOR || undefined,
-            color: settings.HERO_2_BTN_TEXT_COLOR || undefined
+            ...getResponsiveVars('HERO_2_CTA', {m: '14px', t: '16px', d: '16px'}),
+            backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#f97316',
+            color: settings.HERO_2_BTN_TEXT_COLOR || '#111827'
           }}
-        >
-          {settings.HERO_2_CTA || t('shop_now')}
-        </Link>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_2_CTA || t('shop_now') }}
+        />
       </div>
       {settings.HERO_2_IMAGE && settings.HERO_2_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="absolute -right-4 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" priority />
@@ -133,27 +129,25 @@ export default async function Hero({ config }: { config?: any }) {
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="text-red-500 font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
-          style={getResponsiveVars('HERO_3_SUBTITLE', {m: '12px', t: '14px', d: '14px'})}
-        >
-          {settings.HERO_3_SUBTITLE || t('hero_3_subtitle')}
-        </span>
+          className="font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          style={{...getResponsiveVars('HERO_3_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_3_SUBTITLE_COLOR || '#ef4444'}}
+          dangerouslySetInnerHTML={{ __html: settings.HERO_3_SUBTITLE || t('hero_3_subtitle') }}
+        />
         <h2 
           className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_3_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_3_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_3_TITLE || t('hero_3_title')}
-        </h2>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_3_TITLE || t('hero_3_title') }}
+        />
         <Link 
           href={settings.HERO_3_LINK || '/#'} 
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105"
+          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={{
-            backgroundColor: settings.HERO_3_BTN_BG_COLOR || undefined,
-            color: settings.HERO_3_BTN_TEXT_COLOR || undefined
+            ...getResponsiveVars('HERO_3_CTA', {m: '14px', t: '16px', d: '16px'}),
+            backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#f97316',
+            color: settings.HERO_3_BTN_TEXT_COLOR || '#111827'
           }}
-        >
-          {settings.HERO_3_CTA || t('shop_now')}
-        </Link>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_3_CTA || t('shop_now') }}
+        />
       </div>
       {settings.HERO_3_IMAGE && settings.HERO_3_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="absolute right-0 top-1/2 -translate-y-1/2 w-[45%] md:w-1/2 object-contain group-hover:scale-105 transition-transform duration-500 z-10" priority />
@@ -176,25 +170,23 @@ export default async function Hero({ config }: { config?: any }) {
         <h2 
           className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '22px', t: '26px', d: '30px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_4_TITLE || t('hero_4_title')}
-        </h2>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_4_TITLE || t('hero_4_title') }}
+        />
         <p 
           className="text-slate-600 mb-6 font-medium text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-          style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
-        >
-          {settings.HERO_4_SUBTITLE || t('hero_4_subtitle')}
-        </p>
+          style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_SUBTITLE_COLOR || undefined}}
+          dangerouslySetInnerHTML={{ __html: settings.HERO_4_SUBTITLE || t('hero_4_subtitle') }}
+        />
         <Link 
           href={settings.HERO_4_LINK || '/#'} 
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105"
+          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
           style={{
-            backgroundColor: settings.HERO_4_BTN_BG_COLOR || undefined,
-            color: settings.HERO_4_BTN_TEXT_COLOR || undefined
+            ...getResponsiveVars('HERO_4_CTA', {m: '14px', t: '16px', d: '16px'}),
+            backgroundColor: settings.HERO_4_BTN_BG_COLOR || '#f97316',
+            color: settings.HERO_4_BTN_TEXT_COLOR || '#111827'
           }}
-        >
-          {settings.HERO_4_CTA || t('shop_now')}
-        </Link>
+          dangerouslySetInnerHTML={{ __html: settings.HERO_4_CTA || t('shop_now') }}
+        />
       </div>
       {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className="absolute right-0 sm:right-4 md:right-16 bottom-0 w-[50%] max-w-[300px] md:max-w-none md:max-h-[120%] object-contain group-hover:-translate-y-4 transition-transform duration-500 z-10" priority />
