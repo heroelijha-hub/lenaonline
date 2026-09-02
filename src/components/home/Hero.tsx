@@ -142,7 +142,7 @@ export default async function Hero({ config }: { config?: any }) {
     >
       
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
@@ -190,7 +190,7 @@ export default async function Hero({ config }: { config?: any }) {
     >
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
       )}
       <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
         <h2 
@@ -349,7 +349,7 @@ export default async function Hero({ config }: { config?: any }) {
     >
       
       {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill  className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
       )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
