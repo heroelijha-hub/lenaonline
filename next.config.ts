@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const withNextIntl = require('next-intl/plugin')('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
+  compress: true,
   serverExternalPackages: ['pdfkit', 'fontkit', '@swc/helpers'],
   experimental: {
     serverActions: {
