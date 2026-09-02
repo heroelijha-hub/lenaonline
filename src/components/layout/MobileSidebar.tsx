@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -75,7 +76,7 @@ export default function MobileSidebar({
         <div className="p-6 border-b border-gray-100">
           <Link href="/" onClick={onClose} className="block">
             {logoImage ? (
-              <img src={logoImage} alt="Logo" className="object-contain" style={{ height: `${logoHeight}px` }} />
+              <Image src={logoImage} alt="Logo" width={200} height={80} className="object-contain" style={{ width: 'auto', height: `${logoHeight}px` }} />
             ) : (
               <span className="text-2xl font-extrabold text-gray-900">LOGO</span>
             )}

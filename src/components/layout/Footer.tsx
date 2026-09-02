@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -82,7 +83,7 @@ export default function Footer({
           <div className="lg:col-span-1">
             <div className="mb-6 flex items-center">
               {footerLogoImage ? (
-                <img src={footerLogoImage} alt="Footer Logo" className="max-h-12 object-contain" />
+                <Image src={footerLogoImage} alt="Footer Logo" width={200} height={48} className="max-h-12 w-auto object-contain" />
               ) : (
                 <>
                   <span className="text-orange-500 font-bold text-xl mr-2">🔥 TOP KAMIN</span>

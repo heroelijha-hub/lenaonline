@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -250,7 +251,7 @@ export default function Header({
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <img src={logoImage} alt="Top Kamin Brennstoffe Logo" className="object-contain" style={{ height: `${headerLogoHeight}px` }} />
+              <Image src={logoImage} alt="Top Kamin Brennstoffe Logo" width={250} height={80} className="object-contain" style={{ width: 'auto', height: `${headerLogoHeight}px` }} priority />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
