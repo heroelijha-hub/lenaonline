@@ -159,13 +159,23 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     }
   };
 
-  const renderResponsiveInput = (section: SectionConfig, label: string, baseKey: string, placeholder: string) => {
+  const renderResponsiveInput = (section: SectionConfig, label: string, baseKey: string, placeholder: string, colorKey?: string, defaultColor?: string) => {
     const sizeKey = `${baseKey}_SIZE_${previewMode.toUpperCase()}`;
     return (
       <div className="mb-2">
         <div className="flex items-center justify-between mb-1">
           <label className="block text-[11px] font-medium">{label}</label>
           <div className="flex items-center gap-1">
+            {colorKey && (
+              <div className="relative w-[18px] h-[18px] rounded-full overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer" title="Couleur du texte">
+                <input 
+                  type="color" 
+                  value={section.settings[colorKey] || defaultColor || '#000000'} 
+                  onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
+                  className="absolute -top-1 -left-1 w-8 h-8 cursor-pointer border-0 p-0" 
+                />
+              </div>
+            )}
             <span className="text-[9px] text-gray-500 font-medium bg-gray-100 px-1 rounded uppercase tracking-wider" title={`Taille pour ${previewMode}`}>
               {previewMode}
             </span>
@@ -223,25 +233,17 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-3">
-          <div>
-            <label className="block text-[11px] font-medium mb-1 text-gray-500">Title</label>
-            <input type="color" value={section.settings[`${prefix}_${blockNum}_TEXT_COLOR`] || '#1e293b'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
-          </div>
-          <div>
-            <label className="block text-[11px] font-medium mb-1 text-gray-500">Subtitle</label>
-            <input type="color" value={section.settings[`${prefix}_${blockNum}_SUBTITLE_COLOR`] || '#ef4444'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_SUBTITLE_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
-          </div>
+        <div className="grid grid-cols-3 gap-2 mb-3">
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Couleur Fond</label>
             <input type="color" value={section.settings[`${prefix}_${blockNum}_BG_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
-            <label className="block text-[11px] font-medium mb-1 text-gray-500">Btn BG</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Background</label>
             <input type="color" value={section.settings[`${prefix}_${blockNum}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BTN_BG_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
           <div>
-            <label className="block text-[11px] font-medium mb-1 text-gray-500">Btn Text</label>
+            <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Text</label>
             <input type="color" value={section.settings[`${prefix}_${blockNum}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `${prefix}_${blockNum}_BTN_TEXT_COLOR`, e.target.value)} className="w-full h-8 cursor-pointer rounded" />
           </div>
         </div>
@@ -552,25 +554,25 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           <div className="flex flex-col gap-4">
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Left)</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_1_TITLE' : 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS! FÜR EINEN KOMFORTABLEN, WIRTSCHAFTLICHEN UND UMWELTFREUNDLICHEN WINTER.')}
-              {renderResponsiveInput(section, 'Subtitle / Badge', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE' : 'HERO_1_SUBTITLE', 'Supper Discount')}
-              {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_1_TITLE' : 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS...', isStyle2 ? 'STYLE2_HERO_1_TEXT_COLOR' : 'HERO_1_TEXT_COLOR', '#1e293b')}
+              {renderResponsiveInput(section, 'Subtitle / Badge', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE' : 'HERO_1_SUBTITLE', 'Supper Discount', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE_COLOR' : 'HERO_1_SUBTITLE_COLOR', '#ef4444')}
+              {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99', 'HERO_1_TEXT_COLOR', '#1e293b')}
               {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA', 'Shop Now')}
               {renderHeroBlockConfig(section, 1, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 2 (Top Right)' : 'Bloc 2 (Top Center)'}</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_2_TITLE' : 'HERO_2_TITLE', 'Heavy On Features...')}
-              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE' : 'HERO_2_SUBTITLE', 'Use Code: SALE35%')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_2_TITLE' : 'HERO_2_TITLE', 'Heavy On Features...', isStyle2 ? 'STYLE2_HERO_2_TEXT_COLOR' : 'HERO_2_TEXT_COLOR', '#1e293b')}
+              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE' : 'HERO_2_SUBTITLE', 'Use Code: SALE35%', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE_COLOR' : 'HERO_2_SUBTITLE_COLOR', '#6b7280')}
               {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA', 'Shop Now')}
               {renderHeroBlockConfig(section, 2, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
 
             <div className="border p-3 rounded bg-white">
               <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 3 (Bottom Right)' : 'Bloc 3 (Top Right)'}</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_3_TITLE' : 'HERO_3_TITLE', 'Sale 10% Off')}
-              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE' : 'HERO_3_SUBTITLE', 'New Product')}
+              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_3_TITLE' : 'HERO_3_TITLE', 'Sale 10% Off', isStyle2 ? 'STYLE2_HERO_3_TEXT_COLOR' : 'HERO_3_TEXT_COLOR', '#1e293b')}
+              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE' : 'HERO_3_SUBTITLE', 'New Product', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE_COLOR' : 'HERO_3_SUBTITLE_COLOR', '#ef4444')}
               {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA', 'Shop Now')}
               {renderHeroBlockConfig(section, 3, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
             </div>
@@ -578,10 +580,10 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             {!isStyle2 && (
               <div className="border p-3 rounded bg-white">
                 <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bottom Right)</h4>
-                {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...')}
-                {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...')}
+                {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...', 'HERO_4_TEXT_COLOR', '#1e293b')}
+                {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...', 'HERO_4_SUBTITLE_COLOR', '#6b7280')}
                 {renderResponsiveInput(section, 'Button', 'HERO_4_CTA', 'Shop Now')}
-                {renderHeroBlockConfig(section, 4, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
+                {renderHeroBlockConfig(section, 4, 'HERO')}
               </div>
             )}
           </div>
