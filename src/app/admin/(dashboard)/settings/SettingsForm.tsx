@@ -94,6 +94,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   });
   const [topBarBgColor, setTopBarBgColor] = useState(initialSettings.TOP_BAR_BG_COLOR || '#ffffff');
   const [topBarTextColor, setTopBarTextColor] = useState(initialSettings.TOP_BAR_TEXT_COLOR || '#4b5563');
+  const [showStoreLocator, setShowStoreLocator] = useState(initialSettings.SHOW_STORE_LOCATOR !== 'false');
 
   // Menu links
   const defaultMenu = [
@@ -284,6 +285,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['TOP_BAR_BG_COLOR'] = topBarBgColor;
     settingsMap['TOP_BAR_TEXT_COLOR'] = topBarTextColor;
     settingsMap['TOP_BAR_LINKS'] = JSON.stringify(topBarLinks);
+    settingsMap['SHOW_STORE_LOCATOR'] = showStoreLocator.toString();
 
     settingsMap['SEARCH_BORDER_COLOR'] = searchBorderColor;
     settingsMap['SEARCH_PLACEHOLDER'] = searchPlaceholder;
@@ -1234,6 +1236,20 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
         </div>
         <div className="space-y-4">
+          {/* Store Locator Toggle */}
+          <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg p-4">
+            <div>
+              <p className="text-sm font-semibold text-gray-800">Afficher le Store Locator</p>
+              <p className="text-xs text-gray-500 mt-0.5">Affiche ou masque le bouton "Store Locator" dans la top bar</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowStoreLocator(prev => !prev)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${showStoreLocator ? 'bg-orange-500' : 'bg-gray-300'}`}
+            >
+              <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${showStoreLocator ? 'translate-x-5' : 'translate-x-0'}`} />
+            </button>
+          </div>
           {topBarLinks.map((link, idx) => (
             <div key={idx} className="flex flex-wrap items-center gap-4 bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="flex-1 min-w-[120px]">

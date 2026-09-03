@@ -133,6 +133,12 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
               {product.tags.map((tag: any) => tag.name).join(', ')}
             </p>
           )}
+          {product.gtin && (
+            <p>
+              <span className="font-semibold text-gray-900">GTIN / EAN : </span>
+              <span className="font-mono text-gray-600">{product.gtin}</span>
+            </p>
+          )}
         </div>
       </div>
     </>

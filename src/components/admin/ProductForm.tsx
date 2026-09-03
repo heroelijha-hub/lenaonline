@@ -56,6 +56,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   
   const [regularPrice, setRegularPrice] = useState(initialData?.price?.toString() || '');
   const [salePrice, setSalePrice] = useState(initialData?.compareAtPrice?.toString() || '');
+  const [gtin, setGtin] = useState(initialData?.gtin || '');
   
   const priceError = (salePrice && regularPrice && Number(salePrice) >= Number(regularPrice)) 
     ? t('price_error_msg') 
@@ -168,6 +169,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
       formData.append('slug', slug);
       formData.append('categoryIds', JSON.stringify(selectedCategories));
+      if (gtin) formData.append('gtin', gtin);
 
       // If editing, we will call updateProduct (to be created), otherwise createProduct
       if (isEditing) {
@@ -348,6 +350,21 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <input type="number" name="stock" defaultValue={initialData?.stock ?? ''} placeholder={t('stock_placeholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
             </div>
           )}
+        </div>
+
+        {/* GTIN / EAN */}
+        <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            GTIN / EAN / Code-barres <span className="text-gray-400 font-normal">(optionnel)</span>
+          </label>
+          <input 
+            type="text" 
+            value={gtin}
+            onChange={(e) => setGtin(e.target.value)}
+            placeholder="ex: 4006381333931"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 font-mono text-sm"
+          />
+          <p className="text-xs text-gray-400 mt-1">Si non renseigné, ce champ ne s'affichera pas sur la page produit.</p>
         </div>
 
         {/* Attributes & Variations */}

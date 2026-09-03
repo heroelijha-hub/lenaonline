@@ -48,7 +48,10 @@ export const getFilteredProducts = async (filterType: string, categoryId?: strin
         where.isDealOfTheDay = true;
       } else if (filterType === 'POPULAR') {
         where.isBestSeller = true;
-      } else if (filterType === 'CATEGORY' && categoryId) {
+      }
+
+      // Always apply category filter when categoryId is provided
+      if (categoryId) {
         where.categories = { some: { id: categoryId } };
       }
 

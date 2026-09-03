@@ -433,6 +433,18 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
             {renderManualProductSelection(section)}
             
             <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">URL personnalisée du bouton "Voir tout"</label>
+              <input
+                type="text"
+                value={section.settings.seeAllUrl || ''}
+                onChange={e => updateSectionSettings(section.id, 'seeAllUrl', e.target.value)}
+                placeholder="ex: /shop ou /search?category=... (laisser vide pour auto)"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500"
+              />
+              <p className="text-[10px] text-gray-400 mt-1 italic">Si vide, le lien pointe automatiquement vers la catégorie sélectionnée ci-dessus.</p>
+            </div>
+            
+            <div>
               <label className="block text-sm font-medium mb-1 text-gray-700">Design Variant</label>
               <select value={section.settings.variant || '1'} onChange={e => updateSectionSettings(section.id, 'variant', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500">
                 <option value="1">Variant 1 (Button at bottom of card)</option>

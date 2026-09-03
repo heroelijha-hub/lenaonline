@@ -304,6 +304,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
+  const gtin = formData.get('gtin') as string || null;
   
   const forceSalesRaw = formData.get('forceSalesIds') as string;
   const forceSalesIds = forceSalesRaw ? JSON.parse(forceSalesRaw) : [];
@@ -350,6 +351,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
+        gtin,
         tags: {
           connectOrCreate: tags.map((t: string) => ({
             where: { name: t },
@@ -401,6 +403,7 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
   const isBestSeller = formData.get('isBestSeller') === 'on';
   const isDealOfTheDay = formData.get('isDealOfTheDay') === 'on';
   const discountLabel = formData.get('discountLabel') as string || undefined;
+  const gtin = formData.get('gtin') as string || null;
 
   const forceSalesRaw = formData.get('forceSalesIds') as string;
   const forceSalesIds = forceSalesRaw ? JSON.parse(forceSalesRaw) : [];
@@ -443,6 +446,7 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
         isBestSeller,
         isDealOfTheDay,
         discountLabel,
+        gtin,
         tags: {
           set: [],
           connectOrCreate: tags.map((t: string) => ({

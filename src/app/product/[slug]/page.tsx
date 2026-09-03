@@ -69,12 +69,21 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       
       <main className="flex-grow pb-20">
         {/* Breadcrumb */}
-        <div className="bg-gray-50 py-4 px-4 sm:px-8 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto text-sm text-gray-500">
-            <Link href="/" className="hover:text-orange-500">{t('home')}</Link>
-            <span className="mx-2">/</span>
-            <span className="hover:text-orange-500 cursor-pointer">{product.categories && product.categories.length > 0 ? product.categories[0].name : t('category')}</span>
-            <span className="mx-2">/</span>
+        <div className="bg-gray-50 border-b border-gray-200 mb-10">
+          <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
+            <Link href="/" className="hover:text-orange-500 transition">{t('home')}</Link>
+            <span className="text-gray-300">/</span>
+            {product.categories && product.categories.length > 0 ? (
+              <Link 
+                href={`/search?category=${product.categories[0].id}`}
+                className="hover:text-orange-500 transition"
+              >
+                {product.categories[0].name}
+              </Link>
+            ) : (
+              <span>{t('category')}</span>
+            )}
+            <span className="text-gray-300">/</span>
             <span className="text-gray-900 font-medium">{product.title}</span>
           </div>
         </div>

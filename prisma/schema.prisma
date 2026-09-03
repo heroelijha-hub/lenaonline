@@ -84,6 +84,7 @@ model Product {
   description    String?     @db.Text
   price          Float       // Global/Base price (lowest variation price or simple price)
   compareAtPrice Float?
+  gtin           String?     // GTIN / EAN / UPC barcode
   images         String[]
   categories     Category[]  @relation("ProductCategories")
   brandId        String?     @db.Uuid

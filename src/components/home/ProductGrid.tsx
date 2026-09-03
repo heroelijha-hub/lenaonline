@@ -60,7 +60,8 @@ export default async function ProductGrid({ config }: ProductGridProps) {
     } as React.CSSProperties;
   };
 
-  const seeAllUrl = categoryId ? `/search?category=${categoryId}` : '/search';
+  // Priority: custom seeAllUrl from config > category-based URL > /search
+  const seeAllUrl = (config as any).seeAllUrl || (categoryId ? `/search?category=${categoryId}` : '/search');
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
