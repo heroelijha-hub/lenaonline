@@ -1,9 +1,14 @@
 import BlogForm from '@/components/admin/BlogForm';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { getDistinctBlogCategories, getDistinctBlogAuthors } from '@/actions/blog';
 
 export default async function CreateBlogPage() {
   const t = await getTranslations('AdminBlogs');
+  const [categories, authors] = await Promise.all([
+    getDistinctBlogCategories(),
+    getDistinctBlogAuthors(),
+  ]);
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
@@ -13,7 +18,7 @@ export default async function CreateBlogPage() {
         <h1 className="text-2xl font-bold text-gray-900">{t('new_article')}</h1>
       </div>
 
-      <BlogForm />
+      <BlogForm existingCategories={categories} existingAuthors={authors} />
     </div>
   );
 }

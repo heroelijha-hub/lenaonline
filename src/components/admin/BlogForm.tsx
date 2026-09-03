@@ -10,7 +10,13 @@ import { useTranslations } from 'next-intl';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
-export default function BlogForm({ article }: { article?: any }) {
+type BlogFormProps = {
+  article?: any;
+  existingCategories?: string[];
+  existingAuthors?: string[];
+};
+
+export default function BlogForm({ article, existingCategories = [], existingAuthors = [] }: BlogFormProps) {
   const t = useTranslations('AdminBlogs');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -152,6 +158,7 @@ export default function BlogForm({ article }: { article?: any }) {
               </label>
             </div>
 
+            {/* Category with suggestions */}
             <div>
               <label className="block text-sm font-medium mb-1">{t('category_label')}</label>
               <input 
@@ -161,6 +168,27 @@ export default function BlogForm({ article }: { article?: any }) {
                 className="w-full border px-3 py-2 rounded text-sm"
                 placeholder={t('category_placeholder')}
               />
+              {existingCategories.length > 0 && (
+                <div className="mt-2">
+                  <p className="text-xs text-gray-500 mb-1.5">Catégories existantes :</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {existingCategories.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, category: cat })}
+                        className={`text-xs px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${
+                          formData.category === cat
+                            ? 'bg-orange-500 text-white border-orange-500'
+                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
             <div>
@@ -174,6 +202,7 @@ export default function BlogForm({ article }: { article?: any }) {
               />
             </div>
 
+            {/* Author with suggestions */}
             <div>
               <label className="block text-sm font-medium mb-1">{t('author_label')}</label>
               <input 
@@ -182,6 +211,28 @@ export default function BlogForm({ article }: { article?: any }) {
                 onChange={e => setFormData({ ...formData, authorName: e.target.value })}
                 className="w-full border px-3 py-2 rounded text-sm"
               />
+              {existingAuthors.length > 0 && (
+                <div className="mt-2">
+                  <p className="text-xs text-gray-500 mb-1.5">Auteurs existants :</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {existingAuthors.map((author) => (
+                      <button
+                        key={author}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, authorName: author })}
+                        className={`text-xs px-2.5 py-1 rounded-full border transition-colors cursor-pointer flex items-center gap-1.5 ${
+                          formData.authorName === author
+                            ? 'bg-orange-500 text-white border-orange-500'
+                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600'
+                        }`}
+                      >
+                        <span className="w-4 h-4 rounded-full bg-current opacity-20 inline-block" />
+                        {author}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -211,3 +262,5 @@ export default function BlogForm({ article }: { article?: any }) {
     </form>
   );
 }
+
+

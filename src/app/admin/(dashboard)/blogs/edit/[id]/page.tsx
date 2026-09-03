@@ -1,13 +1,17 @@
 import BlogForm from '@/components/admin/BlogForm';
 import Link from 'next/link';
-import { getArticleById } from '@/actions/blog';
+import { getArticleById, getDistinctBlogCategories, getDistinctBlogAuthors } from '@/actions/blog';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 export default async function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const t = await getTranslations('AdminBlogs');
   const { id } = await params;
-  const article = await getArticleById(id);
+  const [article, categories, authors] = await Promise.all([
+    getArticleById(id),
+    getDistinctBlogCategories(),
+    getDistinctBlogAuthors(),
+  ]);
 
   if (!article) {
     notFound();
@@ -22,7 +26,7 @@ export default async function EditBlogPage({ params }: { params: Promise<{ id: s
         <h1 className="text-2xl font-bold text-gray-900">{t('edit_article')}</h1>
       </div>
 
-      <BlogForm article={article} />
+      <BlogForm article={article} existingCategories={categories} existingAuthors={authors} />
     </div>
   );
 }

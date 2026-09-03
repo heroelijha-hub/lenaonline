@@ -17,6 +17,26 @@ export async function getArticles(publishedOnly = false) {
   });
 }
 
+export async function getDistinctBlogCategories(): Promise<string[]> {
+  const articles = await prisma.article.findMany({
+    where: { category: { not: null } },
+    select: { category: true },
+    distinct: ['category'],
+    orderBy: { category: 'asc' }
+  });
+  return articles.map(a => a.category).filter(Boolean) as string[];
+}
+
+export async function getDistinctBlogAuthors(): Promise<string[]> {
+  const articles = await prisma.article.findMany({
+    where: { authorName: { not: null } },
+    select: { authorName: true },
+    distinct: ['authorName'],
+    orderBy: { authorName: 'asc' }
+  });
+  return articles.map(a => a.authorName).filter(Boolean) as string[];
+}
+
 export async function getArticleBySlug(slug: string) {
   return await prisma.article.findUnique({
     where: { slug },
