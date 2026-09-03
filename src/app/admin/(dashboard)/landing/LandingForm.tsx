@@ -671,33 +671,30 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 />
                 <h4 className="font-bold text-xs text-gray-800 mb-2">Show countdown timer on:</h4>
                 <div className="flex gap-4">
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Mobile">
-                    <input 
-                      type="checkbox" 
-                      checked={section.settings.SHOW_TIMER_MOBILE !== 'false'} 
-                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_MOBILE', e.target.checked ? 'true' : 'false')}
-                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
-                    />
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                  </label>
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Tablet">
-                    <input 
-                      type="checkbox" 
-                      checked={section.settings.SHOW_TIMER_TABLET !== 'false'} 
-                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_TABLET', e.target.checked ? 'true' : 'false')}
-                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
-                    />
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                  </label>
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Desktop">
-                    <input 
-                      type="checkbox" 
-                      checked={section.settings.SHOW_TIMER_DESKTOP !== 'false'} 
-                      onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_DESKTOP', e.target.checked ? 'true' : 'false')}
-                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
-                    />
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                  </label>
+                  <button
+                    type="button"
+                    title="Mobile"
+                    onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_MOBILE', section.settings.SHOW_TIMER_MOBILE !== 'false' ? 'false' : 'true')}
+                    className={`p-1.5 rounded transition flex items-center justify-center ${section.settings.SHOW_TIMER_MOBILE !== 'false' ? 'text-orange-600 bg-orange-100' : 'text-gray-400 hover:text-gray-600 bg-gray-50'}`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+                  </button>
+                  <button
+                    type="button"
+                    title="Tablet"
+                    onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_TABLET', section.settings.SHOW_TIMER_TABLET !== 'false' ? 'false' : 'true')}
+                    className={`p-1.5 rounded transition flex items-center justify-center ${section.settings.SHOW_TIMER_TABLET !== 'false' ? 'text-orange-600 bg-orange-100' : 'text-gray-400 hover:text-gray-600 bg-gray-50'}`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+                  </button>
+                  <button
+                    type="button"
+                    title="Desktop"
+                    onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_DESKTOP', section.settings.SHOW_TIMER_DESKTOP !== 'false' ? 'false' : 'true')}
+                    className={`p-1.5 rounded transition flex items-center justify-center ${section.settings.SHOW_TIMER_DESKTOP !== 'false' ? 'text-orange-600 bg-orange-100' : 'text-gray-400 hover:text-gray-600 bg-gray-50'}`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                  </button>
                 </div>
               </div>
 
