@@ -30,28 +30,32 @@ const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, 
   const p = product || { ...DummyProduct, title, price, imageUrl };
   return (
     <div className="flex flex-col h-full relative group">
-      <Link href={linkUrl} className="flex flex-col flex-1 cursor-pointer">
-        <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
-        {imageUrl ? (
-          <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-        ) : (
-          <div className="text-3xl sm:text-5xl group-hover:scale-110 transition duration-500">{icon}</div>
+      <div className="flex flex-col flex-1">
+        <Link href={linkUrl} className="cursor-pointer group/img">
+          <div className="border rounded-xl mb-2 sm:mb-3 aspect-square flex items-center justify-center p-2 sm:p-4 bg-white shadow-sm group-hover/img:shadow-md transition overflow-hidden" style={{ borderColor: borderColor || '#f3f4f6' }}>
+            {imageUrl ? (
+              <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover group-hover/img:scale-105 transition duration-500" />
+            ) : (
+              <div className="text-3xl sm:text-5xl group-hover/img:scale-110 transition duration-500">{icon}</div>
+            )}
+          </div>
+        </Link>
+        <Link href={linkUrl} className="cursor-pointer">
+          <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
+            {title}
+          </h3>
+        </Link>
+        {rating !== undefined && ratingText && (
+          <div className="flex items-center gap-1 mb-1">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star key={star} filled={star <= rating} />
+              ))}
+            </div>
+            <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
+          </div>
         )}
       </div>
-      <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
-        {title}
-      </h3>
-      {rating !== undefined && ratingText && (
-        <div className="flex items-center gap-1 mb-1">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} filled={star <= rating} />
-            ))}
-          </div>
-          <span className="text-[10px] text-gray-500 font-medium">{ratingText}</span>
-        </div>
-      )}
-      </Link>
       <div className="flex items-center justify-between mt-auto pt-2">
         <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
         <AddToCartBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
@@ -75,31 +79,37 @@ const BigCard = ({
         <QuickviewBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
       </div>
 
-      <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
-        <div className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden">
+      <div className="flex-1 flex flex-col">
+        <Link href={linkUrl} className="flex-1 flex items-center justify-center mb-6 py-10 bg-gray-50/50 rounded-lg overflow-hidden cursor-pointer group/img">
           {imageUrl ? (
-            <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+            <Image src={imageUrl} alt={title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover/img:scale-105 transition duration-500" />
           ) : (
-            <div className="text-8xl group-hover:scale-110 transition duration-500">{icon}</div>
+            <div className="text-8xl group-hover/img:scale-110 transition duration-500">{icon}</div>
+          )}
+        </Link>
+        <div className="mt-auto">
+          <p className="text-xs text-gray-500 mb-1 z-20 relative">
+            <Link href={(p as any).categorySlug ? `/shop?category=${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline">
+              {category}
+            </Link>
+          </p>
+          <Link href={linkUrl} className="cursor-pointer">
+            <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
+              {title}
+            </h3>
+          </Link>
+          {ratingText && (
+            <div className="flex items-center gap-1 mb-2">
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} filled={star <= rating} />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
+            </div>
           )}
         </div>
-        <div className="mt-auto">
-        <p className="text-xs text-gray-500 mb-1 z-20 relative"><Link href={(p as any).categorySlug ? `/shop?category=${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>{category}</Link></p>
-        <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
-          {title}
-        </h3>
-        {ratingText && (
-          <div className="flex items-center gap-1 mb-2">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} filled={star <= rating} />
-              ))}
-            </div>
-            <span className="text-xs text-gray-500 font-medium">{ratingText}</span>
-          </div>
-        )}
-        </div>
-      </Link>
+      </div>
       <div className="flex items-center justify-between mt-auto">
         <Price amount={price} className="font-bold text-gray-900" />
         <AddToCartBtnBig product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
