@@ -7,6 +7,7 @@ import { uploadImage } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 import { useTranslations } from 'next-intl';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
@@ -21,6 +22,7 @@ export default function BlogForm({ article, existingCategories = [], existingAut
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showMediaModal, setShowMediaModal] = useState(false);
   
   const [formData, setFormData] = useState({
     title: article?.title || '',
@@ -239,15 +241,24 @@ export default function BlogForm({ article, existingCategories = [], existingAut
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-800 mb-3">{t('cover_image')}</h3>
             {formData.image && (
-              <img src={formData.image} alt="Cover" className="w-full h-auto rounded mb-3 border" />
+              <img src={formData.image} alt="Cover" className="w-full h-auto rounded mb-3 border object-cover" />
             )}
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={handleImageUpload}
-              disabled={loading}
-              className="text-sm w-full" 
-            />
+            <button
+              type="button"
+              onClick={() => setShowMediaModal(true)}
+              className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition w-full text-center"
+            >
+              {formData.image ? 'Changer l\'image' : 'Choisir une image'}
+            </button>
+            {showMediaModal && (
+              <MediaPickerModal 
+                onClose={() => setShowMediaModal(false)}
+                onSelect={(url) => {
+                  setFormData({ ...formData, image: url });
+                  setShowMediaModal(false);
+                }}
+              />
+            )}
           </div>
 
           <button 

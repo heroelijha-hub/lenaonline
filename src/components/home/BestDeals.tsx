@@ -133,101 +133,105 @@ export default async function BestDeals({ config }: { config?: any }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Left Banner */}
-        <div 
-          className="bg-[#E5F1FC] rounded-xl overflow-hidden relative flex p-6 sm:p-8 h-[240px] border border-gray-100 items-center"
-          style={{
-            backgroundColor: settings.PROMO_1_BG_COLOR || undefined,
-            backgroundImage: settings.PROMO_1_BG_IMAGE ? `url(${settings.PROMO_1_BG_IMAGE})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="z-20 w-[60%] sm:w-1/2">
-            <span 
-              className="text-orange-600 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
-              style={getResponsiveVars('PROMO_1_SUBTITLE', {m: '14px', t: '14px', d: '14px'})}
-            >
-              {settings.PROMO_1_SUBTITLE || t('promo_1_subtitle')}
-            </span>
-            <h2 
-              className="font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-              style={{ ...getResponsiveVars('PROMO_1_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : {}) }}
-            >
-              {settings.PROMO_1_TITLE || t('promo_1_title')}
-            </h2>
-            <Link 
-              href={settings.PROMO_1_LINK || '/#'} 
-              className="inline-block bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm"
-              style={{
-                backgroundColor: settings.PROMO_1_BTN_BG_COLOR || undefined,
-                color: settings.PROMO_1_BTN_TEXT_COLOR || undefined
-              }}
-            >
-              {settings.PROMO_1_CTA || t('shop_now')}
-            </Link>
-          </div>
-          {/* Image */}
-          {settings.PROMO_1_IMAGE && (
-             <Image src={settings.PROMO_1_IMAGE} alt="Promo 1" width={800} height={800} className="absolute right-0 top-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
-          )}
-          {!settings.PROMO_1_IMAGE && !settings.PROMO_1_BG_IMAGE && (
-            <div className="absolute right-[-10%] sm:right-[-5%] top-4 w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center z-10">
-               <div className="w-20 h-24 sm:w-24 sm:h-28 bg-zinc-800 rounded-3xl border-[6px] border-zinc-700 shadow-xl rotate-12 z-20 flex items-center justify-center -mr-4">
-                   <span className="text-white text-xs font-mono">09:28</span>
-               </div>
-               <div className="w-20 h-24 sm:w-24 sm:h-28 bg-zinc-800 rounded-3xl border-[6px] border-gray-300 shadow-xl -rotate-12 z-10 flex items-center justify-center">
-                   <span className="text-pink-400 text-xs font-mono">09:28</span>
-               </div>
+        {settings.SHOW_PROMO_1 !== 'false' && (
+          <div 
+            className="bg-[#E5F1FC] rounded-xl overflow-hidden relative flex p-6 sm:p-8 h-[240px] border border-gray-100 items-center"
+            style={{
+              backgroundColor: settings.PROMO_1_BG_COLOR || undefined,
+              backgroundImage: settings.PROMO_1_BG_IMAGE ? `url(${settings.PROMO_1_BG_IMAGE})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="z-20 w-[60%] sm:w-1/2">
+              <span 
+                className="text-orange-600 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+                style={getResponsiveVars('PROMO_1_SUBTITLE', {m: '14px', t: '14px', d: '14px'})}
+              >
+                {settings.PROMO_1_SUBTITLE || t('promo_1_subtitle')}
+              </span>
+              <h2 
+                className="font-bold text-gray-900 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+                style={{ ...getResponsiveVars('PROMO_1_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_1_TEXT_COLOR ? { color: settings.PROMO_1_TEXT_COLOR } : {}) }}
+              >
+                {settings.PROMO_1_TITLE || t('promo_1_title')}
+              </h2>
+              <Link 
+                href={settings.PROMO_1_LINK || '/#'} 
+                className="inline-block bg-white text-gray-900 font-semibold px-6 py-2.5 rounded hover:bg-gray-50 transition shadow-sm"
+                style={{
+                  backgroundColor: settings.PROMO_1_BTN_BG_COLOR || undefined,
+                  color: settings.PROMO_1_BTN_TEXT_COLOR || undefined
+                }}
+              >
+                {settings.PROMO_1_CTA || t('shop_now')}
+              </Link>
             </div>
-          )}
-        </div>
+            {/* Image */}
+            {settings.PROMO_1_IMAGE && (
+               <Image src={settings.PROMO_1_IMAGE} alt="Promo 1" width={800} height={800} className="absolute right-0 top-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
+            )}
+            {!settings.PROMO_1_IMAGE && !settings.PROMO_1_BG_IMAGE && (
+              <div className="absolute right-[-10%] sm:right-[-5%] top-4 w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center z-10">
+                 <div className="w-20 h-24 sm:w-24 sm:h-28 bg-zinc-800 rounded-3xl border-[6px] border-zinc-700 shadow-xl rotate-12 z-20 flex items-center justify-center -mr-4">
+                     <span className="text-white text-xs font-mono">09:28</span>
+                 </div>
+                 <div className="w-20 h-24 sm:w-24 sm:h-28 bg-zinc-800 rounded-3xl border-[6px] border-gray-300 shadow-xl -rotate-12 z-10 flex items-center justify-center">
+                     <span className="text-pink-400 text-xs font-mono">09:28</span>
+                 </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Right Banner */}
-        <div 
-          className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-6 sm:p-8 h-[240px] border border-gray-100 items-center"
-          style={{
-            backgroundColor: settings.PROMO_2_BG_COLOR || undefined,
-            backgroundImage: settings.PROMO_2_BG_IMAGE ? `url(${settings.PROMO_2_BG_IMAGE})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="z-20 w-[60%] sm:w-1/2">
-            <h2 
-              className="font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-              style={{ ...getResponsiveVars('PROMO_2_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
-            >
-              {settings.PROMO_2_TITLE || t('promo_2_title')}
-            </h2>
-            <p 
-              className="font-bold text-gray-800 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-              style={{ ...getResponsiveVars('PROMO_2_SUBTITLE', {m: '18px', t: '18px', d: '18px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
-            >
-              {settings.PROMO_2_SUBTITLE || t('promo_2_subtitle')}
-            </p>
-            <Link 
-              href={settings.PROMO_2_LINK || '/#'} 
-              className="inline-block bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm"
-              style={{
-                backgroundColor: settings.PROMO_2_BTN_BG_COLOR || undefined,
-                color: settings.PROMO_2_BTN_TEXT_COLOR || undefined
-              }}
-            >
-              {settings.PROMO_2_CTA || t('shop_now')}
-            </Link>
-          </div>
-          {/* Image */}
-          {settings.PROMO_2_IMAGE && (
-             <Image src={settings.PROMO_2_IMAGE} alt="Promo 2" width={800} height={800} className="absolute right-0 bottom-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
-          )}
-          {!settings.PROMO_2_IMAGE && !settings.PROMO_2_BG_IMAGE && (
-            <div className="absolute right-2 sm:right-4 bottom-0 w-[45%] sm:w-1/2 h-[90%] flex items-end justify-center space-x-1 z-10">
-                <div className="w-12 h-32 sm:w-16 sm:h-40 bg-teal-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10 -ml-2 sm:-ml-4"></div>
-                <div className="w-12 h-36 sm:w-16 sm:h-44 bg-amber-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-20"></div>
-                <div className="w-12 h-28 sm:w-16 sm:h-36 bg-orange-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10"></div>
+        {settings.SHOW_PROMO_2 !== 'false' && (
+          <div 
+            className="bg-[#FBE9DC] rounded-xl overflow-hidden relative flex p-6 sm:p-8 h-[240px] border border-gray-100 items-center"
+            style={{
+              backgroundColor: settings.PROMO_2_BG_COLOR || undefined,
+              backgroundImage: settings.PROMO_2_BG_IMAGE ? `url(${settings.PROMO_2_BG_IMAGE})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="z-20 w-[60%] sm:w-1/2">
+              <h2 
+                className="font-bold text-gray-900 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+                style={{ ...getResponsiveVars('PROMO_2_TITLE', {m: '24px', t: '30px', d: '30px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
+              >
+                {settings.PROMO_2_TITLE || t('promo_2_title')}
+              </h2>
+              <p 
+                className="font-bold text-gray-800 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+                style={{ ...getResponsiveVars('PROMO_2_SUBTITLE', {m: '18px', t: '18px', d: '18px'}), ...(settings.PROMO_2_TEXT_COLOR ? { color: settings.PROMO_2_TEXT_COLOR } : {}) }}
+              >
+                {settings.PROMO_2_SUBTITLE || t('promo_2_subtitle')}
+              </p>
+              <Link 
+                href={settings.PROMO_2_LINK || '/#'} 
+                className="inline-block bg-[#FF5C00] text-white font-semibold px-6 py-2.5 rounded hover:bg-[#E55300] transition shadow-sm"
+                style={{
+                  backgroundColor: settings.PROMO_2_BTN_BG_COLOR || undefined,
+                  color: settings.PROMO_2_BTN_TEXT_COLOR || undefined
+                }}
+              >
+                {settings.PROMO_2_CTA || t('shop_now')}
+              </Link>
             </div>
-          )}
-        </div>
+            {/* Image */}
+            {settings.PROMO_2_IMAGE && (
+               <Image src={settings.PROMO_2_IMAGE} alt="Promo 2" width={800} height={800} className="absolute right-0 bottom-0 h-full w-[45%] sm:w-1/2 object-contain z-10" />
+            )}
+            {!settings.PROMO_2_IMAGE && !settings.PROMO_2_BG_IMAGE && (
+              <div className="absolute right-2 sm:right-4 bottom-0 w-[45%] sm:w-1/2 h-[90%] flex items-end justify-center space-x-1 z-10">
+                  <div className="w-12 h-32 sm:w-16 sm:h-40 bg-teal-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10 -ml-2 sm:-ml-4"></div>
+                  <div className="w-12 h-36 sm:w-16 sm:h-44 bg-amber-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-20"></div>
+                  <div className="w-12 h-28 sm:w-16 sm:h-36 bg-orange-200 rounded-t-full rounded-b-lg border-2 border-white shadow-lg z-10"></div>
+              </div>
+            )}
+          </div>
+        )}
 
       </div>
 

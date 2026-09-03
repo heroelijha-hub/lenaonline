@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import { updateSetting } from '@/actions/settings';
 import { uploadImage, getMinimalProducts } from '@/actions/admin';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import Cookies from 'js-cookie';
 
 export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners' | 'ProductGrid';
@@ -45,6 +46,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [globalFont, setGlobalFont] = useState(initialSettings.GLOBAL_FONT_FAMILY || 'Inter');
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [productSearch, setProductSearch] = useState('');
+  const [mediaPickerTarget, setMediaPickerTarget] = useState<{sectionId: string, key: string} | null>(null);
 
   useEffect(() => {
     getMinimalProducts().then(setAllProducts).catch(console.error);
@@ -146,17 +148,8 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     setSections(sections.map(s => s.id === id ? { ...s, name } : s));
   };
 
-  const handleUpload = async (id: string, key: string, file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const url = await uploadImage(formData);
-      if (url) {
-        updateSectionSettings(id, key, url);
-      }
-    } catch (e) {
-      console.error("Upload error", e);
-    }
+  const handleUpload = (id: string, key: string) => {
+    setMediaPickerTarget({ sectionId: id, key });
   };
 
   const renderResponsiveInput = (section: SectionConfig, label: string, baseKey: string, placeholder: string, colorKey?: string, defaultColor?: string) => {
@@ -217,18 +210,16 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
-              Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
-            </label>
+            <button type="button" onClick={() => handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`)} className="bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition w-full">
+              Choisir une image
+            </button>
             {section.settings[`${prefix}_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
-              Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
-            </label>
+            <button type="button" onClick={() => handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`)} className="bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition w-full">
+              Choisir une image
+            </button>
             {section.settings[`${prefix}_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
@@ -258,18 +249,16 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
         <div className="flex flex-col gap-3 mb-3">
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image Principale</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
-              Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`, e.target.files[0])} className="hidden" />
-            </label>
+            <button type="button" onClick={() => handleUpload(section.id, `${prefix}_${blockNum}_IMAGE`)} className="bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition w-full">
+              Choisir une image
+            </button>
             {section.settings[`${prefix}_${blockNum}_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_IMAGE`]} className="h-6 object-contain" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
           <div>
             <label className="block text-[11px] font-bold mb-1 text-red-600">Image de Fond (BG)</label>
-            <label className="cursor-pointer bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition">
-              Cliquez ici pour uploader
-              <input type="file" accept="image/*" onChange={e => e.target.files?.[0] && handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`, e.target.files[0])} className="hidden" />
-            </label>
+            <button type="button" onClick={() => handleUpload(section.id, `${prefix}_${blockNum}_BG_IMAGE`)} className="bg-blue-50 text-blue-700 px-3 py-2 rounded border border-blue-200 hover:bg-blue-100 text-[11px] font-semibold block text-center mt-1 transition w-full">
+              Choisir une image
+            </button>
             {section.settings[`${prefix}_${blockNum}_BG_IMAGE`] && <div className="mt-1 flex items-center justify-between bg-gray-50 p-1 border rounded"><img src={section.settings[`${prefix}_${blockNum}_BG_IMAGE`]} className="h-6 object-cover" /><button onClick={() => updateSectionSettings(section.id, `${prefix}_${blockNum}_BG_IMAGE`, '')} className="text-red-500 text-xs px-1">&times;</button></div>}
           </div>
         </div>
@@ -682,51 +671,81 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
                 />
                 <h4 className="font-bold text-xs text-gray-800 mb-2">Show countdown timer on:</h4>
                 <div className="flex gap-4">
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Mobile">
                     <input 
                       type="checkbox" 
                       checked={section.settings.SHOW_TIMER_MOBILE !== 'false'} 
                       onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_MOBILE', e.target.checked ? 'true' : 'false')}
                       className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
                     />
-                    <span>Mobile</span>
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
                   </label>
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Tablet">
                     <input 
                       type="checkbox" 
                       checked={section.settings.SHOW_TIMER_TABLET !== 'false'} 
                       onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_TABLET', e.target.checked ? 'true' : 'false')}
                       className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
                     />
-                    <span>Tablet</span>
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
                   </label>
-                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer" title="Desktop">
                     <input 
                       type="checkbox" 
                       checked={section.settings.SHOW_TIMER_DESKTOP !== 'false'} 
                       onChange={e => updateSectionSettings(section.id, 'SHOW_TIMER_DESKTOP', e.target.checked ? 'true' : 'false')}
                       className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
                     />
-                    <span>Desktop</span>
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                   </label>
                 </div>
               </div>
 
               {/* Promo Banners within BestDeals */}
               <div className="mt-6 border-t pt-4">
-                <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 1 (Haut)</h4>
-                {renderResponsiveInput(section, 'Title Promo 1', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
-                {renderResponsiveInput(section, 'Sous-titre Promo 1', 'PROMO_1_SUBTITLE', 'Price Start $69')}
-                {renderResponsiveInput(section, 'Bouton Promo 1', 'PROMO_1_CTA', 'Shop Now')}
-                {renderPromoBannerConfig(section, 1, 'PROMO')}
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-bold text-gray-800">Bloc Promo 1 (Haut)</h4>
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={section.settings.SHOW_PROMO_1 !== 'false'} 
+                      onChange={e => updateSectionSettings(section.id, 'SHOW_PROMO_1', e.target.checked ? 'true' : 'false')}
+                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                    />
+                    <span className="font-medium text-xs">Afficher le bloc 1</span>
+                  </label>
+                </div>
+                {section.settings.SHOW_PROMO_1 !== 'false' && (
+                  <>
+                    {renderResponsiveInput(section, 'Title Promo 1', 'PROMO_1_TITLE', 'NOTHING WATCH PRO 2')}
+                    {renderResponsiveInput(section, 'Sous-titre Promo 1', 'PROMO_1_SUBTITLE', 'Price Start $69')}
+                    {renderResponsiveInput(section, 'Bouton Promo 1', 'PROMO_1_CTA', 'Shop Now')}
+                    {renderPromoBannerConfig(section, 1, 'PROMO')}
+                  </>
+                )}
               </div>
               
               <div className="mt-6 border-t pt-4">
-                <h4 className="font-bold text-gray-800 mb-2">Bloc Promo 2 (Bas)</h4>
-                {renderResponsiveInput(section, 'Title Promo 2', 'PROMO_2_TITLE', 'Get 20% Off')}
-                {renderResponsiveInput(section, 'Sous-titre Promo 2', 'PROMO_2_SUBTITLE', 'Women Store')}
-                {renderResponsiveInput(section, 'Bouton Promo 2', 'PROMO_2_CTA', 'Shop Now')}
-                {renderPromoBannerConfig(section, 2, 'PROMO')}
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-bold text-gray-800">Bloc Promo 2 (Bas)</h4>
+                  <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={section.settings.SHOW_PROMO_2 !== 'false'} 
+                      onChange={e => updateSectionSettings(section.id, 'SHOW_PROMO_2', e.target.checked ? 'true' : 'false')}
+                      className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
+                    />
+                    <span className="font-medium text-xs">Afficher le bloc 2</span>
+                  </label>
+                </div>
+                {section.settings.SHOW_PROMO_2 !== 'false' && (
+                  <>
+                    {renderResponsiveInput(section, 'Title Promo 2', 'PROMO_2_TITLE', 'Get 20% Off')}
+                    {renderResponsiveInput(section, 'Sous-titre Promo 2', 'PROMO_2_SUBTITLE', 'Women Store')}
+                    {renderResponsiveInput(section, 'Bouton Promo 2', 'PROMO_2_CTA', 'Shop Now')}
+                    {renderPromoBannerConfig(section, 2, 'PROMO')}
+                  </>
+                )}
               </div>
             </>
           )}
@@ -1008,6 +1027,15 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           />
         </div>
       </div>
+      {mediaPickerTarget && (
+        <MediaPickerModal 
+          onClose={() => setMediaPickerTarget(null)}
+          onSelect={(url) => {
+            updateSectionSettings(mediaPickerTarget.sectionId, mediaPickerTarget.key, url);
+            setMediaPickerTarget(null);
+          }}
+        />
+      )}
     </div>
   );
 }

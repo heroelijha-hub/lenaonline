@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateSetting, updateSettingsBatch } from '@/actions/settings';
 import { uploadImage } from '@/actions/admin';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 const CURRENCIES = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -32,7 +33,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
   const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'My Store');
   const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
-  const [chatIconFile, setChatIconFile] = useState<File | null>(null);
+  const [showChatIconPicker, setShowChatIconPicker] = useState(false);
 
   // Contact & Newsletter settings
   const [contactReceiverEmail, setContactReceiverEmail] = useState(initialSettings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com');
@@ -74,9 +75,9 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [headerLogoImage, setHeaderLogoImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
   const [headerLogoHeight, setHeaderLogoHeight] = useState(initialSettings.HEADER_LOGO_HEIGHT || '80');
   const [mobileLogoHeight, setMobileLogoHeight] = useState(initialSettings.MOBILE_LOGO_HEIGHT || '64');
-  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [showLogoPicker, setShowLogoPicker] = useState(false);
   const [faviconImage, setFaviconImage] = useState(initialSettings.FAVICON_IMAGE || '');
-  const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [showFaviconPicker, setShowFaviconPicker] = useState(false);
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
   const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
   
@@ -150,7 +151,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [footerTextColor, setFooterTextColor] = useState(initialSettings.FOOTER_TEXT_COLOR || '#d1d5db');
   
   const [footerLogoImage, setFooterLogoImage] = useState(initialSettings.FOOTER_LOGO_IMAGE || '');
-  const [footerLogoFile, setFooterLogoFile] = useState<File | null>(null);
+  const [showFooterLogoPicker, setShowFooterLogoPicker] = useState(false);
   const [footerDescription, setFooterDescription] = useState(initialSettings.FOOTER_DESCRIPTION || 'Unsere Verpflichtungen : Qualität...');
   const [footerShowAddress, setFooterShowAddress] = useState(initialSettings.FOOTER_SHOW_ADDRESS !== 'false');
   const [footerShowEmail, setFooterShowEmail] = useState(initialSettings.FOOTER_SHOW_EMAIL !== 'false');
@@ -197,14 +198,14 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
   const [notFoundCta, setNotFoundCta] = useState(initialSettings.NOT_FOUND_CTA || 'Back to Home');
   const [notFoundBgColor, setNotFoundBgColor] = useState(initialSettings.NOT_FOUND_BG_COLOR || '#000000');
   const [notFoundBgImage, setNotFoundBgImage] = useState(initialSettings.NOT_FOUND_BG_IMAGE || '');
-  const [notFoundFile, setNotFoundFile] = useState<File | null>(null);
+  const [showNotFoundPicker, setShowNotFoundPicker] = useState(false);
 
   // {tSettings('maintenance_page')} Settings
   const [maintenanceMode, setMaintenanceMode] = useState(initialSettings.MAINTENANCE_MODE === 'true');
   const [maintenanceTitle, setMaintenanceTitle] = useState(initialSettings.MAINTENANCE_TITLE || 'Site under maintenance');
   const [maintenanceMessage, setMaintenanceMessage] = useState(initialSettings.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!');
   const [maintenanceImage, setMaintenanceImage] = useState(initialSettings.MAINTENANCE_IMAGE || '');
-  const [maintenanceFile, setMaintenanceFile] = useState<File | null>(null);
+  const [showMaintenancePicker, setShowMaintenancePicker] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -230,34 +231,13 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
 
     settingsMap['ENABLE_BUY_NOW_BUTTON'] = enableBuyNow.toString();
     
-    let finalChatIcon = chatStoreIcon;
-    if (chatIconFile) {
-      const formData = new FormData();
-      formData.append('file', chatIconFile);
-      const url = await uploadImage(formData);
-      if (url) finalChatIcon = url;
-    }
-    settingsMap['CHAT_STORE_ICON'] = finalChatIcon;
+    settingsMap['CHAT_STORE_ICON'] = chatStoreIcon;
 
-    let finalLogoImage = headerLogoImage;
-    if (logoFile) {
-      const formData = new FormData();
-      formData.append('file', logoFile);
-      const url = await uploadImage(formData);
-      if (url) finalLogoImage = url;
-    }
-    settingsMap['HEADER_LOGO_IMAGE'] = finalLogoImage;
+    settingsMap['HEADER_LOGO_IMAGE'] = headerLogoImage;
     settingsMap['HEADER_LOGO_HEIGHT'] = headerLogoHeight;
     settingsMap['MOBILE_LOGO_HEIGHT'] = mobileLogoHeight;
 
-    let finalFaviconImage = faviconImage;
-    if (faviconFile) {
-      const formData = new FormData();
-      formData.append('file', faviconFile);
-      const url = await uploadImage(formData);
-      if (url) finalFaviconImage = url;
-    }
-    settingsMap['FAVICON_IMAGE'] = finalFaviconImage;
+    settingsMap['FAVICON_IMAGE'] = faviconImage;
     
     settingsMap['CHAT_ENABLED'] = chatEnabled.toString();
     settingsMap['CHAT_STORE_NAME'] = chatStoreName;
@@ -326,14 +306,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['BANK_TRANSFER_CHECKOUT_MESSAGE'] = bankTransferCheckoutMessage;
     settingsMap['BANK_TRANSFER_INSTRUCTIONS'] = bankTransferInstructions;
     
-    let finalFooterLogoImage = footerLogoImage;
-    if (footerLogoFile) {
-      const formData = new FormData();
-      formData.append('file', footerLogoFile);
-      const url = await uploadImage(formData);
-      if (url) finalFooterLogoImage = url;
-    }
-    settingsMap['FOOTER_LOGO_IMAGE'] = finalFooterLogoImage;
+    settingsMap['FOOTER_LOGO_IMAGE'] = footerLogoImage;
     settingsMap['FOOTER_DESCRIPTION'] = footerDescription;
     settingsMap['FOOTER_SHOW_ADDRESS'] = footerShowAddress.toString();
     settingsMap['FOOTER_SHOW_EMAIL'] = footerShowEmail.toString();
@@ -366,24 +339,9 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
     settingsMap['NOT_FOUND_TEXT'] = notFoundText;
     settingsMap['NOT_FOUND_CTA'] = notFoundCta;
     settingsMap['NOT_FOUND_BG_COLOR'] = notFoundBgColor;
-    
-    let finalNotFoundBgImage = notFoundBgImage;
-    if (notFoundFile) {
-      const formData = new FormData();
-      formData.append('file', notFoundFile);
-      const url = await uploadImage(formData);
-      if (url) finalNotFoundBgImage = url;
-    }
-    settingsMap['NOT_FOUND_BG_IMAGE'] = finalNotFoundBgImage;
+    settingsMap['NOT_FOUND_BG_IMAGE'] = notFoundBgImage;
 
-    let finalMaintenanceImage = maintenanceImage;
-    if (maintenanceFile) {
-      const formData = new FormData();
-      formData.append('file', maintenanceFile);
-      const url = await uploadImage(formData);
-      if (url) finalMaintenanceImage = url;
-    }
-    settingsMap['MAINTENANCE_IMAGE'] = finalMaintenanceImage;
+    settingsMap['MAINTENANCE_IMAGE'] = maintenanceImage;
     settingsMap['MAINTENANCE_MODE'] = maintenanceMode.toString();
     settingsMap['MAINTENANCE_TITLE'] = maintenanceTitle;
     settingsMap['MAINTENANCE_MESSAGE'] = maintenanceMessage;
@@ -908,17 +866,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     </button>
                   </div>
                 )}
-                {logoFile && (
-                  <div className="mb-4">
-                    <img src={URL.createObjectURL(logoFile)} alt="New Logo Preview" className="h-12 object-contain" />
-                  </div>
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
-                />
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowLogoPicker(true)}
+                    className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition"
+                  >
+                    Choisir un logo
+                  </button>
+                  {showLogoPicker && (
+                    <MediaPickerModal 
+                      onClose={() => setShowLogoPicker(false)}
+                      onSelect={(url) => {
+                        setHeaderLogoImage(url);
+                        setShowLogoPicker(false);
+                      }}
+                    />
+                  )}
+                </div>
                 <p className="mt-1 text-xs text-gray-500">{tSettings('logo_desc')}</p>
                 <div className="mt-4 flex gap-4">
                   <div className="flex-1">
@@ -950,17 +915,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     </button>
                   </div>
                 )}
-                {faviconFile && (
-                  <div className="mb-4">
-                    <img src={URL.createObjectURL(faviconFile)} alt="New Favicon Preview" className="w-8 h-8 object-contain rounded" />
-                  </div>
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setFaviconFile(e.target.files?.[0] || null)}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100"
-                />
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowFaviconPicker(true)}
+                    className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition"
+                  >
+                    Choisir un favicon
+                  </button>
+                  {showFaviconPicker && (
+                    <MediaPickerModal 
+                      onClose={() => setShowFaviconPicker(false)}
+                      onSelect={(url) => {
+                        setFaviconImage(url);
+                        setShowFaviconPicker(false);
+                      }}
+                    />
+                  )}
+                </div>
                 <p className="mt-1 text-xs text-gray-500">{tSettings('favicon_desc')}</p>
               </div>
             </div>
@@ -1353,7 +1325,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('chat_icon_upload')}</label>
               <p className="text-xs text-gray-500 mb-2">{tSettings('chat_icon_desc')}</p>
-              {chatStoreIcon && !chatIconFile && (
+              {chatStoreIcon && (
                 <div className="relative inline-block mb-2">
                   <img src={chatStoreIcon} alt="Chat Icon" className="h-10 w-10 object-cover rounded-full border" />
                   <button 
@@ -1365,16 +1337,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                   </button>
                 </div>
               )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setChatIconFile(e.target.files[0]);
-                  }
-                }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-              />
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowChatIconPicker(true)}
+                  className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition mt-2"
+                >
+                  Choisir une image
+                </button>
+              </div>
+              {showChatIconPicker && (
+                <MediaPickerModal 
+                  onClose={() => setShowChatIconPicker(false)}
+                  onSelect={(url) => {
+                    setChatStoreIcon(url);
+                    setShowChatIconPicker(false);
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -1406,7 +1386,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Footer Logo</label>
-                {footerLogoImage && !footerLogoFile && (
+                {footerLogoImage && (
                   <div className="mb-2 flex items-center gap-4">
                     <div className="bg-gray-50 p-2 border border-gray-200 rounded">
                       <img src={footerLogoImage} alt="Footer Logo" className="h-10 object-contain" />
@@ -1414,10 +1394,22 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                     <button type="button" onClick={() => setFooterLogoImage('')} className="text-sm text-red-600 hover:underline">Delete</button>
                   </div>
                 )}
-                {footerLogoFile && (
-                  <div className="mb-2"><img src={URL.createObjectURL(footerLogoFile)} alt="Preview" className="h-10 object-contain" /></div>
+                <button
+                  type="button"
+                  onClick={() => setShowFooterLogoPicker(true)}
+                  className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition"
+                >
+                  Choisir une image
+                </button>
+                {showFooterLogoPicker && (
+                  <MediaPickerModal 
+                    onClose={() => setShowFooterLogoPicker(false)}
+                    onSelect={(url) => {
+                      setFooterLogoImage(url);
+                      setShowFooterLogoPicker(false);
+                    }}
+                  />
                 )}
-                <input type="file" accept="image/*" onChange={e => setFooterLogoFile(e.target.files?.[0] || null)} className="w-full text-sm" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Description Text</label>
@@ -1601,7 +1593,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('illustration_image_upload')}</label>
-            {maintenanceImage && !maintenanceFile && (
+            {maintenanceImage && (
               <div className="relative inline-block mb-2">
                 <img src={maintenanceImage} alt="Maintenance" className="h-20 object-contain border bg-white p-1" />
                 <button 
@@ -1613,16 +1605,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 </button>
               </div>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setMaintenanceFile(e.target.files[0]);
-                }
-              }}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-            />
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowMaintenancePicker(true)}
+                className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition mt-2"
+              >
+                Choisir une image
+              </button>
+            </div>
+            {showMaintenancePicker && (
+              <MediaPickerModal 
+                onClose={() => setShowMaintenancePicker(false)}
+                onSelect={(url) => {
+                  setMaintenanceImage(url);
+                  setShowMaintenancePicker(false);
+                }}
+              />
+            )}
           </div>
         </div>
         <SectionSaveButton />
@@ -1652,7 +1652,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bg_image_upload')}</label>
-            {notFoundBgImage && !notFoundFile && (
+            {notFoundBgImage && (
               <div className="relative inline-block mb-2">
                 <img src={notFoundBgImage} alt="404 BG" className="h-20 object-cover border bg-gray-50 p-1" />
                 <button 
@@ -1664,16 +1664,24 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 </button>
               </div>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setNotFoundFile(e.target.files[0]);
-                }
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-            />
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowNotFoundPicker(true)}
+                className="bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded text-sm font-semibold hover:bg-gray-200 transition mt-2"
+              >
+                Choisir une image
+              </button>
+            </div>
+            {showNotFoundPicker && (
+              <MediaPickerModal 
+                onClose={() => setShowNotFoundPicker(false)}
+                onSelect={(url) => {
+                  setNotFoundBgImage(url);
+                  setShowNotFoundPicker(false);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,19 +1,18 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { updateBrand, deleteBrand, bulkDeleteBrands, uploadImage } from '@/actions/admin';
+import { updateBrand, deleteBrand, bulkDeleteBrands } from '@/actions/admin';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 export default function BrandTable({ brands }: { brands: any[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editSlug, setEditSlug] = useState('');
   const [editLogoUrl, setEditLogoUrl] = useState('');
-  const [editLogoPreview, setEditLogoPreview] = useState('');
-  const [editUploading, setEditUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
-  const editFileInputRef = useRef<HTMLInputElement>(null);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
 
   const generateSlug = (text: string) => 
     text.toString().toLowerCase().trim()
@@ -26,32 +25,10 @@ export default function BrandTable({ brands }: { brands: any[] }) {
     setEditName(b.name);
     setEditSlug(b.slug || '');
     setEditLogoUrl(b.logo || '');
-    setEditLogoPreview(b.logo || '');
-    if (editFileInputRef.current) editFileInputRef.current.value = '';
-  };
-
-  const handleEditLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setEditLogoPreview(URL.createObjectURL(file));
-    setEditUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const url = await uploadImage(formData);
-      if (url) setEditLogoUrl(url);
-    } catch {
-      alert("Erreur lors de l'upload du logo.");
-      setEditLogoPreview(editLogoUrl);
-    } finally {
-      setEditUploading(false);
-    }
   };
 
   const handleRemoveEditLogo = () => {
     setEditLogoUrl('');
-    setEditLogoPreview('');
-    if (editFileInputRef.current) editFileInputRef.current.value = '';
   };
 
   const handleSaveEdit = async (id: string) => {
@@ -121,9 +98,9 @@ export default function BrandTable({ brands }: { brands: any[] }) {
                   {editingId === b.id ? (
                     <div className="flex items-center gap-2">
                       {/* Prévisualisation */}
-                      {editLogoPreview ? (
+                      {editLogoUrl ? (
                         <div className="relative w-9 h-9 flex-shrink-0">
-                          <img src={editLogoPreview} alt="logo" className="w-9 h-9 object-contain rounded border border-gray-200" />
+                          <img src={editLogoUrl} alt="logo" className="w-9 h-9 object-contain rounded border border-gray-200" />
                           <button
                             type="button"
                             onClick={handleRemoveEditLogo}
@@ -138,30 +115,26 @@ export default function BrandTable({ brands }: { brands: any[] }) {
                         </div>
                       )}
                       {/* Bouton upload */}
-                      <input
-                        ref={editFileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleEditLogoUpload}
-                        className="hidden"
-                        id={`edit-logo-${b.id}`}
-                      />
-                      <label
-                        htmlFor={`edit-logo-${b.id}`}
-                        className={`cursor-pointer inline-flex items-center gap-1 px-2 py-1 border border-gray-300 rounded text-xs font-medium text-gray-600 bg-white hover:bg-gray-50 transition ${editUploading ? 'opacity-50 pointer-events-none' : ''}`}
+                      <button
+                        type="button"
+                        onClick={() => setShowMediaPicker(true)}
+                        className="cursor-pointer inline-flex items-center gap-1 px-2 py-1 border border-gray-300 rounded text-xs font-medium text-gray-600 bg-white hover:bg-gray-50 transition"
                       >
-                        {editUploading ? (
-                          <svg className="animate-spin w-3 h-3 text-orange-500" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                          </svg>
-                        ) : (
-                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                          </svg>
-                        )}
-                        {editUploading ? 'Upload...' : 'Changer'}
-                      </label>
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                        Changer
+                      </button>
+
+                      {showMediaPicker && (
+                        <MediaPickerModal 
+                          onClose={() => setShowMediaPicker(false)}
+                          onSelect={(url) => {
+                            setEditLogoUrl(url);
+                            setShowMediaPicker(false);
+                          }}
+                        />
+                      )}
                     </div>
                   ) : (
                     b.logo ? <img src={b.logo} alt={b.name} className="h-8 object-contain"/> : <span className="text-gray-300">-</span>

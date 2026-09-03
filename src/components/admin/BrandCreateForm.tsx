@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { createBrandAction, uploadImage } from '@/actions/admin';
+import { useState } from 'react';
+import { createBrandAction } from '@/actions/admin';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 export default function BrandCreateForm() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
-  const [logoPreview, setLogoPreview] = useState('');
-  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
 
   const generateSlug = (text: string) =>
     text.toString().toLowerCase().trim()
@@ -24,34 +23,8 @@ export default function BrandCreateForm() {
     setSlug(generateSlug(newName));
   };
 
-  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Prévisualisation locale immédiate
-    const previewUrl = URL.createObjectURL(file);
-    setLogoPreview(previewUrl);
-
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const url = await uploadImage(formData);
-      if (url) {
-        setLogoUrl(url);
-      }
-    } catch (err) {
-      alert("Erreur lors de l'upload du logo.");
-      setLogoPreview('');
-    } finally {
-      setUploading(false);
-    }
-  };
-
   const handleRemoveLogo = () => {
     setLogoUrl('');
-    setLogoPreview('');
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,8 +38,6 @@ export default function BrandCreateForm() {
     setName('');
     setSlug('');
     setLogoUrl('');
-    setLogoPreview('');
-    if (fileInputRef.current) fileInputRef.current.value = '';
     setLoading(false);
   };
 
@@ -92,10 +63,10 @@ export default function BrandCreateForm() {
       {/* Zone upload logo */}
       <div className="flex items-center gap-3">
         {/* Prévisualisation */}
-        {logoPreview ? (
+        {logoUrl ? (
           <div className="relative w-10 h-10 flex-shrink-0">
             <img
-              src={logoPreview}
+              src={logoUrl}
               alt="Logo prévisualisation"
               className="w-10 h-10 object-contain rounded border border-gray-200"
             />
@@ -117,40 +88,31 @@ export default function BrandCreateForm() {
         )}
 
         {/* Bouton upload */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleLogoUpload}
-          className="hidden"
-          id="brand-logo-upload"
-        />
-        <label
-          htmlFor="brand-logo-upload"
-          className={`cursor-pointer inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+        <button
+          type="button"
+          onClick={() => setShowMediaPicker(true)}
+          className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition"
         >
-          {uploading ? (
-            <>
-              <svg className="animate-spin w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-              </svg>
-              Upload...
-            </>
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-              </svg>
-              {logoUrl ? 'Changer le logo' : 'Logo (optionnel)'}
-            </>
-          )}
-        </label>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          {logoUrl ? 'Changer le logo' : 'Logo (optionnel)'}
+        </button>
+
+        {showMediaPicker && (
+          <MediaPickerModal 
+            onClose={() => setShowMediaPicker(false)}
+            onSelect={(url) => {
+              setLogoUrl(url);
+              setShowMediaPicker(false);
+            }}
+          />
+        )}
       </div>
 
       <button
         type="submit"
-        disabled={loading || uploading}
+        disabled={loading}
         className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-md transition disabled:opacity-50"
       >
         {loading ? 'Ajout...' : 'Ajouter'}

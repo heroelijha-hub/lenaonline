@@ -33,7 +33,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [selectedBrand, setSelectedBrand] = useState<string>(initialData?.brandId || '');
   const [showNewBrand, setShowNewBrand] = useState(false);
   const [newBrandName, setNewBrandName] = useState('');
-  const [newBrandLogo, setNewBrandLogo] = useState<File | null>(null);
+  const [newBrandLogo, setNewBrandLogo] = useState('');
+  const [showBrandMediaPicker, setShowBrandMediaPicker] = useState(false);
 
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [forceSalesIds, setForceSalesIds] = useState<string[]>(initialData?.forceSales?.map((p: any) => p.id) || []);
@@ -42,10 +43,9 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [saleTogetherSearch, setSaleTogetherSearch] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(parseJSON(initialData?.images));
   const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
-  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showProductMediaPicker, setShowProductMediaPicker] = useState(false);
   const isEditing = !!initialData;
 
   const [title, setTitle] = useState(initialData?.title || '');
@@ -126,13 +126,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       if (showNewBrand && newBrandName) {
         const brandFormData = new FormData();
         brandFormData.append('name', newBrandName);
-        let logoUrl = '';
-        if (newBrandLogo) {
-          const fd = new FormData();
-          fd.append('file', newBrandLogo);
-          const secureUrl = await uploadImage(fd);
-          if (secureUrl) logoUrl = secureUrl;
-        }
+        let logoUrl = newBrandLogo;
         const brandRes = await createBrandAction(brandFormData, logoUrl);
         if (brandRes.success && brandRes.brand) {
           finalBrandId = brandRes.brand.id;
@@ -157,15 +151,6 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       formData.append('description', description);
       
       const imageUrls: string[] = [...existingImages];
-      if (imageFiles.length > 0) {
-        // Upload each file
-        for (const file of imageFiles) {
-          const imageFormData = new FormData();
-          imageFormData.append('file', file);
-          const url = await uploadImage(imageFormData);
-          if (url) imageUrls.push(url);
-        }
-      }
 
       formData.append('slug', slug);
       formData.append('categoryIds', JSON.stringify(selectedCategories));
@@ -303,12 +288,25 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{t('brand_logo_label')}</label>
-                  <input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={(e) => setNewBrandLogo(e.target.files?.[0] || null)}
-                    className="w-full text-sm text-gray-500"
-                  />
+                  {newBrandLogo && (
+                    <img src={newBrandLogo} alt="Logo" className="h-12 w-auto mb-2 border rounded" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowBrandMediaPicker(true)}
+                    className="bg-gray-100 text-gray-700 border border-gray-300 px-3 py-1.5 rounded text-sm font-semibold hover:bg-gray-200 transition"
+                  >
+                    Choisir un logo
+                  </button>
+                  {showBrandMediaPicker && (
+                    <MediaPickerModal 
+                      onClose={() => setShowBrandMediaPicker(false)}
+                      onSelect={(url) => {
+                        setNewBrandLogo(url);
+                        setShowBrandMediaPicker(false);
+                      }}
+                    />
+                  )}
                 </div>
                 <button 
                   type="button" 
@@ -515,34 +513,22 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             </div>
           )}
           <div className="flex items-center gap-4">
-            <input 
-              type="file" 
-              multiple
-              accept="image/*"
-              onChange={(e) => {
-                const files = Array.from(e.target.files || []).slice(0, 20);
-                setImageFiles(files);
-              }}
-              className="px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100" 
-            />
             <button 
               type="button" 
-              onClick={() => setShowMediaPicker(true)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-semibold bg-gray-50 text-gray-700 hover:bg-gray-100 h-[42px]"
+              onClick={() => setShowProductMediaPicker(true)}
+              className="px-4 py-2 border border-orange-500 rounded-md text-sm font-semibold bg-orange-50 text-orange-600 hover:bg-orange-100 h-[42px] transition flex items-center gap-2"
             >
-              {t('browse_library')}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              Ajouter une image
             </button>
           </div>
-          {imageFiles.length > 0 && (
-            <p className="mt-2 text-sm text-gray-500">{imageFiles.length} {t('new_files_selected')}</p>
-          )}
 
-          {showMediaPicker && (
+          {showProductMediaPicker && (
             <MediaPickerModal 
-              onClose={() => setShowMediaPicker(false)} 
+              onClose={() => setShowProductMediaPicker(false)} 
               onSelect={(url) => {
                 setExistingImages([...existingImages, url]);
-                setShowMediaPicker(false);
+                setShowProductMediaPicker(false);
               }} 
             />
           )}
