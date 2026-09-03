@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const cartStore = useCartStore();
-  const t = useTranslations('Home');
+  const t = useTranslations('ProductCard');
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,7 +39,7 @@ export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: a
 
 export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const cartStore = useCartStore();
-  const t = useTranslations('Home');
+  const t = useTranslations('ProductCard');
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product
 export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const wishlistStore = useWishlistStore();
   const isWishlisted = wishlistStore.hasItem(product.id);
-  const t = useTranslations('Home');
+  const t = useTranslations('ProductCard');
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -87,7 +87,7 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: an
       style={{ backgroundColor: btnBgColor || '#ffffff', color: isWishlisted ? (btnTextColor || '#ea580c') : '#9ca3af' }}
       className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
       aria-label="Wishlist"
-      title={t('wishlist') || 'Wishlist'}
+      title={t('add_to_wishlist')}
     >
       <svg className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -97,7 +97,7 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: an
 };
 
 export const QuickviewBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
-  const t = useTranslations('Home');
+  const t = useTranslations('ProductCard');
 
   const handleQuickview = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -114,7 +114,7 @@ export const QuickviewBtn = ({ product, btnBgColor, btnTextColor }: { product: a
       style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563' }}
       className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
       aria-label="Quickview"
-      title={t('quick_view') || 'Quick View'}
+      title={t('quick_view')}
     >
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
