@@ -1,8 +1,11 @@
 import { MetadataRoute } from 'next';
 import prisma from '@/lib/prisma';
 
+import { getContactSettings } from '@/actions/contactSettings';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com'; // Replace with the real domain
+  const contactSettings = await getContactSettings();
 
   // 1. Pages statiques
   const staticPages = [
@@ -25,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/${contactSettings.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.5,

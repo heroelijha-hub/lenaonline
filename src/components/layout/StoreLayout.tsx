@@ -64,6 +64,7 @@ type StoreLayoutProps = {
     mobileHeaderBorderColor?: string;
     allCategoriesBgColor?: string;
     allCategoriesTextColor?: string;
+    contactSlug?: string;
   };
   userRole?: 'ADMIN' | 'CUSTOMER' | null;
 };
@@ -151,6 +152,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         footerPaymentMastercard={settings.footerPaymentMastercard}
         footerPaymentVisa={settings.footerPaymentVisa}
         footerPaymentOpay={settings.footerPaymentOpay}
+        contactSlug={settings.contactSlug}
       />
     </div>
   );

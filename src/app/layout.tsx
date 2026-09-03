@@ -65,13 +65,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     taxIncludedInPrice: settingsMap.TAX_INCLUDED_IN_PRICE === 'true',
     defaultVatRate: Number(settingsMap.DEFAULT_VAT_RATE) || 20,
   };
+  const contactSlug = settingsMap.CONTACT_SLUG || 'contact';
   const defaultMenuLinks = [
     { label: 'Home', url: '/' },
     { label: 'Shop', url: '/shop' },
     { label: 'Pages', url: '/pages' },
     { label: 'Blogs', url: '/blogs' },
     { label: 'Portfolios', url: '/portfolios' },
-    { label: 'Contact Us', url: '/contact' },
+    { label: 'Contact Us', url: `/${contactSlug}` },
   ];
 
   let menuLinks = defaultMenuLinks;
@@ -180,6 +181,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
     allCategoriesBgColor: settingsMap.ALL_CATEGORIES_BG_COLOR || '#111827', // text-gray-900 by default
     allCategoriesTextColor: settingsMap.ALL_CATEGORIES_TEXT_COLOR || '#ffffff', // text-white
+    contactSlug: contactSlug,
   };
 
   const cookieStore = await cookies();

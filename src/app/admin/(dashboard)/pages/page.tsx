@@ -3,11 +3,13 @@ import { deletePage } from '@/actions/pages';
 import AdminPagination from '@/components/admin/AdminPagination';
 import { getTranslations } from 'next-intl/server';
 import prisma from '@/lib/prisma';
+import { getContactSettings } from '@/actions/contactSettings';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPagesList({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const t = await getTranslations('AdminPages');
+  const contactSettings = await getContactSettings();
   const resolvedParams = await searchParams;
   const page = parseInt(resolvedParams.page || '1', 10);
   const limit = 20;
@@ -67,14 +69,14 @@ export default async function AdminPagesList({ searchParams }: { searchParams: P
             {/* Ligne fixe pour la page Contact */}
             <tr className="hover:bg-gray-50">
               <td className="px-6 py-4 font-medium text-gray-900">{t('contact_system_page')}</td>
-              <td className="px-6 py-4 text-gray-500">/contact</td>
+              <td className="px-6 py-4 text-gray-500">/{contactSettings.slug}</td>
               <td className="px-6 py-4">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                   {t('published')}
                 </span>
               </td>
               <td className="px-6 py-4 text-right space-x-3">
-                <Link href="/contact" target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
+                <Link href={`/${contactSettings.slug}`} target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
                   {t('view')}
                 </Link>
                 <Link href="/admin/pages/contact" className="text-orange-600 hover:text-orange-900 font-medium text-sm">

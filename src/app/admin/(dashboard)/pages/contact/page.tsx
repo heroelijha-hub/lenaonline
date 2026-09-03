@@ -15,11 +15,13 @@ export default function AdminContactPageForm() {
   
   const [formData, setFormData] = useState({
     title: '',
+    slug: '',
     text: '',
     address: '',
     phone: '',
     emailDisplay: '',
-    formRecipient: ''
+    formRecipient: '',
+    bottomText: ''
   });
 
   useEffect(() => {
@@ -83,6 +85,18 @@ export default function AdminContactPageForm() {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Slug de la page (URL)</label>
+            <input
+              type="text"
+              required
+              className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+              value={formData.slug}
+              onChange={(e) => setFormData({...formData, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-')})}
+            />
+            <p className="text-xs text-gray-500 mt-1">L'adresse de la page (ex: <i>contact</i> ou <i>kontakt</i>). Utilisez uniquement des minuscules et des tirets.</p>
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Texte principal (Paragraphes)</label>
             <textarea
               required
@@ -143,6 +157,21 @@ export default function AdminContactPageForm() {
               value={formData.formRecipient}
               onChange={(e) => setFormData({...formData, formRecipient: e.target.value})}
             />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+          <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2">Texte Additionnel (Bas de page)</h2>
+          <p className="text-xs text-gray-500 mb-2">Ce texte sera affiché en dessous du formulaire de contact et des informations de contact. Laissez vide pour ne rien afficher.</p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Texte du bas de page</label>
+            <textarea
+              rows={4}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+              value={formData.bottomText}
+              onChange={(e) => setFormData({...formData, bottomText: e.target.value})}
+            />
+            <p className="text-xs text-gray-500 mt-1">Vous pouvez faire des retours à la ligne pour séparer les paragraphes.</p>
           </div>
         </div>
 

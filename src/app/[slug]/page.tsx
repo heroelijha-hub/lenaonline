@@ -1,11 +1,19 @@
 import { notFound } from 'next/navigation';
 import { getPageBySlug } from '@/actions/pages';
 import SafeHTML from '@/components/SafeHTML';
+import { getContactSettings } from '@/actions/contactSettings';
+import ContactPageContent from '@/components/contact/ContactPageContent';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
+  
+  const contactSettings = await getContactSettings();
+  if (resolvedParams.slug === contactSettings.slug) {
+    return { title: contactSettings.title };
+  }
+
   const { data: page } = await getPageBySlug(resolvedParams.slug);
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
   
@@ -22,6 +30,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CustomPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
+
+  const contactSettings = await getContactSettings();
+  if (resolvedParams.slug === contactSettings.slug) {
+    return <ContactPageContent />;
+  }
+
   const { data: page, success } = await getPageBySlug(resolvedParams.slug);
 
   if (!success || !page || !page.isPublished) {

@@ -34,6 +34,7 @@ type FooterProps = {
   footerPaymentMastercard?: boolean;
   footerPaymentVisa?: boolean;
   footerPaymentOpay?: boolean;
+  contactSlug?: string;
 };
 
 export default function Footer({ 
@@ -65,7 +66,8 @@ export default function Footer({
   footerPaymentGooglePay = true,
   footerPaymentMastercard = true,
   footerPaymentVisa = true,
-  footerPaymentOpay = true
+  footerPaymentOpay = true,
+  contactSlug = 'contact'
 }: FooterProps) {
   const t = useTranslations('Footer');
 
@@ -128,7 +130,7 @@ export default function Footer({
               <li><Link href="/pages/shipping" className="hover:text-yellow-400 transition">Versandrichtlinien</Link></li>
               <li><Link href="/pages/payment" className="hover:text-yellow-400 transition">Zahlungpolitik</Link></li>
               <li><Link href="/pages/returns" className="hover:text-yellow-400 transition">Rückgabe- und Rückerstattungsrichtlinie</Link></li>
-              <li><Link href="/contact" className="hover:text-yellow-400 transition">Kontakt</Link></li>
+              <li><Link href={`/${contactSlug}`} className="hover:text-yellow-400 transition">Kontakt</Link></li>
             </ul>
           </div>
 
