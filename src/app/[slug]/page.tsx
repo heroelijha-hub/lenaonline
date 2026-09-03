@@ -4,8 +4,9 @@ import SafeHTML from '@/components/SafeHTML';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { data: page } = await getPageBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const { data: page } = await getPageBySlug(resolvedParams.slug);
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
   
   if (!page || !page.isPublished) {
@@ -19,8 +20,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function CustomPage({ params }: { params: { slug: string } }) {
-  const { data: page, success } = await getPageBySlug(params.slug);
+export default async function CustomPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const { data: page, success } = await getPageBySlug(resolvedParams.slug);
 
   if (!success || !page || !page.isPublished) {
     notFound();
