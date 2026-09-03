@@ -167,7 +167,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <span className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium z-20 relative">
             {product.categories && product.categories.length > 0 ? (
               product.categories.map((c, idx) => (
-                <span key={c.id}>
+                <span key={idx}>
                   <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
                     {c.name}
                   </Link>
@@ -256,7 +256,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         <span className="text-xs text-gray-500 mb-1 z-20 relative">
           {product.categories && product.categories.length > 0 ? (
             product.categories.map((c, idx) => (
-              <span key={c.id}>
+              <span key={idx}>
                 <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
                   {c.name}
                 </Link>
