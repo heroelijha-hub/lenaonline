@@ -54,7 +54,7 @@ const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, 
       </Link>
       <div className="flex items-center justify-between mt-auto pt-2">
         <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
-        <AddToCartBtn product={p} />
+        <AddToCartBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
       </div>
     </div>
   );
@@ -71,8 +71,8 @@ const BigCard = ({
       
       {/* Action buttons (Wishlist, Quickview) on top right */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto">
-        <WishlistBtn product={p} />
-        <QuickviewBtn product={p} />
+        <WishlistBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
+        <QuickviewBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
       </div>
 
       <Link href={linkUrl} className="flex-1 flex flex-col cursor-pointer">
@@ -84,7 +84,7 @@ const BigCard = ({
           )}
         </div>
         <div className="mt-auto">
-        <p className="text-xs text-gray-500 mb-1">{category}</p>
+        <p className="text-xs text-gray-500 mb-1 z-20 relative"><Link href={(p as any).categorySlug ? `/shop?category=${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>{category}</Link></p>
         <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
           {title}
         </h3>
@@ -102,7 +102,7 @@ const BigCard = ({
       </Link>
       <div className="flex items-center justify-between mt-auto">
         <Price amount={price} className="font-bold text-gray-900" />
-        <AddToCartBtnBig product={p} />
+        <AddToCartBtnBig product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
       </div>
     </div>
   );
@@ -139,12 +139,15 @@ export default async function BestSeller({ config }: { config?: any }) {
       slug: p.slug,
       imageUrl: p.images[0],
       category: p.categories && p.categories.length > 0 ? p.categories[0].name : 'N/A',
+      categorySlug: p.categories && p.categories.length > 0 ? p.categories[0].slug : '',
       title: p.title,
       rating: ratingCount > 0 ? Math.round(avgRating) : 0,
       ratingText: ratingCount > 0 ? `(${avgRating.toFixed(2)})` : '',
       price: p.price,
       oldPrice: p.compareAtPrice ? p.compareAtPrice : undefined,
-      imagePlaceholder: '🛍️'
+      imagePlaceholder: '🛍️',
+      btnBgColor: settings.BESTSELLER_BTN_BG_COLOR,
+      btnTextColor: settings.BESTSELLER_BTN_TEXT_COLOR,
     };
   }) : [];
 

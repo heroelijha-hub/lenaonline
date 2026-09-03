@@ -164,8 +164,17 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         </div>
 
         <div className="p-6 flex flex-col flex-grow">
-          <span className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium">
-            {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('general')}
+          <span className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium z-20 relative">
+            {product.categories && product.categories.length > 0 ? (
+              product.categories.map((c, idx) => (
+                <span key={c.id}>
+                  <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                    {c.name}
+                  </Link>
+                  {idx < product.categories!.length - 1 ? ', ' : ''}
+                </span>
+              ))
+            ) : t('general')}
           </span>
           
           <h3 
@@ -244,8 +253,17 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
       {/* Product Details */}
       <div className="p-4 flex flex-col flex-grow">
         {/* Category */}
-        <span className="text-xs text-gray-500 mb-1">
-          {product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : t('general')}
+        <span className="text-xs text-gray-500 mb-1 z-20 relative">
+          {product.categories && product.categories.length > 0 ? (
+            product.categories.map((c, idx) => (
+              <span key={c.id}>
+                <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                  {c.name}
+                </Link>
+                {idx < product.categories!.length - 1 ? ', ' : ''}
+              </span>
+            ))
+          ) : t('general')}
         </span>
         
         {/* Title constrained to 2 lines max with ellipsis */}

@@ -4,7 +4,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useTranslations } from 'next-intl';
 
-export const AddToCartBtn = ({ product }: { product: any }) => {
+export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const cartStore = useCartStore();
   const t = useTranslations('Home');
 
@@ -25,7 +25,8 @@ export const AddToCartBtn = ({ product }: { product: any }) => {
   return (
     <button 
       onClick={handleAddToCart}
-      className="bg-gray-900 text-white p-2 rounded-full hover:bg-orange-500 transition-colors shadow-sm"
+      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff' }}
+      className="p-2 rounded-full hover:opacity-80 transition-opacity shadow-sm"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -36,7 +37,7 @@ export const AddToCartBtn = ({ product }: { product: any }) => {
   );
 };
 
-export const AddToCartBtnBig = ({ product }: { product: any }) => {
+export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const cartStore = useCartStore();
   const t = useTranslations('Home');
 
@@ -57,7 +58,8 @@ export const AddToCartBtnBig = ({ product }: { product: any }) => {
   return (
     <button 
       onClick={handleAddToCart}
-      className="bg-gray-900 text-white p-2.5 rounded-full hover:bg-orange-500 transition-colors shadow-sm"
+      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff' }}
+      className="p-2.5 rounded-full hover:opacity-80 transition-opacity shadow-sm"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -68,7 +70,7 @@ export const AddToCartBtnBig = ({ product }: { product: any }) => {
   );
 };
 
-export const WishlistBtn = ({ product }: { product: any }) => {
+export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const wishlistStore = useWishlistStore();
   const isWishlisted = wishlistStore.hasItem(product.id);
   const t = useTranslations('Home');
@@ -82,7 +84,8 @@ export const WishlistBtn = ({ product }: { product: any }) => {
   return (
     <button 
       onClick={handleToggle}
-      className="bg-white p-2 rounded-full shadow hover:text-orange-500 transition-colors"
+      style={{ backgroundColor: btnBgColor || '#ffffff', color: isWishlisted ? (btnTextColor || '#ea580c') : '#9ca3af' }}
+      className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
       aria-label="Wishlist"
       title={t('wishlist') || 'Wishlist'}
     >
@@ -93,7 +96,7 @@ export const WishlistBtn = ({ product }: { product: any }) => {
   );
 };
 
-export const QuickviewBtn = ({ product }: { product: any }) => {
+export const QuickviewBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
   const t = useTranslations('Home');
 
   const handleQuickview = (e: React.MouseEvent) => {
@@ -108,7 +111,8 @@ export const QuickviewBtn = ({ product }: { product: any }) => {
   return (
     <button 
       onClick={handleQuickview}
-      className="bg-white p-2 rounded-full shadow hover:text-orange-500 transition-colors"
+      style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563' }}
+      className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
       aria-label="Quickview"
       title={t('quick_view') || 'Quick View'}
     >
