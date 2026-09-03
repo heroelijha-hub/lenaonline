@@ -62,7 +62,7 @@
     "hero_3_title": "Venta 10%\nDescuento Altavoz",
     "hero_4_title": "Auriculares Escucha con\nCorazón",
     "hero_4_subtitle": "Última llamada para hasta 25% de descuento",
-    "shop_now": "Shop Now",
+    "shop_now": "Comprar ahora",
     "best_deals_title": "Mejores ofertas de hoy",
     "best_seller_title": "Nuestro más vendido",
     "latest_blogs_title": "Nuestros últimos blogs",
@@ -337,7 +337,7 @@
     "tracking_number": "Número de seguimiento",
     "buyer_info": "Comprador",
     "payment": "Pago",
-    "order_intro": "El pedido #{id} se realizó el {date} y actualmente está {status}.",
+    "order_intro": "El pedido #{id} se realizó el <mark>{date}</mark> y actualmente está <mark>{status}</mark>.",
     "product": "Producto",
     "payment_stripe": "Tarjeta de crédito (Stripe)",
     "payment_bank_transfer": "Transferencia bancaria"
