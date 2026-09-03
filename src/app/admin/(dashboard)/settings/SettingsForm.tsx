@@ -852,7 +852,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {tSettings('header_logo')}
                 </label>
-                {headerLogoImage && !logoFile && (
+                {headerLogoImage && (
                   <div className="mb-4 flex items-center gap-4">
                     <div className="bg-gray-50 p-2 border border-gray-200 rounded">
                       <img src={headerLogoImage} alt="Current Logo" className="h-12 object-contain" />
@@ -901,7 +901,7 @@ export default function SettingsForm({ initialSettings }: { initialSettings: Rec
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {tSettings('favicon_label')}
                 </label>
-                {faviconImage && !faviconFile && (
+                {faviconImage && (
                   <div className="mb-4 flex items-center gap-4">
                     <div className="bg-gray-50 p-2 border border-gray-200 rounded">
                       <img src={faviconImage} alt="Current Favicon" className="w-8 h-8 object-contain rounded" />

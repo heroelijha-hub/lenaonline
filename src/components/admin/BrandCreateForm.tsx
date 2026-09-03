@@ -29,7 +29,7 @@ export default function BrandCreateForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (uploading) return;
+    if (loading) return;
     setLoading(true);
     const formData = new FormData();
     formData.append('name', name);
