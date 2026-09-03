@@ -8,6 +8,287 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+  reviews   Review[]
+}
+
+model Category {
+  id       String     @id @default(uuid()) @db.Uuid
+  name     String     @unique
+  slug     String?    @unique
+  parentId String?    @db.Uuid
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  products Product[]  @relation("ProductCategories")
+}
+
+model Brand {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @unique
+  slug     String    @unique
+  logo     String?
+  products Product[]
+}
+
+model Tag {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @unique
+  slug     String    @unique
+  products Product[] @relation("ProductTags")
+}
+
+model Product {
+  id                     String      @id @default(uuid()) @db.Uuid
+  title                  String
+  slug                   String      @unique @default("temp-slug")
+  type                   ProductType @default(SIMPLE)
+  shortDescription       String?
+  description            String?
+  price                  Float
+  compareAtPrice         Float?
+  images                 String[]
+  stock                  Int?
+  attributes             Json?
+  variations             Json?
+  isBestSeller           Boolean     @default(false)
+  isDealOfTheDay         Boolean     @default(false)
+  discountLabel          String?
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+  brandId                String?     @db.Uuid
+  deletedAt              DateTime?
+  isDeleted              Boolean     @default(false)
+  gtin                   String?
+  orderItems             OrderItem[]
+  brand                  Brand?      @relation(fields: [brandId], references: [id])
+  reviews                Review[]
+  Product_ForceSales_A   Product[]   @relation("ForceSales")
+  Product_ForceSales_B   Product[]   @relation("ForceSales")
+  categories             Category[]  @relation("ProductCategories")
+  tags                   Tag[]       @relation("ProductTags")
+  Product_SaleTogether_A Product[]   @relation("SaleTogether")
+  Product_SaleTogether_B Product[]   @relation("SaleTogether")
+
+  @@index([isDeleted])
+}
+
+model Setting {
+  id        String   @id @default(uuid()) @db.Uuid
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  status             OrderStatus        @default(PENDING)
+  paymentMethod      PaymentMethod      @default(STRIPE)
+  total              Float
+  stripeSessionId    String?
+  trackingNumber     String?            @unique
+  originCity         String?
+  originCountry      String?
+  originLat          Float?
+  originLng          Float?
+  destinationAddress String?
+  destinationCountry String?
+  destinationLat     Float?
+  destinationLng     Float?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  deliveredAt        DateTime?
+  reviewRequestSent  Boolean            @default(false)
+  deliveryPositions  DeliveryPosition[]
+  user               User               @relation(fields: [userId], references: [id])
+  orderItems         OrderItem[]
+
+  @@index([userId, status])
+}
+
+model OrderItem {
+  id          String  @id @default(uuid()) @db.Uuid
+  orderId     String  @db.Uuid
+  productId   String  @db.Uuid
+  quantity    Int
+  price       Float
+  variationId String?
+  attributes  Json?
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id])
+}
+
+model Coupon {
+  id        String     @id @default(uuid()) @db.Uuid
+  code      String     @unique
+  type      CouponType @default(PERCENTAGE)
+  value     Float
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model ChatSession {
+  id         String            @id @default(uuid()) @db.Uuid
+  guestId    String
+  guestName  String?
+  guestEmail String?
+  status     ChatSessionStatus @default(OPEN)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  messages   ChatMessage[]
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid()) @db.Uuid
+  sessionId String      @db.Uuid
+  sender    ChatSender
+  content   String
+  isRead    Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String?          @db.Uuid
+  guestId   String?
+  isAdmin   Boolean          @default(false)
+  type      NotificationType @default(SYSTEM)
+  message   String
+  link      String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([isRead, isAdmin])
+}
+
+model ShippingZone {
+  id        String           @id @default(uuid()) @db.Uuid
+  name      String           @unique
+  isActive  Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  methods   ShippingMethod[]
+}
+
+model ShippingMethod {
+  id             String       @id @default(uuid()) @db.Uuid
+  zoneId         String       @db.Uuid
+  type           String
+  rate           Float        @default(0.0)
+  minOrderAmount Float?
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  zone           ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+}
+
+model DeliveryPosition {
+  id        String   @id @default(uuid()) @db.Uuid
+  orderId   String   @db.Uuid
+  city      String
+  country   String
+  latitude  Float
+  longitude Float
+  note      String?
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id            String   @id @default(uuid()) @db.Uuid
+  productId     String   @db.Uuid
+  userId        String?  @db.Uuid
+  rating        Int
+  comment       String
+  isApproved    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  reviewerEmail String?
+  reviewerName  String?
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Article {
+  id          String           @id @default(uuid()) @db.Uuid
+  title       String
+  slug        String           @unique
+  content     String
+  excerpt     String?
+  image       String?
+  category    String?
+  tags        String[]         @default([])
+  isPublished Boolean          @default(true)
+  authorName  String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  comments    ArticleComment[]
+}
+
+model ArticleComment {
+  id         String   @id @default(uuid()) @db.Uuid
+  articleId  String   @db.Uuid
+  author     String
+  email      String?
+  content    String
+  isApproved Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
+
+model Page {
+  id             String   @id @default(uuid()) @db.Uuid
+  title          String
+  slug           String   @unique
+  desktopContent String?
+  mobileContent  String?
+  isPublished    Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AbandonedCart {
+  id               String              @id @default(uuid()) @db.Uuid
+  email            String              @unique
+  firstName        String?
+  lastName         String?
+  phone            String?
+  cartData         Json
+  totalAmount      Float
+  status           AbandonedCartStatus @default(ABANDONED)
+  recoveredOrderId String?             @db.Uuid
+  lastActive       DateTime            @default(now())
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([status, lastActive])
+}
+
+model Media {
+  id          String    @id @default(uuid()) @db.Uuid
+  url         String    @unique
+  title       String?
+  altText     String?
+  description String?
+  legend      String?
+  link        String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime?
+}
+
 enum Role {
   ADMIN
   CUSTOMER
@@ -40,141 +321,6 @@ enum PaymentMethod {
   BANK_TRANSFER
 }
 
-model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  email     String   @unique
-  role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
-  reviews   Review[]
-}
-
-model Category {
-  id       String     @id @default(uuid()) @db.Uuid
-  name     String     @unique
-  slug     String?    @unique
-  parentId String?    @db.Uuid
-  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryHierarchy")
-  products Product[]  @relation("ProductCategories")
-}
-
-model Brand {
-  id       String     @id @default(uuid()) @db.Uuid
-  name     String     @unique
-  slug     String     @unique
-  logo     String?
-  products Product[]
-}
-
-model Tag {
-  id       String     @id @default(uuid()) @db.Uuid
-  name     String     @unique
-  slug     String     @unique
-  products Product[]  @relation("ProductTags")
-}
-
-model Product {
-  id             String      @id @default(uuid()) @db.Uuid
-  title          String
-  slug           String      @unique @default("temp-slug")
-  type           ProductType @default(SIMPLE)
-  shortDescription String?   @db.Text
-  description    String?     @db.Text
-  price          Float       // Global/Base price (lowest variation price or simple price)
-  compareAtPrice Float?
-  gtin           String?     // GTIN / EAN / UPC barcode
-  images         String[]
-  categories     Category[]  @relation("ProductCategories")
-  brandId        String?     @db.Uuid
-  brand          Brand?      @relation(fields: [brandId], references: [id])
-  stock          Int?        // Null = En stock (illimité), used for simple product
-  attributes     Json?       // e.g. [{"name": "Couleur", "options": ["Rouge", "Bleu"]}]
-  variations     Json?       // e.g. [{"id": "uuid", "attributes": {"Couleur": "Rouge"}, "price": 10, "stock": 5}]
-  isBestSeller   Boolean     @default(false)
-  isDealOfTheDay Boolean     @default(false)
-  discountLabel  String?
-  tags           Tag[]       @relation("ProductTags")
-  orderItems     OrderItem[]
-  reviews        Review[]
-  
-  forceSales     Product[] @relation("ForceSales")
-  forcedBy       Product[] @relation("ForceSales")
-  
-  saleTogether   Product[] @relation("SaleTogether")
-  soldTogetherBy Product[] @relation("SaleTogether")
-
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  isDeleted      Boolean     @default(false)
-  deletedAt      DateTime?
-
-  @@index([isDeleted])
-}
-
-model Setting {
-  id        String   @id @default(uuid()) @db.Uuid
-  key       String   @unique
-  value     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Order {
-  id             String      @id @default(uuid()) @db.Uuid
-  userId         String      @db.Uuid
-  user           User        @relation(fields: [userId], references: [id])
-  status         OrderStatus @default(PENDING)
-  paymentMethod  PaymentMethod @default(STRIPE)
-  total          Float
-  stripeSessionId String?
-  orderItems     OrderItem[]
-  
-  // Tracking Fields
-  trackingNumber String?     @unique
-  originCity     String?
-  originCountry  String?
-  originLat      Float?
-  originLng      Float?
-  destinationAddress String?
-  destinationCountry String?
-  destinationLat Float?
-  destinationLng Float?
-  
-  deliveryPositions DeliveryPosition[]
-
-  deliveredAt       DateTime?
-  reviewRequestSent Boolean   @default(false)
-
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-
-  @@index([userId, status])
-}
-
-model OrderItem {
-  id          String   @id @default(uuid()) @db.Uuid
-  orderId     String   @db.Uuid
-  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId   String   @db.Uuid
-  product     Product  @relation(fields: [productId], references: [id])
-  quantity    Int
-  price       Float
-  variationId String?
-  attributes  Json?
-}
-
-model Coupon {
-  id                 String     @id @default(uuid()) @db.Uuid
-  code               String     @unique
-  type               CouponType @default(PERCENTAGE)
-  value              Float
-  isActive           Boolean    @default(true)
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-}
-
 enum ChatSessionStatus {
   OPEN
   CLOSED
@@ -185,168 +331,13 @@ enum ChatSender {
   ADMIN
 }
 
-model ChatSession {
-  id         String            @id @default(uuid()) @db.Uuid
-  guestId    String            // Can be a session/localstorage UUID for unauthenticated users
-  guestName  String?
-  guestEmail String?
-  status    ChatSessionStatus @default(OPEN)
-  messages  ChatMessage[]
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-}
-
-model ChatMessage {
-  id        String      @id @default(uuid()) @db.Uuid
-  sessionId String      @db.Uuid
-  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sender    ChatSender
-  content   String      @db.Text
-  isRead    Boolean     @default(false)
-  createdAt DateTime    @default(now())
-
-  @@index([sessionId, createdAt])
-}
-
 enum NotificationType {
   CHAT
   ORDER
   SYSTEM
 }
 
-model Notification {
-  id        String           @id @default(uuid()) @db.Uuid
-  userId    String?          @db.Uuid // Nullable if it's for an admin or unauthenticated guest
-  guestId   String?          // To track notifications for unauthenticated users
-  isAdmin   Boolean          @default(false) // True if this notification is for the admin dashboard
-  type      NotificationType @default(SYSTEM)
-  message   String           @db.Text
-  link      String?          // Optional URL to redirect to when clicked
-  isRead    Boolean          @default(false)
-  createdAt DateTime         @default(now())
-
-  @@index([isRead, isAdmin])
-}
-
-model ShippingZone {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @unique
-  isActive  Boolean  @default(true)
-  methods   ShippingMethod[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ShippingMethod {
-  id               String       @id @default(uuid()) @db.Uuid
-  zoneId           String       @db.Uuid
-  zone             ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
-  type             String       // "Livraison Gratuite", "Standard", "Expresse", "Collecte au magasin"
-  rate             Float        @default(0.0)
-  minOrderAmount   Float?
-  isActive         Boolean      @default(true)
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-}
-
-model DeliveryPosition {
-  id        String   @id @default(uuid()) @db.Uuid
-  orderId   String   @db.Uuid
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  city      String
-  country   String
-  latitude  Float
-  longitude Float
-  note      String?  @db.Text
-  createdAt DateTime @default(now())
-}
-
-model Review {
-  id           String   @id @default(uuid()) @db.Uuid
-  productId    String   @db.Uuid
-  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  userId       String?  @db.Uuid
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reviewerName String?
-  reviewerEmail String?
-  rating       Int
-  comment      String   @db.Text
-  isApproved   Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model Article {
-  id          String           @id @default(uuid()) @db.Uuid
-  title       String
-  slug        String           @unique
-  content     String           @db.Text
-  excerpt     String?          @db.Text
-  image       String?
-  category    String?
-  tags        String[]         @default([])
-  isPublished Boolean          @default(true)
-  authorName  String?
-  comments    ArticleComment[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-}
-
-model ArticleComment {
-  id        String   @id @default(uuid()) @db.Uuid
-  articleId String   @db.Uuid
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  author    String
-  email     String?
-  content   String   @db.Text
-  isApproved Boolean @default(true) // We will auto-approve for now or allow admin to moderate
-  createdAt DateTime @default(now())
-}
-
-model Page {
-  id             String   @id @default(uuid()) @db.Uuid
-  title          String
-  slug           String   @unique
-  desktopContent String?  @db.Text
-  mobileContent  String?  @db.Text
-  isPublished    Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-}
-
 enum AbandonedCartStatus {
   ABANDONED
   RECOVERED
 }
-
-model AbandonedCart {
-  id               String   @id @default(uuid()) @db.Uuid
-  email            String   @unique
-  firstName        String?
-  lastName         String?
-  phone            String?
-  cartData         Json
-  totalAmount      Float
-  status           AbandonedCartStatus @default(ABANDONED)
-  recoveredOrderId String?  @db.Uuid
-  lastActive       DateTime @default(now())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  @@index([status, lastActive])
-}
-
-model Media {
-  id          String   @id @default(uuid()) @db.Uuid
-  url         String   @unique
-  title       String?
-  altText     String?
-  description String?  @db.Text
-  legend      String?
-  link        String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  isDeleted   Boolean  @default(false)
-  deletedAt   DateTime?
-}
-
