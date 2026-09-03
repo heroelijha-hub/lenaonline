@@ -1,12 +1,12 @@
 import ContactForm from './ContactForm';
 import { getContactSettings } from '@/actions/contactSettings';
 import { getTranslations } from 'next-intl/server';
+import SafeHTML from '@/components/SafeHTML';
 
 export default async function ContactPageContent() {
   const settings = await getContactSettings();
   const t = await getTranslations('Contact');
   const textParagraphs = settings.text.split('\n').filter((p: string) => p.trim() !== '');
-  const bottomTextParagraphs = settings.bottomText ? settings.bottomText.split('\n').filter((p: string) => p.trim() !== '') : [];
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900 font-sans">
       
@@ -95,12 +95,10 @@ export default async function ContactPageContent() {
           </div>
 
           {/* Bottom Text Section */}
-          {bottomTextParagraphs.length > 0 && (
+          {settings.bottomText && (
             <div className="mt-16 pt-10 border-t border-gray-200">
-              <div className="max-w-3xl mx-auto space-y-4 text-sm text-gray-600 leading-relaxed text-center">
-                {bottomTextParagraphs.map((paragraph: string, idx: number) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
+              <div className="max-w-3xl mx-auto prose prose-orange text-sm text-gray-600 leading-relaxed">
+                <SafeHTML html={settings.bottomText} />
               </div>
             </div>
           )}

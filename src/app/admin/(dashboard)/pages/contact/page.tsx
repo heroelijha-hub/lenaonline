@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getContactSettings, updateContactSettings } from '@/actions/contactSettings';
 import { useTranslations } from 'next-intl';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 export default function AdminContactPageForm() {
   const t = useTranslations('AdminPages');
@@ -165,13 +166,11 @@ export default function AdminContactPageForm() {
           <p className="text-xs text-gray-500 mb-2">Ce texte sera affiché en dessous du formulaire de contact et des informations de contact. Laissez vide pour ne rien afficher.</p>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Texte du bas de page</label>
-            <textarea
-              rows={4}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+            <RichTextEditor 
               value={formData.bottomText}
-              onChange={(e) => setFormData({...formData, bottomText: e.target.value})}
+              onChange={(val) => setFormData({...formData, bottomText: val})}
             />
-            <p className="text-xs text-gray-500 mt-1">Vous pouvez faire des retours à la ligne pour séparer les paragraphes.</p>
+            <p className="text-xs text-gray-500 mt-1">Éditeur de texte enrichi pour formater le contenu.</p>
           </div>
         </div>
 
