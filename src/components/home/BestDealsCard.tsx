@@ -68,7 +68,7 @@ export default function BestDealsCard({
     <>
       <div 
         onClick={() => router.push(`/product/${product.slug || product.id}`)}
-        className="flex-none w-[250px] md:w-[300px] p-5 flex flex-col group cursor-pointer hover:shadow-lg transition bg-white border rounded-lg snap-start relative"
+        className="flex-none w-[250px] md:w-[300px] p-5 flex flex-col group/card cursor-pointer hover:shadow-lg transition bg-white border rounded-lg snap-start relative"
         style={{ borderColor }}
       >
         {/* Product Image Area */}
@@ -81,15 +81,15 @@ export default function BestDealsCard({
           
           {/* Image or Placeholder */}
           {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover:scale-105 transition duration-500" />
+            <Image src={product.imageUrl} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain group-hover/card:scale-105 transition duration-500" />
           ) : (
-            <div className="text-7xl group-hover:scale-110 transition duration-500">
+            <div className="text-7xl group-hover/card:scale-110 transition duration-500">
               {product.imagePlaceholder}
             </div>
           )}
 
           {/* Hover Overlay Icons Vertical Stack */}
-          <div className="absolute top-2 right-2 flex flex-col items-center justify-center gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute top-2 right-2 flex flex-col items-center justify-center gap-2 z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
             <button
               onClick={handleAddToCart}
               className="p-2 rounded-md shadow-sm transition transform hover:scale-105"
@@ -127,7 +127,7 @@ export default function BestDealsCard({
         {/* Product Info */}
         <div className="mt-auto">
           <p className="text-xs text-gray-500 mb-1">{product.category}</p>
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
+          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover/card:text-orange-500 transition">
             {product.title}
           </h3>
           

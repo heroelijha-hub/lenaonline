@@ -33,7 +33,7 @@ export default function ProductSliderWrapper({ children }: { children: ReactNode
   };
 
   return (
-    <div className="relative group">
+    <div className="relative group/slider">
       {/* Scrollable Container */}
       <div 
         ref={scrollRef}
@@ -45,14 +45,14 @@ export default function ProductSliderWrapper({ children }: { children: ReactNode
       {/* Navigation Arrows (Visible only on hover on Desktop) */}
       <button 
         onClick={scrollLeft}
-        className="absolute top-[40%] -left-5 transform -translate-y-1/2 bg-white text-gray-900 border shadow-lg rounded-full w-10 h-10 md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 z-10 hover:bg-orange-500 hover:text-white hidden"
+        className="absolute top-[40%] -left-5 transform -translate-y-1/2 bg-white text-gray-900 border shadow-lg rounded-full w-10 h-10 md:flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-opacity disabled:opacity-0 z-10 hover:bg-orange-500 hover:text-white hidden"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
       </button>
 
       <button 
         onClick={scrollRight}
-        className="absolute top-[40%] -right-5 transform -translate-y-1/2 bg-white text-gray-900 border shadow-lg rounded-full w-10 h-10 md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 z-10 hover:bg-orange-500 hover:text-white hidden"
+        className="absolute top-[40%] -right-5 transform -translate-y-1/2 bg-white text-gray-900 border shadow-lg rounded-full w-10 h-10 md:flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-opacity disabled:opacity-0 z-10 hover:bg-orange-500 hover:text-white hidden"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
       </button>
