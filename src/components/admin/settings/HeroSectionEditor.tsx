@@ -81,10 +81,10 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
     const prefix = getPrefix(blockNum);
     return (
       <div className="space-y-4 mt-4">
-        {renderContentInput('Titre', `${prefix}_TITLE`, 'Entrez le titre...')}
-        {renderContentInput('Sous-titre / badge', `${prefix}_SUBTITLE`, 'Sous-titre...')}
-        {!isStyle2 && blockNum === 1 && renderContentInput('Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
-        {renderContentInput('Bouton', `${prefix}_CTA`, 'Shop Now')}
+        {renderContentInput('Title', `${prefix}_TITLE`, 'Enter the title...')}
+        {renderContentInput('Subtitle / badge', `${prefix}_SUBTITLE`, 'Subtitle...')}
+        {!isStyle2 && blockNum === 1 && renderContentInput('Price/Text', 'HERO_1_PRICE', 'from $349.99')}
+        {renderContentInput('Button', `${prefix}_CTA`, 'Shop Now')}
       </div>
     );
   };
@@ -103,20 +103,20 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
               <>
                 <img src={section.settings[`${prefix}_BG_IMAGE`]} className="absolute inset-0 w-full h-full object-cover rounded-xl opacity-50" />
                 <div className="relative z-10 flex gap-2">
-                  <button type="button" onClick={() => handleUpload(section.id, `${prefix}_BG_IMAGE`)} className="bg-white text-gray-700 px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm border">Modifier</button>
-                  <button type="button" onClick={() => updateSectionSettings(section.id, `${prefix}_BG_IMAGE`, '')} className="bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm">Supprimer</button>
+                  <button type="button" onClick={() => handleUpload(section.id, `${prefix}_BG_IMAGE`)} className="bg-white text-gray-700 px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm border">Edit</button>
+                  <button type="button" onClick={() => updateSectionSettings(section.id, `${prefix}_BG_IMAGE`, '')} className="bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm">Remove</button>
                 </div>
               </>
             ) : (
               <button type="button" onClick={() => handleUpload(section.id, `${prefix}_BG_IMAGE`)} className="flex flex-col items-center text-gray-400 hover:text-gray-600 transition">
                 <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
-                <span className="text-xs font-medium">Ajouter une image</span>
+                <span className="text-xs font-medium">Add an image</span>
               </button>
             )}
           </div>
           <div className="flex items-center gap-2 mt-2">
             <input type="checkbox" id={`show_bg_${prefix}`} checked={section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_BG_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-600 focus:ring-orange-500" />
-            <label htmlFor={`show_bg_${prefix}`} className="text-xs text-gray-600">Afficher l'image de fond</label>
+            <label htmlFor={`show_bg_${prefix}`} className="text-xs text-gray-600">Show background image</label>
           </div>
         </div>
 
@@ -128,29 +128,30 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
               <>
                 <img src={section.settings[`${prefix}_IMAGE`]} className="absolute inset-0 w-full h-full object-contain p-2 rounded-xl" />
                 <div className="relative z-10 flex gap-2 opacity-0 hover:opacity-100 bg-white/80 p-2 rounded-lg transition">
-                  <button type="button" onClick={() => handleUpload(section.id, `${prefix}_IMAGE`)} className="bg-white text-gray-700 px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm border">Modifier</button>
-                  <button type="button" onClick={() => updateSectionSettings(section.id, `${prefix}_IMAGE`, '')} className="bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm">Supprimer</button>
+                  <button type="button" onClick={() => handleUpload(section.id, `${prefix}_IMAGE`)} className="bg-white text-gray-700 px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm border">Edit</button>
+                  <button type="button" onClick={() => updateSectionSettings(section.id, `${prefix}_IMAGE`, '')} className="bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-sm">Remove</button>
                 </div>
               </>
             ) : (
               <button type="button" onClick={() => handleUpload(section.id, `${prefix}_IMAGE`)} className="flex flex-col items-center text-gray-400 hover:text-gray-600 transition">
                 <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
-                <span className="text-xs font-medium">Ajouter une image</span>
+                <span className="text-xs font-medium">Add an image</span>
               </button>
             )}
           </div>
           <div className="flex items-center gap-2 mt-2">
             <input type="checkbox" id={`show_img_${prefix}`} checked={section.settings[`${prefix}_SHOW_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-600 focus:ring-orange-500" />
-            <label htmlFor={`show_img_${prefix}`} className="text-xs text-gray-600">Afficher l'image principale</label>
+            <label htmlFor={`show_img_${prefix}`} className="text-xs text-gray-600">Show main image</label>
           </div>
         </div>
 
         {/* Typographie & Couleurs des textes */}
         <div className="mt-8 border-t pt-6">
-          {renderDesignTextControls('Titre', `${prefix}_TITLE`, `${prefix}_TEXT_COLOR`, '#1e293b')}
-          {renderDesignTextControls('Sous-titre', `${prefix}_SUBTITLE`, `${prefix}_SUBTITLE_COLOR`, '#ef4444')}
-          {!isStyle2 && blockNum === 1 && renderDesignTextControls('Price/Texte', 'HERO_1_PRICE', 'HERO_1_TEXT_COLOR', '#1e293b')}
-          {renderDesignTextControls('Bouton', `${prefix}_CTA`, `${prefix}_BTN_TEXT_COLOR`, '#ffffff')}
+          <h4 className="text-sm font-semibold text-gray-800 mb-4">Typography & Colors</h4>
+          {renderDesignTextControls('Title', `${prefix}_TITLE`, `${prefix}_TEXT_COLOR`, '#1e293b')}
+          {renderDesignTextControls('Subtitle', `${prefix}_SUBTITLE`, `${prefix}_SUBTITLE_COLOR`, '#ef4444')}
+          {!isStyle2 && blockNum === 1 && renderDesignTextControls('Price/Text', 'HERO_1_PRICE', 'HERO_1_TEXT_COLOR', '#1e293b')}
+          {renderDesignTextControls('Button', `${prefix}_CTA`, `${prefix}_BTN_TEXT_COLOR`, '#ffffff')}
         </div>
 
         {/* Colors */}
@@ -199,7 +200,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           )}
           <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0">HERO</span>
           <h2 className="font-bold text-base text-gray-800 whitespace-nowrap">
-            {activeBlock === 0 ? 'Main Header' : `Bloc ${activeBlock}`}
+            {activeBlock === 0 ? 'Main Header' : `Block ${activeBlock}`}
           </h2>
         </div>
         <button type="button" className="text-green-600 hover:text-green-800 transition bg-green-50 p-1.5 rounded-full">
@@ -265,13 +266,13 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
 
             {/* BLOCS List */}
             <div className="pt-2">
-              <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider mb-3">Blocs</h3>
+              <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider mb-3">Blocks</h3>
               <div className="flex flex-col gap-2">
                 {Array.from({ length: totalBlocks }).map((_, i) => {
                   const num = i + 1;
                   const blockTitle = isStyle2 
-                    ? (num === 1 ? 'Bloc 1 (gauche)' : num === 2 ? 'Bloc 2 (haut droite)' : 'Bloc 3 (bas droite)') 
-                    : (num === 1 ? 'Bloc 1 (gauche)' : num === 2 ? 'Bloc 2 (haut centre)' : num === 3 ? 'Bloc 3 (haut droite)' : 'Bloc 4 (bas droite)');
+                    ? (num === 1 ? 'Block 1 (left)' : num === 2 ? 'Block 2 (top right)' : 'Block 3 (bottom right)') 
+                    : (num === 1 ? 'Block 1 (left)' : num === 2 ? 'Block 2 (top center)' : num === 3 ? 'Block 3 (top right)' : 'Block 4 (bottom right)');
                   
                   return (
                     <button 
@@ -302,7 +303,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                   activeTab === 'content' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
-                Contenu
+                Content
               </button>
               <button 
                 type="button"
