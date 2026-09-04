@@ -24,7 +24,9 @@ export default function BestDealsCard({
   product,
   borderColor,
   btnBgColor,
-  btnTextColor
+  btnTextColor,
+  btnHoverBgColor,
+  btnHoverTextColor
 }: {
   product: any;
   borderColor: string;
