@@ -199,7 +199,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           )}
           <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">HERO</span>
           <h2 className="font-bold text-base text-gray-800">
-            {activeBlock === 0 ? 'Main Header' : `Image Box ${activeBlock}`}
+            {activeBlock === 0 ? 'Main Header' : `Hero Bloc ${activeBlock}`}
           </h2>
         </div>
         <button type="button" className="text-green-600 hover:text-green-800 transition bg-green-50 p-1.5 rounded-full">
@@ -244,7 +244,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             {/* Mobile Display */}
             <div>
               <h3 className="font-bold text-sm text-gray-800 mb-3">Mobile display</h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-2">
                 {Array.from({ length: totalBlocks }).map((_, i) => {
                   const num = i + 1;
                   const mobileHideKey = isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`;
