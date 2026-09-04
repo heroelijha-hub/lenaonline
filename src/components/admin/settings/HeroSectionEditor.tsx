@@ -197,9 +197,9 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
               </svg>
             </button>
           )}
-          <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">HERO</span>
-          <h2 className="font-bold text-base text-gray-800">
-            {activeBlock === 0 ? 'Main Header' : `Hero Bloc ${activeBlock}`}
+          <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0">HERO</span>
+          <h2 className="font-bold text-base text-gray-800 whitespace-nowrap">
+            {activeBlock === 0 ? 'Main Header' : `Bloc ${activeBlock}`}
           </h2>
         </div>
         <button type="button" className="text-green-600 hover:text-green-800 transition bg-green-50 p-1.5 rounded-full">
