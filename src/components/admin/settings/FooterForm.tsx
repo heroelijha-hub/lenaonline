@@ -49,11 +49,11 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
-            <input type="color" value={footerBgColor} onChange={(e) => setFooterBgColor(e.target.value)} className="w-16 h-10 border border-gray-300 rounded-md cursor-pointer" />
+            <div className="relative w-10 h-10">  <input type="color" value={footerBgColor} onChange={(e) => setFooterBgColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerBgColor }} /></div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
-            <input type="color" value={footerTextColor} onChange={(e) => setFooterTextColor(e.target.value)} className="w-16 h-10 border border-gray-300 rounded-md cursor-pointer" />
+            <div className="relative w-10 h-10">  <input type="color" value={footerTextColor} onChange={(e) => setFooterTextColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerTextColor }} /></div>
           </div>
         </div>
         <div>
@@ -65,18 +65,9 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
           <input type="text" value={footerCopyright} onChange={(e) => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
         <div className="flex gap-6">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={footerShowAddress} onChange={(e) => setFooterShowAddress(e.target.checked)} className="w-4 h-4 text-orange-600 rounded" />
-            <span className="text-sm">Show Address</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={footerShowEmail} onChange={(e) => setFooterShowEmail(e.target.checked)} className="w-4 h-4 text-orange-600 rounded" />
-            <span className="text-sm">Show Email</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={footerShowPhone} onChange={(e) => setFooterShowPhone(e.target.checked)} className="w-4 h-4 text-orange-600 rounded" />
-            <span className="text-sm">Show Phone</span>
-          </label>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>Show Address</span></div>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>Show Email</span></div>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>Show Phone</span></div>
         </div>
       </div>
 

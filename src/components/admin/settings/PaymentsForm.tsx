@@ -61,10 +61,7 @@ export default function PaymentsForm({ initialSettings }: { initialSettings: Rec
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
         <div className="md:col-span-2 flex items-center justify-between border-b pb-2 mb-4">
           <h4 className="text-md font-bold text-gray-900">{tSettings('stripe_config')}</h4>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={enableStripe} onChange={(e) => setEnableStripe(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-            <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
-          </label>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={enableStripe} onClick={() => setEnableStripe(!enableStripe)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${enableStripe ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${enableStripe ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setEnableStripe(!enableStripe)}>{tSettings('enable_this_mode')}</span></div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('stripe_public_key')}</label>
@@ -77,10 +74,7 @@ export default function PaymentsForm({ initialSettings }: { initialSettings: Rec
 
         <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
           <h4 className="text-md font-bold text-gray-900">{tSettings('paypal_config')}</h4>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={enablePaypal} onChange={(e) => setEnablePaypal(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-            <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
-          </label>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={enablePaypal} onClick={() => setEnablePaypal(!enablePaypal)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${enablePaypal ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${enablePaypal ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setEnablePaypal(!enablePaypal)}>{tSettings('enable_this_mode')}</span></div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('paypal_client_id')}</label>
@@ -93,10 +87,7 @@ export default function PaymentsForm({ initialSettings }: { initialSettings: Rec
 
         <div className="md:col-span-2 mt-4 flex items-center justify-between border-b pb-2 mb-4">
           <h4 className="text-md font-bold text-gray-900">{tSettings('bank_transfer_config')}</h4>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={enableBankTransfer} onChange={(e) => setEnableBankTransfer(e.target.checked)} className="w-4 h-4 text-orange-600 focus:ring-orange-500 rounded" />
-            <span className="text-sm font-medium text-gray-700">{tSettings('enable_this_mode')}</span>
-          </label>
+          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={enableBankTransfer} onClick={() => setEnableBankTransfer(!enableBankTransfer)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${enableBankTransfer ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${enableBankTransfer ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setEnableBankTransfer(!enableBankTransfer)}>{tSettings('enable_this_mode')}</span></div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('iban')}</label>

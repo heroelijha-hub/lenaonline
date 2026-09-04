@@ -52,7 +52,7 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
       <div className="space-y-6 pt-4 border-t border-gray-100">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Theme Color</label>
-          <input type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="w-16 h-10 border border-gray-300 rounded-md cursor-pointer" />
+          <div className="relative w-10 h-10">  <input type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: themeColor }} /></div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Header Announcement</label>

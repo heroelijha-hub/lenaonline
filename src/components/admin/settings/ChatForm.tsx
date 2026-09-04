@@ -40,8 +40,7 @@ export default function ChatForm({ initialSettings }: { initialSettings: Record<
 
       <div className="space-y-6 pt-4 border-t border-gray-100">
         <div className="flex items-center gap-3">
-          <input type="checkbox" id="chatEnabled" checked={chatEnabled} onChange={(e) => setChatEnabled(e.target.checked)} className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-blue-500" />
-          <label htmlFor="chatEnabled" className="text-sm font-medium text-gray-700 cursor-pointer">Enable Customer Chat</label>
+          <button type="button" role="switch" aria-checked={chatEnabled} onClick={() => setChatEnabled(!chatEnabled)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${chatEnabled ? "bg-blue-600" : "bg-gray-200"}`}>  <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${chatEnabled ? "translate-x-5" : "translate-x-0"}`} /></button><span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setChatEnabled(!chatEnabled)}>Enable Customer Chat</span>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Chat Store Name</label>

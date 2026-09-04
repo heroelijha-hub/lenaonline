@@ -40,12 +40,10 @@ export default function TaxesForm({ initialSettings }: { initialSettings: Record
 
       <div className="space-y-6 pt-4 border-t border-gray-100">
         <div className="flex items-center gap-3">
-          <input type="checkbox" id="taxIncluded" checked={taxIncludedInPrice} onChange={(e) => setTaxIncludedInPrice(e.target.checked)} className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-blue-500" />
-          <label htmlFor="taxIncluded" className="text-sm font-medium text-gray-700 cursor-pointer">{tSettings('tax_inclusive')}</label>
+          <button type="button" role="switch" aria-checked={taxIncludedInPrice} onClick={() => setTaxIncludedInPrice(!taxIncludedInPrice)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${taxIncludedInPrice ? "bg-blue-600" : "bg-gray-200"}`}>  <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${taxIncludedInPrice ? "translate-x-5" : "translate-x-0"}`} /></button><span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setTaxIncludedInPrice(!taxIncludedInPrice)}>{tSettings('tax_inclusive')}</span>
         </div>
         <div className="flex items-center gap-3">
-          <input type="checkbox" id="enableEuVat" checked={enableEuVat} onChange={(e) => setEnableEuVat(e.target.checked)} className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-blue-500" />
-          <label htmlFor="enableEuVat" className="text-sm font-medium text-gray-700 cursor-pointer">{tSettings('dynamic_eu_vat')}</label>
+          <button type="button" role="switch" aria-checked={enableEuVat} onClick={() => setEnableEuVat(!enableEuVat)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${enableEuVat ? "bg-blue-600" : "bg-gray-200"}`}>  <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${enableEuVat ? "translate-x-5" : "translate-x-0"}`} /></button><span className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setEnableEuVat(!enableEuVat)}>{tSettings('dynamic_eu_vat')}</span>
         </div>
         <div className="w-full md:w-1/2">
           <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('default_vat_rate')}</label>
