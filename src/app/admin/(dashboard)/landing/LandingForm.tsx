@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { updateSetting } from '@/actions/settings';
 import { uploadImage, getMinimalProducts } from '@/actions/admin';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
+import HeroSectionEditor from '@/components/admin/settings/HeroSectionEditor';
 import Cookies from 'js-cookie';
 
 export type SectionType = 'Hero' | 'BestDeals' | 'BestSeller' | 'LatestBlogs' | 'Newsletter' | 'PromoBanners' | 'ProductGrid';
@@ -500,95 +501,13 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     }
 
     if (section.type === 'Hero') {
-      const isStyle2 = section.settings.HERO_LAYOUT === 'STYLE_2';
       return (
-        <div className="p-4 bg-gray-50 border rounded space-y-4">
-          <div className="mb-4 bg-white p-3 border rounded shadow-sm">
-            <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">🎨 Layout Design</h4>
-            <div className="flex flex-col gap-2">
-              <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                <input 
-                  type="radio" 
-                  name={`layout-${section.id}`}
-                  checked={!isStyle2}
-                  onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_1')}
-                  className="text-orange-600 focus:ring-orange-500"
-                />
-                <span>Style 1 (4 Blocks)</span>
-              </label>
-              <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                <input 
-                  type="radio" 
-                  name={`layout-${section.id}`}
-                  checked={isStyle2}
-                  onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_2')}
-                  className="text-orange-600 focus:ring-orange-500"
-                />
-                <span>Style 2 (3 Blocks - Modern)</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="mb-4 bg-white p-3 border rounded shadow-sm">
-            <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2">📱 Mobile Display</h4>
-            <p className="text-xs text-gray-500 mb-3">Select the blocks you want to <strong>display</strong> on the mobile version :</p>
-            <div className="grid grid-cols-2 gap-3">
-              {[1, 2, 3, ...(isStyle2 ? [] : [4])].map(num => (
-                <label key={num} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-2 rounded border hover:bg-gray-100 transition">
-                  <input 
-                    type="checkbox" 
-                    checked={section.settings[isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`] !== 'true'} 
-                    onChange={e => updateSectionSettings(section.id, isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`, e.target.checked ? 'false' : 'true')}
-                    className="rounded text-orange-600 focus:ring-orange-500 w-4 h-4"
-                  />
-                  <span className="font-medium">Show Block {num}</span>
-                </label>
-              ))}
-            </div>
-            {isStyle2 && (
-              <p className="text-xs text-gray-500 mt-2 italic">Note: In Style 2, blocks 2 and 3 are stacked in the same slide on mobile to preserve proportions.</p>
-            )}
-          </div>
-          
-          <p className="text-sm text-gray-500 mb-4">Edit the main texts and designs below.</p>
-          
-          <div className="flex flex-col gap-4">
-            <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 1 (Left)</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_1_TITLE' : 'HERO_1_TITLE', 'BRENNHOLZ UND PELLETS...', isStyle2 ? 'STYLE2_HERO_1_TEXT_COLOR' : 'HERO_1_TEXT_COLOR', '#1e293b')}
-              {renderResponsiveInput(section, 'Subtitle / Badge', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE' : 'HERO_1_SUBTITLE', 'Supper Discount', isStyle2 ? 'STYLE2_HERO_1_SUBTITLE_COLOR' : 'HERO_1_SUBTITLE_COLOR', '#ef4444')}
-              {!isStyle2 && renderResponsiveInput(section, 'Price/Texte', 'HERO_1_PRICE', 'from $349.99', 'HERO_1_TEXT_COLOR', '#1e293b')}
-              {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_1_CTA' : 'HERO_1_CTA', 'Shop Now')}
-              {renderHeroBlockConfig(section, 1, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
-            </div>
-
-            <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 2 (Top Right)' : 'Bloc 2 (Top Center)'}</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_2_TITLE' : 'HERO_2_TITLE', 'Heavy On Features...', isStyle2 ? 'STYLE2_HERO_2_TEXT_COLOR' : 'HERO_2_TEXT_COLOR', '#1e293b')}
-              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE' : 'HERO_2_SUBTITLE', 'Use Code: SALE35%', isStyle2 ? 'STYLE2_HERO_2_SUBTITLE_COLOR' : 'HERO_2_SUBTITLE_COLOR', '#6b7280')}
-              {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_2_CTA' : 'HERO_2_CTA', 'Shop Now')}
-              {renderHeroBlockConfig(section, 2, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
-            </div>
-
-            <div className="border p-3 rounded bg-white">
-              <h4 className="font-bold text-sm mb-2 text-red-600">{isStyle2 ? 'Bloc 3 (Bottom Right)' : 'Bloc 3 (Top Right)'}</h4>
-              {renderResponsiveInput(section, 'Title', isStyle2 ? 'STYLE2_HERO_3_TITLE' : 'HERO_3_TITLE', 'Sale 10% Off', isStyle2 ? 'STYLE2_HERO_3_TEXT_COLOR' : 'HERO_3_TEXT_COLOR', '#1e293b')}
-              {renderResponsiveInput(section, 'Subtitle', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE' : 'HERO_3_SUBTITLE', 'New Product', isStyle2 ? 'STYLE2_HERO_3_SUBTITLE_COLOR' : 'HERO_3_SUBTITLE_COLOR', '#ef4444')}
-              {renderResponsiveInput(section, 'Button', isStyle2 ? 'STYLE2_HERO_3_CTA' : 'HERO_3_CTA', 'Shop Now')}
-              {renderHeroBlockConfig(section, 3, isStyle2 ? 'STYLE2_HERO' : 'HERO')}
-            </div>
-
-            {!isStyle2 && (
-              <div className="border p-3 rounded bg-white">
-                <h4 className="font-bold text-sm mb-2 text-red-600">Bloc 4 (Bottom Right)</h4>
-                {renderResponsiveInput(section, 'Title', 'HERO_4_TITLE', 'Headphones Listen...', 'HERO_4_TEXT_COLOR', '#1e293b')}
-                {renderResponsiveInput(section, 'Subtitle', 'HERO_4_SUBTITLE', 'Last call...', 'HERO_4_SUBTITLE_COLOR', '#6b7280')}
-                {renderResponsiveInput(section, 'Button', 'HERO_4_CTA', 'Shop Now')}
-                {renderHeroBlockConfig(section, 4, 'HERO')}
-              </div>
-            )}
-          </div>
-        </div>
+        <HeroSectionEditor 
+          section={section} 
+          previewMode={previewMode} 
+          updateSectionSettings={updateSectionSettings} 
+          handleUpload={handleUpload} 
+        />
       );
     }
 
