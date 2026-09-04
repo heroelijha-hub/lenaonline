@@ -128,6 +128,16 @@ export default function ProductGridEditor({
           <h4 className="text-sm font-bold text-gray-800 mb-4 border-b pb-2">General Settings</h4>
           
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1 text-gray-700">Total number of products</label>
+              <input 
+                type="number" 
+                min="1" max="50"
+                value={section.settings.maxProducts || '12'} 
+                onChange={e => updateSectionSettings(section.id, 'maxProducts', e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500 outline-none mb-4"
+              />
+            </div>
             {section.type === 'ProductGrid' && (
               <>
                 <div>
@@ -136,16 +146,6 @@ export default function ProductGridEditor({
                     <option value="1">Variant 1 (Button at bottom of card)</option>
                     <option value="2">Variant 2 (Button on image on hover)</option>
                   </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-gray-700">Total number of products</label>
-                  <input 
-                    type="number" 
-                    min="1" max="50"
-                    value={section.settings.maxProducts || '12'} 
-                    onChange={e => updateSectionSettings(section.id, 'maxProducts', e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500 outline-none"
-                  />
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div>

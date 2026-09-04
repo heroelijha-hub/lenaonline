@@ -31,7 +31,8 @@ export default async function BestDeals({ config }: { config?: any }) {
   const filterType = config?.filterType || 'ON_SALE';
   const categoryId = config?.categoryId || undefined;
   
-  const dbProducts = await getFilteredProducts(filterType, categoryId, 6, config?.productIds);
+  const maxNum = parseInt(config?.maxProducts || '6', 10) || 6;
+  const dbProducts = await getFilteredProducts(filterType, categoryId, maxNum, config?.productIds);
   const settingsDb = await prisma.setting.findMany();
   const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
@@ -123,9 +124,9 @@ export default async function BestDeals({ config }: { config?: any }) {
             <BestDealsCard 
               key={product.id}
               product={product}
-              borderColor={settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
-              btnBgColor={settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
-              btnTextColor={settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
+              borderColor={config?.cardBorderColor || settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
+              btnBgColor={config?.btnBgColor || settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
+              btnTextColor={config?.btnTextColor || settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
             />
           ))}
         </ProductSliderWrapper>
