@@ -13,7 +13,8 @@ export default function SettingsSidebar() {
       title: tSettings('group_general') || 'GENERAL',
       items: [
         { label: tSettings('nav_language') || 'Language and translation', href: '/admin/settings/language', icon: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129' },
-        { label: tSettings('nav_regional') || 'Regional and currency', href: '/admin/settings/regional', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' }
+        { label: tSettings('nav_regional') || 'Regional and currency', href: '/admin/settings/regional', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+        { label: tSettings('nav_seo') || 'SEO & OpenGraph', href: '/admin/settings/seo', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' }
       ]
     },
     {
