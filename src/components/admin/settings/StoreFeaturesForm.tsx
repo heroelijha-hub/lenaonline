@@ -34,8 +34,8 @@ export default function StoreFeaturesForm({ initialSettings }: { initialSettings
   return (
     <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Store features</h2>
-        <p className="text-gray-500 mt-1">Settings for this category only.</p>
+        <h2 className="text-2xl font-bold text-gray-900">{tSettings('nav_features') || 'Store features'}</h2>
+        <p className="text-gray-500 mt-1">{tSettings('settings_category_only') || 'Settings for this category only.'}</p>
       </div>
 
       {message && <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">{message}</div>}
@@ -61,7 +61,7 @@ export default function StoreFeaturesForm({ initialSettings }: { initialSettings
 
       <div className="pt-4 border-t border-gray-200">
         <button type="submit" disabled={isLoading} className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400 text-sm font-semibold transition-colors">
-          {isLoading ? tSettings('saving') : 'Save changes'}
+          {isLoading ? tSettings('saving') : (tSettings('save_changes') || 'Save changes')}
         </button>
       </div>
     </form>
