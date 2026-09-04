@@ -130,7 +130,7 @@ export default function MobileSidebar({
                     {categories.map((cat) => (
                       <li key={cat.id}>
                         <Link 
-                          href={`/search?category=${cat.id}`}
+                          href={`/product-category/${cat.slug || cat.id}`}
                           onClick={onClose}
                           className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-orange-600 rounded-lg transition-colors"
                         >

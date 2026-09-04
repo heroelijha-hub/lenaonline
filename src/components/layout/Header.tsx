@@ -445,7 +445,7 @@ export default function Header({
                   {categories.map((cat) => (
                     <Link 
                       key={cat.id} 
-                      href={`/search?category=${cat.id}`}
+                      href={`/product-category/${cat.slug || cat.id}`}
                       className={`block px-6 py-2 hover:bg-orange-50 hover:text-orange-600 transition ${!cat.parentId ? 'font-bold text-gray-900' : 'text-gray-700'}`}
                       onClick={() => setIsBottomCategoryOpen(false)}
                     >

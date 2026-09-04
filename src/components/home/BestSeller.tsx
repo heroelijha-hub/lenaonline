@@ -89,7 +89,7 @@ const BigCard = ({
         </Link>
         <div className="mt-auto">
           <p className="text-xs text-gray-500 mb-1 z-20 relative">
-            <Link href={(p as any).categorySlug ? `/shop?category=${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline">
+            <Link href={(p as any).categorySlug ? `/product-category/${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline">
               {category}
             </Link>
           </p>

@@ -168,7 +168,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             {product.categories && product.categories.length > 0 ? (
               product.categories.map((c, idx) => (
                 <span key={idx}>
-                  <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                  <Link href={`/product-category/${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
                     {c.name}
                   </Link>
                   {idx < product.categories!.length - 1 ? ', ' : ''}
@@ -257,7 +257,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           {product.categories && product.categories.length > 0 ? (
             product.categories.map((c, idx) => (
               <span key={idx}>
-                <Link href={`/shop?category=${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                <Link href={`/product-category/${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
                   {c.name}
                 </Link>
                 {idx < product.categories!.length - 1 ? ', ' : ''}

@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <span className="text-gray-300">/</span>
             {product.categories && product.categories.length > 0 ? (
               <Link 
-                href={`/search?category=${product.categories[0].id}`}
+                href={`/product-category/${product.categories[0].slug || product.categories[0].id}`}
                 className="hover:text-orange-500 transition"
               >
                 {product.categories[0].name}
