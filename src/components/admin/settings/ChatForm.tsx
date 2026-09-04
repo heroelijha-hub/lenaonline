@@ -8,18 +8,22 @@ export default function ChatForm({ initialSettings }: { initialSettings: Record<
   const tSettings = useTranslations('AdminSettings');
   const router = useRouter();
   
+  const [chatEnabled, setChatEnabled] = useState(initialSettings.CHAT_ENABLED === 'true');
+  const [chatStoreName, setChatStoreName] = useState(initialSettings.CHAT_STORE_NAME || 'My Store');
+  const [chatStoreIcon, setChatStoreIcon] = useState(initialSettings.CHAT_STORE_ICON || '');
+  
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage('');
     
-    // Add specific settings for this section
-    const settingsMap: Record<string, string> = {};
-
-    await updateSettingsBatch(settingsMap);
+    await updateSettingsBatch({
+      CHAT_ENABLED: chatEnabled.toString(),
+      CHAT_STORE_NAME: chatStoreName,
+      CHAT_STORE_ICON: chatStoreIcon
+    });
 
     setMessage(tSettings('update_success'));
     setIsLoading(false);
@@ -29,28 +33,24 @@ export default function ChatForm({ initialSettings }: { initialSettings: Record<
   return (
     <form onSubmit={handleSubmit} className="space-y-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Customer chat</h2>
-        <p className="text-gray-500 mt-1">Settings for this category only.</p>
+        <h2 className="text-2xl font-bold text-gray-900">Customer Chat</h2>
+        <p className="text-gray-500 mt-1">Enable live chat module on the storefront.</p>
       </div>
+      {message && <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">{message}</div>}
 
-      {message && (
-        <div className="bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-          {message}
+      <div className="space-y-6 pt-4 border-t border-gray-100">
+        <div className="flex items-center gap-3">
+          <input type="checkbox" id="chatEnabled" checked={chatEnabled} onChange={(e) => setChatEnabled(e.target.checked)} className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-blue-500" />
+          <label htmlFor="chatEnabled" className="text-sm font-medium text-gray-700 cursor-pointer">Enable Customer Chat</label>
         </div>
-      )}
-
-      <div className="grid grid-cols-1 gap-6">
-        <div className="py-8 text-center text-gray-500">
-          <p>The fields for Customer chat have been modularized and will be populated here.</p>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Chat Store Name</label>
+          <input type="text" value={chatStoreName} onChange={(e) => setChatStoreName(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
       </div>
 
       <div className="pt-4 border-t border-gray-200">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400 text-sm font-semibold transition-colors"
-        >
+        <button type="submit" disabled={isLoading} className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400 text-sm font-semibold transition-colors">
           {isLoading ? tSettings('saving') : 'Save changes'}
         </button>
       </div>
