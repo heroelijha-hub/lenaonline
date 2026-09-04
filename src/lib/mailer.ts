@@ -86,10 +86,10 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Merci pour votre commande</h1>
         <p>Bonjour ${escapeHtml(userName) || 'Client'},</p>
-        <p>Nous avons bien reçu votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
+        <p>We have received your order <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
         <p>Elle est en cours de traitement et sera expédiée très prochainement.</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Résumé de la commande</h3>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
         <p style="color: #666; font-size: 13px;">Commande n°${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -158,9 +158,9 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a;">Nouvelle Commande : Nr. ${order.id.slice(-6).toUpperCase()}</h1>
-        <p>Vous avez reçu une nouvelle commande de <strong>${escapeHtml(customerDetails.name) || 'un client'}</strong> :</p>
+        <p>You have received a new order from <strong>${escapeHtml(customerDetails.name) || 'a customer'}</strong> :</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Résumé de la commande</h3>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
         <p style="color: #666; font-size: 13px;">Commande N° ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">

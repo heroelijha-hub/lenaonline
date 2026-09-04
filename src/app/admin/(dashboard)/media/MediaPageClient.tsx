@@ -8,6 +8,8 @@ export default function MediaPageClient() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [mediaType, setMediaType] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [isBulkSelectMode, setIsBulkSelectMode] = useState(false);
@@ -25,17 +27,17 @@ export default function MediaPageClient() {
     });
   };
 
-  const fetchMedia = async (p = 1, s = '') => {
+  const fetchMedia = async (p = 1, s = '', t = mediaType, d = dateFilter) => {
     setIsLoading(true);
-    const res = await getMediaList(p, 20, s);
+    const res = await getMediaList(p, 24, s, t, d);
     setMedia(res.items);
     setTotal(res.total);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchMedia(page, search);
-  }, [page, search]);
+    fetchMedia(page, search, mediaType, dateFilter);
+  }, [page, search, mediaType, dateFilter]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,7 +50,7 @@ export default function MediaPageClient() {
     const res = await uploadMediaAction(formData);
     if (res.success) {
       setPage(1);
-      fetchMedia(1, search);
+      fetchMedia(1, search, mediaType, dateFilter);
     } else {
       alert(res.error || t('upload_error'));
     }
@@ -87,7 +89,7 @@ export default function MediaPageClient() {
     if (res.success) {
       setSelectedMedia([]);
       setIsBulkSelectMode(false);
-      fetchMedia(page, search);
+      fetchMedia(page, search, mediaType, dateFilter);
     } else {
       alert(res.error);
     }
@@ -107,14 +109,27 @@ export default function MediaPageClient() {
         </div>
 
         {/* Filters */}
-        <select className="border border-gray-300 rounded px-3 py-1.5 text-gray-700 outline-none">
-          <option>Tous les médias</option>
-          <option>Images</option>
-          <option>Vidéos</option>
+        <select 
+          className="border border-gray-300 rounded px-3 py-1.5 text-gray-700 outline-none"
+          value={mediaType}
+          onChange={(e) => { setMediaType(e.target.value); setPage(1); }}
+        >
+          <option value="all">{t('filter_all_media', { defaultMessage: 'Tous les médias' })}</option>
+          <option value="images">{t('filter_images', { defaultMessage: 'Images' })}</option>
+          <option value="videos">{t('filter_videos', { defaultMessage: 'Vidéos' })}</option>
+          <option value="documents">{t('filter_documents', { defaultMessage: 'Documents' })}</option>
+          <option value="audios">{t('filter_audios', { defaultMessage: 'Audios' })}</option>
         </select>
         
-        <select className="border border-gray-300 rounded px-3 py-1.5 text-gray-700 outline-none">
-          <option>Toutes les dates</option>
+        <select 
+          className="border border-gray-300 rounded px-3 py-1.5 text-gray-700 outline-none"
+          value={dateFilter}
+          onChange={(e) => { setDateFilter(e.target.value); setPage(1); }}
+        >
+          <option value="all">{t('filter_all_dates', { defaultMessage: 'Toutes les dates' })}</option>
+          <option value="last_30_days">{t('filter_last_30_days', { defaultMessage: '30 derniers jours' })}</option>
+          <option value="this_year">{t('filter_this_year', { defaultMessage: 'Cette année' })}</option>
+          <option value="last_year">{t('filter_last_year', { defaultMessage: 'L\'année dernière' })}</option>
         </select>
 
         <button 
@@ -124,19 +139,19 @@ export default function MediaPageClient() {
           }}
           className="border border-[#2271b1] text-[#2271b1] px-4 py-1.5 rounded font-medium hover:bg-[#f6f7f7] transition"
         >
-          Sélection groupée
+          {t('bulk_select', { defaultMessage: 'Sélection groupée' })}
         </button>
 
         {/* Right side actions */}
         <div className="ml-auto flex items-center gap-4">
           <label className="border border-[#2271b1] text-[#2271b1] px-4 py-1.5 rounded font-medium hover:bg-[#f6f7f7] transition cursor-pointer flex items-center">
-            {isUploading ? t('uploading') : 'Ajouter un fichier média'}
+            {isUploading ? t('uploading') : t('add_media_file', { defaultMessage: 'Ajouter un fichier média' })}
             <input type="file" className="hidden" accept="image/*" onChange={handleUpload} disabled={isUploading} />
           </label>
 
           <input 
             type="text" 
-            placeholder="Rechercher des médias"
+            placeholder={t('search_media', { defaultMessage: 'Rechercher des médias' })}
             className="border border-gray-300 rounded px-3 py-1.5 outline-none w-64"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
@@ -151,13 +166,13 @@ export default function MediaPageClient() {
             disabled={selectedMedia.length === 0}
             className="bg-[#2271b1] text-white px-4 py-1.5 rounded font-medium hover:bg-[#135e96] disabled:opacity-50 transition"
           >
-            Supprimer définitivement
+            {t('delete_permanently', { defaultMessage: 'Supprimer définitivement' })}
           </button>
           <button 
             onClick={() => { setIsBulkSelectMode(false); setSelectedMedia([]); }}
             className="border border-[#2271b1] text-[#2271b1] px-4 py-1.5 rounded font-medium hover:bg-[#f6f7f7] transition"
           >
-            Annuler
+            {t('cancel', { defaultMessage: 'Annuler' })}
           </button>
         </div>
       )}
@@ -270,7 +285,7 @@ export default function MediaPageClient() {
       <div className="flex justify-center gap-2 mt-8">
         <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="px-3 py-1 border rounded disabled:opacity-50">{t('previous')}</button>
         <span className="px-3 py-1">{t('page', { page })}</span>
-        <button disabled={media.length < 20} onClick={() => setPage(p => p + 1)} className="px-3 py-1 border rounded disabled:opacity-50">{t('next')}</button>
+        <button disabled={media.length < 24} onClick={() => setPage(p => p + 1)} className="px-3 py-1 border rounded disabled:opacity-50">{t('next')}</button>
       </div>
     </div>
   );

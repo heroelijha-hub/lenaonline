@@ -1171,7 +1171,21 @@
     "page": "Page {page}",
     "select_media": "Select Media",
     "select": "Select",
-    "close": "Close"
+    "close": "Close",
+    "filter_all_media": "All media",
+    "filter_images": "Images",
+    "filter_videos": "Videos",
+    "filter_documents": "Documents",
+    "filter_audios": "Audios",
+    "filter_all_dates": "All dates",
+    "filter_last_30_days": "Last 30 days",
+    "filter_this_year": "This year",
+    "filter_last_year": "Last year",
+    "bulk_select": "Bulk select",
+    "add_media_file": "Add media file",
+    "search_media": "Search media",
+    "delete_permanently": "Delete permanently",
+    "cancel": "Cancel"
   },
   "AdminTrash": {
     "title": "Trash",

@@ -1172,7 +1172,21 @@
     "page": "Página {page}",
     "select_media": "Seleccionar Medio",
     "select": "Seleccionar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "filter_all_media": "Todos los medios",
+    "filter_images": "Imágenes",
+    "filter_videos": "Videos",
+    "filter_documents": "Documentos",
+    "filter_audios": "Audios",
+    "filter_all_dates": "Todas las fechas",
+    "filter_last_30_days": "Últimos 30 días",
+    "filter_this_year": "Este año",
+    "filter_last_year": "El año pasado",
+    "bulk_select": "Selección múltiple",
+    "add_media_file": "Añadir archivo multimedia",
+    "search_media": "Buscar medios",
+    "delete_permanently": "Eliminar permanentemente",
+    "cancel": "Cancelar"
   },
   "AdminTrash": {
     "title": "Papelera",

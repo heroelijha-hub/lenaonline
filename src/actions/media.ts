@@ -12,19 +12,51 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function getMediaList(page = 1, limit = 20, search = '') {
+export async function getMediaList(page = 1, limit = 24, search = '', mediaType = 'all', dateFilter = 'all') {
   await requireAdmin();
   const skip = (page - 1) * limit;
 
+  let typeCondition = {};
+  if (mediaType === 'images') {
+    typeCondition = { OR: [{ url: { endsWith: '.jpg', mode: 'insensitive' as const } }, { url: { endsWith: '.jpeg', mode: 'insensitive' as const } }, { url: { endsWith: '.png', mode: 'insensitive' as const } }, { url: { endsWith: '.gif', mode: 'insensitive' as const } }, { url: { endsWith: '.webp', mode: 'insensitive' as const } }, { url: { endsWith: '.svg', mode: 'insensitive' as const } }] };
+  } else if (mediaType === 'videos') {
+    typeCondition = { OR: [{ url: { endsWith: '.mp4', mode: 'insensitive' as const } }, { url: { endsWith: '.webm', mode: 'insensitive' as const } }, { url: { endsWith: '.ogg', mode: 'insensitive' as const } }, { url: { endsWith: '.mov', mode: 'insensitive' as const } }] };
+  } else if (mediaType === 'documents') {
+    typeCondition = { OR: [{ url: { endsWith: '.pdf', mode: 'insensitive' as const } }, { url: { endsWith: '.doc', mode: 'insensitive' as const } }, { url: { endsWith: '.docx', mode: 'insensitive' as const } }, { url: { endsWith: '.xls', mode: 'insensitive' as const } }, { url: { endsWith: '.xlsx', mode: 'insensitive' as const } }] };
+  } else if (mediaType === 'audios') {
+    typeCondition = { OR: [{ url: { endsWith: '.mp3', mode: 'insensitive' as const } }, { url: { endsWith: '.wav', mode: 'insensitive' as const } }] };
+  }
+
+  let dateCondition = {};
+  if (dateFilter !== 'all') {
+    const now = new Date();
+    let startDate = new Date();
+    if (dateFilter === 'last_30_days') {
+      startDate.setDate(now.getDate() - 30);
+    } else if (dateFilter === 'this_year') {
+      startDate = new Date(now.getFullYear(), 0, 1);
+    } else if (dateFilter === 'last_year') {
+      startDate = new Date(now.getFullYear() - 1, 0, 1);
+      const endDate = new Date(now.getFullYear() - 1, 11, 31, 23, 59, 59);
+      dateCondition = { createdAt: { gte: startDate, lte: endDate } };
+    }
+    
+    if (dateFilter !== 'last_year') {
+      dateCondition = { createdAt: { gte: startDate } };
+    }
+  }
+
+  const baseWhere = { isDeleted: false, ...typeCondition, ...dateCondition };
+
   const where: any = search
     ? {
-        isDeleted: false,
+        ...baseWhere,
         OR: [
           { title: { contains: search, mode: 'insensitive' as const } },
           { altText: { contains: search, mode: 'insensitive' as const } },
         ],
       }
-    : { isDeleted: false };
+    : baseWhere;
 
   const [items, total] = await Promise.all([
     prisma.media.findMany({
