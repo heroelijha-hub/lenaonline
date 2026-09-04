@@ -44,30 +44,22 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
     return (
       <div className="mb-5 flex flex-col gap-2">
         <label className="block text-xs font-medium text-gray-700">{label}</label>
-        <div className="flex items-center gap-3">
-          <input 
-            type="range" 
-            min="10" 
-            max="100" 
-            value={currentValue || 16}
-            onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')}
-            className="flex-1 accent-orange-500 h-1"
-          />
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-20 min-w-[80px] shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-24 shrink-0">
              <input 
                 type="number" 
                 value={currentValue || ''} 
                 onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-                className="flex-1 w-full text-center text-xs border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+                className="flex-1 w-full text-center text-sm border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
              />
-             <span className="text-xs text-gray-500 bg-gray-50 h-7 px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+             <span className="text-xs text-gray-500 bg-gray-50 h-8 px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
           </div>
-          <div className="relative w-6 h-6 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
+          <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
             <input 
               type="color" 
-              value={section.settings[colorKey] || defaultColor || '#000000'} 
+              value={section.settings[colorKey] || defaultColor} 
               onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
-              className="absolute -top-2 -left-2 w-10 h-10 cursor-pointer border-0 p-0" 
+              className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer border-0 p-0" 
             />
           </div>
         </div>
