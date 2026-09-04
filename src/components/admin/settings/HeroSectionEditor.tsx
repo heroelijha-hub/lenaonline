@@ -53,21 +53,21 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')}
             className="flex-1 accent-orange-500 h-1"
           />
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[70px]">
+          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[85px]">
              <input 
                 type="number" 
                 value={currentValue || ''} 
                 onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-                className="w-10 px-1 py-1 text-sm text-center outline-none" 
+                className="w-14 px-1 py-1 text-sm text-center outline-none" 
              />
-             <span className="bg-gray-50 text-gray-500 text-[10px] px-1 py-1 border-l border-gray-300 w-full text-center">px</span>
+             <span className="bg-gray-50 text-gray-500 text-[10px] px-1.5 py-1.5 border-l border-gray-300 flex-1 text-center font-medium">px</span>
           </div>
-          <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
+          <div className="relative w-6 h-6 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
             <input 
               type="color" 
               value={section.settings[colorKey] || defaultColor || '#000000'} 
               onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
-              className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer border-0 p-0" 
+              className="absolute -top-2 -left-2 w-10 h-10 cursor-pointer border-0 p-0" 
             />
           </div>
         </div>
@@ -181,100 +181,133 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col font-sans">
       
-      {/* Editor Area */}
-      <div className="p-5 lg:p-6 bg-gray-50/50">
-        {activeBlock === 0 ? (
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block w-full text-center">Paramètres Généraux</h3>
-            
-            <div className="flex flex-col gap-4">
-              <div className="bg-white p-4 border rounded-xl shadow-sm">
-                <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2 flex items-center gap-2">
-                  <span>🎨</span> Layout Design
-                </h4>
-                <div className="flex flex-col gap-3">
-                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition border border-gray-100 hover:border-gray-300">
-                    <input 
-                      type="radio" 
-                      name={`layout-${section.id}`}
-                      checked={!isStyle2}
-                      onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_1')}
-                      className="text-orange-600 focus:ring-orange-500 w-5 h-5"
-                    />
-                    <span className="font-medium text-base">Style 1 (4 Blocks)</span>
-                  </label>
-                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition border border-gray-100 hover:border-gray-300">
-                    <input 
-                      type="radio" 
-                      name={`layout-${section.id}`}
-                      checked={isStyle2}
-                      onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_2')}
-                      className="text-orange-600 focus:ring-orange-500 w-5 h-5"
-                    />
-                    <span className="font-medium text-base">Style 2 (3 Blocks - Modern)</span>
-                  </label>
-                </div>
-              </div>
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center gap-3">
+          <button type="button" className="text-gray-500 hover:text-gray-900 transition">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </button>
+          <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">HERO</span>
+          <h2 className="font-bold text-base text-gray-800">Main header</h2>
+        </div>
+        <button type="button" className="text-green-600 hover:text-green-800 transition">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </button>
+      </div>
 
-              <div className="bg-white p-4 border rounded-xl shadow-sm">
-                <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2 flex items-center gap-2">
-                  <span>📱</span> Mobile Display
-                </h4>
-                <p className="text-sm text-gray-500 mb-4">Select the blocks to <strong>display</strong> on mobile:</p>
-                <div className="flex flex-col gap-2">
-                  {Array.from({ length: totalBlocks }).map((_, i) => {
-                    const num = i + 1;
-                    const mobileHideKey = isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`;
-                    return (
-                      <label key={num} className="flex items-center justify-between space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
-                        <span className="font-semibold">Block {num}</span>
-                        <input 
-                          type="checkbox" 
-                          checked={section.settings[mobileHideKey] !== 'true'} 
-                          onChange={e => updateSectionSettings(section.id, mobileHideKey, e.target.checked ? 'false' : 'true')}
-                          className="rounded text-orange-600 focus:ring-orange-500 w-5 h-5"
-                        />
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+      <div className="p-5 lg:p-6 space-y-6">
+        
+        {/* Layout Design */}
+        <div>
+          <h3 className="font-bold text-sm text-gray-800 mb-3">Layout design</h3>
+          <div className="flex flex-col gap-2">
+            <label className={`flex items-center space-x-3 text-sm text-gray-700 cursor-pointer px-4 py-3 rounded-xl border transition ${!isStyle2 ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+              <input 
+                type="radio" 
+                name={`layout-${section.id}`}
+                checked={!isStyle2}
+                onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_1')}
+                className="text-blue-600 focus:ring-blue-500 w-4 h-4"
+              />
+              <span className="font-medium">Style 1 (4 blocks)</span>
+            </label>
+            <label className={`flex items-center space-x-3 text-sm text-gray-700 cursor-pointer px-4 py-3 rounded-xl border transition ${isStyle2 ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+              <input 
+                type="radio" 
+                name={`layout-${section.id}`}
+                checked={isStyle2}
+                onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_2')}
+                className="text-blue-600 focus:ring-blue-500 w-4 h-4"
+              />
+              <span className="font-medium">Style 2 (3 blocks)</span>
+            </label>
           </div>
-        ) : (
-          <div>
-            {/* Header & Tabs */}
-            <div className="mb-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block">Image Box {activeBlock}</h3>
+        </div>
+
+        {/* Mobile Display */}
+        <div>
+          <h3 className="font-bold text-sm text-gray-800 mb-3">Mobile display</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {Array.from({ length: totalBlocks }).map((_, i) => {
+              const num = i + 1;
+              const mobileHideKey = isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`;
+              return (
+                <label key={num} className="flex items-center justify-between space-x-2 text-sm text-gray-700 cursor-pointer bg-white px-4 py-3 rounded-xl border border-gray-200 hover:border-gray-300 transition">
+                  <span className="font-medium">Block {num}</span>
+                  <input 
+                    type="checkbox" 
+                    checked={section.settings[mobileHideKey] !== 'true'} 
+                    onChange={e => updateSectionSettings(section.id, mobileHideKey, e.target.checked ? 'false' : 'true')}
+                    className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4"
+                  />
+                </label>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* BLOCS Accordion */}
+        <div className="pt-2 border-t border-gray-100">
+          <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider mb-3">Blocs</h3>
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: totalBlocks }).map((_, i) => {
+              const num = i + 1;
+              const isExpanded = activeBlock === num;
+              const blockTitle = isStyle2 
+                ? (num === 1 ? 'Bloc 1 (gauche)' : num === 2 ? 'Bloc 2 (haut droite)' : 'Bloc 3 (bas droite)') 
+                : (num === 1 ? 'Bloc 1 (gauche)' : num === 2 ? 'Bloc 2 (haut centre)' : num === 3 ? 'Bloc 3 (haut droite)' : 'Bloc 4 (bas droite)');
               
-              <div className="flex bg-gray-100 p-1 rounded-lg w-full max-w-sm">
-                <button 
-                  type="button"
-                  onClick={() => setActiveTab('content')}
-                  className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${
-                    activeTab === 'content' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Content
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setActiveTab('design')}
-                  className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${
-                    activeTab === 'design' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Design
-                </button>
-              </div>
-            </div>
+              return (
+                <div key={num} className={`border rounded-xl overflow-hidden transition-all duration-200 ${isExpanded ? 'border-gray-300 shadow-sm' : 'border-gray-200'}`}>
+                  <button 
+                    type="button"
+                    onClick={() => setActiveBlock(isExpanded ? 0 : num)}
+                    className={`w-full text-left px-5 py-4 font-bold text-sm transition-colors ${isExpanded ? 'bg-gray-200/60 text-gray-900' : 'bg-white hover:bg-gray-50 text-gray-700'}`}
+                  >
+                    {blockTitle}
+                  </button>
+                  {isExpanded && (
+                    <div className="p-5 bg-white border-t border-gray-200">
+                      
+                      {/* Tabs */}
+                      <div className="flex bg-gray-100 p-1 rounded-lg w-full mb-6">
+                        <button 
+                          type="button"
+                          onClick={() => setActiveTab('content')}
+                          className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${
+                            activeTab === 'content' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          Contenu
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => setActiveTab('design')}
+                          className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${
+                            activeTab === 'design' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          Design
+                        </button>
+                      </div>
 
-            {/* Tab Content */}
-            <div className="max-w-2xl">
-              {activeTab === 'content' ? renderContentTab(activeBlock) : renderDesignTab(activeBlock)}
-            </div>
+                      {/* Tab Content */}
+                      <div className="max-w-2xl">
+                        {activeTab === 'content' ? renderContentTab(num) : renderDesignTab(num)}
+                      </div>
+                      
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
