@@ -58,7 +58,13 @@ const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, 
       </div>
       <div className="flex items-center justify-between mt-auto pt-2">
         <Price amount={price} className="text-xs sm:text-sm font-bold text-gray-900" />
-        <AddToCartBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
+        <AddToCartBtn 
+          product={p} 
+          btnBgColor={(p as any).btnBgColor} 
+          btnTextColor={(p as any).btnTextColor} 
+          btnHoverBgColor={(p as any).btnHoverBgColor}
+          btnHoverTextColor={(p as any).btnHoverTextColor}
+        />
       </div>
     </div>
   );
@@ -75,8 +81,20 @@ const BigCard = ({
       
       {/* Action buttons (Wishlist, Quickview) on top right */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto">
-        <WishlistBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
-        <QuickviewBtn product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
+        <WishlistBtn 
+          product={p} 
+          btnBgColor={(p as any).btnBgColor} 
+          btnTextColor={(p as any).btnTextColor} 
+          btnHoverBgColor={(p as any).btnHoverBgColor}
+          btnHoverTextColor={(p as any).btnHoverTextColor}
+        />
+        <QuickviewBtn 
+          product={p} 
+          btnBgColor={(p as any).btnBgColor} 
+          btnTextColor={(p as any).btnTextColor} 
+          btnHoverBgColor={(p as any).btnHoverBgColor}
+          btnHoverTextColor={(p as any).btnHoverTextColor}
+        />
       </div>
 
       <div className="flex-1 flex flex-col">
@@ -112,7 +130,13 @@ const BigCard = ({
       </div>
       <div className="flex items-center justify-between mt-auto">
         <Price amount={price} className="font-bold text-gray-900" />
-        <AddToCartBtnBig product={p} btnBgColor={(p as any).btnBgColor} btnTextColor={(p as any).btnTextColor} />
+        <AddToCartBtnBig 
+          product={p} 
+          btnBgColor={(p as any).btnBgColor} 
+          btnTextColor={(p as any).btnTextColor} 
+          btnHoverBgColor={(p as any).btnHoverBgColor}
+          btnHoverTextColor={(p as any).btnHoverTextColor}
+        />
       </div>
     </div>
   );
@@ -156,8 +180,10 @@ export default async function BestSeller({ config }: { config?: any }) {
       price: p.price,
       oldPrice: p.compareAtPrice ? p.compareAtPrice : undefined,
       imagePlaceholder: '🛍️',
-      btnBgColor: settings.BESTSELLER_BTN_BG_COLOR,
-      btnTextColor: settings.BESTSELLER_BTN_TEXT_COLOR,
+      btnBgColor: config?.btnBgColor || settings.BESTSELLER_BTN_BG_COLOR,
+      btnTextColor: config?.btnTextColor || settings.BESTSELLER_BTN_TEXT_COLOR,
+      btnHoverBgColor: config?.btnHoverBgColor || settings.BESTSELLER_BTN_HOVER_BG_COLOR,
+      btnHoverTextColor: config?.btnHoverTextColor || settings.BESTSELLER_BTN_HOVER_TEXT_COLOR,
     };
   }) : [];
 

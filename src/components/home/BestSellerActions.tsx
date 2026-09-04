@@ -4,7 +4,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useTranslations } from 'next-intl';
 
-export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
+export const AddToCartBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const cartStore = useCartStore();
   const t = useTranslations('ProductCard');
 
@@ -25,8 +25,8 @@ export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: a
   return (
     <button 
       onClick={handleAddToCart}
-      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff' }}
-      className="p-2 rounded-full hover:opacity-80 transition-opacity shadow-sm"
+      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff', '--btn-hover-bg': btnHoverBgColor || '#1f2937', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
+      className="p-2 rounded-full transition-all duration-300 shadow-sm hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -37,7 +37,7 @@ export const AddToCartBtn = ({ product, btnBgColor, btnTextColor }: { product: a
   );
 };
 
-export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
+export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const cartStore = useCartStore();
   const t = useTranslations('ProductCard');
 
@@ -58,8 +58,8 @@ export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product
   return (
     <button 
       onClick={handleAddToCart}
-      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff' }}
-      className="p-2.5 rounded-full hover:opacity-80 transition-opacity shadow-sm"
+      style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff', '--btn-hover-bg': btnHoverBgColor || '#1f2937', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
+      className="p-2.5 rounded-full transition-all duration-300 shadow-sm hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -70,7 +70,7 @@ export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor }: { product
   );
 };
 
-export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
+export const WishlistBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const wishlistStore = useWishlistStore();
   const isWishlisted = wishlistStore.hasItem(product.id);
   const t = useTranslations('ProductCard');
@@ -84,8 +84,8 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: an
   return (
     <button 
       onClick={handleToggle}
-      style={{ backgroundColor: btnBgColor || '#ffffff', color: isWishlisted ? (btnTextColor || '#ea580c') : '#9ca3af' }}
-      className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
+      style={{ backgroundColor: isWishlisted ? (btnHoverBgColor || '#ea580c') : (btnBgColor || '#ffffff'), color: isWishlisted ? (btnHoverTextColor || '#ffffff') : (btnTextColor || '#9ca3af'), '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
+      className="p-2 rounded-full shadow transition-all duration-300 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
       aria-label="Wishlist"
       title={t('add_to_wishlist')}
     >
@@ -96,7 +96,7 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor }: { product: an
   );
 };
 
-export const QuickviewBtn = ({ product, btnBgColor, btnTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string }) => {
+export const QuickviewBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const t = useTranslations('ProductCard');
 
   const handleQuickview = (e: React.MouseEvent) => {
@@ -111,8 +111,8 @@ export const QuickviewBtn = ({ product, btnBgColor, btnTextColor }: { product: a
   return (
     <button 
       onClick={handleQuickview}
-      style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563' }}
-      className="p-2 rounded-full shadow hover:opacity-80 transition-opacity"
+      style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563', '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
+      className="p-2 rounded-full shadow transition-all duration-300 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
       aria-label="Quickview"
       title={t('quick_view')}
     >

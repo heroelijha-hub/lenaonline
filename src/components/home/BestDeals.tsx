@@ -127,6 +127,8 @@ export default async function BestDeals({ config }: { config?: any }) {
               borderColor={config?.cardBorderColor || settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
               btnBgColor={config?.btnBgColor || settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
               btnTextColor={config?.btnTextColor || settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
+              btnHoverBgColor={config?.btnHoverBgColor || settings.BESTDEALS_BTN_HOVER_BG_COLOR || '#c2410c'}
+              btnHoverTextColor={config?.btnHoverTextColor || settings.BESTDEALS_BTN_HOVER_TEXT_COLOR || '#ffffff'}
             />
           ))}
         </ProductSliderWrapper>
