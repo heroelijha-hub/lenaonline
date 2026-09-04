@@ -53,14 +53,14 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')}
             className="flex-1 accent-orange-500 h-1"
           />
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[90px] shrink-0">
+          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-20 min-w-[80px] shrink-0">
              <input 
                 type="number" 
                 value={currentValue || ''} 
                 onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-                className="w-full text-center text-xs border-0 py-1.5 px-1 outline-none bg-transparent"
+                className="flex-1 w-full text-center text-xs border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
              />
-             <span className="text-xs text-gray-500 bg-gray-50 h-[28px] px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+             <span className="text-xs text-gray-500 bg-gray-50 h-7 px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
           </div>
           <div className="relative w-6 h-6 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
             <input 
