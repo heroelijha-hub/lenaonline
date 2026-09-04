@@ -884,7 +884,10 @@
     "saving": "Enregistrement...",
     "save_page": "Enregistrer la page",
     "not_found": "Page introuvable",
-    "save_error": "Erreur lors de l'enregistrement"
+    "save_error": "Erreur lors de l'enregistrement",
+    "phone_public": "Téléphone (Affiché au public)",
+    "phone_placeholder_label": "Placeholder du Numéro de téléphone (Formulaire)",
+    "phone_placeholder_desc": "L'exemple affiché dans le champ Numéro du formulaire de contact."
   },
   "AdminSettings": {
     "languages_translation": "Langues & Traduction",

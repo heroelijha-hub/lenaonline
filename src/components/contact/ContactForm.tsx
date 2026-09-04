@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { submitContactMessage } from '@/actions/contact';
 import { useTranslations } from 'next-intl';
 
-export default function ContactForm() {
+export default function ContactForm({ phonePlaceholder }: { phonePlaceholder?: string }) {
   const t = useTranslations('Contact');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -66,7 +66,7 @@ export default function ContactForm() {
           <input 
             type="tel" 
             name="phone"
-            placeholder={t('phone_placeholder')} 
+            placeholder={phonePlaceholder || t('phone_placeholder')} 
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
           />
         </div>

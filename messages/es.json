@@ -893,7 +893,10 @@
     "saving": "Guardando...",
     "save_page": "Guardar página",
     "not_found": "Página no encontrada",
-    "save_error": "Error al guardar"
+    "save_error": "Error al guardar",
+    "phone_public": "Teléfono (Mostrado al público)",
+    "phone_placeholder_label": "Ejemplo de Número de teléfono (Formulario)",
+    "phone_placeholder_desc": "El ejemplo que se muestra en el campo de número de teléfono del formulario de contacto."
   },
   "AdminSettings": {
     "languages_translation": "Idiomas y Traducción",

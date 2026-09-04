@@ -182,7 +182,7 @@
     "form_subtitle": "Kontaktieren Sie uns, indem Sie das untenstehende Formular ausfüllen.",
     "name_placeholder": "Vollständiger Name",
     "phone_placeholder": "+32 XXX .....",
-    "subject_placeholder": "Thema",
+    "subject_placeholder": "Betreff",
     "message_placeholder": "Ihre Nachricht",
     "send_btn": "Schicken",
     "sending": "Senden...",
@@ -892,7 +892,10 @@
     "saving": "Speichern...",
     "save_page": "Seite speichern",
     "not_found": "Seite nicht gefunden",
-    "save_error": "Fehler beim Speichern"
+    "save_error": "Fehler beim Speichern",
+    "phone_public": "Telefon (Öffentlich angezeigt)",
+    "phone_placeholder_label": "Platzhalter für Telefonnummer (Formular)",
+    "phone_placeholder_desc": "Das im Telefonnummernfeld des Kontaktformulars angezeigte Beispiel."
   },
   "AdminSettings": {
     "languages_translation": "Sprachen & Übersetzung",

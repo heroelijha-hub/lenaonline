@@ -16,7 +16,8 @@ export async function getContactSettings() {
           'CONTACT_PHONE',
           'CONTACT_EMAIL_DISPLAY',
           'CONTACT_FORM_RECIPIENT',
-          'CONTACT_BOTTOM_TEXT'
+          'CONTACT_BOTTOM_TEXT',
+          'CONTACT_PHONE_PLACEHOLDER'
         ]
       }
     }
@@ -35,7 +36,8 @@ export async function getContactSettings() {
     phone: settingsMap.CONTACT_PHONE !== undefined ? settingsMap.CONTACT_PHONE : '+32456761781',
     emailDisplay: settingsMap.CONTACT_EMAIL_DISPLAY !== undefined ? settingsMap.CONTACT_EMAIL_DISPLAY : 'commandes@phicomaJardinage.com',
     formRecipient: settingsMap.CONTACT_FORM_RECIPIENT !== undefined ? settingsMap.CONTACT_FORM_RECIPIENT : 'contact@votresite.com',
-    bottomText: settingsMap.CONTACT_BOTTOM_TEXT !== undefined ? settingsMap.CONTACT_BOTTOM_TEXT : ''
+    bottomText: settingsMap.CONTACT_BOTTOM_TEXT !== undefined ? settingsMap.CONTACT_BOTTOM_TEXT : '',
+    phonePlaceholder: settingsMap.CONTACT_PHONE_PLACEHOLDER !== undefined ? settingsMap.CONTACT_PHONE_PLACEHOLDER : '+32 XXX .....'
   };
 }
 
@@ -48,6 +50,7 @@ export async function updateContactSettings(data: {
   emailDisplay: string;
   formRecipient: string;
   bottomText: string;
+  phonePlaceholder: string;
 }) {
   await requireAdmin();
 
@@ -60,7 +63,8 @@ export async function updateContactSettings(data: {
       { key: 'CONTACT_PHONE', value: data.phone },
       { key: 'CONTACT_EMAIL_DISPLAY', value: data.emailDisplay },
       { key: 'CONTACT_FORM_RECIPIENT', value: data.formRecipient },
-      { key: 'CONTACT_BOTTOM_TEXT', value: data.bottomText }
+      { key: 'CONTACT_BOTTOM_TEXT', value: data.bottomText },
+      { key: 'CONTACT_PHONE_PLACEHOLDER', value: data.phonePlaceholder }
     ];
 
     for (const item of keys) {

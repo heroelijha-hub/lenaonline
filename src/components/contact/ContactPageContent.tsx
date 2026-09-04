@@ -89,7 +89,7 @@ export default async function ContactPageContent() {
                 {t('form_subtitle')}
               </p>
 
-              <ContactForm />
+              <ContactForm phonePlaceholder={settings.phonePlaceholder} />
             </div>
             
           </div>

@@ -892,7 +892,10 @@
     "saving": "Saving...",
     "save_page": "Save page",
     "not_found": "Page not found",
-    "save_error": "Error during saving"
+    "save_error": "Error during saving",
+    "phone_public": "Phone (Displayed to public)",
+    "phone_placeholder_label": "Phone Number Placeholder (Form)",
+    "phone_placeholder_desc": "The example displayed in the phone number field of the contact form."
   },
   "AdminSettings": {
     "languages_translation": "Languages & Translation",
