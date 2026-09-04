@@ -20,13 +20,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: t('article_not_found') };
   }
   
-  const description = article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 160);
+  const description = article.metaDescription || article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 160);
   
   return {
-    title: article.title,
+    title: article.metaTitle || article.title,
     description: description,
+    keywords: article.metaKeywords || undefined,
     openGraph: {
-      title: article.title,
+      title: article.metaTitle || article.title,
       description: description,
       images: article.image ? [{ url: article.image }] : [],
       type: 'article',
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
+      title: article.metaTitle || article.title,
       description: description,
       images: article.image ? [article.image] : [],
     }

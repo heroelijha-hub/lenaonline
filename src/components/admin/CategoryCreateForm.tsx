@@ -9,6 +9,10 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [parentId, setParentId] = useState('');
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [metaKeywords, setMetaKeywords] = useState('');
+  const [showSeo, setShowSeo] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const generateSlug = (text: string) => 
@@ -30,10 +34,18 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
     formData.append('name', name);
     formData.append('slug', slug);
     if (parentId) formData.append('parentId', parentId);
+    if (metaTitle) formData.append('metaTitle', metaTitle);
+    if (metaDescription) formData.append('metaDescription', metaDescription);
+    if (metaKeywords) formData.append('metaKeywords', metaKeywords);
+    
     await createCategory(formData);
     setName('');
     setSlug('');
     setParentId('');
+    setMetaTitle('');
+    setMetaDescription('');
+    setMetaKeywords('');
+    setShowSeo(false);
     setLoading(false);
   };
 
@@ -72,6 +84,42 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
       >
         {t('add_btn')}
       </button>
+      <div className="w-full mt-2">
+        <button 
+          type="button" 
+          onClick={() => setShowSeo(!showSeo)}
+          className="text-sm text-purple-600 hover:text-purple-800 font-medium flex items-center transition"
+        >
+          <svg className={`w-4 h-4 mr-1 transition-transform ${showSeo ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          Paramètres SEO (Optionnel)
+        </button>
+      </div>
+
+      {showSeo && (
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 mt-2 p-4 bg-gray-50 border border-gray-100 rounded-md">
+          <input 
+            type="text" 
+            value={metaTitle}
+            onChange={(e) => setMetaTitle(e.target.value)}
+            placeholder="Meta Titre"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <input 
+            type="text" 
+            value={metaDescription}
+            onChange={(e) => setMetaDescription(e.target.value)}
+            placeholder="Meta Description"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <input 
+            type="text" 
+            value={metaKeywords}
+            onChange={(e) => setMetaKeywords(e.target.value)}
+            placeholder="Meta Mots-clés (séparés par virgule)"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+      )}
     </form>
   );
 }

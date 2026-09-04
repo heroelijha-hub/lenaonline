@@ -48,6 +48,9 @@ export async function createPage(data: {
   desktopContent?: string;
   mobileContent?: string;
   isPublished?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
 }) {
   await requireAdmin();
   try {
@@ -58,6 +61,9 @@ export async function createPage(data: {
         desktopContent: data.desktopContent || '',
         mobileContent: data.mobileContent || '',
         isPublished: data.isPublished || false,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null,
+        metaKeywords: data.metaKeywords || null,
       }
     });
     revalidatePath('/admin/pages');
@@ -75,6 +81,9 @@ export async function updatePage(id: string, data: {
   desktopContent?: string;
   mobileContent?: string;
   isPublished?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
 }) {
   await requireAdmin();
   try {

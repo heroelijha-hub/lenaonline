@@ -24,7 +24,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${page.title} - ${storeName}`,
+    title: page.metaTitle ? `${page.metaTitle} - ${storeName}` : `${page.title} - ${storeName}`,
+    description: page.metaDescription || undefined,
+    keywords: page.metaKeywords || undefined,
+    openGraph: {
+      title: page.metaTitle || page.title,
+      description: page.metaDescription || undefined,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/${page.slug}`,
+      siteName: storeName,
+      type: 'website',
+    }
   };
 }
 

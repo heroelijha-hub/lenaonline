@@ -58,6 +58,10 @@ model Category {
   parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
   children Category[] @relation("CategoryHierarchy")
   products Product[]  @relation("ProductCategories")
+  
+  metaTitle       String?
+  metaDescription String?   @db.Text
+  metaKeywords    String?   @db.Text
 }
 
 model Brand {
@@ -287,6 +291,11 @@ model Article {
   tags        String[]         @default([])
   isPublished Boolean          @default(true)
   authorName  String?
+  
+  metaTitle       String?
+  metaDescription String?   @db.Text
+  metaKeywords    String?   @db.Text
+  
   comments    ArticleComment[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -310,6 +319,11 @@ model Page {
   desktopContent String?  @db.Text
   mobileContent  String?  @db.Text
   isPublished    Boolean  @default(false)
+  
+  metaTitle       String?
+  metaDescription String?   @db.Text
+  metaKeywords    String?   @db.Text
+  
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

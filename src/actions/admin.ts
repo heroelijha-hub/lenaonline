@@ -195,8 +195,21 @@ export async function createCategory(formData: FormData) {
     slug = slug.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/(^-|-$)+/g, '');
   }
 
+  const metaTitle = formData.get('metaTitle') as string || null;
+  const metaDescription = formData.get('metaDescription') as string || null;
+  const metaKeywords = formData.get('metaKeywords') as string || null;
+
   try {
-    await prisma.category.create({ data: { name, slug, parentId } });
+    await prisma.category.create({ 
+      data: { 
+        name, 
+        slug, 
+        parentId,
+        metaTitle,
+        metaDescription,
+        metaKeywords 
+      } 
+    });
     revalidatePath('/admin/categories');
     refreshCacheTag('categories');
     revalidatePath('/', 'layout');
@@ -206,7 +219,7 @@ export async function createCategory(formData: FormData) {
   }
 }
 
-export async function updateCategory(id: string, name: string, slug?: string, parentId?: string | null) {
+export async function updateCategory(id: string, name: string, slug?: string, parentId?: string | null, metaTitle?: string | null, metaDescription?: string | null, metaKeywords?: string | null) {
   await requireAdmin();
   try {
     let finalSlug = slug;
@@ -217,7 +230,14 @@ export async function updateCategory(id: string, name: string, slug?: string, pa
     }
     await prisma.category.update({
       where: { id },
-      data: { name, slug: finalSlug, parentId: parentId || null }
+      data: { 
+        name, 
+        slug: finalSlug, 
+        parentId: parentId || null,
+        metaTitle: metaTitle || null,
+        metaDescription: metaDescription || null,
+        metaKeywords: metaKeywords || null
+      }
     });
     revalidatePath('/admin/categories');
     revalidatePath('/', 'layout');

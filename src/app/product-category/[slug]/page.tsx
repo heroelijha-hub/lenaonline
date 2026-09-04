@@ -10,8 +10,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
   
   return {
-    title: `${category?.name || 'Category'} | ${storeName}`,
-    description: `Shop products in ${category?.name}`,
+    title: category?.metaTitle ? `${category.metaTitle} | ${storeName}` : `${category?.name || 'Category'} | ${storeName}`,
+    description: category?.metaDescription || `Shop products in ${category?.name}`,
+    keywords: category?.metaKeywords || undefined,
+    openGraph: {
+      title: category?.metaTitle || category?.name || 'Category',
+      description: category?.metaDescription || `Shop products in ${category?.name}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/product-category/${category?.slug}`,
+      siteName: storeName,
+      type: 'website',
+    }
   };
 }
 

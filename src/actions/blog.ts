@@ -69,7 +69,10 @@ export async function createArticle(data: any) {
         authorName: data.authorName,
         isPublished: data.isPublished,
         tags: data.tags || [],
-        createdAt: data.createdAt ? new Date(data.createdAt) : undefined
+        createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null,
+        metaKeywords: data.metaKeywords || null
       }
     });
     revalidatePath('/admin/blogs');
@@ -95,7 +98,10 @@ export async function updateArticle(id: string, data: any) {
         authorName: data.authorName,
         isPublished: data.isPublished,
         tags: data.tags || [],
-        createdAt: data.createdAt ? new Date(data.createdAt) : undefined
+        createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
+        metaTitle: data.metaTitle || null,
+        metaDescription: data.metaDescription || null,
+        metaKeywords: data.metaKeywords || null
       }
     });
     revalidatePath('/admin/blogs');

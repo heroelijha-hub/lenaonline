@@ -22,7 +22,10 @@ export default function AdminPageForm() {
     slug: '',
     desktopContent: '',
     mobileContent: '',
-    isPublished: false
+    isPublished: false,
+    metaTitle: '',
+    metaDescription: '',
+    metaKeywords: ''
   });
 
   useEffect(() => {
@@ -38,7 +41,10 @@ export default function AdminPageForm() {
           slug: res.data.slug,
           desktopContent: res.data.desktopContent || '',
           mobileContent: res.data.mobileContent || '',
-          isPublished: res.data.isPublished
+          isPublished: res.data.isPublished,
+          metaTitle: res.data.metaTitle || '',
+          metaDescription: res.data.metaDescription || '',
+          metaKeywords: res.data.metaKeywords || ''
         });
       } else {
         setError(res.error || t('not_found'));
@@ -159,6 +165,53 @@ export default function AdminPageForm() {
             onChange={(val) => setFormData({...formData, mobileContent: val})}
             placeholder={t('mobile_placeholder')}
           />
+        </div>
+
+        {/* SECTION SEO */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+          <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2 flex items-center">
+            <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            Référencement (SEO)
+          </h2>
+          <p className="text-xs text-gray-500 mb-2">Optimisez l'affichage de cette page sur les moteurs de recherche et les réseaux sociaux.</p>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Titre (Optionnel)</label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+                placeholder={formData.title || "Titre personnalisé pour Google"}
+                value={formData.metaTitle}
+                onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
+              />
+              <p className="text-xs text-gray-500 mt-1">S'il est vide, le titre principal de la page sera utilisé.</p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Description (Optionnel)</label>
+              <textarea
+                rows={3}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+                placeholder="Description courte affichée dans les résultats de recherche..."
+                value={formData.metaDescription}
+                onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
+              />
+              <p className="text-xs text-gray-500 mt-1">Recommandé : entre 120 et 160 caractères.</p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Mots-clés (Optionnel)</label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
+                placeholder="mot-clé 1, mot-clé 2, poêle à bois..."
+                value={formData.metaKeywords}
+                onChange={(e) => setFormData({...formData, metaKeywords: e.target.value})}
+              />
+              <p className="text-xs text-gray-500 mt-1">Séparez les mots-clés par des virgules.</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-end pt-2">
