@@ -16,6 +16,17 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
   const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
   const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 My Store. All rights reserved.');
   
+  const [footerColumns, setFooterColumns] = useState<{title: string, links: {label: string, url: string}[]}[]>(() => {
+    try {
+      return initialSettings.FOOTER_COLUMNS ? JSON.parse(initialSettings.FOOTER_COLUMNS) : [
+        { title: 'Contact Us', links: [{ label: 'About Us', url: '/about' }, { label: 'Contact Us', url: '/contact' }] },
+        { title: 'Account', links: [{ label: 'Shop', url: '/shop' }, { label: 'Checkout', url: '/checkout' }] }
+      ];
+    } catch {
+      return [];
+    }
+  });
+  
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -30,7 +41,8 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
       FOOTER_SHOW_ADDRESS: footerShowAddress.toString(),
       FOOTER_SHOW_EMAIL: footerShowEmail.toString(),
       FOOTER_SHOW_PHONE: footerShowPhone.toString(),
-      FOOTER_COPYRIGHT: footerCopyright
+      FOOTER_COPYRIGHT: footerCopyright,
+      FOOTER_COLUMNS: JSON.stringify(footerColumns)
     });
 
     setMessage(tSettings('update_success'));
@@ -68,6 +80,60 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
           <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>Show Address</span></div>
           <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>Show Email</span></div>
           <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>Show Phone</span></div>
+        </div>
+
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-6">
+          <label className="block text-base font-semibold text-gray-900 mb-4">Footer Columns & Links</label>
+          <div className="space-y-6">
+            {footerColumns.map((col, colIndex) => (
+              <div key={colIndex} className="bg-white p-4 border rounded-md shadow-sm">
+                <div className="flex justify-between items-center mb-3">
+                  <input type="text" placeholder="Column Title (e.g. Account)" value={col.title} onChange={e => {
+                    const newCols = [...footerColumns];
+                    newCols[colIndex].title = e.target.value;
+                    setFooterColumns(newCols);
+                  }} className="font-semibold px-3 py-1.5 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                  <button type="button" onClick={() => setFooterColumns(footerColumns.filter((_, i) => i !== colIndex))} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md text-sm font-medium">Remove Column</button>
+                </div>
+                
+                <div className="space-y-2 pl-4 border-l-2 border-gray-100">
+                  {col.links.map((link, linkIndex) => (
+                    <div key={linkIndex} className="flex items-center gap-2">
+                      <input type="text" placeholder="Label" value={link.label} onChange={e => {
+                        const newCols = [...footerColumns];
+                        newCols[colIndex].links[linkIndex].label = e.target.value;
+                        setFooterColumns(newCols);
+                      }} className="flex-1 px-3 py-1 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                      <input type="text" placeholder="URL" value={link.url} onChange={e => {
+                        const newCols = [...footerColumns];
+                        newCols[colIndex].links[linkIndex].url = e.target.value;
+                        setFooterColumns(newCols);
+                      }} className="flex-1 px-3 py-1 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                      <button type="button" onClick={() => {
+                        const newCols = [...footerColumns];
+                        newCols[colIndex].links = newCols[colIndex].links.filter((_, i) => i !== linkIndex);
+                        setFooterColumns(newCols);
+                      }} className="text-red-500 hover:text-red-700 p-1" title="Remove Link">
+                        X
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" onClick={() => {
+                    const newCols = [...footerColumns];
+                    newCols[colIndex].links.push({label: '', url: ''});
+                    setFooterColumns(newCols);
+                  }} className="text-xs text-blue-600 font-medium hover:underline mt-2 inline-block">
+                    + Add Link to {col.title || 'Column'}
+                  </button>
+                </div>
+              </div>
+            ))}
+            
+            <button type="button" onClick={() => setFooterColumns([...footerColumns, {title: '', links: []}])} className="text-sm text-blue-600 font-medium hover:underline flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+              Add New Column
+            </button>
+          </div>
         </div>
       </div>
 
