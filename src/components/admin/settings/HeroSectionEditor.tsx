@@ -165,46 +165,10 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col md:flex-row font-sans">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col font-sans">
       
-      {/* Block Selector Sidebar */}
-      <div className="md:w-48 bg-gray-50 border-r border-gray-200 p-3 flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-visible">
-        <h4 className="font-bold text-xs uppercase text-gray-400 tracking-wider mb-1 hidden md:block px-2">Edit Blocks</h4>
-        
-        <button
-          type="button"
-          onClick={() => setActiveBlock(0)}
-          className={`flex-shrink-0 text-left px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-            activeBlock === 0 
-              ? 'bg-orange-100 text-orange-700 shadow-sm border border-orange-200' 
-              : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-transparent'
-          }`}
-        >
-          Général (Layout)
-        </button>
-
-        {Array.from({ length: totalBlocks }).map((_, i) => {
-          const num = i + 1;
-          const isActive = activeBlock === num;
-          return (
-            <button
-              key={num}
-              type="button"
-              onClick={() => setActiveBlock(num)}
-              className={`flex-shrink-0 text-left px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                isActive 
-                  ? 'bg-orange-100 text-orange-700 shadow-sm border border-orange-200' 
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-transparent'
-              }`}
-            >
-              Block {num} {num === 1 ? '(Main)' : ''}
-            </button>
-          );
-        })}
-      </div>
-
       {/* Editor Area */}
-      <div className="flex-1 p-5 lg:p-6 bg-gray-50/50">
+      <div className="p-5 lg:p-6 bg-gray-50/50">
         {activeBlock === 0 ? (
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block">Paramètres Généraux</h3>
@@ -267,7 +231,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           <div>
             {/* Header & Tabs */}
             <div className="mb-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block">Block {activeBlock} Settings</h3>
+              <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block">Image Box {activeBlock}</h3>
               
               <div className="flex bg-gray-100 p-1 rounded-lg w-full max-w-sm">
                 <button 
