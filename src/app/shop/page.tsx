@@ -150,6 +150,14 @@ export default async function ShopPage({
 
   const view = (params.view as 'grid' | 'list') || 'grid';
 
+  let pageTitle = t('title');
+  if (categories.length === 1) {
+    const selectedCategory = allCategories.find(c => c.slug === categories[0] || c.id === categories[0]);
+    if (selectedCategory) {
+      pageTitle = selectedCategory.name;
+    }
+  }
+
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* Breadcrumb */}
@@ -157,7 +165,7 @@ export default async function ShopPage({
         <div className="max-w-7xl mx-auto text-sm text-gray-500">
           <Link href="/" className="hover:text-orange-500">{t('home')}</Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-900 font-medium">{t('title')}</span>
+          <span className="text-gray-900 font-medium">{pageTitle}</span>
         </div>
       </div>
 
