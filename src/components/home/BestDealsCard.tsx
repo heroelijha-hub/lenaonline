@@ -96,7 +96,7 @@ export default function BestDealsCard({
           <div className="absolute top-2 right-2 flex flex-col items-center justify-center gap-2 z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
             <button
               onClick={handleAddToCart}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={{ backgroundColor: btnBgColor, color: btnTextColor, '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
               title={t('add_to_cart')}
             >
@@ -106,7 +106,7 @@ export default function BestDealsCard({
             </button>
             <button
               onClick={handleQuickView}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={{ backgroundColor: btnBgColor, color: btnTextColor, '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
               title="Quick view"
             >
@@ -117,7 +117,7 @@ export default function BestDealsCard({
             </button>
             <button
               onClick={handleToggleWishlist}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={{ backgroundColor: isWishlisted ? (btnHoverBgColor || '#c2410c') : btnBgColor, color: isWishlisted ? (btnHoverTextColor || '#ffffff') : btnTextColor, '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
               title="Wishlist"
             >

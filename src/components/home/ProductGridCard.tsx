@@ -102,7 +102,7 @@ export default function ProductGridCard({
           {variant === '2' && (
             <button
               onClick={handleAddToCart}
-              className="flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium text-sm shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] z-10"
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium text-sm shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] z-10"
               style={{ backgroundColor: btnBgColor, color: btnTextColor, '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ export default function ProductGridCard({
           <div className="flex items-center justify-center gap-2 z-10">
             <button
               onClick={handleToggleWishlist}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
                   ? { backgroundColor: isWishlisted ? btnBgColor : 'white', color: isWishlisted ? btnTextColor : '#374151', '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' }
@@ -139,7 +139,7 @@ export default function ProductGridCard({
             </button>
             <button
               onClick={handleQuickView}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
                   ? { backgroundColor: 'white', color: '#374151', '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' }
@@ -157,7 +157,7 @@ export default function ProductGridCard({
             </button>
             <button
               onClick={handleQuickView}
-              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)]"
+              className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
                   ? { backgroundColor: 'white', color: '#374151', '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' }
@@ -214,7 +214,7 @@ export default function ProductGridCard({
           <div className="mt-4">
             <button
               onClick={handleAddToCart}
-              className="w-full flex items-center justify-center gap-2 py-2 border rounded-md font-medium text-sm transition-all duration-300 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:border-[var(--btn-hover-bg)] z-10 relative"
+              className="w-full flex items-center justify-center gap-2 py-2 border rounded-md font-medium text-sm transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:[border-color:var(--btn-hover-bg)] z-10 relative"
               style={
                 {
                   borderColor: '#e5e7eb',

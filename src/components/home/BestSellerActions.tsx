@@ -26,7 +26,7 @@ export const AddToCartBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColo
     <button 
       onClick={handleAddToCart}
       style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff', '--btn-hover-bg': btnHoverBgColor || '#1f2937', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
-      className="p-2 rounded-full transition-all duration-300 shadow-sm hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
+      className="p-2 rounded-full transition-all duration-300 shadow-sm hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -59,7 +59,7 @@ export const AddToCartBtnBig = ({ product, btnBgColor, btnTextColor, btnHoverBgC
     <button 
       onClick={handleAddToCart}
       style={{ backgroundColor: btnBgColor || '#111827', color: btnTextColor || '#ffffff', '--btn-hover-bg': btnHoverBgColor || '#1f2937', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
-      className="p-2.5 rounded-full transition-all duration-300 shadow-sm hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
+      className="p-2.5 rounded-full transition-all duration-300 shadow-sm hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
       aria-label="Add to cart"
       title={t('add_to_cart')}
     >
@@ -85,7 +85,7 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor
     <button 
       onClick={handleToggle}
       style={{ backgroundColor: isWishlisted ? (btnHoverBgColor || '#ea580c') : (btnBgColor || '#ffffff'), color: isWishlisted ? (btnHoverTextColor || '#ffffff') : (btnTextColor || '#9ca3af'), '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
-      className="p-2 rounded-full shadow transition-all duration-300 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
+      className="p-2 rounded-full shadow transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
       aria-label="Wishlist"
       title={t('add_to_wishlist')}
     >
@@ -112,7 +112,7 @@ export const QuickviewBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColo
     <button 
       onClick={handleQuickview}
       style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563', '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
-      className="p-2 rounded-full shadow transition-all duration-300 hover:bg-[var(--btn-hover-bg)] hover:text-[var(--btn-hover-text)] hover:scale-105"
+      className="p-2 rounded-full shadow transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
       aria-label="Quickview"
       title={t('quick_view')}
     >
