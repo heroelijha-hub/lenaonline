@@ -53,14 +53,14 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')}
             className="flex-1 accent-orange-500 h-1"
           />
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[85px]">
+          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[90px] shrink-0">
              <input 
                 type="number" 
                 value={currentValue || ''} 
                 onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-                className="w-14 px-1 py-1 text-sm text-center outline-none" 
+                className="w-full text-center text-xs border-0 py-1.5 px-1 outline-none bg-transparent"
              />
-             <span className="bg-gray-50 text-gray-500 text-[10px] px-1.5 py-1.5 border-l border-gray-300 flex-1 text-center font-medium">px</span>
+             <span className="text-xs text-gray-500 bg-gray-50 h-[28px] px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
           </div>
           <div className="relative w-6 h-6 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
             <input 
@@ -79,12 +79,24 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
 
   const renderContentTab = (blockNum: number) => {
     const prefix = getPrefix(blockNum);
+    let titlePlaceholder = 'Enter the title...';
+    let subtitlePlaceholder = 'Subtitle...';
+    let ctaPlaceholder = 'Shop Now';
+    
+    if (!isStyle2 && blockNum === 1) {
+      titlePlaceholder = 'Apple Iphone 17 Pro Max';
+      subtitlePlaceholder = 'Super Discount';
+    } else if (!isStyle2 && blockNum === 4) {
+      titlePlaceholder = 'Headphones Listen With Heart';
+      subtitlePlaceholder = 'Last call for up to 25% off';
+    }
+
     return (
       <div className="space-y-4 mt-4">
-        {renderContentInput('Title', `${prefix}_TITLE`, 'Enter the title...')}
-        {renderContentInput('Subtitle / badge', `${prefix}_SUBTITLE`, 'Subtitle...')}
+        {renderContentInput('Title', `${prefix}_TITLE`, titlePlaceholder)}
+        {renderContentInput('Subtitle / badge', `${prefix}_SUBTITLE`, subtitlePlaceholder)}
         {!isStyle2 && blockNum === 1 && renderContentInput('Price/Text', 'HERO_1_PRICE', 'from $349.99')}
-        {renderContentInput('Button', `${prefix}_CTA`, 'Shop Now')}
+        {renderContentInput('Button', `${prefix}_CTA`, ctaPlaceholder)}
       </div>
     );
   };
@@ -150,7 +162,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           <h4 className="text-sm font-semibold text-gray-800 mb-4">Typography & Colors</h4>
           {renderDesignTextControls('Title', `${prefix}_TITLE`, `${prefix}_TEXT_COLOR`, '#1e293b')}
           {renderDesignTextControls('Subtitle', `${prefix}_SUBTITLE`, `${prefix}_SUBTITLE_COLOR`, '#ef4444')}
-          {!isStyle2 && blockNum === 1 && renderDesignTextControls('Price/Text', 'HERO_1_PRICE', 'HERO_1_TEXT_COLOR', '#1e293b')}
+          {!isStyle2 && blockNum === 1 && renderDesignTextControls('Price/Text', 'HERO_1_PRICE', 'HERO_1_PRICE_COLOR', '#6b7280')}
           {renderDesignTextControls('Button', `${prefix}_CTA`, `${prefix}_BTN_TEXT_COLOR`, '#ffffff')}
         </div>
 

@@ -52,7 +52,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
         <p 
           className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
-          style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
+          style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_PRICE_COLOR || undefined}}
         >
           {settings.HERO_1_PRICE || t('hero_1_price')}
         </p>
