@@ -10,7 +10,7 @@ export default function ProductsTable({ products, categories }: { products: any[
   const t = useTranslations('AdminProducts');
 
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | ''}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '' });
+  const [editData, setEditData] = useState<{title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | '', gtin: string}>({ title: '', categoryIds: [], slug: '', price: 0, compareAtPrice: '', gtin: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const router = useRouter();
@@ -22,7 +22,8 @@ export default function ProductsTable({ products, categories }: { products: any[
       categoryIds: p.categories?.map((c: any) => c.id) || [], 
       slug: p.slug,
       price: p.price || 0,
-      compareAtPrice: p.compareAtPrice || ''
+      compareAtPrice: p.compareAtPrice || '',
+      gtin: p.gtin || ''
     });
   };
 
@@ -160,6 +161,10 @@ export default function ProductsTable({ products, categories }: { products: any[
                         <div className="flex flex-col gap-1">
                           <label className="text-xs font-semibold text-gray-600">{t('quick_edit_slug')}</label>
                           <input type="text" value={editData.slug} onChange={e => setEditData({...editData, slug: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <label className="text-xs font-semibold text-gray-600">GTIN (EAN / UPC)</label>
+                          <input type="text" value={editData.gtin} onChange={e => setEditData({...editData, gtin: e.target.value})} className="border px-2 py-1 rounded text-sm w-full" />
                         </div>
                         <div className="flex gap-4">
                           <div className="flex flex-col gap-1 flex-1">

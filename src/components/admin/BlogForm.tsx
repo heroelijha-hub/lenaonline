@@ -34,6 +34,7 @@ export default function BlogForm({ article, existingCategories = [], existingAut
     image: article?.image || '',
     tags: article?.tags?.join(', ') || '',
     isPublished: article ? article.isPublished : true,
+    createdAt: article?.createdAt ? new Date(article.createdAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
   });
 
   const generateSlug = (text: string) => 
@@ -158,6 +159,17 @@ export default function BlogForm({ article, existingCategories = [], existingAut
               <label htmlFor="isPublished" className="text-sm font-medium text-gray-700">
                 {t('published_checkbox')}
               </label>
+            </div>
+            
+            <div className="mb-4 border-t pt-4">
+              <label className="block text-sm font-medium mb-1 text-gray-700">Date de publication</label>
+              <input 
+                type="datetime-local" 
+                value={formData.createdAt}
+                onChange={e => setFormData({ ...formData, createdAt: e.target.value })}
+                className="w-full border px-3 py-2 rounded text-sm outline-none focus:ring-orange-500 focus:border-orange-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">Vous pouvez programmer un article dans le futur en choisissant une date ultérieure.</p>
             </div>
 
             {/* Category with suggestions */}

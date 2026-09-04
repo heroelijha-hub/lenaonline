@@ -68,7 +68,8 @@ export async function createArticle(data: any) {
         category: data.category,
         authorName: data.authorName,
         isPublished: data.isPublished,
-        tags: data.tags || []
+        tags: data.tags || [],
+        createdAt: data.createdAt ? new Date(data.createdAt) : undefined
       }
     });
     revalidatePath('/admin/blogs');
@@ -93,7 +94,8 @@ export async function updateArticle(id: string, data: any) {
         category: data.category,
         authorName: data.authorName,
         isPublished: data.isPublished,
-        tags: data.tags || []
+        tags: data.tags || [],
+        createdAt: data.createdAt ? new Date(data.createdAt) : undefined
       }
     });
     revalidatePath('/admin/blogs');

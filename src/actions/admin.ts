@@ -601,7 +601,7 @@ export async function duplicateProduct(id: string) {
   }
 }
 
-export async function quickEditProduct(id: string, data: { title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | '' }) {
+export async function quickEditProduct(id: string, data: { title: string, categoryIds: string[], slug: string, price: number, compareAtPrice: number | '', gtin: string }) {
   await requireAdmin();
   try {
     await prisma.product.update({
@@ -614,6 +614,7 @@ export async function quickEditProduct(id: string, data: { title: string, catego
         slug: data.slug,
         price: data.price,
         compareAtPrice: data.compareAtPrice === '' ? null : data.compareAtPrice,
+        gtin: data.gtin === '' ? null : data.gtin,
       }
     });
     revalidatePath('/admin/products');
