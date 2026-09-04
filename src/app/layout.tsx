@@ -23,14 +23,42 @@ const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settingsDb = await prisma.setting.findMany({
-    where: { key: 'FAVICON_IMAGE' }
+    where: { key: { in: ['FAVICON_IMAGE', 'HOME_META_TITLE', 'HOME_META_DESCRIPTION', 'HEADER_LOGO_IMAGE'] } }
   });
-  const faviconUrl = settingsDb[0]?.value;
+  
+  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const faviconUrl = settingsMap['FAVICON_IMAGE'];
+  const title = settingsMap['HOME_META_TITLE'] || `${storeName} | E-commerce`;
+  const description = settingsMap['HOME_META_DESCRIPTION'] || "Découvrez notre vaste sélection de produits de haute qualité sur notre boutique en ligne complète.";
+  const ogImage = settingsMap['HEADER_LOGO_IMAGE'] || '/logo.jpg';
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app";
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app"),
-    title: `${storeName} | E-commerce`,
-    description: "A complete online store",
+    metadataBase: new URL(baseUrl),
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      url: baseUrl,
+      siteName: storeName,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${storeName} preview`,
+        }
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [ogImage],
+    },
     icons: faviconUrl ? {
       icon: faviconUrl,
       shortcut: faviconUrl,
