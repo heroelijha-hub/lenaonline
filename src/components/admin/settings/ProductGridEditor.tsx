@@ -341,7 +341,7 @@ export default function ProductGridEditor({
             <div className="border-t pt-6">
               <h4 className="text-sm font-semibold text-gray-800 mb-4">Product Cards</h4>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-4">
                 <div>
                   <label className="block text-xs font-medium mb-1 text-gray-600">Border Color (Card)</label>
                   <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
@@ -361,7 +361,7 @@ export default function ProductGridEditor({
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-gray-600">Icons Text</label>
+                  <label className="block text-xs font-medium mb-1 text-gray-600">Icons color</label>
                   <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
                     <input type="color" value={section.settings[`${section.type.toUpperCase()}_BTN_TEXT_COLOR`] || section.settings.btnTextColor || '#ffffff'} onChange={e => {
                         updateSectionSettings(section.id, `${section.type.toUpperCase()}_BTN_TEXT_COLOR`, e.target.value);
@@ -379,7 +379,7 @@ export default function ProductGridEditor({
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1 text-gray-600">Icons Hover Text</label>
+                  <label className="block text-xs font-medium mb-1 text-gray-600">Icons Hover color</label>
                   <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
                     <input type="color" value={section.settings[`${section.type.toUpperCase()}_BTN_HOVER_TEXT_COLOR`] || section.settings.btnHoverTextColor || '#ffffff'} onChange={e => {
                         updateSectionSettings(section.id, `${section.type.toUpperCase()}_BTN_HOVER_TEXT_COLOR`, e.target.value);
