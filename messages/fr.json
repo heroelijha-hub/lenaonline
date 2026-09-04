@@ -1044,7 +1044,16 @@
     "illustration_image_upload": "Image d'illustration (Upload)",
     "explanation_text_label": "Texte d'explication",
     "return_btn_text": "Texte du bouton de retour (CTA)",
-    "bg_image_upload": "Image de fond (Upload)"
+    "bg_image_upload": "Image de fond (Upload)",
+    "header_navigation_menu": "Menu de navigation du Header",
+    "label_ex": "Label (ex: Boutique)",
+    "url_ex": "URL (ex: /shop)",
+    "add_menu_link": "Ajouter un lien",
+    "footer_columns_links": "Colonnes & Liens du Footer",
+    "column_title_ex": "Titre (ex: Compte)",
+    "remove_column": "Supprimer",
+    "add_link_to": "Ajouter un lien à",
+    "add_new_column": "Ajouter une colonne"
   },
   "AdminShipping": {
     "title": "Paramètres de Livraison",

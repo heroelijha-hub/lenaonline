@@ -1052,7 +1052,16 @@
     "illustration_image_upload": "Illustration Image (Upload)",
     "explanation_text_label": "Explanation Text",
     "return_btn_text": "Return button text (CTA)",
-    "bg_image_upload": "Background image (Upload)"
+    "bg_image_upload": "Background image (Upload)",
+    "header_navigation_menu": "Header Navigation Menu",
+    "label_ex": "Label (ex: Shop)",
+    "url_ex": "URL (ex: /shop)",
+    "add_menu_link": "Add Menu Link",
+    "footer_columns_links": "Footer Columns & Links",
+    "column_title_ex": "Column Title (ex: Account)",
+    "remove_column": "Remove Column",
+    "add_link_to": "Add Link to",
+    "add_new_column": "Add New Column"
   },
   "AdminShipping": {
     "title": "Shipping Settings",

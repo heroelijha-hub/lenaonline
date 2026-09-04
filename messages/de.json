@@ -1052,7 +1052,16 @@
     "illustration_image_upload": "Illustrationsbild (Hochladen)",
     "explanation_text_label": "Erläuterungstext",
     "return_btn_text": "Text der Zurück-Schaltfläche (CTA)",
-    "bg_image_upload": "Hintergrundbild (Hochladen)"
+    "bg_image_upload": "Hintergrundbild (Hochladen)",
+    "header_navigation_menu": "Kopfzeilen-Navigationsmenü",
+    "label_ex": "Bezeichnung (z.B: Shop)",
+    "url_ex": "URL (z.B: /shop)",
+    "add_menu_link": "Link Hinzufügen",
+    "footer_columns_links": "Fußzeilen Spalten & Links",
+    "column_title_ex": "Titel (z.B: Konto)",
+    "remove_column": "Entfernen",
+    "add_link_to": "Link Hinzufügen zu",
+    "add_new_column": "Neue Spalte Hinzufügen"
   },
   "AdminShipping": {
     "title": "Versandeinstellungen",

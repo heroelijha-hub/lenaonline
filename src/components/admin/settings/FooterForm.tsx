@@ -83,28 +83,28 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-6">
-          <label className="block text-base font-semibold text-gray-900 mb-4">Footer Columns & Links</label>
+          <label className="block text-base font-semibold text-gray-900 mb-4">{tSettings('footer_columns_links') || 'Footer Columns & Links'}</label>
           <div className="space-y-6">
             {footerColumns.map((col, colIndex) => (
               <div key={colIndex} className="bg-white p-4 border rounded-md shadow-sm">
                 <div className="flex justify-between items-center mb-3">
-                  <input type="text" placeholder="Column Title (e.g. Account)" value={col.title} onChange={e => {
+                  <input type="text" placeholder={tSettings('column_title_ex') || "Column Title (e.g. Account)"} value={col.title} onChange={e => {
                     const newCols = [...footerColumns];
                     newCols[colIndex].title = e.target.value;
                     setFooterColumns(newCols);
                   }} className="font-semibold px-3 py-1.5 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
-                  <button type="button" onClick={() => setFooterColumns(footerColumns.filter((_, i) => i !== colIndex))} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md text-sm font-medium">Remove Column</button>
+                  <button type="button" onClick={() => setFooterColumns(footerColumns.filter((_, i) => i !== colIndex))} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md text-sm font-medium">{tSettings('remove_column') || 'Remove Column'}</button>
                 </div>
                 
                 <div className="space-y-2 pl-4 border-l-2 border-gray-100">
                   {col.links.map((link, linkIndex) => (
                     <div key={linkIndex} className="flex items-center gap-2">
-                      <input type="text" placeholder="Label" value={link.label} onChange={e => {
+                      <input type="text" placeholder={tSettings('label_ex') || "Label"} value={link.label} onChange={e => {
                         const newCols = [...footerColumns];
                         newCols[colIndex].links[linkIndex].label = e.target.value;
                         setFooterColumns(newCols);
                       }} className="flex-1 px-3 py-1 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
-                      <input type="text" placeholder="URL" value={link.url} onChange={e => {
+                      <input type="text" placeholder={tSettings('url_ex') || "URL"} value={link.url} onChange={e => {
                         const newCols = [...footerColumns];
                         newCols[colIndex].links[linkIndex].url = e.target.value;
                         setFooterColumns(newCols);
@@ -123,7 +123,7 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
                     newCols[colIndex].links.push({label: '', url: ''});
                     setFooterColumns(newCols);
                   }} className="text-xs text-blue-600 font-medium hover:underline mt-2 inline-block">
-                    + Add Link to {col.title || 'Column'}
+                    + {tSettings('add_link_to') || 'Add Link to'} {col.title || 'Column'}
                   </button>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
             
             <button type="button" onClick={() => setFooterColumns([...footerColumns, {title: '', links: []}])} className="text-sm text-blue-600 font-medium hover:underline flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-              Add New Column
+              {tSettings('add_new_column') || 'Add New Column'}
             </button>
           </div>
         </div>

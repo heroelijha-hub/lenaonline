@@ -1053,7 +1053,16 @@
     "illustration_image_upload": "Imagen de ilustración (Subir)",
     "explanation_text_label": "Texto explicativo",
     "return_btn_text": "Texto del botón de regreso (CTA)",
-    "bg_image_upload": "Imagen de fondo (Subir)"
+    "bg_image_upload": "Imagen de fondo (Subir)",
+    "header_navigation_menu": "Menú de Navegación del Encabezado",
+    "label_ex": "Etiqueta (ej: Tienda)",
+    "url_ex": "URL (ej: /shop)",
+    "add_menu_link": "Agregar Enlace",
+    "footer_columns_links": "Columnas y Enlaces del Pie de página",
+    "column_title_ex": "Título (ej: Cuenta)",
+    "remove_column": "Eliminar",
+    "add_link_to": "Agregar enlace a",
+    "add_new_column": "Agregar Nueva Columna"
   },
   "AdminShipping": {
     "title": "Configuración de Envío",
