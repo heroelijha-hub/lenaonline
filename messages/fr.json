@@ -843,7 +843,16 @@
     "cover_image": "Image de couverture",
     "saving": "Enregistrement...",
     "update": "Mettre à jour",
-    "publish": "Publier l'Article"
+    "publish": "Publier l'Article",
+    "quick_edit_title": "Titre",
+    "quick_edit_slug": "Slug",
+    "quick_edit_category": "Catégorie",
+    "quick_edit_date": "Date de publication",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "quick_edit": "Modification rapide",
+    "trash": "Corbeille",
+    "view": "Voir"
   },
   "AdminPages": {
     "manage_pages": "Gestion des Pages",

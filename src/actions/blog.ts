@@ -121,6 +121,29 @@ export async function deleteArticle(id: string) {
   }
 }
 
+export async function quickEditArticle(id: string, data: { title: string, slug: string, category: string, isPublished: boolean, createdAt: string }) {
+  await requireAdmin();
+  try {
+    const article = await prisma.article.update({
+      where: { id },
+      data: {
+        title: data.title,
+        slug: data.slug,
+        category: data.category,
+        isPublished: data.isPublished,
+        createdAt: new Date(data.createdAt),
+      }
+    });
+    revalidatePath('/admin/blogs');
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${article.slug}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: "Erreur lors de la modification rapide. Vérifiez que le slug est unique." };
+  }
+}
+
 // COMMENTS
 export async function addComment(articleId: string, data: any) {
   try {

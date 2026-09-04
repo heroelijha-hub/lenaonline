@@ -851,7 +851,16 @@
     "cover_image": "Cover Image",
     "saving": "Saving...",
     "update": "Update",
-    "publish": "Publish Article"
+    "publish": "Publish Article",
+    "quick_edit_title": "Title",
+    "quick_edit_slug": "Slug",
+    "quick_edit_category": "Category",
+    "quick_edit_date": "Publication Date",
+    "cancel": "Cancel",
+    "save": "Save",
+    "quick_edit": "Quick Edit",
+    "trash": "Trash",
+    "view": "View"
   },
   "AdminPages": {
     "manage_pages": "Manage Pages",
