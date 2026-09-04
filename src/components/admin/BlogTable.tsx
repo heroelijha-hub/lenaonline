@@ -63,13 +63,12 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
             <th className="px-6 py-4">{t('col_category')}</th>
             <th className="px-6 py-4">{t('col_status')}</th>
             <th className="px-6 py-4">{t('col_date')}</th>
-            <th className="px-6 py-4 text-right">{t('col_actions')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
           {articles.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+              <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
                 {t('no_articles')}
               </td>
             </tr>
@@ -149,9 +148,6 @@ export default function BlogTable({ initialArticles }: { initialArticles: any[] 
                   </td>
                   <td className="px-6 py-4 align-top">
                     {new Date(article.createdAt).toLocaleDateString(locale)}
-                  </td>
-                  <td className="px-6 py-4 text-right align-top">
-                    {/* Actions are now on the row hover, but we keep an empty cell or placeholder if needed */}
                   </td>
                 </tr>
               );
