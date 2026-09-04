@@ -3,8 +3,9 @@ import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import HeroMobileSliderWrapper from './HeroMobileSliderWrapper';
 import { getTranslations } from 'next-intl/server';
+import HeroPreviewEditButton from '@/components/admin/HeroPreviewEditButton';
 
-export default async function Hero({ config }: { config?: any }) {
+export default async function Hero({ config, isPreview, sectionId }: { config?: any, isPreview?: boolean, sectionId?: string }) {
   const settingsDb = await prisma.setting.findMany();
   let settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   
@@ -32,6 +33,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -81,6 +83,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -123,6 +126,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -162,6 +166,7 @@ export default async function Hero({ config }: { config?: any }) {
         backgroundColor: settings.HERO_4_BG_COLOR || '#FFF5EE',
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={4} />}
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -206,6 +211,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -265,6 +271,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
@@ -313,6 +320,7 @@ export default async function Hero({ config }: { config?: any }) {
         
       }}
     >
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />

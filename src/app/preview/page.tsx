@@ -36,7 +36,7 @@ export default async function PreviewPage() {
     let content = null;
     switch (section.type) {
       case 'Hero':
-        content = <Hero config={section.settings} />;
+        content = <Hero config={section.settings} isPreview={true} sectionId={section.id} />;
         break;
       case 'BestDeals':
         content = <BestDeals config={section.settings} />;

@@ -43,6 +43,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingBlockNum, setEditingBlockNum] = useState<number>(0);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [globalFont, setGlobalFont] = useState(initialSettings.GLOBAL_FONT_FAMILY || 'Inter');
   const [allProducts, setAllProducts] = useState<any[]>([]);
@@ -78,6 +79,11 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
       if (event.data && event.data.type === 'EDIT_SECTION') {
         if (event.data.sectionId) {
           setEditingId(event.data.sectionId);
+          if (event.data.blockNum !== undefined) {
+            setEditingBlockNum(event.data.blockNum);
+          } else {
+            setEditingBlockNum(0); // 0 = General Settings
+          }
         }
       }
     };
@@ -507,6 +513,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           previewMode={previewMode} 
           updateSectionSettings={updateSectionSettings} 
           handleUpload={handleUpload} 
+          editingBlockNum={editingBlockNum}
         />
       );
     }
