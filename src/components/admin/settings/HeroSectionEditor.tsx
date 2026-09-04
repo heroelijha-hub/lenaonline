@@ -23,35 +23,10 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
     }
   }, [editingBlockNum]);
 
-  const renderResponsiveInput = (label: string, baseKey: string, placeholder: string, colorKey?: string, defaultColor?: string) => {
-    const sizeKey = `${baseKey}_SIZE_${previewMode.toUpperCase()}`;
+  const renderContentInput = (label: string, baseKey: string, placeholder: string) => {
     return (
       <div className="mb-4">
-        <div className="flex items-center justify-between mb-1">
-          <label className="block text-xs font-medium text-gray-700">{label}</label>
-          <div className="flex items-center gap-2">
-            {colorKey && (
-              <div className="relative w-[22px] h-[22px] rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer" title="Couleur du texte">
-                <input 
-                  type="color" 
-                  value={section.settings[colorKey] || defaultColor || '#000000'} 
-                  onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
-                  className="absolute -top-2 -left-2 w-10 h-10 cursor-pointer border-0 p-0" 
-                />
-              </div>
-            )}
-            <input 
-              type="text" 
-              value={section.settings[sizeKey] || ''} 
-              onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value)} 
-              className="w-16 border border-gray-300 rounded px-2 py-1 text-[11px] text-center focus:ring-1 focus:ring-orange-500" 
-              placeholder="ex: 32px" 
-            />
-            <span className="text-[10px] text-gray-500 font-medium bg-gray-100 px-1.5 py-0.5 rounded uppercase tracking-wider">
-              {previewMode}
-            </span>
-          </div>
-        </div>
+        <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
         <input 
           type="text" 
           value={section.settings[baseKey] || ''} 
@@ -63,16 +38,53 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
     );
   };
 
+  const renderDesignTextControls = (label: string, baseKey: string, colorKey: string, defaultColor: string) => {
+    const sizeKey = `${baseKey}_SIZE_${previewMode.toUpperCase()}`;
+    const currentValue = section.settings[sizeKey] ? parseInt(section.settings[sizeKey].replace('px', '')) : 16;
+    return (
+      <div className="mb-5 flex flex-col gap-2">
+        <label className="block text-xs font-medium text-gray-700">{label}</label>
+        <div className="flex items-center gap-3">
+          <input 
+            type="range" 
+            min="10" 
+            max="100" 
+            value={currentValue || 16}
+            onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')}
+            className="flex-1 accent-orange-500 h-1"
+          />
+          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[70px]">
+             <input 
+                type="number" 
+                value={currentValue || ''} 
+                onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
+                className="w-10 px-1 py-1 text-sm text-center outline-none" 
+             />
+             <span className="bg-gray-50 text-gray-500 text-[10px] px-1 py-1 border-l border-gray-300 w-full text-center">px</span>
+          </div>
+          <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
+            <input 
+              type="color" 
+              value={section.settings[colorKey] || defaultColor || '#000000'} 
+              onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
+              className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer border-0 p-0" 
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const getPrefix = (blockNum: number) => isStyle2 ? `STYLE2_HERO_${blockNum}` : `HERO_${blockNum}`;
 
   const renderContentTab = (blockNum: number) => {
     const prefix = getPrefix(blockNum);
     return (
-      <div className="space-y-2 mt-4">
-        {renderResponsiveInput('Title', `${prefix}_TITLE`, 'Entrez le titre...', `${prefix}_TEXT_COLOR`, '#1e293b')}
-        {renderResponsiveInput('Subtitle / badge', `${prefix}_SUBTITLE`, 'Sous-titre...', `${prefix}_SUBTITLE_COLOR`, '#ef4444')}
-        {!isStyle2 && blockNum === 1 && renderResponsiveInput('Price/Texte', 'HERO_1_PRICE', 'from $349.99', 'HERO_1_TEXT_COLOR', '#1e293b')}
-        {renderResponsiveInput('Button', `${prefix}_CTA`, 'Shop Now')}
+      <div className="space-y-4 mt-4">
+        {renderContentInput('Titre', `${prefix}_TITLE`, 'Entrez le titre...')}
+        {renderContentInput('Sous-titre / badge', `${prefix}_SUBTITLE`, 'Sous-titre...')}
+        {!isStyle2 && blockNum === 1 && renderContentInput('Price/Texte', 'HERO_1_PRICE', 'from $349.99')}
+        {renderContentInput('Bouton', `${prefix}_CTA`, 'Shop Now')}
       </div>
     );
   };
@@ -133,8 +145,16 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           </div>
         </div>
 
+        {/* Typographie & Couleurs des textes */}
+        <div className="mt-8 border-t pt-6">
+          {renderDesignTextControls('Titre', `${prefix}_TITLE`, `${prefix}_TEXT_COLOR`, '#1e293b')}
+          {renderDesignTextControls('Sous-titre', `${prefix}_SUBTITLE`, `${prefix}_SUBTITLE_COLOR`, '#ef4444')}
+          {!isStyle2 && blockNum === 1 && renderDesignTextControls('Price/Texte', 'HERO_1_PRICE', 'HERO_1_TEXT_COLOR', '#1e293b')}
+          {renderDesignTextControls('Bouton', `${prefix}_CTA`, `${prefix}_BTN_TEXT_COLOR`, '#ffffff')}
+        </div>
+
         {/* Colors */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Block Background</label>
             <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
@@ -145,12 +165,6 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Background</label>
             <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
               <input type="color" value={section.settings[`${prefix}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `${prefix}_BTN_BG_COLOR`, e.target.value)} className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer border-0 p-0" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Text</label>
-            <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
-              <input type="color" value={section.settings[`${prefix}_BTN_TEXT_COLOR`] || '#ffffff'} onChange={e => updateSectionSettings(section.id, `${prefix}_BTN_TEXT_COLOR`, e.target.value)} className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer border-0 p-0" />
             </div>
           </div>
         </div>
@@ -171,33 +185,33 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
       <div className="p-5 lg:p-6 bg-gray-50/50">
         {activeBlock === 0 ? (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block">Paramètres Généraux</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 px-4 py-2 rounded-lg inline-block w-full text-center">Paramètres Généraux</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4">
               <div className="bg-white p-4 border rounded-xl shadow-sm">
                 <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2 flex items-center gap-2">
                   <span>🎨</span> Layout Design
                 </h4>
                 <div className="flex flex-col gap-3">
-                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition border border-transparent hover:border-gray-200">
+                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition border border-gray-100 hover:border-gray-300">
                     <input 
                       type="radio" 
                       name={`layout-${section.id}`}
                       checked={!isStyle2}
                       onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_1')}
-                      className="text-orange-600 focus:ring-orange-500 w-4 h-4"
+                      className="text-orange-600 focus:ring-orange-500 w-5 h-5"
                     />
-                    <span className="font-medium">Style 1 (4 Blocks)</span>
+                    <span className="font-medium text-base">Style 1 (4 Blocks)</span>
                   </label>
-                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-2 rounded-lg hover:bg-gray-50 transition border border-transparent hover:border-gray-200">
+                  <label className="flex items-center space-x-3 text-sm text-gray-700 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition border border-gray-100 hover:border-gray-300">
                     <input 
                       type="radio" 
                       name={`layout-${section.id}`}
                       checked={isStyle2}
                       onChange={() => updateSectionSettings(section.id, 'HERO_LAYOUT', 'STYLE_2')}
-                      className="text-orange-600 focus:ring-orange-500 w-4 h-4"
+                      className="text-orange-600 focus:ring-orange-500 w-5 h-5"
                     />
-                    <span className="font-medium">Style 2 (3 Blocks - Modern)</span>
+                    <span className="font-medium text-base">Style 2 (3 Blocks - Modern)</span>
                   </label>
                 </div>
               </div>
@@ -206,20 +220,20 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                 <h4 className="font-bold text-sm mb-3 text-gray-800 border-b pb-2 flex items-center gap-2">
                   <span>📱</span> Mobile Display
                 </h4>
-                <p className="text-xs text-gray-500 mb-3">Select the blocks to <strong>display</strong> on mobile:</p>
-                <div className="grid grid-cols-2 gap-2">
+                <p className="text-sm text-gray-500 mb-4">Select the blocks to <strong>display</strong> on mobile:</p>
+                <div className="flex flex-col gap-2">
                   {Array.from({ length: totalBlocks }).map((_, i) => {
                     const num = i + 1;
                     const mobileHideKey = isStyle2 ? `STYLE2_HERO_${num}_HIDE_MOBILE` : `HERO_${num}_HIDE_MOBILE`;
                     return (
-                      <label key={num} className="flex items-center space-x-2 text-xs text-gray-700 cursor-pointer bg-gray-50 p-2 rounded-lg border hover:bg-gray-100 transition">
+                      <label key={num} className="flex items-center justify-between space-x-2 text-sm text-gray-700 cursor-pointer bg-gray-50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
+                        <span className="font-semibold">Block {num}</span>
                         <input 
                           type="checkbox" 
                           checked={section.settings[mobileHideKey] !== 'true'} 
                           onChange={e => updateSectionSettings(section.id, mobileHideKey, e.target.checked ? 'false' : 'true')}
-                          className="rounded text-orange-600 focus:ring-orange-500"
+                          className="rounded text-orange-600 focus:ring-orange-500 w-5 h-5"
                         />
-                        <span className="font-medium">Block {num}</span>
                       </label>
                     );
                   })}
