@@ -36,7 +36,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 bg-black/40 z-[1] transition-opacity duration-300"></div>
+        </>
       )}
 
       <div className="z-10 relative mt-4">
