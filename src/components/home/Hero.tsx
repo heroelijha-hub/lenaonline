@@ -41,24 +41,24 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
       <div className="z-10 relative mt-4">
         <span 
-          className="font-bold tracking-wider uppercase mb-3 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="font-bold tracking-wider uppercase mb-3 block text-responsive"
           style={{...getResponsiveVars('HERO_1_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_1_SUBTITLE_COLOR || '#ef4444'}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_1_SUBTITLE || t('hero_1_subtitle') }}
         />
         <h2 
-          className="font-bold text-slate-800 mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-2 text-responsive" 
           style={{...getResponsiveVars('HERO_1_TITLE', {m: '28px', t: '32px', d: '36px'}), color: settings.HERO_1_TEXT_COLOR || undefined}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_1_TITLE || t('hero_1_title') }}
         />
         <p 
-          className="text-gray-600 mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="text-gray-600 mb-6 text-responsive" 
           style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_PRICE_COLOR || undefined}}
         >
           {settings.HERO_1_PRICE || t('hero_1_price')}
         </p>
         <Link 
           href={settings.HERO_1_LINK || '/#'} 
-          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-responsive"
           style={{
             ...getResponsiveVars('HERO_1_CTA', {m: '16px', t: '16px', d: '16px'}),
             backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#f97316',
@@ -90,18 +90,18 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="font-semibold mb-2 block uppercase tracking-wide text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="font-semibold mb-2 block uppercase tracking-wide text-responsive"
           style={{...getResponsiveVars('HERO_2_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_2_SUBTITLE_COLOR || '#6b7280'}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_2_SUBTITLE || t('hero_2_subtitle') }}
         />
         <h2 
-          className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-6 leading-tight whitespace-pre-line text-responsive" 
           style={{...getResponsiveVars('HERO_2_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_2_TEXT_COLOR || undefined}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_2_TITLE || t('hero_2_title') }}
         />
         <Link 
           href={settings.HERO_2_LINK || '/#'} 
-          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 rounded shadow-sm transition-transform transform hover:scale-105 text-responsive"
           style={{
             ...getResponsiveVars('HERO_2_CTA', {m: '14px', t: '16px', d: '16px'}),
             backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#f97316',
@@ -133,18 +133,18 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
-          className="font-bold tracking-wider uppercase mb-2 block text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="font-bold tracking-wider uppercase mb-2 block text-responsive"
           style={{...getResponsiveVars('HERO_3_SUBTITLE', {m: '12px', t: '14px', d: '14px'}), color: settings.HERO_3_SUBTITLE_COLOR || '#ef4444'}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_3_SUBTITLE || t('hero_3_subtitle') }}
         />
         <h2 
-          className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-2 leading-tight whitespace-pre-line text-responsive" 
           style={{...getResponsiveVars('HERO_3_TITLE', {m: '20px', t: '24px', d: '28px'}), color: settings.HERO_3_TEXT_COLOR || undefined}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_3_TITLE || t('hero_3_title') }}
         />
         <Link 
           href={settings.HERO_3_LINK || '/#'} 
-          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="inline-block hover:bg-orange-600 font-semibold px-6 py-2 mt-4 rounded shadow-sm transition-transform transform hover:scale-105 text-responsive"
           style={{
             ...getResponsiveVars('HERO_3_CTA', {m: '14px', t: '16px', d: '16px'}),
             backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#f97316',
@@ -173,18 +173,18 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       )}
       <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
         <h2 
-          className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-slate-800 mb-3 leading-tight whitespace-pre-line text-responsive" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '22px', t: '26px', d: '30px'}), color: settings.HERO_4_TEXT_COLOR || undefined}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_4_TITLE || t('hero_4_title') }}
         />
         <p 
-          className="text-slate-600 mb-6 font-medium text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="text-slate-600 mb-6 font-medium text-responsive" 
           style={{...getResponsiveVars('HERO_4_SUBTITLE', {m: '14px', t: '16px', d: '16px'}), color: settings.HERO_4_SUBTITLE_COLOR || undefined}}
           dangerouslySetInnerHTML={{ __html: settings.HERO_4_SUBTITLE || t('hero_4_subtitle') }}
         />
         <Link 
           href={settings.HERO_4_LINK || '/#'} 
-          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+          className="inline-block hover:bg-orange-600 font-semibold px-8 py-2.5 rounded shadow-sm transition-transform transform hover:scale-105 text-responsive"
           style={{
             ...getResponsiveVars('HERO_4_CTA', {m: '14px', t: '16px', d: '16px'}),
             backgroundColor: settings.HERO_4_BTN_BG_COLOR || '#f97316',
@@ -220,7 +220,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         <div>
           {settings.STYLE2_HERO_1_SUBTITLE && (
             <span 
-              className="inline-block bg-red-600 text-white font-bold tracking-wider mb-6 px-4 py-2 relative text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+              className="inline-block bg-red-600 text-white font-bold tracking-wider mb-6 px-4 py-2 relative text-responsive"
               style={{
                 ...getResponsiveVars('STYLE2_HERO_1_SUBTITLE', {m: '14px', t: '16px', d: '18px'}),
                 clipPath: 'polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%)'
@@ -230,7 +230,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
             </span>
           )}
           <h2 
-            className="font-black italic tracking-wide leading-relaxed mb-6 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)] drop-shadow-md" 
+            className="font-black italic tracking-wide leading-relaxed mb-6 text-responsive drop-shadow-md" 
             style={{
               ...getResponsiveVars('STYLE2_HERO_1_TITLE', {m: '28px', t: '36px', d: '46px'}),
               WebkitTextStroke: '2px white',
@@ -278,13 +278,13 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
-          className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-red-600 mb-2 leading-tight text-responsive" 
           style={{...getResponsiveVars('STYLE2_HERO_2_TITLE', {m: '18px', t: '20px', d: '22px'}), color: settings.STYLE2_HERO_2_TEXT_COLOR || '#dc2626'}}
         >
           {settings.STYLE2_HERO_2_TITLE || t('hero_2_title')}
         </h2>
         <p 
-          className="font-black text-slate-900 mb-5 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-black text-slate-900 mb-5 text-responsive" 
           style={getResponsiveVars('STYLE2_HERO_2_SUBTITLE', {m: '22px', t: '26px', d: '30px'})}
         >
           {settings.STYLE2_HERO_2_SUBTITLE || t('hero_2_subtitle')}
@@ -327,13 +327,13 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
-          className="font-bold text-red-600 mb-2 leading-tight text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-bold text-red-600 mb-2 leading-tight text-responsive" 
           style={{...getResponsiveVars('STYLE2_HERO_3_TITLE', {m: '18px', t: '20px', d: '22px'}), color: settings.STYLE2_HERO_3_TEXT_COLOR || '#dc2626'}}
         >
           {settings.STYLE2_HERO_3_TITLE || t('hero_3_title')}
         </h2>
         <p 
-          className="font-black text-slate-900 mb-5 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+          className="font-black text-slate-900 mb-5 text-responsive" 
           style={getResponsiveVars('STYLE2_HERO_3_SUBTITLE', {m: '22px', t: '26px', d: '30px'})}
         >
           {settings.STYLE2_HERO_3_SUBTITLE || t('hero_3_subtitle')}

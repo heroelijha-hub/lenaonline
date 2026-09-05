@@ -55,7 +55,7 @@ export default async function BestDeals({ config }: { config?: any }) {
   const showDesktopTimer = settings.SHOW_TIMER_DESKTOP !== 'false';
   
   // Utiliser les produits de la BDD s'il y en a, sinon fallback sur les statiques
-  const displayProducts = dbProducts.length > 0 ? dbProducts.map(p => {
+  const displayProducts = dbProducts.map(p => {
     const approvedReviews = (p as any).reviews || [];
     const ratingCount = approvedReviews.length;
     const avgRating = ratingCount > 0 ? approvedReviews.reduce((sum: number, r: any) => sum + r.rating, 0) / ratingCount : 0;
@@ -72,7 +72,7 @@ export default async function BestDeals({ config }: { config?: any }) {
       discount: p.discountLabel || undefined,
       imagePlaceholder: '🛍️'
     };
-  }) : staticProducts;
+  });
 
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
@@ -119,19 +119,23 @@ export default async function BestDeals({ config }: { config?: any }) {
 
       {/* Products Slider */}
       <div className="mb-8 relative">
-        <ProductSliderWrapper>
-          {displayProducts.map((product) => (
-            <BestDealsCard 
-              key={product.id}
-              product={product}
-              borderColor={config?.cardBorderColor || settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
-              btnBgColor={config?.btnBgColor || settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
-              btnTextColor={config?.btnTextColor || settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
-              btnHoverBgColor={config?.btnHoverBgColor || settings.BESTDEALS_BTN_HOVER_BG_COLOR || '#c2410c'}
-              btnHoverTextColor={config?.btnHoverTextColor || settings.BESTDEALS_BTN_HOVER_TEXT_COLOR || '#ffffff'}
-            />
-          ))}
-        </ProductSliderWrapper>
+        {displayProducts.length > 0 ? (
+          <ProductSliderWrapper>
+            {displayProducts.map((product) => (
+              <BestDealsCard 
+                key={product.id}
+                product={product}
+                borderColor={config?.cardBorderColor || settings.BESTDEALS_CARD_BORDER_COLOR || '#e5e7eb'}
+                btnBgColor={config?.btnBgColor || settings.BESTDEALS_BTN_BG_COLOR || '#ea580c'}
+                btnTextColor={config?.btnTextColor || settings.BESTDEALS_BTN_TEXT_COLOR || '#ffffff'}
+                btnHoverBgColor={config?.btnHoverBgColor || settings.BESTDEALS_BTN_HOVER_BG_COLOR || '#c2410c'}
+                btnHoverTextColor={config?.btnHoverTextColor || settings.BESTDEALS_BTN_HOVER_TEXT_COLOR || '#ffffff'}
+              />
+            ))}
+          </ProductSliderWrapper>
+        ) : (
+          <div className="text-center py-12 text-gray-500 font-medium">Aucun produit ne correspond à ces critères (ex: catégorie ou promotion).</div>
+        )}
       </div>
 
       {/* Promo Banners */}
