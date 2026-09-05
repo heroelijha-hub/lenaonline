@@ -88,7 +88,8 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
         {renderContentInput('Title', `${prefix}_TITLE`, titlePlaceholder)}
         {renderContentInput('Subtitle / badge', `${prefix}_SUBTITLE`, subtitlePlaceholder)}
         {!isStyle2 && blockNum === 1 && renderContentInput('Price/Text', 'HERO_1_PRICE', 'from $349.99')}
-        {renderContentInput('Button', `${prefix}_CTA`, ctaPlaceholder)}
+        {renderContentInput('Button Text', `${prefix}_CTA`, ctaPlaceholder)}
+        {renderContentInput('Button Link', `${prefix}_LINK`, '/shop')}
       </div>
     );
   };
