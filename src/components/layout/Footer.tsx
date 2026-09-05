@@ -164,37 +164,36 @@ export default function Footer({
                   <li><Link href="/wishlist" className="hover:text-yellow-400 transition">Wunschliste</Link></li>
                 </ul>
               </div>
+              {/* Column 4: Alle Kategorien (Fallback) */}
+              <div className="lg:col-span-1">
+                <h3 className="font-bold text-lg mb-6 text-white">Alle Kategorien</h3>
+                <ul className="space-y-4 text-sm uppercase opacity-90 tracking-wide">
+                  {categories && categories.length > 0 ? (
+                    categories.slice(0, 10).map((cat) => (
+                      <li key={cat.id}>
+                        <Link href={`/category/${cat.slug}`} className="hover:text-yellow-400 transition">
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))
+                  ) : (
+                    <>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">BRENNSTOFFE</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">HOLZPELLETS</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">KAMINBRIKETTS</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">Holzbriketts</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">BRENNHOLZ</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">Kaminholz</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">KAMINE &amp; ÖFEN</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">KAMINBAUSATZ</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">PELLETKESSEL</Link></li>
+                      <li><Link href="#" className="hover:text-yellow-400 transition">HOLZHERD / KÜCHENHERD</Link></li>
+                    </>
+                  )}
+                </ul>
+              </div>
             </>
           )}
-
-          {/* Column 4: Alle Kategorien */}
-          <div className="lg:col-span-1">
-            <h3 className="font-bold text-lg mb-6 text-white">Alle Kategorien</h3>
-            <ul className="space-y-4 text-sm uppercase opacity-90 tracking-wide">
-              {categories && categories.length > 0 ? (
-                categories.slice(0, 10).map((cat) => (
-                  <li key={cat.id}>
-                    <Link href={`/category/${cat.slug}`} className="hover:text-yellow-400 transition">
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">BRENNSTOFFE</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">HOLZPELLETS</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">KAMINBRIKETTS</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">Holzbriketts</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">BRENNHOLZ</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">Kaminholz</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">KAMINE &amp; ÖFEN</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">KAMINBAUSATZ</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">PELLETKESSEL</Link></li>
-                  <li><Link href="#" className="hover:text-yellow-400 transition">HOLZHERD / KÜCHENHERD</Link></li>
-                </>
-              )}
-            </ul>
-          </div>
 
           {/* Column 5: Newsletter */}
           <div className="lg:col-span-1">
