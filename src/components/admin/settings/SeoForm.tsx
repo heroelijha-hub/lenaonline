@@ -12,6 +12,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
   const [metaTitle, setMetaTitle] = useState(initialSettings.HOME_META_TITLE || '');
   const [metaDescription, setMetaDescription] = useState(initialSettings.HOME_META_DESCRIPTION || '');
   const [ogImage, setOgImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
+  const [googleSiteVerification, setGoogleSiteVerification] = useState(initialSettings.GOOGLE_SITE_VERIFICATION || '');
   const [showMediaModal, setShowMediaModal] = useState(false);
   
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +27,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
       HOME_META_TITLE: metaTitle,
       HOME_META_DESCRIPTION: metaDescription,
       HEADER_LOGO_IMAGE: ogImage,
+      GOOGLE_SITE_VERIFICATION: googleSiteVerification,
     };
 
     await updateSettingsBatch(settingsMap);
@@ -84,6 +86,22 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
             <div className={`text-xs mt-1 ${metaDescription.length < 80 ? 'text-red-500' : metaDescription.length > 125 ? 'text-orange-500' : 'text-green-600'}`}>
               {metaDescription.length} {tSeo('chars') || 'caractères'} {metaDescription.length > 0 && (metaDescription.length < 80 ? tSeo('too_short') : metaDescription.length > 125 ? tSeo('too_long') : tSeo('perfect'))}
             </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6">
+          <div className="mb-4 md:mb-0 md:w-1/3">
+            <label className="block text-sm font-medium text-gray-700">Google Search Console</label>
+            <p className="text-xs text-gray-500 mt-1">Clé de vérification (ex: xxxxxxx-yyyyyy). Récupérez-la lors de l'ajout de la propriété "Préfixe de l'URL" (méthode balise HTML).</p>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              type="text"
+              value={googleSiteVerification}
+              onChange={(e) => setGoogleSiteVerification(e.target.value)}
+              placeholder="votre_code_de_verification"
+              className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
           </div>
         </div>
 

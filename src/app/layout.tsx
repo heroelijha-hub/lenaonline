@@ -23,7 +23,7 @@ const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settingsDb = await prisma.setting.findMany({
-    where: { key: { in: ['FAVICON_IMAGE', 'HOME_META_TITLE', 'HOME_META_DESCRIPTION', 'HEADER_LOGO_IMAGE'] } }
+    where: { key: { in: ['FAVICON_IMAGE', 'HOME_META_TITLE', 'HOME_META_DESCRIPTION', 'HEADER_LOGO_IMAGE', 'GOOGLE_SITE_VERIFICATION'] } }
   });
   
   const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
@@ -63,6 +63,9 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: faviconUrl,
       shortcut: faviconUrl,
       apple: faviconUrl
+    } : undefined,
+    verification: settingsMap['GOOGLE_SITE_VERIFICATION'] ? {
+      google: settingsMap['GOOGLE_SITE_VERIFICATION']
     } : undefined
   };
 }
