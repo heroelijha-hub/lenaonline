@@ -94,16 +94,16 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Header Announcement</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('header_announcement') || 'Header Announcement'}</label>
           <input type="text" value={headerAnnouncement} onChange={(e) => setHeaderAnnouncement(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Support Phone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('support_phone') || 'Support Phone'}</label>
             <input type="text" value={headerSupportPhone} onChange={(e) => setHeaderSupportPhone(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Support Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('support_email') || 'Support Email'}</label>
             <input type="email" value={headerSupportEmail} onChange={(e) => setHeaderSupportEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
           </div>
         </div>

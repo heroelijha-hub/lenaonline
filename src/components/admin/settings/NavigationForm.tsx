@@ -87,20 +87,20 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Mobile About Title</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('mobile_about_title') || 'Mobile About Title'}</label>
           <input type="text" value={mobileAboutTitle} onChange={(e) => setMobileAboutTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Mobile About Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('mobile_about_desc') || 'Mobile About Description'}</label>
           <textarea value={mobileAboutDesc} onChange={(e) => setMobileAboutDesc(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_phone') || 'Contact Phone'}</label>
             <input type="text" value={mobileContactPhone} onChange={(e) => setMobileContactPhone(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_email') || 'Contact Email'}</label>
             <input type="email" value={mobileContactEmail} onChange={(e) => setMobileContactEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
           </div>
         </div>
