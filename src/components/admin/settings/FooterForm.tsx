@@ -80,7 +80,6 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
             <div className="relative w-10 h-10">  <input type="color" value={footerTextColor} onChange={(e) => setFooterTextColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerTextColor }} /></div>
           </div>
         </div>
-        </div>
         
         <div className="pt-6 border-t border-gray-100">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">{tSettings('col_1_logo_info') || 'Column 1: Logo & Info'}</h3>
