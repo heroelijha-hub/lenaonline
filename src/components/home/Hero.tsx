@@ -38,7 +38,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
           <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 bg-black/40 z-[1] transition-opacity duration-300"></div>
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.HERO_1_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
         </>
       )}
 
@@ -89,7 +89,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.HERO_2_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
@@ -132,7 +135,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.HERO_3_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-[65%] sm:w-2/3">
         <span 
@@ -172,7 +178,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={4} />}
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.HERO_4_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-[60%] md:w-1/2 lg:pl-4">
         <h2 
@@ -217,7 +226,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_1_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-full sm:w-[85%] md:w-3/4 lg:w-2/3 h-full flex flex-col justify-between">
         <div>
@@ -277,7 +289,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_2_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 
@@ -326,7 +341,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
-        <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+        <>
+          <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_3_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
+        </>
       )}
       <div className="z-20 w-[55%] flex flex-col h-full justify-center">
         <h2 

@@ -123,6 +123,22 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
             <input type="checkbox" id={`show_bg_${prefix}`} checked={section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_BG_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-600 focus:ring-orange-500" />
             <label htmlFor={`show_bg_${prefix}`} className="text-xs text-gray-600">Show background image</label>
           </div>
+          {section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false' && (
+            <div className="mt-3">
+              <label className="block text-xs font-medium text-gray-700 mb-1">Dark Overlay (improves text readability)</label>
+              <select 
+                value={section.settings[`${prefix}_BG_OVERLAY`] || '40'} 
+                onChange={e => updateSectionSettings(section.id, `${prefix}_BG_OVERLAY`, e.target.value)}
+                className="w-full border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
+              >
+                <option value="0">None (0%)</option>
+                <option value="20">Light (20%)</option>
+                <option value="40">Medium (40%)</option>
+                <option value="60">Dark (60%)</option>
+                <option value="80">Very Dark (80%)</option>
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Main Image */}
