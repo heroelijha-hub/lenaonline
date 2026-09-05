@@ -1086,7 +1086,8 @@
     "nav_404": "404 Seite",
     "back_to_dashboard": "Zurück zum Dashboard",
     "save_changes": "Änderungen speichern",
-    "settings_category_only": "Einstellungen nur für diese Kategorie."
+    "settings_category_only": "Einstellungen nur für diese Kategorie.",
+    "nav_seo": "SEO & OpenGraph"
   },
   "AdminShipping": {
     "title": "Versandeinstellungen",
@@ -1250,5 +1251,35 @@
     "delete_product_confirm": "Möchten Sie dieses Produkt wirklich DAUERHAFT löschen? Diese Aktion ist irreversibel.",
     "delete_media_confirm": "Möchten Sie dieses Medium wirklich DAUERHAFT löschen? Diese Aktion ist irreversibel.",
     "na": "N / A"
+  },
+  "AdminSEO": {
+    "seo_section_title": "SEO & OpenGraph",
+    "seo_section_desc": "Optimieren Sie die Darstellung in Suchmaschinen und sozialen Medien.",
+    "meta_title_label": "Meta-Titel (Optional)",
+    "meta_title_placeholder": "Benutzerdefinierter Titel für Google",
+    "meta_title_help": "Wenn leer, wird der Haupttitel verwendet.",
+    "meta_desc_label": "Meta-Beschreibung (Optional)",
+    "meta_desc_placeholder": "Kurze Beschreibung für Suchergebnisse...",
+    "meta_desc_help": "Empfohlen: zwischen 120 und 160 Zeichen.",
+    "meta_keywords_label": "Meta-Schlüsselwörter (Optional)",
+    "meta_keywords_placeholder": "Schlüsselwort 1, Schlüsselwort 2...",
+    "meta_keywords_help": "Trennen Sie Schlüsselwörter mit Kommas.",
+    "seo_settings_btn": "SEO-Einstellungen (Optional)",
+    "home_seo_desc": "Globale SEO-Einstellungen (angewendet auf die Startseite und standardmäßig).",
+    "home_meta_title_label": "Meta-Titel (Startseite)",
+    "home_meta_title_help": "Inspektor empfiehlt 50-60 Zeichen.",
+    "home_meta_desc_label": "Meta-Beschreibung",
+    "home_meta_desc_help": "Inspektor empfiehlt 80-125 Zeichen für bessere Klickrate.",
+    "og_image_label": "OpenGraph-Bild (og:image)",
+    "og_image_help": "Bild, das beim Teilen verwendet wird. Ideal sind 1200x630 Pixel.",
+    "change_image": "Bild ändern",
+    "choose_image": "Bild auswählen (1200x630)",
+    "saving": "Speichern...",
+    "save_success": "SEO-Einstellungen erfolgreich aktualisiert",
+    "save_btn": "Änderungen speichern",
+    "chars": "Zeichen",
+    "too_short": "(Zu kurz)",
+    "too_long": "(Könnte abgeschnitten werden)",
+    "perfect": "(Perfekt)"
   }
 }

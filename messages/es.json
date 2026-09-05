@@ -1087,7 +1087,8 @@
     "nav_404": "Página 404",
     "back_to_dashboard": "Volver al panel",
     "save_changes": "Guardar cambios",
-    "settings_category_only": "Ajustes solo para esta categoría."
+    "settings_category_only": "Ajustes solo para esta categoría.",
+    "nav_seo": "SEO & OpenGraph"
   },
   "AdminShipping": {
     "title": "Configuración de Envío",
@@ -1251,5 +1252,35 @@
     "delete_product_confirm": "¿Realmente quieres eliminar este producto DEFINITIVAMENTE? Esta acción es irreversible.",
     "delete_media_confirm": "¿Realmente quieres eliminar este medio DEFINITIVAMENTE? Esta acción es irreversible.",
     "na": "N/A"
+  },
+  "AdminSEO": {
+    "seo_section_title": "SEO y OpenGraph",
+    "seo_section_desc": "Optimice cómo aparece en los motores de búsqueda y redes sociales.",
+    "meta_title_label": "Meta Título (Opcional)",
+    "meta_title_placeholder": "Título personalizado para Google",
+    "meta_title_help": "Si está vacío, se utilizará el título principal.",
+    "meta_desc_label": "Meta Descripción (Opcional)",
+    "meta_desc_placeholder": "Breve descripción para los resultados...",
+    "meta_desc_help": "Recomendado: entre 120 y 160 caracteres.",
+    "meta_keywords_label": "Meta Palabras clave (Opcional)",
+    "meta_keywords_placeholder": "palabra clave 1, palabra clave 2...",
+    "meta_keywords_help": "Separe las palabras clave con comas.",
+    "seo_settings_btn": "Configuración SEO (Opcional)",
+    "home_seo_desc": "Configuración global de SEO (aplicada a la página de inicio y por defecto).",
+    "home_meta_title_label": "Meta Título (Inicio)",
+    "home_meta_title_help": "El inspector recomienda 50-60 caracteres.",
+    "home_meta_desc_label": "Meta Descripción",
+    "home_meta_desc_help": "El inspector recomienda 80-125 caracteres para un mejor CTR.",
+    "og_image_label": "Imagen OpenGraph (og:image)",
+    "og_image_help": "Imagen utilizada al compartir. Se recomienda 1200x630 píxeles.",
+    "change_image": "Cambiar imagen",
+    "choose_image": "Elegir imagen (1200x630)",
+    "saving": "Guardando...",
+    "save_success": "Configuración de SEO actualizada correctamente",
+    "save_btn": "Guardar cambios",
+    "chars": "caracteres",
+    "too_short": "(Demasiado corto)",
+    "too_long": "(Puede estar truncado)",
+    "perfect": "(Perfecto)"
   }
 }

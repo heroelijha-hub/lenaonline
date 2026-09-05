@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 
 export default function AdminPageForm() {
   const t = useTranslations('AdminPages');
+  const tSeo = useTranslations('AdminSEO');
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
@@ -171,45 +172,45 @@ export default function AdminPageForm() {
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
           <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2 flex items-center">
             <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            Référencement (SEO)
+            {tSeo('seo_section_title') || 'Référencement (SEO)'}
           </h2>
-          <p className="text-xs text-gray-500 mb-2">Optimisez l'affichage de cette page sur les moteurs de recherche et les réseaux sociaux.</p>
+          <p className="text-xs text-gray-500 mb-2">{tSeo('seo_section_desc') || 'Optimisez l\'affichage sur les moteurs de recherche et les réseaux sociaux.'}</p>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Titre (Optionnel)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">{tSeo('meta_title_label') || 'Meta Titre (Optionnel)'}</label>
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
-                placeholder={formData.title || "Titre personnalisé pour Google"}
+                placeholder={tSeo('meta_title_placeholder') || "Titre personnalisé pour Google"}
                 value={formData.metaTitle}
                 onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
               />
-              <p className="text-xs text-gray-500 mt-1">S'il est vide, le titre principal de la page sera utilisé.</p>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('meta_title_help') || 'S\'il est vide, le titre principal sera utilisé.'}</p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Description (Optionnel)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">{tSeo('meta_desc_label') || 'Meta Description (Optionnel)'}</label>
               <textarea
                 rows={3}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
-                placeholder="Description courte affichée dans les résultats de recherche..."
+                placeholder={tSeo('meta_desc_placeholder') || "Description courte affichée dans les résultats..."}
                 value={formData.metaDescription}
                 onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
               />
-              <p className="text-xs text-gray-500 mt-1">Recommandé : entre 120 et 160 caractères.</p>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('meta_desc_help') || 'Recommandé : entre 120 et 160 caractères.'}</p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Meta Mots-clés (Optionnel)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">{tSeo('meta_keywords_label') || 'Meta Mots-clés (Optionnel)'}</label>
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
-                placeholder="mot-clé 1, mot-clé 2, poêle à bois..."
+                placeholder={tSeo('meta_keywords_placeholder') || "mot-clé 1, mot-clé 2..."}
                 value={formData.metaKeywords}
                 onChange={(e) => setFormData({...formData, metaKeywords: e.target.value})}
               />
-              <p className="text-xs text-gray-500 mt-1">Séparez les mots-clés par des virgules.</p>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('meta_keywords_help') || 'Séparez les mots-clés par des virgules.'}</p>
             </div>
           </div>
         </div>

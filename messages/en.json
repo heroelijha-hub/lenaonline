@@ -1086,7 +1086,8 @@
     "nav_404": "404 page",
     "back_to_dashboard": "Back to dashboard",
     "save_changes": "Save changes",
-    "settings_category_only": "Settings for this category only."
+    "settings_category_only": "Settings for this category only.",
+    "nav_seo": "SEO & OpenGraph"
   },
   "AdminShipping": {
     "title": "Shipping Settings",
@@ -1250,5 +1251,35 @@
     "delete_product_confirm": "Do you really want to PERMANENTLY delete this product? This action is irreversible.",
     "delete_media_confirm": "Do you really want to PERMANENTLY delete this media? This action is irreversible.",
     "na": "N/A"
+  },
+  "AdminSEO": {
+    "seo_section_title": "SEO & OpenGraph",
+    "seo_section_desc": "Optimize how this page appears on search engines and social media.",
+    "meta_title_label": "Meta Title (Optional)",
+    "meta_title_placeholder": "Custom title for Google",
+    "meta_title_help": "If empty, the main title will be used.",
+    "meta_desc_label": "Meta Description (Optional)",
+    "meta_desc_placeholder": "Short description for search results...",
+    "meta_desc_help": "Recommended: between 120 and 160 characters.",
+    "meta_keywords_label": "Meta Keywords (Optional)",
+    "meta_keywords_placeholder": "keyword 1, keyword 2...",
+    "meta_keywords_help": "Separate keywords with commas.",
+    "seo_settings_btn": "SEO Settings (Optional)",
+    "home_seo_desc": "Global SEO settings (applied to the homepage and by default).",
+    "home_meta_title_label": "Meta Title (Homepage)",
+    "home_meta_title_help": "Inspector recommends 50-60 characters.",
+    "home_meta_desc_label": "Meta Description",
+    "home_meta_desc_help": "Inspector recommends 80-125 characters for better CTR.",
+    "og_image_label": "OpenGraph Image (og:image)",
+    "og_image_help": "Image used when sharing on social media. Inspector recommends 1200x630 pixels.",
+    "change_image": "Change Image",
+    "choose_image": "Choose Image (1200x630)",
+    "saving": "Saving...",
+    "save_success": "SEO settings updated successfully",
+    "save_btn": "Save changes",
+    "chars": "characters",
+    "too_short": "(Too short)",
+    "too_long": "(May be truncated)",
+    "perfect": "(Perfect)"
   }
 }

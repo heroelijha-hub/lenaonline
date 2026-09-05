@@ -19,6 +19,7 @@ type BlogFormProps = {
 
 export default function BlogForm({ article, existingCategories = [], existingAuthors = [] }: BlogFormProps) {
   const t = useTranslations('AdminBlogs');
+  const tSeo = useTranslations('AdminSEO');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -151,37 +152,37 @@ export default function BlogForm({ article, existingCategories = [], existingAut
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4">
             <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-50 pb-2 flex items-center">
               <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              Référencement (SEO)
+              {tSeo('seo_section_title') || 'Référencement (SEO)'}
             </h2>
             
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">Meta Titre (Optionnel)</label>
+              <label className="block text-sm font-medium mb-1 text-gray-700">{tSeo('meta_title_label') || 'Meta Titre (Optionnel)'}</label>
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition text-sm"
-                placeholder={formData.title || "Titre personnalisé pour Google"}
+                placeholder={tSeo('meta_title_placeholder') || "Titre personnalisé pour Google"}
                 value={formData.metaTitle}
                 onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">Meta Description (Optionnel)</label>
+              <label className="block text-sm font-medium mb-1 text-gray-700">{tSeo('meta_desc_label') || 'Meta Description (Optionnel)'}</label>
               <textarea
                 rows={3}
                 className="w-full border border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition text-sm"
-                placeholder="Description courte affichée dans les résultats de recherche..."
+                placeholder={tSeo('meta_desc_placeholder') || "Description courte affichée dans les résultats..."}
                 value={formData.metaDescription}
                 onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">Meta Mots-clés (Optionnel)</label>
+              <label className="block text-sm font-medium mb-1 text-gray-700">{tSeo('meta_keywords_label') || 'Meta Mots-clés (Optionnel)'}</label>
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition text-sm"
-                placeholder="mot-clé 1, mot-clé 2..."
+                placeholder={tSeo('meta_keywords_placeholder') || "mot-clé 1, mot-clé 2..."}
                 value={formData.metaKeywords}
                 onChange={(e) => setFormData({...formData, metaKeywords: e.target.value})}
               />

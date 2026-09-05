@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 
 export default function CategoryCreateForm({ categories }: { categories: any[] }) {
   const t = useTranslations('AdminCategories');
+  const tSeo = useTranslations('AdminSEO');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [parentId, setParentId] = useState('');
@@ -91,7 +92,7 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
           className="text-sm text-purple-600 hover:text-purple-800 font-medium flex items-center transition"
         >
           <svg className={`w-4 h-4 mr-1 transition-transform ${showSeo ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-          Paramètres SEO (Optionnel)
+          {tSeo('seo_section_title')}
         </button>
       </div>
 
@@ -101,21 +102,21 @@ export default function CategoryCreateForm({ categories }: { categories: any[] }
             type="text" 
             value={metaTitle}
             onChange={(e) => setMetaTitle(e.target.value)}
-            placeholder="Meta Titre"
+            placeholder={tSeo('meta_title_placeholder')}
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input 
             type="text" 
             value={metaDescription}
             onChange={(e) => setMetaDescription(e.target.value)}
-            placeholder="Meta Description"
+            placeholder={tSeo('meta_desc_placeholder')}
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input 
             type="text" 
             value={metaKeywords}
             onChange={(e) => setMetaKeywords(e.target.value)}
-            placeholder="Meta Mots-clés (séparés par virgule)"
+            placeholder={tSeo('meta_keywords_placeholder')}
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
