@@ -959,7 +959,7 @@
     "card_border_color": "Card Border Color",
     "main_theme_color": "Main Store Color (Theme)",
     "top_banner_message": "Top Banner Message",
-    "favicon_label": "Favicon (Tab Icon)",
+    "favicon_label": "Favicon",
     "favicon_desc": "A small square image (ideally PNG or ICO) displayed in the browser tab.",
     "logo_desc": "Upload a logo to replace the store name in the header.",
     "support_phone": "Support Phone (Header)",
@@ -1088,7 +1088,18 @@
     "back_to_dashboard": "Back to dashboard",
     "save_changes": "Save changes",
     "settings_category_only": "Settings for this category only.",
-    "nav_seo": "SEO & OpenGraph"
+    "nav_seo": "SEO & OpenGraph",
+    "col_1_logo_info": "Column 1: Logo & Info",
+    "footer_logo_label": "Footer Logo",
+    "change_logo": "Change Logo",
+    "select_logo": "Select Logo",
+    "col_5_newsletter": "Column 5: Newsletter",
+    "newsletter_title_label": "Title",
+    "newsletter_desc_label": "Description / Text",
+    "newsletter_placeholder_label": "Input Placeholder",
+    "header_logo_label": "Header Logo",
+    "change_favicon": "Change Favicon",
+    "select_favicon": "Select Favicon"
   },
   "AdminShipping": {
     "title": "Shipping Settings",

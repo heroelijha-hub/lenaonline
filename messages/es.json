@@ -959,7 +959,7 @@
     "card_border_color": "Color de borde",
     "main_theme_color": "Color principal de la tienda (Tema)",
     "top_banner_message": "Mensaje del banner superior",
-    "favicon_label": "Favicon (Icono de pestaña)",
+    "favicon_label": "Favicon",
     "favicon_desc": "Una pequeña imagen cuadrada (idealmente PNG o ICO) que se muestra en la pestaña del navegador.",
     "logo_desc": "Sube un logotipo para reemplazar el nombre de la tienda en el encabezado.",
     "support_phone": "Teléfono de soporte (Encabezado)",
@@ -1088,7 +1088,18 @@
     "back_to_dashboard": "Volver al panel",
     "save_changes": "Guardar cambios",
     "settings_category_only": "Ajustes solo para esta categoría.",
-    "nav_seo": "SEO & OpenGraph"
+    "nav_seo": "SEO & OpenGraph",
+    "col_1_logo_info": "Columna 1: Logotipo e Información",
+    "footer_logo_label": "Logo del Footer",
+    "change_logo": "Cambiar Logotipo",
+    "select_logo": "Seleccionar Logotipo",
+    "col_5_newsletter": "Columna 5: Boletín (Newsletter)",
+    "newsletter_title_label": "Título",
+    "newsletter_desc_label": "Descripción / Texto",
+    "newsletter_placeholder_label": "Texto del Placeholder",
+    "header_logo_label": "Logo del Encabezado",
+    "change_favicon": "Cambiar Favicon",
+    "select_favicon": "Seleccionar Favicon"
   },
   "AdminShipping": {
     "title": "Configuración de Envío",

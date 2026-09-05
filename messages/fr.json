@@ -959,7 +959,7 @@
     "card_border_color": "Couleur de la bordure",
     "main_theme_color": "Couleur principale de la boutique (Thème)",
     "top_banner_message": "Message de la bannière supérieure",
-    "favicon_label": "Favicon (Icône de l'onglet)",
+    "favicon_label": "Favicon",
     "favicon_desc": "Une petite image carrée (idéalement PNG ou ICO) qui s'affiche dans l'onglet du navigateur.",
     "logo_desc": "Téléversez un logo pour remplacer le nom de la boutique dans l'en-tête.",
     "support_phone": "Téléphone du support (En-tête)",
@@ -1088,7 +1088,18 @@
     "back_to_dashboard": "Retour au tableau de bord",
     "save_changes": "Enregistrer les modifications",
     "settings_category_only": "Paramètres pour cette catégorie uniquement.",
-    "nav_seo": "SEO & OpenGraph"
+    "nav_seo": "SEO & OpenGraph",
+    "col_1_logo_info": "Colonne 1 : Logo & Infos",
+    "footer_logo_label": "Logo du Footer",
+    "change_logo": "Changer le Logo",
+    "select_logo": "Sélectionner un Logo",
+    "col_5_newsletter": "Colonne 5 : Newsletter",
+    "newsletter_title_label": "Titre",
+    "newsletter_desc_label": "Description / Texte",
+    "newsletter_placeholder_label": "Texte indicatif (Placeholder)",
+    "header_logo_label": "Logo de l'En-tête",
+    "change_favicon": "Changer le Favicon",
+    "select_favicon": "Sélectionner un Favicon"
   },
   "AdminShipping": {
     "title": "Paramètres de Livraison",

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateSettingsBatch } from '@/actions/settings';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 export default function FooterForm({ initialSettings }: { initialSettings: Record<string, string> }) {
   const tSettings = useTranslations('AdminSettings');
@@ -15,6 +16,13 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
   const [footerShowEmail, setFooterShowEmail] = useState(initialSettings.FOOTER_SHOW_EMAIL !== 'false');
   const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
   const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 My Store. All rights reserved.');
+  
+  const [footerLogoImage, setFooterLogoImage] = useState(initialSettings.FOOTER_LOGO_IMAGE || '');
+  const [footerNewsletterTitle, setFooterNewsletterTitle] = useState(initialSettings.FOOTER_NEWSLETTER_TITLE || 'Newsletter');
+  const [footerNewsletterText, setFooterNewsletterText] = useState(initialSettings.FOOTER_NEWSLETTER_TEXT || 'Subscribe to our newsletter!');
+  const [footerNewsletterPlaceholder, setFooterNewsletterPlaceholder] = useState(initialSettings.FOOTER_NEWSLETTER_PLACEHOLDER || 'Enter your email');
+  
+  const [showMediaModal, setShowMediaModal] = useState(false);
   
   const [footerColumns, setFooterColumns] = useState<{title: string, links: {label: string, url: string}[]}[]>(() => {
     try {
@@ -42,6 +50,10 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
       FOOTER_SHOW_EMAIL: footerShowEmail.toString(),
       FOOTER_SHOW_PHONE: footerShowPhone.toString(),
       FOOTER_COPYRIGHT: footerCopyright,
+      FOOTER_LOGO_IMAGE: footerLogoImage,
+      FOOTER_NEWSLETTER_TITLE: footerNewsletterTitle,
+      FOOTER_NEWSLETTER_TEXT: footerNewsletterText,
+      FOOTER_NEWSLETTER_PLACEHOLDER: footerNewsletterPlaceholder,
       FOOTER_COLUMNS: JSON.stringify(footerColumns)
     });
 
@@ -68,18 +80,52 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
             <div className="relative w-10 h-10">  <input type="color" value={footerTextColor} onChange={(e) => setFooterTextColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerTextColor }} /></div>
           </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-          <textarea value={footerDescription} onChange={(e) => setFooterDescription(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Copyright</label>
-          <input type="text" value={footerCopyright} onChange={(e) => setFooterCopyright(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+        
+        <div className="pt-6 border-t border-gray-100">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{tSettings('col_1_logo_info') || 'Column 1: Logo & Info'}</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('footer_logo_label') || 'Footer Logo'}</label>
+              <div className="flex items-center gap-4">
+                {footerLogoImage && (
+                  <div className="w-32 p-2 bg-gray-100 rounded border">
+                    <img src={footerLogoImage} alt="Footer logo" className="max-h-12 object-contain" />
+                  </div>
+                )}
+                <button type="button" onClick={() => setShowMediaModal(true)} className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  {footerLogoImage ? (tSettings('change_logo') || 'Change Logo') : (tSettings('select_logo') || 'Select Logo')}
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea value={footerDescription} onChange={(e) => setFooterDescription(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+            </div>
+            <div className="flex gap-6">
+              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>Show Address</span></div>
+              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>Show Email</span></div>
+              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>Show Phone</span></div>
+            </div>
+          </div>
         </div>
-        <div className="flex gap-6">
-          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>Show Address</span></div>
-          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>Show Email</span></div>
-          <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>Show Phone</span></div>
+
+        <div className="pt-6 border-t border-gray-100">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{tSettings('col_5_newsletter') || 'Column 5: Newsletter'}</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('newsletter_title_label') || 'Title'}</label>
+              <input type="text" value={footerNewsletterTitle} onChange={(e) => setFooterNewsletterTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('newsletter_desc_label') || 'Description / Text'}</label>
+              <textarea value={footerNewsletterText} onChange={(e) => setFooterNewsletterText(e.target.value)} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('newsletter_placeholder_label') || 'Input Placeholder'}</label>
+              <input type="text" value={footerNewsletterPlaceholder} onChange={(e) => setFooterNewsletterPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+            </div>
+          </div>
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-6">
@@ -142,6 +188,16 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
           {isLoading ? tSettings('saving') : (tSettings('save_changes') || 'Save changes')}
         </button>
       </div>
+      
+      {showMediaModal && (
+        <MediaPickerModal 
+          onClose={() => setShowMediaModal(false)}
+          onSelect={(url) => {
+            setFooterLogoImage(url);
+            setShowMediaModal(false);
+          }}
+        />
+      )}
     </form>
   );
 }
