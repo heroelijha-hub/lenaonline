@@ -60,15 +60,21 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
 
-  // Sync to cookie for preview iframe
+  // Sync to database draft for preview iframe
   useEffect(() => {
-    Cookies.set('preview_layout', JSON.stringify(sections), { path: '/' });
-    Cookies.set('preview_font', globalFont, { path: '/' });
-    
-    // Debounce iframe reload
+    // Debounce iframe reload & save
     const timer = setTimeout(() => {
       if (iframeRef.current && iframeRef.current.contentWindow) {
-        iframeRef.current.contentWindow.location.reload();
+        fetch('/api/preview-cache', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ layout: sections, font: globalFont })
+        }).then(() => {
+          if (iframeRef.current) {
+            // Cache bust the iframe
+            iframeRef.current.src = `/preview?t=${Date.now()}`;
+          }
+        }).catch(err => console.error('Failed to update preview cache', err));
       }
     }, 1000); // 1 second debounce
     

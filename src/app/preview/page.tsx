@@ -10,16 +10,21 @@ import PreviewSectionWrapper from '@/components/admin/PreviewSectionWrapper';
 import { cookies } from 'next/headers';
 import { getSettings } from '@/actions/settings';
 
+import prisma from '@/lib/prisma';
+
 export const dynamic = 'force-dynamic';
 
 export default async function PreviewPage() {
-  const cookieStore = await cookies();
-  const layoutCookie = cookieStore.get('preview_layout');
+  const draftLayoutSetting = await prisma.setting.findUnique({ where: { key: 'PREVIEW_LAYOUT_DRAFT' } });
+  const draftFontSetting = await prisma.setting.findUnique({ where: { key: 'PREVIEW_FONT_DRAFT' } });
+  
+  let layoutCookieStr = draftLayoutSetting?.value || '';
+  // We can use the draft font if needed later
   
   let layout: SectionConfig[] = [];
-  if (layoutCookie && layoutCookie.value) {
+  if (layoutCookieStr) {
     try {
-      layout = JSON.parse(layoutCookie.value);
+      layout = JSON.parse(layoutCookieStr);
     } catch (e) {
       console.error(e);
     }
