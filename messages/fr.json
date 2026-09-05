@@ -139,7 +139,8 @@
     "save_info": "Enregistrer mon nom, mon e-mail et mon site dans le navigateur pour mon prochain commentaire.",
     "submit_review": "Soumettre",
     "sending": "Envoi...",
-    "brand": "Marque :"
+    "brand": "Marque :",
+    "submit": "Soumettre"
   },
   "Search": {
     "search_results": "Résultats de recherche",
@@ -659,7 +660,15 @@
     "no_product_found": "Aucun produit trouvé",
     "remove_item": "Retirer",
     "no_linked_product": "Aucun produit lié",
-    "browse_library": "Parcourir la Bibliothèque"
+    "browse_library": "Parcourir la Bibliothèque",
+    "price_error_msg": "Le prix doit être supérieur ou égal à 0",
+    "no_brand": "Aucune marque",
+    "add_new_brand": "Ajouter une nouvelle marque",
+    "brand_name_label": "Nom de la marque",
+    "brand_name_placeholder": "Ex: Samsung",
+    "brand_logo_label": "Logo de la marque (URL)",
+    "cancel_brand": "Annuler",
+    "save_error": "Erreur lors de la sauvegarde"
   },
   "AdminCategories": {
     "manage_categories": "Gestion des Catégories",

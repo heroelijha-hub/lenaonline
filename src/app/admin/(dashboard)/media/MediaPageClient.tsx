@@ -149,13 +149,24 @@ export default function MediaPageClient() {
             <input type="file" className="hidden" accept="image/*" onChange={handleUpload} disabled={isUploading} />
           </label>
 
-          <input 
-            type="text" 
-            placeholder={t('search_media', { defaultMessage: 'Rechercher des médias' })}
-            className="border border-gray-300 rounded px-3 py-1.5 outline-none w-64"
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          />
+          <div className="relative">
+            <input 
+              type="text" 
+              placeholder={t('search_media', { defaultMessage: 'Rechercher des médias' })}
+              className="border border-gray-300 rounded px-3 py-1.5 outline-none w-64 pr-8"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => { setSearch(''); setPage(1); }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

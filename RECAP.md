@@ -88,6 +88,7 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
   - **Pages personnalisées**
   - **Catégories de produits**
 - **Traductions intégrées** : Les labels et descriptions des champs SEO dans l'espace Administrateur sont 100% traduits dans toutes les langues supportées (via `next-intl`).
+- **Google Search Console** : Ajout d'un champ dynamique dans les paramètres SEO pour renseigner la clé de vérification du site, injectée automatiquement via la balise meta correspondante dans le `<head>`.
 
 ---
 
