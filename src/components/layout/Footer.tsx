@@ -120,32 +120,52 @@ export default function Footer({
             </div>
           </div>
 
-          {/* Column 2: Rechtliche Links */}
-          <div className="lg:col-span-1">
-            <h3 className="font-bold text-lg mb-6 text-white">Rechtliche Links</h3>
-            <ul className="space-y-4 text-sm opacity-90">
-              <li><Link href="/pages/agb" className="hover:text-yellow-400 transition">AGB</Link></li>
-              <li><Link href="/pages/about" className="hover:text-yellow-400 transition">Über uns</Link></li>
-              <li><Link href="/pages/impressum" className="hover:text-yellow-400 transition">Impressum</Link></li>
-              <li><Link href="/pages/shipping" className="hover:text-yellow-400 transition">Versandrichtlinien</Link></li>
-              <li><Link href="/pages/payment" className="hover:text-yellow-400 transition">Zahlungpolitik</Link></li>
-              <li><Link href="/pages/returns" className="hover:text-yellow-400 transition">Rückgabe- und Rückerstattungsrichtlinie</Link></li>
-              <li><Link href={`/${contactSlug}`} className="hover:text-yellow-400 transition">Kontakt</Link></li>
-            </ul>
-          </div>
+          {/* Dynamic Footer Columns from Admin (Replaces Col 2 & 3) */}
+          {footerColumns && footerColumns.length > 0 ? (
+            footerColumns.map((col, idx) => (
+              <div key={idx} className="lg:col-span-1">
+                <h3 className="font-bold text-lg mb-6 text-white">{col.title}</h3>
+                <ul className="space-y-4 text-sm opacity-90">
+                  {col.links.map((link, linkIdx) => (
+                    <li key={linkIdx}>
+                      <Link href={link.url} className="hover:text-yellow-400 transition">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <>
+              {/* Column 2: Rechtliche Links (Fallback) */}
+              <div className="lg:col-span-1">
+                <h3 className="font-bold text-lg mb-6 text-white">Rechtliche Links</h3>
+                <ul className="space-y-4 text-sm opacity-90">
+                  <li><Link href="/pages/agb" className="hover:text-yellow-400 transition">AGB</Link></li>
+                  <li><Link href="/pages/about" className="hover:text-yellow-400 transition">Über uns</Link></li>
+                  <li><Link href="/pages/impressum" className="hover:text-yellow-400 transition">Impressum</Link></li>
+                  <li><Link href="/pages/shipping" className="hover:text-yellow-400 transition">Versandrichtlinien</Link></li>
+                  <li><Link href="/pages/payment" className="hover:text-yellow-400 transition">Zahlungpolitik</Link></li>
+                  <li><Link href="/pages/returns" className="hover:text-yellow-400 transition">Rückgabe- und Rückerstattungsrichtlinie</Link></li>
+                  <li><Link href={`/${contactSlug}`} className="hover:text-yellow-400 transition">Kontakt</Link></li>
+                </ul>
+              </div>
 
-          {/* Column 3: Kunde */}
-          <div className="lg:col-span-1">
-            <h3 className="font-bold text-lg mb-6 text-white">Kunde</h3>
-            <ul className="space-y-4 text-sm opacity-90">
-              <li><Link href="/account" className="hover:text-yellow-400 transition">Mein konto</Link></li>
-              <li><Link href="/cart" className="hover:text-yellow-400 transition">Warenkorb</Link></li>
-              <li><Link href="/account/orders" className="hover:text-yellow-400 transition">Meine Bestellungen</Link></li>
-              <li><Link href="/checkout" className="hover:text-yellow-400 transition">Checkout</Link></li>
-              <li><Link href="/compare" className="hover:text-yellow-400 transition">Vergleiche</Link></li>
-              <li><Link href="/wishlist" className="hover:text-yellow-400 transition">Wunschliste</Link></li>
-            </ul>
-          </div>
+              {/* Column 3: Kunde (Fallback) */}
+              <div className="lg:col-span-1">
+                <h3 className="font-bold text-lg mb-6 text-white">Kunde</h3>
+                <ul className="space-y-4 text-sm opacity-90">
+                  <li><Link href="/account" className="hover:text-yellow-400 transition">Mein konto</Link></li>
+                  <li><Link href="/cart" className="hover:text-yellow-400 transition">Warenkorb</Link></li>
+                  <li><Link href="/account/orders" className="hover:text-yellow-400 transition">Meine Bestellungen</Link></li>
+                  <li><Link href="/checkout" className="hover:text-yellow-400 transition">Checkout</Link></li>
+                  <li><Link href="/compare" className="hover:text-yellow-400 transition">Vergleiche</Link></li>
+                  <li><Link href="/wishlist" className="hover:text-yellow-400 transition">Wunschliste</Link></li>
+                </ul>
+              </div>
+            </>
+          )}
 
           {/* Column 4: Alle Kategorien */}
           <div className="lg:col-span-1">
