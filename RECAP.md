@@ -81,6 +81,14 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Duplication** : Clonage d'une section en un clic.
 - **Configuration Responsive** : Paramètres d'affichage spécifiques (Mobile, Tablette, Desktop).
 
+### 5. SEO & OpenGraph (Optimisation pour le référencement)
+- **Paramètres Globaux** : Nouvelle page dédiée dans les réglages pour définir le Meta Titre, la Meta Description globale et l'image de partage (og:image) par défaut (idéalement en 1200x630 pour un affichage optimal sur les réseaux sociaux).
+- **SEO Granulaire** : Les champs SEO personnalisés (Meta Titre, Meta Description, Mots-clés) ont été ajoutés aux formulaires de :
+  - **Articles de Blog**
+  - **Pages personnalisées**
+  - **Catégories de produits**
+- **Traductions intégrées** : Les labels et descriptions des champs SEO dans l'espace Administrateur sont 100% traduits dans toutes les langues supportées (via `next-intl`).
+
 ---
 
 ## 📩 Emails Transactionnels & Automatisations (Cron)
