@@ -5,7 +5,7 @@ import { SectionConfig } from '@/app/admin/(dashboard)/landing/LandingForm';
 interface HeroSectionEditorProps {
   section: SectionConfig;
   previewMode: 'desktop' | 'tablet' | 'mobile';
-  updateSectionSettings: (id: string, key: string, value: any) => void;
+  updateSectionSettings: (id: string, keyOrUpdates: string | Record<string, any>, value?: any) => void;
   handleUpload: (id: string, key: string) => void;
   editingBlockNum?: number;
 }
