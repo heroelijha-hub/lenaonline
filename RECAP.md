@@ -50,7 +50,8 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
   - Alimentée dynamiquement depuis la base de données avec de vrais avis approuvés, remplaçant les placeholders par défaut.
 
 ### 5. Internationalisation (i18n)
-- **Multilingue complet** : L'ensemble de l'interface du Storefront, de l'espace Administrateur, et des Emails ont été intégralement traduits via un système de dictionnaires JSON (Français, Anglais, Espagnol).
+- **Multilingue complet** : L'ensemble de l'interface du Storefront, de l'espace Administrateur, et des Emails ont été intégralement traduits via un système de dictionnaires JSON (Français, Anglais, Espagnol, Allemand).
+- **Synchronisation Parfaite** : Les fichiers de traduction sont garantis alignés à 100% entre toutes les langues pour éviter tout affichage de clés brutes ou décalage de contenu.
 
 ---
 
@@ -60,8 +61,9 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Sauvegarde ultra-rapide** : Le formulaire des paramètres (qui contient plus de 50 champs) sauvegarde toutes les modifications en moins d'une seconde grâce à une mise à jour groupée (Batch Update avec transaction Prisma).
 - **Personnalisation de la boutique** :
   - Couleurs (Thème, Top Bar, Bouton de recherche, Footer, etc.).
-  - Textes et Liens (Annonces, Réseaux Sociaux, Menus de navigation).
+  - Textes et Liens (Annonces, Réseaux Sociaux, Menus de navigation, Textes d'authentification "Login", "My Account").
   - Logos et Images (Logo principal, Icône de chat, Image de maintenance).
+  - Footer Avancé (Activation/désactivation et personnalisation de l'adresse, l'email et le téléphone depuis le panel).
 - **Modes de paiement (Toggles)** : Activation à la volée de Stripe, PayPal, et Virement Bancaire.
 
 ### 2. Gestion des Produits & Import WooCommerce
@@ -94,6 +96,7 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
   - **Catégories de produits**
 - **Traductions intégrées** : Les labels et descriptions des champs SEO dans l'espace Administrateur sont 100% traduits dans toutes les langues supportées (via `next-intl`).
 - **Google Search Console** : Ajout d'un champ dynamique dans les paramètres SEO pour renseigner la clé de vérification du site, injectée automatiquement via la balise meta correspondante dans le `<head>`.
+- **Titres dynamiques et propres** : Suppression complète des titres suffixés en dur (ex: "My Store"). Le système priorise désormais strictement le champ `metaTitle` défini en base de données, avec un fallback pertinent ("Top Kaminbrennstoffe").
 
 ---
 

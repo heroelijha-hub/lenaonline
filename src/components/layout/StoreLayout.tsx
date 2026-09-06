@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Footer from './Footer';
+import CookieConsent from './CookieConsent';
 import MaintenanceView from '@/components/maintenance/MaintenanceView';
 
 type StoreLayoutProps = {
@@ -162,6 +163,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         footerPaymentOpay={settings.footerPaymentOpay}
         contactSlug={settings.contactSlug}
       />
+      <CookieConsent />
     </div>
   );
 }

@@ -1304,5 +1304,11 @@
     "too_short": "(Demasiado corto)",
     "too_long": "(Puede estar truncado)",
     "perfect": "(Perfecto)"
+  },
+  "CookieConsent": {
+    "title": "Respetamos su privacidad",
+    "message": "Utilizamos cookies para mejorar su experiencia de navegación, mostrar anuncios o contenido personalizado y analizar nuestro tráfico. Al hacer clic en \"Aceptar todo\", usted acepta nuestro uso de cookies.",
+    "accept": "Aceptar todo",
+    "decline": "Rechazar"
   }
 }
