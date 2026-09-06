@@ -19,7 +19,7 @@ export default function PromoBannersEditor({
 }: PromoBannersEditorProps) {
   
   const [activeBlock, setActiveBlock] = useState<number>(0); // 0 = general list, 1 = block 1, 2 = block 2
-  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
+  const [openSection, setOpenSection] = useState<'content' | 'design' | ''>('content');
 
   const getPrefix = (blockNum: number) => `BANNER_${blockNum}`;
 

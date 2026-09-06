@@ -22,7 +22,7 @@ export default function ProductGridEditor({
   goBack 
 }: ProductGridEditorProps) {
   
-  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
+  const [openSection, setOpenSection] = useState<'content' | 'design' | ''>('content');
   const [productSearch, setProductSearch] = useState('');
 
   const renderManualProductSelection = () => {

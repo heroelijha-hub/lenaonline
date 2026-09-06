@@ -16,7 +16,7 @@ export default function LatestBlogsEditor({
   goBack 
 }: LatestBlogsEditorProps) {
   
-  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
+  const [openSection, setOpenSection] = useState<'content' | 'design' | ''>('content');
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col h-full">

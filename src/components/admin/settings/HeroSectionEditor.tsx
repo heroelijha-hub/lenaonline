@@ -15,7 +15,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
   const totalBlocks = isStyle2 ? 3 : 4;
   
   const [activeBlock, setActiveBlock] = useState<number>(editingBlockNum || 0);
-  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
+  const [openSection, setOpenSection] = useState<'content' | 'design' | ''>('content');
 
   useEffect(() => {
     if (editingBlockNum !== undefined) {
