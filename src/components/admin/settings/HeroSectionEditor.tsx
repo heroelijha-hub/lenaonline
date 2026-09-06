@@ -172,7 +172,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           </div>
           {section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false' && (
             <div className="mt-3">
-              <label className="block text-xs font-medium text-gray-700 mb-1">Dark Overlay (improves text readability)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Dark Overlay</label>
               <select 
                 value={section.settings[`${prefix}_BG_OVERLAY`] || '40'} 
                 onChange={e => updateSectionSettings(section.id, `${prefix}_BG_OVERLAY`, e.target.value)}
@@ -215,7 +215,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
 
         {/* Premium Layout & Styles */}
         <div className="mt-8 border-t pt-6">
-          <h4 className="text-sm font-semibold text-gray-800 mb-4">Styles Premium (Alignement, Boutons, Badges)</h4>
+          <h4 className="text-sm font-semibold text-gray-800 mb-4">Styles & Alignement</h4>
           
           {/* Position (3x3 Grid) */}
           <div className="mb-4">
@@ -277,7 +277,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
 
           {/* Badge Style */}
           <div className="mb-4">
-            <label className="block text-xs font-medium text-gray-700 mb-2">Style des Badges (Sous-titres/Prix)</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Style des Badges</label>
             <select
               value={section.settings[`${prefix}_BADGE_STYLE`] || 'light'}
               onChange={e => updateSectionSettings(section.id, `${prefix}_BADGE_STYLE`, e.target.value)}
@@ -305,7 +305,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           {/* Overlay Type */}
           {section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false' && (
             <div className="mb-4">
-              <label className="block text-xs font-medium text-gray-700 mb-2">Type de Filtre d'Image (Overlay)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Background Overlay</label>
               <select
                 value={section.settings[`${prefix}_OVERLAY_TYPE`] || (blockNum === 4 ? 'grad-r' : 'grad-t')}
                 onChange={e => updateSectionSettings(section.id, `${prefix}_OVERLAY_TYPE`, e.target.value)}
