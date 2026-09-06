@@ -103,6 +103,9 @@ model Product {
   orderItems     OrderItem[]
   reviews        Review[]
   
+  metaTitle       String?
+  metaDescription String?   @db.Text
+
   forceSales     Product[] @relation("ForceSales")
   forcedBy       Product[] @relation("ForceSales")
   

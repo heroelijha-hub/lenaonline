@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${product.title} | ${storeName}`,
-    description: product.shortDescription || product.description?.substring(0, 160),
+    title: product.metaTitle || `${product.title} | ${storeName}`,
+    description: product.metaDescription || product.shortDescription?.replace(/<[^>]*>?/gm, '').substring(0, 160) || product.description?.replace(/<[^>]*>?/gm, '').substring(0, 160),
     alternates: {
       canonical: `/product/${slug}`,
     }
