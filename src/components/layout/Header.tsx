@@ -212,6 +212,14 @@ export default function Header({
           .mobile-header-border {
             border-bottom-color: ${mobileHeaderBorderColor} !important;
           }
+          .custom-logo-height {
+            height: ${mobileLogoHeight}px !important;
+          }
+        }
+        @media (min-width: 1024px) {
+          .custom-logo-height {
+            height: ${headerLogoHeight}px !important;
+          }
         }
       `}</style>
       <header className="mobile-header-border w-full bg-white border-b border-gray-300 lg:border-gray-200 shadow-sm lg:shadow-none font-sans relative z-50">
@@ -252,12 +260,12 @@ export default function Header({
       </div>
 
       {/* Middle Bar */}
-      <div className="py-3 md:py-5 px-4 max-w-7xl mx-auto w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-4 md:gap-10 lg:gap-16">
+      <div className="py-2 md:py-5 px-4 max-w-7xl mx-auto w-full flex flex-nowrap items-center justify-between gap-2 md:gap-10 lg:gap-16">
         {/* Logo */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink flex items-center min-w-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <Image src={logoImage} alt="Top Kamin Brennstoffe Logo" width={250} height={80} className="object-contain" style={{ width: 'auto', height: `${headerLogoHeight}px` }} priority />
+              <Image src={logoImage} alt="Top Kamin Brennstoffe Logo" width={250} height={80} className="object-contain custom-logo-height max-w-full" style={{ width: 'auto' }} priority />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}

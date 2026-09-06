@@ -94,17 +94,18 @@ export default function MobileSidebar({
         {/* Menu Links & Categories */}
         <nav className="p-4 border-b border-gray-100 flex-1">
           <ul className="space-y-1">
-            {menuLinks.map((link, idx) => (
-              <li key={idx}>
+            {/* First Link (Home/Startseite) */}
+            {menuLinks.length > 0 && (
+              <li>
                 <Link 
-                  href={link.url}
+                  href={menuLinks[0].url}
                   onClick={onClose}
                   className="block px-4 py-3 text-base font-semibold text-gray-800 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
                 >
-                  {link.label}
+                  {menuLinks[0].label}
                 </Link>
               </li>
-            ))}
+            )}
             
             {/* Categories Accordion */}
             {categories && categories.length > 0 && (
@@ -142,6 +143,19 @@ export default function MobileSidebar({
                 )}
               </li>
             )}
+
+            {/* Rest of the Links */}
+            {menuLinks.slice(1).map((link, idx) => (
+              <li key={`rest-${idx}`}>
+                <Link 
+                  href={link.url}
+                  onClick={onClose}
+                  className="block px-4 py-3 text-base font-semibold text-gray-800 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 

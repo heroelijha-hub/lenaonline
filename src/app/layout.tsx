@@ -208,10 +208,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         return defaultMenuLinks;
       }
     })(),
-    mobileContactAddress: settingsMap.MOBILE_CONTACT_ADDRESS || '123 Main Street',
-    mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE || '+1 234 567 89',
-    mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL || 'contact@mystore.com',
-    mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE || 'www.mystore.com',
+    mobileContactAddress: settingsMap.MOBILE_CONTACT_ADDRESS ?? '123 Main Street',
+    mobileContactPhone: settingsMap.MOBILE_CONTACT_PHONE ?? '+1 234 567 89',
+    mobileContactEmail: settingsMap.MOBILE_CONTACT_EMAIL ?? 'contact@mystore.com',
+    mobileContactWebsite: settingsMap.MOBILE_CONTACT_WEBSITE ?? 'www.mystore.com',
     mobileHeaderBorderColor: settingsMap.MOBILE_HEADER_BORDER_COLOR || '#d1d5db',
     allCategoriesBgColor: settingsMap.ALL_CATEGORIES_BG_COLOR || '#111827', // text-gray-900 by default
     allCategoriesTextColor: settingsMap.ALL_CATEGORIES_TEXT_COLOR || '#ffffff', // text-white
