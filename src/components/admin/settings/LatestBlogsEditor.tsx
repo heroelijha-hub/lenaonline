@@ -82,6 +82,8 @@ export default function LatestBlogsEditor({
             {renderContentInput(section, updateSectionSettings, '"See All" Link Text', 'SEE_ALL_TEXT', 'See All')}
           </div>
 
+        </div>
+
         {/* DESIGN DROPDOWN */}
         <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mt-6">
           <button
