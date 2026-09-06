@@ -22,7 +22,7 @@ export default function ProductGridEditor({
   goBack 
 }: ProductGridEditorProps) {
   
-  const [activeTab, setActiveTab] = useState<'content' | 'design'>('content');
+  const [isDesignOpen, setIsDesignOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
 
   const renderManualProductSelection = () => {
@@ -192,26 +192,7 @@ export default function ProductGridEditor({
           </div>
         </div>
 
-        {/* TABS */}
-        <div className="flex gap-2 border-b border-gray-200 mb-6">
-          <button
-            type="button"
-            onClick={() => setActiveTab('content')}
-            className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'content' ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-          >
-            Content
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('design')}
-            className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'design' ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-          >
-            Design
-          </button>
-        </div>
-
-        {/* CONTENT TAB */}
-        {activeTab === 'content' && (
+        <div className="space-y-4 mb-8">
           <div className="space-y-4">
             {renderContentInput(section, updateSectionSettings, 'Section Title', 'title', 'Enter the title...')}
             {renderContentInput(section, updateSectionSettings, '"See All" Link Text', 'SEE_ALL_TEXT', 'See All')}
@@ -312,10 +293,22 @@ export default function ProductGridEditor({
               </div>
             ))}
           </div>
-        )}
 
-        {/* DESIGN TAB */}
-        {activeTab === 'design' && (
+        {/* DESIGN DROPDOWN */}
+        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mt-6">
+          <button
+            type="button"
+            onClick={() => setIsDesignOpen(!isDesignOpen)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+          >
+            <span className="font-semibold text-sm text-gray-800">Design Settings</span>
+            <svg className={`w-5 h-5 text-gray-500 transition-transform ${isDesignOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {isDesignOpen && (
+            <div className="p-4 border-t border-gray-200">
           <div>
             <div className="mb-8">
               <h4 className="text-sm font-semibold text-gray-800 mb-4">Typography & Colors</h4>
@@ -388,7 +381,9 @@ export default function ProductGridEditor({
               </div>
             </div>
           </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

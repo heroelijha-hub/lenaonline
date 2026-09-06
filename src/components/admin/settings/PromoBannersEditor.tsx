@@ -19,7 +19,7 @@ export default function PromoBannersEditor({
 }: PromoBannersEditorProps) {
   
   const [activeBlock, setActiveBlock] = useState<number>(0); // 0 = general list, 1 = block 1, 2 = block 2
-  const [activeTab, setActiveTab] = useState<'content' | 'design'>('content');
+  const [isDesignOpen, setIsDesignOpen] = useState(false);
 
   const getPrefix = (blockNum: number) => `BANNER_${blockNum}`;
 
@@ -48,26 +48,8 @@ export default function PromoBannersEditor({
         </div>
 
         <div className="p-5 flex-1 overflow-y-auto">
-          {/* TABS */}
-          <div className="flex gap-2 border-b border-gray-200 mb-6">
-            <button
-              type="button"
-              onClick={() => setActiveTab('content')}
-              className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'content' ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              Content
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('design')}
-              className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'design' ? 'border-orange-500 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              Design
-            </button>
-          </div>
-
-          {/* CONTENT TAB */}
-          {activeTab === 'content' && (
+          {/* CONTENT */}
+          <div className="space-y-4 mb-8">
             <div className="space-y-4">
               {renderContentInput(section, updateSectionSettings, 'Title', `${prefix}_TITLE`, 'Ex: Smartwatch')}
               {renderContentInput(section, updateSectionSettings, 'Target Link (URL)', `${prefix}_LINK`, '/category/...')}
@@ -101,10 +83,23 @@ export default function PromoBannersEditor({
                 </div>
               </div>
             </div>
-          )}
+            </div>
 
-          {/* DESIGN TAB */}
-          {activeTab === 'design' && (
+          {/* DESIGN DROPDOWN */}
+          <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mt-6">
+            <button
+              type="button"
+              onClick={() => setIsDesignOpen(!isDesignOpen)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <span className="font-semibold text-sm text-gray-800">Design Settings</span>
+              <svg className={`w-5 h-5 text-gray-500 transition-transform ${isDesignOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {isDesignOpen && (
+              <div className="p-4 border-t border-gray-200">
             <div>
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-gray-800 mb-4">Typography & Colors</h4>
@@ -120,7 +115,9 @@ export default function PromoBannersEditor({
                 </div>
               </div>
             </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
