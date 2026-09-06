@@ -85,8 +85,6 @@ export default function PromoBannersEditor({
             </div>
             </div>
 
-          </div>
-
           {/* DESIGN DROPDOWN */}
           <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mt-6">
             <button
