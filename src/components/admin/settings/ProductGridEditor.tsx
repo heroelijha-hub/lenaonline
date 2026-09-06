@@ -22,7 +22,7 @@ export default function ProductGridEditor({
   goBack 
 }: ProductGridEditorProps) {
   
-  const [isDesignOpen, setIsDesignOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
   const [productSearch, setProductSearch] = useState('');
 
   const renderManualProductSelection = () => {
@@ -192,7 +192,20 @@ export default function ProductGridEditor({
           </div>
         </div>
 
-        <div className="space-y-4 mb-8">
+        {/* CONTENT ACCORDION */}
+        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mb-6">
+          <button
+            type="button"
+            onClick={() => setOpenSection(openSection === 'content' ? '' : 'content')}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+          >
+            <span className="font-semibold text-sm text-gray-800">Content Settings</span>
+            <svg className={`w-5 h-5 text-gray-500 transition-transform ${openSection === 'content' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {openSection === 'content' && (
+            <div className="p-4 border-t border-gray-200 space-y-4">
           <div className="space-y-4">
             {renderContentInput(section, updateSectionSettings, 'Section Title', 'title', 'Enter the title...')}
             {renderContentInput(section, updateSectionSettings, '"See All" Link Text', 'SEE_ALL_TEXT', 'See All')}
@@ -294,22 +307,24 @@ export default function ProductGridEditor({
             ))}
           </div>
 
+            </div>
+          )}
         </div>
 
-        {/* DESIGN DROPDOWN */}
+        {/* DESIGN ACCORDION */}
         <div className="border border-gray-200 rounded-lg overflow-hidden bg-white mt-6">
           <button
             type="button"
-            onClick={() => setIsDesignOpen(!isDesignOpen)}
+            onClick={() => setOpenSection(openSection === 'design' ? '' : 'design')}
             className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
           >
             <span className="font-semibold text-sm text-gray-800">Design Settings</span>
-            <svg className={`w-5 h-5 text-gray-500 transition-transform ${isDesignOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className={`w-5 h-5 text-gray-500 transition-transform ${openSection === 'design' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
-          {isDesignOpen && (
+          {openSection === 'design' && (
             <div className="p-4 border-t border-gray-200">
           <div>
             <div className="mb-8">

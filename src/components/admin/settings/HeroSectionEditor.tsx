@@ -15,7 +15,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
   const totalBlocks = isStyle2 ? 3 : 4;
   
   const [activeBlock, setActiveBlock] = useState<number>(editingBlockNum || 0);
-  const [isDesignOpen, setIsDesignOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<'content' | 'design'>('content');
 
   useEffect(() => {
     if (editingBlockNum !== undefined) {
@@ -51,50 +51,63 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
     return (
       <div className="mb-5 flex flex-col gap-2">
         <label className="block text-xs font-medium text-gray-700">{label}</label>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 mt-1">
           {/* Size */}
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Taille (px)">
-             <input 
-                type="number" 
-                value={currentSize || ''} 
-                onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-                className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
-                placeholder="Taille"
-             />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Taille</span>
+            <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Taille (px)">
+               <input 
+                  type="number" 
+                  value={currentSize || ''} 
+                  onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
+                  className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+                  placeholder="Taille"
+               />
+               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+            </div>
           </div>
           
           {/* Line Height */}
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Interligne (ex: 1.2)">
-             <input 
-                type="number" step="0.1"
-                value={currentLh} 
-                onChange={e => updateSectionSettings(section.id, lhKey, e.target.value)} 
-                className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
-                placeholder="LH"
-             />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Interligne</span>
+            <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Interligne (ex: 1.2)">
+               <input 
+                  type="number" step="0.1"
+                  value={currentLh} 
+                  onChange={e => updateSectionSettings(section.id, lhKey, e.target.value)} 
+                  className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+                  placeholder="LH"
+               />
+               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
+            </div>
           </div>
 
           {/* Letter Spacing */}
-          <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Espacement (px)">
-             <input 
-                type="number" step="1"
-                value={currentLs || 0} 
-                onChange={e => updateSectionSettings(section.id, lsKey, e.target.value + 'px')} 
-                className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
-                placeholder="LS"
-             />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Espace (lettres)</span>
+            <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Espacement (px)">
+               <input 
+                  type="number" step="1"
+                  value={currentLs || 0} 
+                  onChange={e => updateSectionSettings(section.id, lsKey, e.target.value + 'px')} 
+                  className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+                  placeholder="LS"
+               />
+               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+            </div>
           </div>
 
-          <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer" title="Couleur">
-            <input 
-              type="color" 
-              value={section.settings[colorKey] || defaultColor} 
-              onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
-              className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer border-0 p-0" 
-            />
+          {/* Color */}
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Couleur</span>
+            <div className="relative w-[72px] h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer" title="Couleur">
+              <input 
+                type="color" 
+                value={section.settings[colorKey] || defaultColor} 
+                onChange={e => updateSectionSettings(section.id, colorKey, e.target.value)} 
+                className="absolute -top-2 -left-2 w-24 h-24 cursor-pointer border-0 p-0" 
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -349,25 +362,39 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           </div>
         ) : (
           <div className="animate-in fade-in slide-in-from-right-4 duration-200">
-            {/* CONTENT */}
-            <div className="max-w-2xl bg-white p-5 rounded-xl border border-gray-100 shadow-sm mb-6">
-              {renderContentTab(activeBlock)}
+            {/* CONTENT ACCORDION */}
+            <div className="max-w-2xl border border-gray-200 rounded-lg overflow-hidden bg-white mb-6">
+              <button
+                type="button"
+                onClick={() => setOpenSection(openSection === 'content' ? '' : 'content')}
+                className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+              >
+                <span className="font-semibold text-sm text-gray-800">Content Settings</span>
+                <svg className={`w-5 h-5 text-gray-500 transition-transform ${openSection === 'content' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openSection === 'content' && (
+                <div className="p-4 border-t border-gray-200">
+                  {renderContentTab(activeBlock)}
+                </div>
+              )}
             </div>
 
-            {/* DESIGN DROPDOWN */}
+            {/* DESIGN ACCORDION */}
             <div className="max-w-2xl border border-gray-200 rounded-lg overflow-hidden bg-white">
               <button
                 type="button"
-                onClick={() => setIsDesignOpen(!isDesignOpen)}
+                onClick={() => setOpenSection(openSection === 'design' ? '' : 'design')}
                 className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
               >
                 <span className="font-semibold text-sm text-gray-800">Design Settings</span>
-                <svg className={`w-5 h-5 text-gray-500 transition-transform ${isDesignOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className={`w-5 h-5 text-gray-500 transition-transform ${openSection === 'design' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               
-              {isDesignOpen && (
+              {openSection === 'design' && (
                 <div className="p-4 border-t border-gray-200">
                   {renderDesignTab(activeBlock)}
                 </div>
