@@ -3,6 +3,8 @@
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import QuickViewModal from '@/components/product/QuickViewModal';
 
 export const AddToCartBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const cartStore = useCartStore();
@@ -98,28 +100,34 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor
 
 export const QuickviewBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor, btnHoverTextColor }: { product: any, btnBgColor?: string, btnTextColor?: string, btnHoverBgColor?: string, btnHoverTextColor?: string }) => {
   const t = useTranslations('ProductCard');
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   const handleQuickview = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Dispatch a custom event to open a quickview modal, or redirect to a special query param
-    // Since we don't have the implementation details of Quickview in this codebase,
-    // we'll open the product page in a new tab for now, or just trigger an alert
-    window.location.href = `/product/${product.slug}`;
+    setIsQuickViewOpen(true);
   };
 
   return (
-    <button 
-      onClick={handleQuickview}
-      style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563', '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
-      className="p-2 rounded-full shadow transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
-      aria-label="Quickview"
-      title={t('quick_view')}
-    >
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-      </svg>
-    </button>
+    <>
+      <button 
+        onClick={handleQuickview}
+        style={{ backgroundColor: btnBgColor || '#ffffff', color: btnTextColor || '#4b5563', '--btn-hover-bg': btnHoverBgColor || '#ea580c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
+        className="p-2 rounded-full shadow transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:scale-105"
+        aria-label="Quickview"
+        title={t('quick_view')}
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      </button>
+      
+      <QuickViewModal 
+        isOpen={isQuickViewOpen} 
+        onClose={() => setIsQuickViewOpen(false)} 
+        product={product} 
+      />
+    </>
   );
 };

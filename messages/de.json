@@ -89,7 +89,7 @@
     "categories": "Kategorien:",
     "tags": "Schlagworte:",
     "uncategorized": "Nicht kategorisiert",
-    "add_to_cart": "In den Warenkorb legen",
+    "add_to_cart": "In den Warenkorb",
     "related_products": "Verwandte Produkte",
     "no_related_products": "Keine verwandten Produkte gefunden.",
     "general": "Allgemein",
@@ -433,7 +433,7 @@
   "ProductCard": {
     "added_to_wishlist": "Produkt zur Wunschliste hinzugefügt!",
     "removed_from_wishlist": "Produkt von der Wunschliste entfernt.",
-    "add_to_cart": "In den Warenkorb legen",
+    "add_to_cart": "In den Warenkorb",
     "quick_view": "Schnellansicht",
     "add_to_wishlist": "Zur Wunschliste hinzufügen",
     "general": "Allgemein",

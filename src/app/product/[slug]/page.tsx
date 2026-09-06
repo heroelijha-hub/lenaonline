@@ -96,6 +96,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               enableBuyNow={enableBuyNow}
               storeName={storeName}
               shippingInfo={shippingInfo}
+              contactSlug={settingsMap.CONTACT_SLUG || 'contact'}
               translations={{
                 sku: t('sku'),
                 categories: t('categories'),

@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { revalidatePath, updateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
 
 export async function getSettings() {
@@ -22,7 +22,7 @@ export async function updateSetting(key: string, value: string) {
       create: { key, value }
     });
     revalidatePath('/', 'layout');
-    updateTag('settings');
+    revalidateTag('settings');
     return { success: true };
   } catch (error: any) {
     return { error: error.message };
@@ -42,7 +42,7 @@ export async function updateSettingsBatch(settingsMap: Record<string, string>) {
     
     await prisma.$transaction(transactions);
     revalidatePath('/', 'layout');
-    updateTag('settings');
+    revalidateTag('settings');
     return { success: true };
   } catch (error: any) {
     return { error: error.message };
