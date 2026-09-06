@@ -16,11 +16,21 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
   const t = await getTranslations('Home');
 
   const getResponsiveVars = (baseKey: string, defaultSizes: { m: string, t: string, d: string }) => {
-    return {
+    const vars: any = {
       '--sz-m': settings[`${baseKey}_SIZE_MOBILE`] || defaultSizes.m,
       '--sz-t': settings[`${baseKey}_SIZE_TABLET`] || defaultSizes.t,
       '--sz-d': settings[`${baseKey}_SIZE_DESKTOP`] || defaultSizes.d,
-    } as React.CSSProperties;
+    };
+    
+    if (settings[`${baseKey}_LINE_HEIGHT_MOBILE`]) vars['--lh-m'] = settings[`${baseKey}_LINE_HEIGHT_MOBILE`];
+    if (settings[`${baseKey}_LINE_HEIGHT_TABLET`]) vars['--lh-t'] = settings[`${baseKey}_LINE_HEIGHT_TABLET`];
+    if (settings[`${baseKey}_LINE_HEIGHT_DESKTOP`]) vars['--lh-d'] = settings[`${baseKey}_LINE_HEIGHT_DESKTOP`];
+    
+    if (settings[`${baseKey}_LETTER_SPACING_MOBILE`]) vars['--ls-m'] = settings[`${baseKey}_LETTER_SPACING_MOBILE`];
+    if (settings[`${baseKey}_LETTER_SPACING_TABLET`]) vars['--ls-t'] = settings[`${baseKey}_LETTER_SPACING_TABLET`];
+    if (settings[`${baseKey}_LETTER_SPACING_DESKTOP`]) vars['--ls-d'] = settings[`${baseKey}_LETTER_SPACING_DESKTOP`];
+
+    return vars as React.CSSProperties;
   };
 
   const block1 = (
@@ -316,7 +326,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
               color: settings.STYLE2_HERO_2_BTN_TEXT_COLOR || '#111827'
             }}
           >
-            {settings.STYLE2_HERO_2_CTA || 'Kaufen'}
+            {settings.STYLE2_HERO_2_CTA || t('shop_now')}
           </Link>
         </div>
       </div>
@@ -368,7 +378,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
               color: settings.STYLE2_HERO_3_BTN_TEXT_COLOR || '#111827'
             }}
           >
-            {settings.STYLE2_HERO_3_CTA || 'Kaufen'}
+            {settings.STYLE2_HERO_3_CTA || t('shop_now')}
           </Link>
         </div>
       </div>

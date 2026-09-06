@@ -44,6 +44,22 @@ a {
   cursor: pointer;
 }
 
-.text-responsive { font-size: var(--sz-m); } 
-@media (min-width: 768px) { .text-responsive { font-size: var(--sz-t); } } 
-@media (min-width: 1024px) { .text-responsive { font-size: var(--sz-d); } }
+.text-responsive { 
+  font-size: var(--sz-m); 
+  line-height: var(--lh-m, normal);
+  letter-spacing: var(--ls-m, normal);
+} 
+@media (min-width: 768px) { 
+  .text-responsive { 
+    font-size: var(--sz-t); 
+    line-height: var(--lh-t, var(--lh-m, normal));
+    letter-spacing: var(--ls-t, var(--ls-m, normal));
+  } 
+} 
+@media (min-width: 1024px) { 
+  .text-responsive { 
+    font-size: var(--sz-d); 
+    line-height: var(--lh-d, var(--lh-t, var(--lh-m, normal)));
+    letter-spacing: var(--ls-d, var(--ls-t, var(--ls-m, normal)));
+  } 
+}

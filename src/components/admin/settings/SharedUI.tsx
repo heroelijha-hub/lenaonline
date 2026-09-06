@@ -28,22 +28,56 @@ export const renderDesignTextControls = (
   colorKey: string, 
   defaultColor: string
 ) => {
-  const sizeKey = `${baseKey}_SIZE_${previewMode.toUpperCase()}`;
-  const currentValue = section.settings[sizeKey] ? parseInt(section.settings[sizeKey].replace('px', '')) : 16;
+  const mode = previewMode.toUpperCase();
+  const sizeKey = `${baseKey}_SIZE_${mode}`;
+  const lhKey = `${baseKey}_LINE_HEIGHT_${mode}`;
+  const lsKey = `${baseKey}_LETTER_SPACING_${mode}`;
+  
+  const currentSize = section.settings[sizeKey] ? parseInt(section.settings[sizeKey].replace('px', '')) : 16;
+  const currentLh = section.settings[lhKey] || '';
+  const currentLs = section.settings[lsKey] ? parseInt(section.settings[lsKey].replace('px', '')) : 0;
+
   return (
     <div className="mb-5 flex flex-col gap-2">
       <label className="block text-xs font-medium text-gray-700">{label}</label>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-24 shrink-0">
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Size */}
+        <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Taille (px)">
            <input 
               type="number" 
-              value={currentValue || ''} 
+              value={currentSize || ''} 
               onChange={e => updateSectionSettings(section.id, sizeKey, e.target.value + 'px')} 
-              className="flex-1 w-full text-center text-sm border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+              className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+              placeholder="Taille"
            />
-           <span className="text-xs text-gray-500 bg-gray-50 h-8 px-2 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+           <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
         </div>
-        <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer">
+        
+        {/* Line Height */}
+        <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Interligne (ex: 1.2)">
+           <input 
+              type="number" step="0.1"
+              value={currentLh} 
+              onChange={e => updateSectionSettings(section.id, lhKey, e.target.value)} 
+              className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+              placeholder="LH"
+           />
+           <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
+        </div>
+
+        {/* Letter Spacing */}
+        <div className="flex items-center border border-gray-300 rounded overflow-hidden bg-white w-[72px] shrink-0" title="Espacement (px)">
+           <input 
+              type="number" step="1"
+              value={currentLs || 0} 
+              onChange={e => updateSectionSettings(section.id, lsKey, e.target.value + 'px')} 
+              className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
+              placeholder="LS"
+           />
+           <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+        </div>
+
+        <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-300 shadow-sm shrink-0 cursor-pointer" title="Couleur">
           <input 
             type="color" 
             value={section.settings[colorKey] || defaultColor} 
