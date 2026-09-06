@@ -152,7 +152,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
   };
 
   const updateSectionSettings = (id: string, key: string, value: any) => {
-    setSections(sections.map(s => {
+    setSections(prev => prev.map(s => {
       if (s.id === id) {
         return { ...s, settings: { ...s.settings, [key]: value } };
       }
