@@ -240,8 +240,10 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                       key={`${v}-${h}`}
                       type="button"
                       onClick={() => {
-                        updateSectionSettings(section.id, `${prefix}_VALIGN`, v);
-                        updateSectionSettings(section.id, `${prefix}_ALIGN`, h);
+                        updateSectionSettings(section.id, {
+                          [`${prefix}_VALIGN`]: v,
+                          [`${prefix}_ALIGN`]: h
+                        });
                       }}
                       className={`rounded-[4px] transition-all flex items-center justify-center ${
                         isSelected 

@@ -151,10 +151,14 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
     setSections(newSections);
   };
 
-  const updateSectionSettings = (id: string, key: string, value: any) => {
+  const updateSectionSettings = (id: string, keyOrUpdates: string | Record<string, any>, value?: any) => {
     setSections(prev => prev.map(s => {
       if (s.id === id) {
-        return { ...s, settings: { ...s.settings, [key]: value } };
+        if (typeof keyOrUpdates === 'string') {
+          return { ...s, settings: { ...s.settings, [keyOrUpdates]: value } };
+        } else {
+          return { ...s, settings: { ...s.settings, ...keyOrUpdates } };
+        }
       }
       return s;
     }));
