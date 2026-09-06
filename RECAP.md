@@ -25,6 +25,7 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 - **Footer optimisé** :
   - Design premium avec colonnes qui se transforment en accordéons (collapsibles) sur mobile.
   - Bouton dynamique "Back to top" (jaune, orange au survol) intégré avec le style du thème.
+  - Rendu dynamique et sécurisé des liens et colonnes (évitant la duplication des menus par défaut).
 
 ### 2. Pages de Produits Spécifiques
 - **Page `/sale` (Promotions)** : N'affiche que les produits possédant un *prix de comparaison* renseigné.
@@ -79,7 +80,11 @@ Ce document liste toutes les fonctionnalités et configurations qui ont été mi
 ### 4. Landing Page Builder (Éditeur)
 - **Constructeur visuel (Drag & Drop / Reorder)** : Les sections peuvent être remontées ou descendues avec des flèches directionnelles.
 - **Duplication** : Clonage d'une section en un clic.
-- **Configuration Responsive** : Paramètres d'affichage spécifiques (Mobile, Tablette, Desktop).
+- **Configuration Responsive** : Paramètres d'affichage spécifiques (Mobile, Tablette, Desktop) avec ajustement automatique de la taille des polices (Typographie Responsive intelligente).
+- **Prévisualisation en Temps Réel (Live Preview)** : Système robuste via API interne et base de données (Drafts) permettant de contourner les limites strictes de taille des cookies HTTP.
+- **Personnalisation fine des blocs Hero** : 
+  - Possibilité d'ajouter des liens personnalisés (URL) sur chaque bouton Call-To-Action.
+  - Filtres d'assombrissement (Overlays) dynamiques configurables (Léger, Moyen, Sombre) sur les images de fond pour garantir un contraste optimal et une parfaite lisibilité du texte.
 
 ### 5. SEO & OpenGraph (Optimisation pour le référencement)
 - **Paramètres Globaux** : Nouvelle page dédiée dans les réglages pour définir le Meta Titre, la Meta Description globale et l'image de partage (og:image) par défaut (idéalement en 1200x630 pour un affichage optimal sur les réseaux sociaux).
