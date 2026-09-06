@@ -15,6 +15,10 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
   const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@example.com');
   const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.example.com');
   
+  const [loginText, setLoginText] = useState(initialSettings.LOGIN_TEXT || '');
+  const [myAccountText, setMyAccountText] = useState(initialSettings.MY_ACCOUNT_TEXT || '');
+  const [adminDashboardText, setAdminDashboardText] = useState(initialSettings.ADMIN_DASHBOARD_TEXT || '');
+  
   const [headerLinks, setHeaderLinks] = useState<{label: string, url: string}[]>(() => {
     try {
       return initialSettings.HEADER_MENU_LINKS ? JSON.parse(initialSettings.HEADER_MENU_LINKS) : [
@@ -55,7 +59,10 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
       MOBILE_CONTACT_EMAIL: mobileContactEmail,
       MOBILE_CONTACT_WEBSITE: mobileContactWebsite,
       HEADER_MENU_LINKS: JSON.stringify(headerLinks),
-      TOP_BAR_LINKS: JSON.stringify(topBarLinks)
+      TOP_BAR_LINKS: JSON.stringify(topBarLinks),
+      LOGIN_TEXT: loginText,
+      MY_ACCOUNT_TEXT: myAccountText,
+      ADMIN_DASHBOARD_TEXT: adminDashboardText
     });
 
     setMessage(tSettings('update_success'));
@@ -111,6 +118,25 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
               {tSettings('add_menu_link') || 'Add Top Bar Link'}
             </button>
+          </div>
+        </div>
+
+        {/* Auth Links (Right Top Bar) */}
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <label className="block text-base font-semibold text-gray-900 mb-4">{tSettings('auth_links') || 'Auth Links (Top Bar Right)'}</label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{tSettings('login_text') || 'Login Text'}</label>
+              <input type="text" placeholder="Leave empty for default translation" value={loginText} onChange={(e) => setLoginText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{tSettings('my_account_text') || 'My Account Text'}</label>
+              <input type="text" placeholder="Leave empty for default translation" value={myAccountText} onChange={(e) => setMyAccountText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{tSettings('admin_dashboard_text') || 'Admin Dashboard Text'}</label>
+              <input type="text" placeholder="Leave empty for default translation" value={adminDashboardText} onChange={(e) => setAdminDashboardText(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+            </div>
           </div>
         </div>
 
