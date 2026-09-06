@@ -1105,7 +1105,12 @@
     "search_placeholder_label": "Search Placeholder",
     "show_address": "Show Address",
     "show_email": "Show Email",
-    "show_phone": "Show Phone"
+    "show_phone": "Show Phone",
+    "top_bar_links": "Top Bar Links",
+    "auth_links": "Auth Links (Top Bar Right)",
+    "login_text": "Login Text",
+    "my_account_text": "My Account Text",
+    "admin_dashboard_text": "Admin Dashboard Text"
   },
   "AdminShipping": {
     "title": "Shipping Settings",

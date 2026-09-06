@@ -1105,7 +1105,12 @@
     "search_placeholder_label": "Suchplatzhalter",
     "show_address": "Adresse anzeigen",
     "show_email": "E-Mail anzeigen",
-    "show_phone": "Telefon anzeigen"
+    "show_phone": "Telefon anzeigen",
+    "top_bar_links": "Top-Bar-Links",
+    "auth_links": "Authentifizierungs-Links",
+    "login_text": "Login-Text",
+    "my_account_text": "Mein Konto Text",
+    "admin_dashboard_text": "Admin-Dashboard Text"
   },
   "AdminShipping": {
     "title": "Versandeinstellungen",

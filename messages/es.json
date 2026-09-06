@@ -1105,7 +1105,12 @@
     "search_placeholder_label": "Texto de búsqueda",
     "show_address": "Mostrar dirección",
     "show_email": "Mostrar correo electrónico",
-    "show_phone": "Mostrar teléfono"
+    "show_phone": "Mostrar teléfono",
+    "top_bar_links": "Enlaces de la barra superior",
+    "auth_links": "Enlaces de autenticación",
+    "login_text": "Texto de inicio de sesión",
+    "my_account_text": "Texto \"Mi cuenta\"",
+    "admin_dashboard_text": "Texto del panel de control"
   },
   "AdminShipping": {
     "title": "Configuración de Envío",

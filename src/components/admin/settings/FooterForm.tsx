@@ -16,9 +16,9 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
   const [footerShowEmail, setFooterShowEmail] = useState(initialSettings.FOOTER_SHOW_EMAIL !== 'false');
   const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
   
-  const [footerAddress, setFooterAddress] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
-  const [footerSupportEmail, setFooterSupportEmail] = useState(initialSettings.FOOTER_SUPPORT_EMAIL || initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
-  const [footerSupportPhone, setFooterSupportPhone] = useState(initialSettings.FOOTER_SUPPORT_PHONE || initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
+  const [footerAddress, setFooterAddress] = useState(initialSettings.FOOTER_ADDRESS_1 ?? '2972 Westheimer Rd. Illinois 85486');
+  const [footerSupportEmail, setFooterSupportEmail] = useState(initialSettings.FOOTER_SUPPORT_EMAIL ?? initialSettings.HEADER_SUPPORT_EMAIL ?? 'support@mystore.com');
+  const [footerSupportPhone, setFooterSupportPhone] = useState(initialSettings.FOOTER_SUPPORT_PHONE ?? initialSettings.HEADER_SUPPORT_PHONE ?? '+08 9229 8228');
 
   const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 My Store. All rights reserved.');
   

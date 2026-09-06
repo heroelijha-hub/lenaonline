@@ -1105,7 +1105,12 @@
     "search_placeholder_label": "Texte espace de recherche",
     "show_address": "Afficher l'adresse",
     "show_email": "Afficher l'e-mail",
-    "show_phone": "Afficher le téléphone"
+    "show_phone": "Afficher le téléphone",
+    "top_bar_links": "Liens de la barre supérieure",
+    "auth_links": "Liens d'authentification",
+    "login_text": "Texte de connexion",
+    "my_account_text": "Texte \"Mon compte\"",
+    "admin_dashboard_text": "Texte du tableau de bord"
   },
   "AdminShipping": {
     "title": "Paramètres de Livraison",
