@@ -1101,7 +1101,11 @@
     "change_favicon": "Cambiar Favicon",
     "select_favicon": "Seleccionar Favicon",
     "mobile_about_desc": "Descripción Acerca de (Móvil)",
-    "header_announcement": "Anuncio del encabezado"
+    "header_announcement": "Anuncio del encabezado",
+    "search_placeholder_label": "Texto de búsqueda",
+    "show_address": "Mostrar dirección",
+    "show_email": "Mostrar correo electrónico",
+    "show_phone": "Mostrar teléfono"
   },
   "AdminShipping": {
     "title": "Configuración de Envío",

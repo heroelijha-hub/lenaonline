@@ -81,11 +81,11 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
       <div className="space-y-6 pt-4 border-t border-gray-100">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('bg_color_label') || 'Background Color'}</label>
             <div className="relative w-10 h-10">  <input type="color" value={footerBgColor} onChange={(e) => setFooterBgColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerBgColor }} /></div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('text_color_label') || 'Text Color'}</label>
             <div className="relative w-10 h-10">  <input type="color" value={footerTextColor} onChange={(e) => setFooterTextColor(e.target.value)} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />  <div className="w-10 h-10 rounded-xl shadow-sm border border-gray-200" style={{ backgroundColor: footerTextColor }} /></div>
           </div>
         </div>
