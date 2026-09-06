@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   const product = await getCachedProductBySlug(slug);
   
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kaminbrennstoffe";
 
   if (!product) {
     return {
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: product.metaTitle || `${product.title} | ${storeName}`,
+    title: product.metaTitle ? product.metaTitle : `${product.title} | ${storeName}`,
     description: product.metaDescription || product.shortDescription?.replace(/<[^>]*>?/gm, '').substring(0, 160) || product.description?.replace(/<[^>]*>?/gm, '').substring(0, 160),
     alternates: {
       canonical: `/product/${slug}`,

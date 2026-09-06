@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const { data: page } = await getPageBySlug(resolvedParams.slug);
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kaminbrennstoffe";
   
   if (!page || !page.isPublished) {
     return {
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: page.metaTitle ? `${page.metaTitle} - ${storeName}` : `${page.title} - ${storeName}`,
+    title: page.metaTitle ? page.metaTitle : `${page.title} - ${storeName}`,
     description: page.metaDescription || undefined,
     keywords: page.metaKeywords || undefined,
     openGraph: {

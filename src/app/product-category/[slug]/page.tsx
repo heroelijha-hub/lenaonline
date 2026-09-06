@@ -4,13 +4,19 @@ import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kaminbrennstoffe";
   const category = await prisma.category.findUnique({
     where: { slug: resolvedParams.slug }
   });
   
+  if (!category) {
+    return {
+      title: `Category not found - ${storeName}`,
+    };
+  }
+
   return {
-    title: category?.metaTitle ? `${category.metaTitle} | ${storeName}` : `${category?.name || 'Category'} | ${storeName}`,
+    title: category?.metaTitle ? category.metaTitle : `${category?.name || 'Category'} | ${storeName}`,
     description: category?.metaDescription || `Shop products in ${category?.name}`,
     keywords: category?.metaKeywords || undefined,
     openGraph: {
