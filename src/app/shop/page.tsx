@@ -8,10 +8,36 @@ import { getTranslations } from 'next-intl/server';
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
-export const metadata = {
-  title: `Shop | ${storeName}`,
-  description: 'Discover our product catalog',
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const params = await searchParams;
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kaminbrennstoffe";
+  
+  // Extract category
+  const categoryParams = params.category;
+  const categories = Array.isArray(categoryParams) ? categoryParams : categoryParams ? [categoryParams] : [];
+  
+  if (categories.length === 1) {
+    const category = await prisma.category.findFirst({
+      where: { OR: [{ slug: categories[0] }, { id: categories[0] }] }
+    });
+    
+    if (category) {
+      return {
+        title: category.metaTitle || `${category.name} | ${storeName}`,
+        description: category.metaDescription || `Kaufen Sie ${category.name} günstig online bei ${storeName}.`,
+      };
+    }
+  }
+
+  return {
+    title: `Shop | ${storeName}`,
+    description: 'Entdecken Sie unser großes Sortiment an Kaminöfen, Pelletöfen, Brennholz und Holzbriketts.',
+  };
+}
 
 export default async function ShopPage({
   searchParams,
