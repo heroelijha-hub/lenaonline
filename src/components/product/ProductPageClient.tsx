@@ -127,7 +127,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
                     <Link href={`/product-category/${c.slug || c.id}`} className="hover:text-orange-500 hover:underline transition-colors">
                       {c.name}
                     </Link>
-                    {index < product.categories.length - 1 ? ', ' : ''}
+                    {index < product.categories!.length - 1 ? ', ' : ''}
                   </span>
                 ))
               : (t?.uncategorized ?? 'Non catégorisé')}
@@ -143,7 +143,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
                   <Link href={`/shop?tag=${tag.slug || tag.id}`} className="hover:text-orange-500 hover:underline transition-colors">
                     {tag.name}
                   </Link>
-                  {index < product.tags.length - 1 ? ', ' : ''}
+                  {index < product.tags!.length - 1 ? ', ' : ''}
                 </span>
               ))}
             </p>
