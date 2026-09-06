@@ -22,7 +22,6 @@ export async function updateSetting(key: string, value: string) {
       create: { key, value }
     });
     revalidatePath('/', 'layout');
-    revalidateTag('settings');
     return { success: true };
   } catch (error: any) {
     return { error: error.message };
@@ -42,7 +41,6 @@ export async function updateSettingsBatch(settingsMap: Record<string, string>) {
     
     await prisma.$transaction(transactions);
     revalidatePath('/', 'layout');
-    revalidateTag('settings');
     return { success: true };
   } catch (error: any) {
     return { error: error.message };

@@ -7,7 +7,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { categories: true, forceSales: true, saleTogether: true }
+    include: { brand: true, categories: true, tags: true, Product_ForceSales_A: true, Product_SaleTogether_A: true }
   });
 
   if (!product) {

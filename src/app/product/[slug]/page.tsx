@@ -54,7 +54,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   }
 
   // Related products (same category)
-  const categoryIds = product.categories.map((c: any) => c.id);
+  const categoryIds = (product as any).categories?.map((c: any) => c.id) || [];
   const relatedProducts = await getCachedRelatedProducts(categoryIds, product.id);
 
   // Check if logged in
@@ -73,12 +73,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
             <Link href="/" className="hover:text-orange-500 transition">{t('home')}</Link>
             <span className="text-gray-300">/</span>
-            {product.categories && product.categories.length > 0 ? (
+            {(product as any).categories && (product as any).categories.length > 0 ? (
               <Link 
-                href={`/product-category/${product.categories[0].slug || product.categories[0].id}`}
+                href={`/product-category/${(product as any).categories[0].slug || (product as any).categories[0].id}`}
                 className="hover:text-orange-500 transition"
               >
-                {product.categories[0].name}
+                {(product as any).categories[0].name}
               </Link>
             ) : (
               <span>{t('category')}</span>
@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 categories: t('categories'),
                 tags: t('tags'),
                 sold: t('sold'),
-                customer_reviews: t('customer_reviews', { count: product.reviews.length }),
+                customer_reviews: t('customer_reviews', { count: (product as any).reviews?.length || 0 }),
                 uncategorized: t('uncategorized'),
                 brand: t('brand')
               }}
@@ -113,7 +113,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <ProductReviews 
             productId={product.id}
             productTitle={product.title}
-            reviews={product.reviews as any}
+            reviews={(product as any).reviews || []}
             description={product.description}
             isLoggedIn={isLoggedIn}
           />

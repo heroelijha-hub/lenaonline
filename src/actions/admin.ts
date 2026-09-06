@@ -352,7 +352,7 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   }
 
   try {
-    await prisma.product.create({
+    const newProduct = await (prisma.product.create as any)({
       data: {
         title,
         slug: uniqueSlug,
@@ -379,10 +379,10 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
           }))
         },
         images: imageUrls,
-        forceSales: {
+        Product_ForceSales_A: {
           connect: forceSalesIds.map((id: string) => ({ id }))
         },
-        saleTogether: {
+        Product_SaleTogether_A: {
           connect: saleTogetherIds.map((id: string) => ({ id }))
         },
       }
@@ -446,7 +446,7 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
   }
 
   try {
-    await prisma.product.update({
+    await (prisma.product.update as any)({
       where: { id },
       data: {
         title,
@@ -475,10 +475,10 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
           }))
         },
         images: imageUrls,
-        forceSales: {
+        Product_ForceSales_A: {
           set: forceSalesIds.map((id: string) => ({ id }))
         },
-        saleTogether: {
+        Product_SaleTogether_A: {
           set: saleTogetherIds.map((id: string) => ({ id }))
         },
       }
@@ -668,7 +668,7 @@ export async function updateOrderStatus(orderId: string, status: any) {
       dataToUpdate.deliveredAt = new Date();
     }
 
-    const updatedOrder = await prisma.order.update({
+    const updatedOrder = await (prisma.order.update as any)({
       where: { id: orderId },
       data: dataToUpdate,
       include: { user: true }

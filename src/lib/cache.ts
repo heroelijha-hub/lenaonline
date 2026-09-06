@@ -33,12 +33,12 @@ export const getCachedProductBySlug = async (slug: string) => {
             { slug: decodedSlug }
           ]
         },
-        include: { 
+        include: {
           categories: true,
+          Product_ForceSales_A: true,
+          Product_SaleTogether_A: true,
           brand: true,
           tags: true,
-          forceSales: true,
-          saleTogether: true,
           reviews: {
             where: { isApproved: true },
             orderBy: { createdAt: 'desc' },
