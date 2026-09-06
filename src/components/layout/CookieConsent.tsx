@@ -30,7 +30,10 @@ export default function CookieConsent() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-xl z-50 p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div 
+      className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-50 p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
+      style={{ borderColor: 'var(--theme-color, #f97316)' }}
+    >
       <div className="flex-1 max-w-3xl">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('title')}</h3>
         <p className="text-sm text-gray-600">
@@ -40,13 +43,15 @@ export default function CookieConsent() {
       <div className="flex items-center gap-3 w-full md:w-auto shrink-0">
         <button
           onClick={handleDecline}
-          className="flex-1 md:flex-none px-6 py-2.5 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          className="flex-1 md:flex-none px-6 py-2.5 rounded-md border bg-white font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+          style={{ borderColor: 'var(--theme-color, #f97316)', color: 'var(--theme-color, #f97316)' }}
         >
           {t('decline')}
         </button>
         <button
           onClick={handleAccept}
-          className="flex-1 md:flex-none px-6 py-2.5 rounded-md bg-[var(--theme-color)] text-white font-medium hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--theme-color)] shadow-sm"
+          className="flex-1 md:flex-none px-6 py-2.5 rounded-md text-white font-medium hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm"
+          style={{ backgroundColor: 'var(--theme-color, #f97316)' }}
         >
           {t('accept')}
         </button>
