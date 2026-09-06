@@ -100,7 +100,6 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         backgroundColor: settings.HERO_1_BG_COLOR || '#111827',
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -144,6 +143,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_1_IMAGE && settings.HERO_1_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_1_IMAGE} alt="Hero 1" width={800} height={800} className="absolute top-8 left-1/2 -translate-x-1/2 w-4/5 object-contain max-h-[40%] group-hover:scale-110 transition-transform duration-700 z-0 drop-shadow-2xl" priority />
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
     </div>
   );
 
@@ -154,7 +154,6 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         backgroundColor: settings.HERO_2_BG_COLOR || '#1f2937',
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -189,6 +188,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_2_IMAGE && settings.HERO_2_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="absolute right-0 top-4 w-[50%] md:w-1/2 object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl" priority />
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
     </div>
   );
 
@@ -199,7 +199,6 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         backgroundColor: settings.HERO_3_BG_COLOR || '#1f2937',
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -234,6 +233,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_3_IMAGE && settings.HERO_3_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="absolute right-0 top-4 w-[50%] md:w-1/2 object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl" priority />
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
     </div>
   );
 
@@ -244,7 +244,6 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         backgroundColor: settings.HERO_4_BG_COLOR || '#111827',
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={4} />}
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -279,6 +278,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' && (
         <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className="absolute right-0 sm:right-8 top-1/2 -translate-y-1/2 w-[50%] max-w-[300px] md:max-w-none md:max-h-[110%] object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-2xl" priority />
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={4} />}
     </div>
   );
 
@@ -289,12 +289,8 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       className="rounded-xl overflow-hidden relative p-6 sm:p-10 md:p-12 flex-col justify-center h-full min-h-[400px] border border-gray-100 group flex w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_1_BG_COLOR || '#f0f4f8',
-        
-        
-        
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
       
       {settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -344,6 +340,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.STYLE2_HERO_1_IMAGE && settings.STYLE2_HERO_1_SHOW_IMAGE !== 'false' && (
         <Image src={settings.STYLE2_HERO_1_IMAGE} alt="Hero 1" width={800} height={800} className="absolute right-0 bottom-0 w-3/4 md:w-2/3 lg:w-[55%] h-[90%] object-contain object-right-bottom group-hover:scale-105 transition-transform duration-700 z-10 pointer-events-none" />
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={1} />}
     </div>
   );
 
@@ -352,12 +349,8 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_2_BG_COLOR || '#f5ebeb',
-        
-        
-        
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
       
       {settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -396,6 +389,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <Image src={settings.STYLE2_HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
     </div>
   );
 
@@ -404,12 +398,8 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       className="rounded-xl overflow-hidden relative p-6 sm:p-8 flex items-center border border-gray-100 group h-full w-full"
       style={{
         backgroundColor: settings.STYLE2_HERO_3_BG_COLOR || '#f3ebd6',
-        
-        
-        
       }}
     >
-      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
       
       {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <>
@@ -448,6 +438,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <Image src={settings.STYLE2_HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="w-full h-full object-contain object-right group-hover:scale-105 transition-transform duration-500" />
         </div>
       )}
+      {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
     </div>
   );
 
