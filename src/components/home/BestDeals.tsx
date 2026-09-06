@@ -74,6 +74,8 @@ export default async function BestDeals({ config }: { config?: any }) {
     };
   });
 
+  const seeAllUrl = config?.seeAllUrl || (categoryId ? `/product-category/${categoryId}` : '/deals');
+
   return (
     <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
       
@@ -107,7 +109,7 @@ export default async function BestDeals({ config }: { config?: any }) {
           </div>
 
           {config?.SEE_ALL_TEXT !== '' && (
-            <Link href="/deals" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
+            <Link href={seeAllUrl} className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
               {config?.SEE_ALL_TEXT || t('see_all')}
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

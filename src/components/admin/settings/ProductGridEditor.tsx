@@ -215,18 +215,16 @@ export default function ProductGridEditor({
           <div className="space-y-4">
             {renderContentInput(section, updateSectionSettings, 'Section Title', 'title', 'Enter the title...')}
             {renderContentInput(section, updateSectionSettings, '"See All" Link Text', 'SEE_ALL_TEXT', 'See All')}
-            {section.type === 'ProductGrid' && (
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Custom "See All" URL</label>
-                <input
-                  type="text"
-                  value={section.settings.seeAllUrl || ''}
-                  onChange={e => updateSectionSettings(section.id, 'seeAllUrl', e.target.value)}
-                  placeholder="ex: /shop (leave empty for auto category link)"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-500 focus:ring-orange-500 outline-none transition-colors"
-                />
-              </div>
-            )}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Custom "See All" URL</label>
+              <input
+                type="text"
+                value={section.settings.seeAllUrl || ''}
+                onChange={e => updateSectionSettings(section.id, 'seeAllUrl', e.target.value)}
+                placeholder="ex: /shop (leave empty for auto category link)"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-500 focus:ring-orange-500 outline-none transition-colors"
+              />
+            </div>
             {section.type === 'BestDeals' && (
               <div className="mt-6 border-t pt-4">
                 <label className="block text-sm font-medium mb-2 text-gray-800">Offer end (Countdown)</label>
