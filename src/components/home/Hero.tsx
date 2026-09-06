@@ -161,7 +161,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_2', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_2_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className={`z-20 w-full relative flex flex-col ${getMarginClass('HERO_2', 'bottom')} ${getAlignFlexClass('HERO_2', 'left')}`}>
+      <div className={`z-20 w-[65%] sm:w-[55%] relative flex flex-col ${getMarginClass('HERO_2', 'bottom')} ${getAlignFlexClass('HERO_2', 'left')} ${getAlignSelfClass('HERO_2', 'left')}`}>
         {settings.HERO_2_SUBTITLE && (
           <span 
             className={getBadgeClasses('HERO_2')}
@@ -186,7 +186,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
       </div>
       {settings.HERO_2_IMAGE && settings.HERO_2_SHOW_IMAGE !== 'false' && (
-        <Image src={settings.HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className="absolute right-0 top-4 w-[50%] md:w-1/2 object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl" priority />
+        <Image src={settings.HERO_2_IMAGE} alt="Hero 2" width={800} height={800} className={`absolute top-4 w-[45%] sm:w-[50%] object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl ${settings.HERO_2_ALIGN === 'right' ? 'left-0' : 'right-0'}`} priority />
       )}
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={2} />}
     </div>
@@ -206,7 +206,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_3', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_3_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className={`z-20 w-full relative flex flex-col ${getMarginClass('HERO_3', 'bottom')} ${getAlignFlexClass('HERO_3', 'left')}`}>
+      <div className={`z-20 w-[65%] sm:w-[55%] relative flex flex-col ${getMarginClass('HERO_3', 'bottom')} ${getAlignFlexClass('HERO_3', 'left')} ${getAlignSelfClass('HERO_3', 'left')}`}>
         {settings.HERO_3_SUBTITLE && (
           <span 
             className={getBadgeClasses('HERO_3')}
@@ -231,7 +231,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
       </div>
       {settings.HERO_3_IMAGE && settings.HERO_3_SHOW_IMAGE !== 'false' && (
-        <Image src={settings.HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className="absolute right-0 top-4 w-[50%] md:w-1/2 object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl" priority />
+        <Image src={settings.HERO_3_IMAGE} alt="Hero 3" width={800} height={800} className={`absolute top-4 w-[45%] sm:w-[50%] object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-xl ${settings.HERO_3_ALIGN === 'right' ? 'left-0' : 'right-0'}`} priority />
       )}
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={3} />}
     </div>
@@ -251,7 +251,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_4', 'grad-r')}`} style={{ opacity: (parseInt(settings.HERO_4_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className={`z-20 w-[80%] md:w-[60%] lg:w-[50%] relative flex flex-col ${getMarginClass('HERO_4', 'bottom')} ${getAlignFlexClass('HERO_4', 'left')}`}>
+      <div className={`z-20 w-[70%] sm:w-[60%] lg:w-[55%] relative flex flex-col ${getMarginClass('HERO_4', 'bottom')} ${getAlignFlexClass('HERO_4', 'left')} ${getAlignSelfClass('HERO_4', 'left')}`}>
         <h2 
           className="font-extrabold mb-3 leading-snug whitespace-pre-line text-responsive drop-shadow-md" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '24px', t: '28px', d: '32px'}), color: settings.HERO_4_TEXT_COLOR || '#ffffff'}}
@@ -276,7 +276,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
       </div>
       {settings.HERO_4_IMAGE && settings.HERO_4_SHOW_IMAGE !== 'false' && (
-        <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className="absolute right-0 sm:right-8 top-1/2 -translate-y-1/2 w-[50%] max-w-[300px] md:max-w-none md:max-h-[110%] object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-2xl" priority />
+        <Image src={settings.HERO_4_IMAGE} alt="Hero 4" width={800} height={800} className={`absolute sm:top-1/2 sm:-translate-y-1/2 bottom-0 w-[45%] sm:w-[40%] object-contain group-hover:scale-110 transition-transform duration-700 z-10 drop-shadow-2xl ${settings.HERO_4_ALIGN === 'right' ? 'left-0 sm:left-4' : 'right-0 sm:right-4'}`} priority />
       )}
       {isPreview && sectionId && <HeroPreviewEditButton sectionId={sectionId} blockNum={4} />}
     </div>
