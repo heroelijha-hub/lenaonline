@@ -10,10 +10,10 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
   
   const [mobileAboutTitle, setMobileAboutTitle] = useState(initialSettings.MOBILE_ABOUT_TITLE || 'About Us');
   const [mobileAboutDesc, setMobileAboutDesc] = useState(initialSettings.MOBILE_ABOUT_DESC || 'Welcome to our store. We sell the best products in town.');
-  const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS || '123 Main St');
-  const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE || '+1 234 567 890');
-  const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL || 'contact@example.com');
-  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE || 'www.example.com');
+  const [mobileContactAddress, setMobileContactAddress] = useState(initialSettings.MOBILE_CONTACT_ADDRESS ?? '123 Main St');
+  const [mobileContactPhone, setMobileContactPhone] = useState(initialSettings.MOBILE_CONTACT_PHONE ?? '+1 234 567 890');
+  const [mobileContactEmail, setMobileContactEmail] = useState(initialSettings.MOBILE_CONTACT_EMAIL ?? 'contact@example.com');
+  const [mobileContactWebsite, setMobileContactWebsite] = useState(initialSettings.MOBILE_CONTACT_WEBSITE ?? 'www.example.com');
   
   const [loginText, setLoginText] = useState(initialSettings.LOGIN_TEXT || '');
   const [myAccountText, setMyAccountText] = useState(initialSettings.MY_ACCOUNT_TEXT || '');
@@ -184,6 +184,14 @@ export default function NavigationForm({ initialSettings }: { initialSettings: R
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_email') || 'Contact Email'}</label>
             <input type="email" value={mobileContactEmail} onChange={(e) => setMobileContactEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_address') || 'Contact Address'}</label>
+            <input type="text" value={mobileContactAddress} onChange={(e) => setMobileContactAddress(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('contact_website') || 'Contact Website'}</label>
+            <input type="text" value={mobileContactWebsite} onChange={(e) => setMobileContactWebsite(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
           </div>
         </div>
       </div>
