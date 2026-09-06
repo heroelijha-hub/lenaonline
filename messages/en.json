@@ -1102,7 +1102,10 @@
     "select_favicon": "Select Favicon",
     "mobile_about_desc": "Mobile About Description",
     "header_announcement": "Header Announcement",
-    "search_placeholder_label": "Search Placeholder"
+    "search_placeholder_label": "Search Placeholder",
+    "show_address": "Show Address",
+    "show_email": "Show Email",
+    "show_phone": "Show Phone"
   },
   "AdminShipping": {
     "title": "Shipping Settings",

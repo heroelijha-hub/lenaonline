@@ -15,6 +15,12 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
   const [footerShowAddress, setFooterShowAddress] = useState(initialSettings.FOOTER_SHOW_ADDRESS !== 'false');
   const [footerShowEmail, setFooterShowEmail] = useState(initialSettings.FOOTER_SHOW_EMAIL !== 'false');
   const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
+  const [footerShowPhone, setFooterShowPhone] = useState(initialSettings.FOOTER_SHOW_PHONE !== 'false');
+  
+  const [footerAddress, setFooterAddress] = useState(initialSettings.FOOTER_ADDRESS_1 || '2972 Westheimer Rd. Illinois 85486');
+  const [footerSupportEmail, setFooterSupportEmail] = useState(initialSettings.FOOTER_SUPPORT_EMAIL || initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
+  const [footerSupportPhone, setFooterSupportPhone] = useState(initialSettings.FOOTER_SUPPORT_PHONE || initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
+
   const [footerCopyright, setFooterCopyright] = useState(initialSettings.FOOTER_COPYRIGHT || '© 2026 My Store. All rights reserved.');
   
   const [footerLogoImage, setFooterLogoImage] = useState(initialSettings.FOOTER_LOGO_IMAGE || '');
@@ -49,6 +55,9 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
       FOOTER_SHOW_ADDRESS: footerShowAddress.toString(),
       FOOTER_SHOW_EMAIL: footerShowEmail.toString(),
       FOOTER_SHOW_PHONE: footerShowPhone.toString(),
+      FOOTER_ADDRESS_1: footerAddress,
+      FOOTER_SUPPORT_EMAIL: footerSupportEmail,
+      FOOTER_SUPPORT_PHONE: footerSupportPhone,
       FOOTER_COPYRIGHT: footerCopyright,
       FOOTER_LOGO_IMAGE: footerLogoImage,
       FOOTER_NEWSLETTER_TITLE: footerNewsletterTitle,
@@ -98,13 +107,37 @@ export default function FooterForm({ initialSettings }: { initialSettings: Recor
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('description_label') || 'Description'}</label>
               <textarea value={footerDescription} onChange={(e) => setFooterDescription(e.target.value)} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
             </div>
-            <div className="flex gap-6">
-              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>Show Address</span></div>
-              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>Show Email</span></div>
-              <div className="flex items-center gap-3">  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>Show Phone</span></div>
+            <div className="space-y-4 pt-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-3 min-w-[140px]">
+                  <button type="button" role="switch" aria-checked={footerShowAddress} onClick={() => setFooterShowAddress(!footerShowAddress)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowAddress ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowAddress ? "translate-x-5" : "translate-x-0"}`} />  </button>
+                  <span className="text-sm cursor-pointer" onClick={() => setFooterShowAddress(!footerShowAddress)}>{tSettings('show_address') || 'Show Address'}</span>
+                </div>
+                {footerShowAddress && (
+                  <input type="text" value={footerAddress} onChange={(e) => setFooterAddress(e.target.value)} placeholder="Address" className="flex-1 px-4 py-1.5 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                )}
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-3 min-w-[140px]">
+                  <button type="button" role="switch" aria-checked={footerShowEmail} onClick={() => setFooterShowEmail(!footerShowEmail)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowEmail ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowEmail ? "translate-x-5" : "translate-x-0"}`} />  </button>
+                  <span className="text-sm cursor-pointer" onClick={() => setFooterShowEmail(!footerShowEmail)}>{tSettings('show_email') || 'Show Email'}</span>
+                </div>
+                {footerShowEmail && (
+                  <input type="email" value={footerSupportEmail} onChange={(e) => setFooterSupportEmail(e.target.value)} placeholder="Email" className="flex-1 px-4 py-1.5 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                )}
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-3 min-w-[140px]">
+                  <button type="button" role="switch" aria-checked={footerShowPhone} onClick={() => setFooterShowPhone(!footerShowPhone)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${footerShowPhone ? "bg-blue-600" : "bg-gray-200"}`}>    <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${footerShowPhone ? "translate-x-5" : "translate-x-0"}`} />  </button>
+                  <span className="text-sm cursor-pointer" onClick={() => setFooterShowPhone(!footerShowPhone)}>{tSettings('show_phone') || 'Show Phone'}</span>
+                </div>
+                {footerShowPhone && (
+                  <input type="text" value={footerSupportPhone} onChange={(e) => setFooterSupportPhone(e.target.value)} placeholder="Phone" className="flex-1 px-4 py-1.5 border border-gray-300 rounded-md focus:ring-blue-500 text-sm" />
+                )}
+              </div>
             </div>
           </div>
         </div>

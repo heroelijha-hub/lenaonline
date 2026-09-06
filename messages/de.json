@@ -1102,7 +1102,10 @@
     "select_favicon": "Favicon auswählen",
     "mobile_about_desc": "Beschreibung Über uns (Mobil)",
     "header_announcement": "Ankündigung (Header)",
-    "search_placeholder_label": "Suchplatzhalter"
+    "search_placeholder_label": "Suchplatzhalter",
+    "show_address": "Adresse anzeigen",
+    "show_email": "E-Mail anzeigen",
+    "show_phone": "Telefon anzeigen"
   },
   "AdminShipping": {
     "title": "Versandeinstellungen",
