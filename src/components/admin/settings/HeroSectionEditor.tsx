@@ -217,28 +217,46 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
         <div className="mt-8 border-t pt-6">
           <h4 className="text-sm font-semibold text-gray-800 mb-4">Styles Premium (Alignement, Boutons, Badges)</h4>
           
-          {/* Alignment */}
+          {/* Position (3x3 Grid) */}
           <div className="mb-4">
-            <label className="block text-xs font-medium text-gray-700 mb-2">Alignement du Contenu</label>
-            <div className="flex bg-gray-50 p-1 rounded-lg border border-gray-200 inline-flex">
-              {['left', 'center', 'right'].map((align) => (
-                <button
-                  key={align}
-                  type="button"
-                  onClick={() => updateSectionSettings(section.id, `${prefix}_ALIGN`, align)}
-                  className={`p-2 rounded-md flex items-center justify-center transition-colors ${
-                    (section.settings[`${prefix}_ALIGN`] || (blockNum === 1 || blockNum === 2 || blockNum === 3 ? (blockNum === 1 ? 'center' : 'left') : 'left')) === align 
-                      ? 'bg-white shadow-sm border border-gray-200 text-orange-600' 
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                  }`}
-                  title={`Aligner à ${align}`}
-                >
-                  {align === 'left' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h10M4 18h16" /></svg>}
-                  {align === 'center' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M7 12h10M4 18h16" /></svg>}
-                  {align === 'right' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M10 12h10M4 18h16" /></svg>}
-                </button>
-              ))}
+            <label className="block text-xs font-medium text-gray-700 mb-2">Position du Contenu (Grille 3x3)</label>
+            <div className="grid grid-cols-3 gap-1 w-[88px] h-[88px] bg-gray-100 p-1.5 rounded-lg border border-gray-200 shadow-inner">
+              {['top', 'center', 'bottom'].map(v => 
+                ['left', 'center', 'right'].map(h => {
+                  const currentV = section.settings[`${prefix}_VALIGN`] || 'bottom';
+                  const currentH = section.settings[`${prefix}_ALIGN`] || (blockNum === 1 || blockNum === 2 || blockNum === 3 ? (blockNum === 1 ? 'center' : 'left') : 'left');
+                  const isSelected = currentV === v && currentH === h;
+                  
+                  let title = '';
+                  if (v === 'top') title = 'Haut ';
+                  if (v === 'center') title = 'Milieu ';
+                  if (v === 'bottom') title = 'Bas ';
+                  if (h === 'left') title += 'Gauche';
+                  if (h === 'center') title += 'Centre';
+                  if (h === 'right') title += 'Droite';
+
+                  return (
+                    <button
+                      key={`${v}-${h}`}
+                      type="button"
+                      onClick={() => {
+                        updateSectionSettings(section.id, `${prefix}_VALIGN`, v);
+                        updateSectionSettings(section.id, `${prefix}_ALIGN`, h);
+                      }}
+                      className={`rounded-[4px] transition-all flex items-center justify-center ${
+                        isSelected 
+                          ? 'bg-orange-500 shadow-md ring-1 ring-orange-600 ring-inset' 
+                          : 'bg-white border border-gray-200 hover:bg-orange-50'
+                      }`}
+                      title={title}
+                    >
+                      <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-white' : 'bg-gray-300'}`} />
+                    </button>
+                  );
+                })
+              )}
             </div>
+            <p className="text-[10px] text-gray-400 mt-1">Gère l'alignement horizontal et vertical</p>
           </div>
 
           {/* Button Style */}

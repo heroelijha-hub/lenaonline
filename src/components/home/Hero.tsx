@@ -40,6 +40,20 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
     return 'items-start text-left';
   };
 
+  const getVerticalAlignClass = (prefix: string, defaultValign: string = 'bottom') => {
+    const valign = settings[`${prefix}_VALIGN`] || defaultValign;
+    if (valign === 'top') return 'justify-start';
+    if (valign === 'center') return 'justify-center';
+    return 'justify-end'; // bottom
+  };
+
+  const getMarginClass = (prefix: string, defaultValign: string = 'bottom') => {
+    const valign = settings[`${prefix}_VALIGN`] || defaultValign;
+    if (valign === 'top') return 'mb-auto';
+    if (valign === 'center') return 'my-auto';
+    return 'mt-auto'; // bottom
+  };
+
   const getAlignSelfClass = (prefix: string, defaultAlign: string) => {
     const align = settings[`${prefix}_ALIGN`] || defaultAlign;
     if (align === 'right') return 'ml-auto';
@@ -81,7 +95,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block1 = (
     <div 
-      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col justify-end h-full min-h-[400px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-lg ${getAlignFlexClass('HERO_1', 'center')}`}
+      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col h-full min-h-[400px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-lg ${getAlignFlexClass('HERO_1', 'center')} ${getVerticalAlignClass('HERO_1', 'bottom')}`}
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#111827',
       }}
@@ -95,7 +109,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         </>
       )}
 
-      <div className="z-10 relative mt-auto flex flex-col w-full max-w-md">
+      <div className={`z-10 relative flex flex-col w-full max-w-md ${getMarginClass('HERO_1', 'bottom')}`}>
         {settings.HERO_1_SUBTITLE && (
           <span 
             className={getBadgeClasses('HERO_1')}
@@ -135,7 +149,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block2 = (
     <div 
-      className={`rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_2', 'left')}`}
+      className={`rounded-2xl overflow-hidden relative p-8 flex-col h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_2', 'left')} ${getVerticalAlignClass('HERO_2', 'bottom')}`}
       style={{
         backgroundColor: settings.HERO_2_BG_COLOR || '#1f2937',
       }}
@@ -148,7 +162,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_2', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_2_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-full relative mt-auto flex flex-col">
+      <div className={`z-20 w-full relative flex flex-col ${getMarginClass('HERO_2', 'bottom')}`}>
         {settings.HERO_2_SUBTITLE && (
           <span 
             className={getBadgeClasses('HERO_2')}
@@ -180,7 +194,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block3 = (
     <div 
-      className={`rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_3', 'left')}`}
+      className={`rounded-2xl overflow-hidden relative p-8 flex-col h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_3', 'left')} ${getVerticalAlignClass('HERO_3', 'bottom')}`}
       style={{
         backgroundColor: settings.HERO_3_BG_COLOR || '#1f2937',
       }}
@@ -193,7 +207,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_3', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_3_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-full relative mt-auto flex flex-col">
+      <div className={`z-20 w-full relative flex flex-col ${getMarginClass('HERO_3', 'bottom')}`}>
         {settings.HERO_3_SUBTITLE && (
           <span 
             className={getBadgeClasses('HERO_3')}
@@ -225,7 +239,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block4 = (
     <div 
-      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col justify-end h-full min-h-[300px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-md ${getAlignFlexClass('HERO_4', 'left')}`}
+      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col h-full min-h-[300px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-md ${getAlignFlexClass('HERO_4', 'left')} ${getVerticalAlignClass('HERO_4', 'bottom')}`}
       style={{
         backgroundColor: settings.HERO_4_BG_COLOR || '#111827',
       }}
@@ -238,7 +252,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_4', 'grad-r')}`} style={{ opacity: (parseInt(settings.HERO_4_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-[80%] md:w-[60%] lg:w-[50%] relative mt-auto flex flex-col">
+      <div className={`z-20 w-[80%] md:w-[60%] lg:w-[50%] relative flex flex-col ${getMarginClass('HERO_4', 'bottom')}`}>
         <h2 
           className="font-extrabold mb-3 leading-snug whitespace-pre-line text-responsive drop-shadow-md" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '24px', t: '28px', d: '32px'}), color: settings.HERO_4_TEXT_COLOR || '#ffffff'}}
