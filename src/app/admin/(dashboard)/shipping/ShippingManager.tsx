@@ -35,6 +35,7 @@ const METHOD_TYPES = [
 
 export default function ShippingManager({ initialZones }: { initialZones: ShippingZone[] }) {
   const t = useTranslations('AdminShipping');
+  const tCountries = useTranslations('Countries');
   const [zones, setZones] = useState<ShippingZone[]>(initialZones);
   
   // Zone State
@@ -204,7 +205,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
               >
                 <option value="">{t('select_country')}</option>
                 {COUNTRIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>{tCountries(c) || c}</option>
                 ))}
               </select>
             </div>
@@ -249,7 +250,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
             <div key={zone.id} className="border border-gray-200 rounded-md overflow-hidden bg-white">
               <div className="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <h3 className="font-bold text-gray-800 text-lg">{zone.name}</h3>
+                  <h3 className="font-bold text-gray-800 text-lg">{tCountries(zone.name) || zone.name}</h3>
                   <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${zone.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {zone.isActive ? t('active') : t('inactive')}
                   </span>
