@@ -139,7 +139,8 @@
     "email_placeholder": "E-Mail *",
     "save_info": "Speichern Sie meinen Namen, meine E-Mail-Adresse und meine Website in diesem Browser für den nächsten Kommentar.",
     "submit_review": "Einreichen",
-    "brand": "Marke:"
+    "brand": "Marke:",
+    "your_rating_text": "Ihre Bewertung"
   },
   "Search": {
     "search_results": "Suchergebnisse",
