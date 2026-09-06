@@ -96,7 +96,7 @@
     "select_options_btn": "Sélectionner les options",
     "select_options_cart": "Veuillez sélectionner toutes les options avant d'ajouter au panier.",
     "select_options_buy": "Veuillez sélectionner toutes les options avant l'achat rapide.",
-    "added_to_cart": "« {name} » a été ajouté à votre panier.",
+    "added_to_cart": "{name} ajouté au panier !",
     "added_to_wishlist": "« {name} » a été ajouté à vos favoris.",
     "view_cart_caps": "VOIR LE PANIER",
     "view_wishlist_caps": "VOIR LES FAVORIS",
@@ -461,7 +461,13 @@
     "discover_products": "Découvrir les produits",
     "general": "Général",
     "add_to_cart": "Panier",
-    "remove": "Retirer des favoris"
+    "remove": "Retirer des favoris",
+    "empty": "Votre liste de favoris est actuellement vide.",
+    "continue_shopping": "Continuer vos achats",
+    "view_full_wishlist": "Voir tous mes favoris",
+    "added_to_cart": "Ajouté au panier",
+    "added_to_wishlist": "Ajouté aux favoris",
+    "removed_from_wishlist": "Retiré des favoris"
   },
   "NewArrivals": {
     "title": "Nouveautés",

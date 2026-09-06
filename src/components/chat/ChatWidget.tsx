@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { getOrCreateSession, sendMessage, getSessionMessages } from '@/actions/chat';
 import { ChatSender, ChatMessage } from '@prisma/client';
 import { useTranslations } from 'next-intl';
+import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
+import { usePathname } from 'next/navigation';
 
 function generateId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -24,6 +27,9 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
   const [guestId, setGuestId] = useState<string>('');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const pathname = usePathname();
+  const isCartDrawerOpen = useCartStore((state) => state.isOpen);
+  const isWishlistDrawerOpen = useWishlistStore((state) => state.isOpen);
   const [newMessage, setNewMessage] = useState('');
   const [hasRegistered, setHasRegistered] = useState(false);
   const [guestName, setGuestName] = useState('');
@@ -132,8 +138,18 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
 
   if (!enabled) return null;
 
+  const isCheckoutOrCart = pathname?.includes('/checkout') || pathname?.includes('/cart');
+  const isAnyDrawerOpen = isCartDrawerOpen || isWishlistDrawerOpen;
+
+  let visibilityClasses = '';
+  if (isAnyDrawerOpen) {
+    visibilityClasses = 'hidden';
+  } else if (isCheckoutOrCart) {
+    visibilityClasses = 'hidden lg:block';
+  }
+
   return (
-    <div className="fixed bottom-24 lg:bottom-6 right-6 z-50 font-sans">
+    <div className={`fixed bottom-24 lg:bottom-6 right-6 z-50 font-sans ${visibilityClasses}`}>
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}

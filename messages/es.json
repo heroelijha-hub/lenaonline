@@ -96,7 +96,7 @@
     "general": "General",
     "select_options_cart": "Selecciona todas las opciones antes de añadir al carrito.",
     "select_options_buy": "Selecciona todas las opciones antes de la compra rápida.",
-    "added_to_cart": "« {name} » se ha añadido a tu carrito.",
+    "added_to_cart": "¡{name} añadido al carrito!",
     "added_to_wishlist": "« {name} » se ha añadido a tu lista de deseos.",
     "view_cart_caps": "VER CARRITO",
     "view_wishlist_caps": "VER LISTA DE DESEOS",
@@ -461,7 +461,13 @@
     "discover_products": "Descubrir productos",
     "general": "General",
     "add_to_cart": "Carrito",
-    "remove": "Eliminar de favoritos"
+    "remove": "Eliminar de favoritos",
+    "empty": "Su lista de deseos está actualmente vacía.",
+    "continue_shopping": "Continuar comprando",
+    "view_full_wishlist": "Ver lista de deseos completa",
+    "added_to_cart": "Añadido al carrito",
+    "added_to_wishlist": "Añadido a la lista de deseos",
+    "removed_from_wishlist": "Eliminado de la lista de deseos"
   },
   "NewArrivals": {
     "title": "Novedades",

@@ -96,7 +96,7 @@
     "select_options_btn": "Wählen Sie Optionen aus",
     "select_options_cart": "Bitte wählen Sie alle Optionen aus, bevor Sie sie in den Warenkorb legen.",
     "select_options_buy": "Bitte wählen Sie vor dem Schnellkauf alle Optionen aus.",
-    "added_to_cart": "„{Name}“ wurde Ihrem Warenkorb hinzugefügt.",
+    "added_to_cart": "{name} in den Warenkorb gelegt!",
     "added_to_wishlist": "„{Name}“ wurde zu Ihrer Wunschliste hinzugefügt.",
     "view_cart_caps": "WARENKORB ANZEIGEN",
     "view_wishlist_caps": "WUNSCHLISTE ANZEIGEN",
@@ -455,13 +455,19 @@
   "Wishlist": {
     "page_title": "Meine Wunschliste",
     "page_description": "Verwalten Sie Ihre Lieblingsprodukte auf {storeName}",
-    "title": "Meine Wunschliste",
+    "title": "Meine Favoriten",
     "empty_title": "Ihre Wunschliste ist leer",
     "empty_subtitle": "Entdecken Sie unseren Katalog und fügen Sie Produkte zu Ihrer Wunschliste hinzu.",
     "discover_products": "Entdecken Sie Produkte",
     "general": "Allgemein",
     "add_to_cart": "Warenkorb",
-    "remove": "Von der Wunschliste entfernen"
+    "remove": "Von der Wunschliste entfernen",
+    "empty": "Ihre Wunschliste ist derzeit leer.",
+    "continue_shopping": "Weiter einkaufen",
+    "view_full_wishlist": "Gesamte Wunschliste anzeigen",
+    "added_to_cart": "In den Warenkorb gelegt",
+    "added_to_wishlist": "Zur Wunschliste hinzugefügt",
+    "removed_from_wishlist": "Von der Wunschliste entfernt"
   },
   "NewArrivals": {
     "title": "Neu eingetroffen",

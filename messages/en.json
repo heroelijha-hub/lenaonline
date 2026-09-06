@@ -96,7 +96,7 @@
     "select_options_btn": "Select options",
     "select_options_cart": "Please select all options before adding to cart.",
     "select_options_buy": "Please select all options before quick purchase.",
-    "added_to_cart": "« {name} » has been added to your cart.",
+    "added_to_cart": "{name} added to cart!",
     "added_to_wishlist": "« {name} » has been added to your wishlist.",
     "view_cart_caps": "VIEW CART",
     "view_wishlist_caps": "VIEW WISHLIST",
@@ -455,13 +455,19 @@
   "Wishlist": {
     "page_title": "My Wishlist",
     "page_description": "Manage your favorite products on {storeName}",
-    "title": "My Wishlist",
+    "title": "My Favorites",
     "empty_title": "Your wishlist is empty",
     "empty_subtitle": "Explore our catalog and add products to your wishlist.",
     "discover_products": "Discover products",
     "general": "General",
     "add_to_cart": "Cart",
-    "remove": "Remove from wishlist"
+    "remove": "Remove from wishlist",
+    "empty": "Your wishlist is currently empty.",
+    "continue_shopping": "Continue Shopping",
+    "view_full_wishlist": "View Full Wishlist",
+    "added_to_cart": "Added to cart",
+    "added_to_wishlist": "Added to wishlist",
+    "removed_from_wishlist": "Removed from wishlist"
   },
   "NewArrivals": {
     "title": "New Arrivals",

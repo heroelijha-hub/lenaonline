@@ -173,16 +173,16 @@ export default function CartPage() {
               
               <div className="border border-gray-200 bg-white mb-6 text-sm">
                 {/* Subtotal */}
-                <div className="flex border-b border-gray-200 p-4">
-                  <div className="w-1/3 font-bold text-gray-800">{t('subtotal')}</div>
-                  <div className="w-2/3 text-gray-700">{formatPrice(subtotal)}</div>
+                <div className="flex justify-between items-center border-b border-gray-200 p-4 gap-4">
+                  <div className="font-bold text-gray-800 break-words">{t('subtotal')}</div>
+                  <div className="text-gray-700 whitespace-nowrap text-right">{formatPrice(subtotal)}</div>
                 </div>
 
-                {/* Shipping Options (only show if items exist, or design shows it anyway, let's keep it close to mockup) */}
+                {/* Shipping Options */}
                 {items.length > 0 && (
-                  <div className="flex border-b border-gray-200 p-4">
-                    <div className="w-1/3 font-bold text-gray-800 pt-1">{t('shipping')}</div>
-                    <div className="w-2/3 space-y-2 text-gray-700">
+                  <div className="flex flex-col sm:flex-row border-b border-gray-200 p-4 gap-2">
+                    <div className="sm:w-1/3 font-bold text-gray-800 pt-1">{t('shipping')}</div>
+                    <div className="sm:w-2/3 space-y-2 text-gray-700">
                       <label className="flex items-start cursor-pointer">
                         <input 
                           type="radio" 
@@ -227,9 +227,9 @@ export default function CartPage() {
                 )}
 
                 {/* Total */}
-                <div className="flex p-4 bg-gray-50 items-center">
-                  <div className="w-1/3 font-bold text-gray-800">{t('total')}</div>
-                  <div className="w-2/3 text-lg font-bold text-gray-900">{formatPrice(total)}</div>
+                <div className="flex justify-between p-4 bg-gray-50 items-center gap-4">
+                  <div className="font-bold text-gray-800">{t('total')}</div>
+                  <div className="text-lg font-bold text-gray-900 whitespace-nowrap text-right">{formatPrice(total)}</div>
                 </div>
               </div>
 
