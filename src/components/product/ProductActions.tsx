@@ -108,6 +108,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
     const linkedItems = getLinkedItemsForCart(quantity);
     
     cartStore.addItem(mainItem, linkedItems);
+    cartStore.setIsOpen(true);
     
     setAddedItemName(product.title);
     setTimeout(() => {
@@ -135,9 +136,10 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
     const wasWishlisted = wishlistStore.hasItem(product.id);
     wishlistStore.toggleItem(product.id);
     
-    // Only show notification when ADDING to wishlist
+    // Only show notification and open drawer when ADDING to wishlist
     if (!wasWishlisted) {
       setWishlistedItemName(product.title);
+      wishlistStore.setIsOpen(true);
       setTimeout(() => {
         setWishlistedItemName(null);
       }, 5000);

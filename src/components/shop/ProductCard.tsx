@@ -76,7 +76,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
     e.stopPropagation();
     wishlistStore.toggleItem(product.id);
     if (!isWishlisted) {
-      toast.success(t('added_to_wishlist'));
+      wishlistStore.setIsOpen(true);
     } else {
       toast.success(t('removed_from_wishlist'));
     }

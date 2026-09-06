@@ -67,7 +67,11 @@ export default function ProductGridCard({
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasWishlisted = wishlistStore.hasItem(product.id);
     wishlistStore.toggleItem(product.id);
+    if (!wasWishlisted) {
+      wishlistStore.setIsOpen(true);
+    }
   };
 
   const handleQuickView = (e: React.MouseEvent) => {

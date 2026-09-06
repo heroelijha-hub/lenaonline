@@ -80,7 +80,11 @@ export const WishlistBtn = ({ product, btnBgColor, btnTextColor, btnHoverBgColor
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const wasWishlisted = wishlistStore.hasItem(product.id);
     wishlistStore.toggleItem(product.id);
+    if (!wasWishlisted) {
+      wishlistStore.setIsOpen(true);
+    }
   };
 
   return (

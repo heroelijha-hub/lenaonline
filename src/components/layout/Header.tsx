@@ -9,6 +9,7 @@ import { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 const LoginModal = dynamic(() => import('@/components/auth/LoginModal'), { ssr: false });
 const CartDrawer = dynamic(() => import('@/components/cart/CartDrawer'), { ssr: false });
+const WishlistDrawer = dynamic(() => import('@/components/wishlist/WishlistDrawer'), { ssr: false });
 import { searchProducts } from '@/actions/public';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 const MobileSidebar = dynamic(() => import('@/components/layout/MobileSidebar'), { ssr: false });
@@ -90,10 +91,14 @@ export default function Header({
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const cartStore = useCartStore();
-  const cartItems = useCartStore((state) => state.getTotalItems());
-  const cartTotal = useCartStore((state) => state.getTotalPrice());
-  const wishlistItems = useWishlistStore((state) => state.items.length);
+  const wishlistStore = useWishlistStore();
+  
+  const cartItems = cartStore.getTotalItems();
+  const cartTotal = cartStore.getTotalPrice();
+  const wishlistItems = wishlistStore.items.length;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   
@@ -395,7 +400,7 @@ export default function Header({
           <NotificationBell isAdmin={false} />
           
           <button 
-            onClick={() => router.push('/wishlist')}
+            onClick={() => wishlistStore.setIsOpen(true)}
             className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
             title="My favorites"
           >
@@ -515,6 +520,11 @@ export default function Header({
       <CartDrawer 
         isOpen={cartStore.isOpen}
         onClose={() => cartStore.setIsOpen(false)}
+      />
+
+      <WishlistDrawer 
+        isOpen={wishlistStore.isOpen}
+        onClose={() => wishlistStore.setIsOpen(false)}
       />
 
       <MobileBottomNav 
