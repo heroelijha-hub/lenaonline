@@ -68,13 +68,13 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
           onClick={() => setActiveTab('desc')}
           className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'desc' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}
         >
-          Description
+          {t('description_tab')}
         </button>
         <button 
           onClick={() => setActiveTab('reviews')}
           className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'reviews' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}
         >
-          Avis
+          {t('reviews_tab')}
         </button>
       </div>
 

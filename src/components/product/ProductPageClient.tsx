@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ProductGallery from './ProductGallery';
 import ProductActions from './ProductActions';
+import Link from 'next/link';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg
@@ -121,7 +122,14 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
           <p>
             <span className="font-semibold text-gray-900">{t?.categories ?? 'Catégories :'} </span>
             {product.categories && product.categories.length > 0
-              ? product.categories.map((c: any) => c.name).join(', ')
+              ? product.categories.map((c: any, index: number) => (
+                  <span key={c.id}>
+                    <Link href={`/product-category/${c.slug || c.id}`} className="hover:text-orange-500 hover:underline transition-colors">
+                      {c.name}
+                    </Link>
+                    {index < product.categories.length - 1 ? ', ' : ''}
+                  </span>
+                ))
               : (t?.uncategorized ?? 'Non catégorisé')}
           </p>
           {product.brand && !product.brand.logo && (
@@ -130,7 +138,14 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
           {product.tags && product.tags.length > 0 && (
             <p>
               <span className="font-semibold text-gray-900">{t?.tags ?? 'Tags :'} </span>
-              {product.tags.map((tag: any) => tag.name).join(', ')}
+              {product.tags.map((tag: any, index: number) => (
+                <span key={tag.id}>
+                  <Link href={`/shop?tag=${tag.slug || tag.id}`} className="hover:text-orange-500 hover:underline transition-colors">
+                    {tag.name}
+                  </Link>
+                  {index < product.tags.length - 1 ? ', ' : ''}
+                </span>
+              ))}
             </p>
           )}
           {product.gtin && (

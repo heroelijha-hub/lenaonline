@@ -263,7 +263,7 @@ export default function ProductGridEditor({
             {section.type === 'BestDeals' && [1, 2].map(blockNum => (
               <div key={blockNum} className="mt-6 border-t pt-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-bold text-gray-800">Promo Banner {blockNum} ({blockNum === 1 ? 'Top' : 'Bottom'})</h4>
+                  <h4 className="font-bold text-gray-800">Promo Banner {blockNum}</h4>
                   <button
                     type="button"
                     onClick={() => updateSectionSettings(section.id, `SHOW_PROMO_${blockNum}`, section.settings[`SHOW_PROMO_${blockNum}`] !== 'false' ? 'false' : 'true')}
