@@ -76,7 +76,7 @@ export default function LandingForm({ initialSettings, categories }: { initialSe
           }
         }).catch(err => console.error('Failed to update preview cache', err));
       }
-    }, 1000); // 1 second debounce
+    }, 300); // 300ms debounce
     
     return () => clearTimeout(timer);
   }, [sections, globalFont]);
