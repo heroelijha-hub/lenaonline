@@ -1101,7 +1101,8 @@
     "change_favicon": "Favicon ändern",
     "select_favicon": "Favicon auswählen",
     "mobile_about_desc": "Beschreibung Über uns (Mobil)",
-    "header_announcement": "Ankündigung (Header)"
+    "header_announcement": "Ankündigung (Header)",
+    "search_placeholder_label": "Suchplatzhalter"
   },
   "AdminShipping": {
     "title": "Versandeinstellungen",

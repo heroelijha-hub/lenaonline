@@ -1101,7 +1101,8 @@
     "change_favicon": "Changer le Favicon",
     "select_favicon": "Sélectionner un Favicon",
     "mobile_about_desc": "Description 'À propos' (Mobile)",
-    "header_announcement": "Annonce de l'en-tête (Bandeau)"
+    "header_announcement": "Annonce de l'en-tête (Bandeau)",
+    "search_placeholder_label": "Texte espace de recherche"
   },
   "AdminShipping": {
     "title": "Paramètres de Livraison",

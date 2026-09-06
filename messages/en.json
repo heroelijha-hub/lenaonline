@@ -1101,7 +1101,8 @@
     "change_favicon": "Change Favicon",
     "select_favicon": "Select Favicon",
     "mobile_about_desc": "Mobile About Description",
-    "header_announcement": "Header Announcement"
+    "header_announcement": "Header Announcement",
+    "search_placeholder_label": "Search Placeholder"
   },
   "AdminShipping": {
     "title": "Shipping Settings",

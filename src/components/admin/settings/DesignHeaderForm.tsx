@@ -13,6 +13,7 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
   const [shopCardBorderColor, setShopCardBorderColor] = useState(initialSettings.SHOP_CARD_BORDER_COLOR || '#e5e7eb');
   const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316');
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
+  const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Search products...');
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE || '+08 9229 8228');
   const [headerSupportEmail, setHeaderSupportEmail] = useState(initialSettings.HEADER_SUPPORT_EMAIL || 'support@mystore.com');
   const [topBarBgColor, setTopBarBgColor] = useState(initialSettings.TOP_BAR_BG_COLOR || '#ffffff');
@@ -37,6 +38,7 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
       SHOP_CARD_BORDER_COLOR: shopCardBorderColor,
       THEME_COLOR: themeColor,
       HEADER_ANNOUNCEMENT: headerAnnouncement,
+      SEARCH_PLACEHOLDER: searchPlaceholder,
       HEADER_SUPPORT_PHONE: headerSupportPhone,
       HEADER_SUPPORT_EMAIL: headerSupportEmail,
       TOP_BAR_BG_COLOR: topBarBgColor,
@@ -96,6 +98,10 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('header_announcement') || 'Header Announcement'}</label>
           <input type="text" value={headerAnnouncement} onChange={(e) => setHeaderAnnouncement(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{tSettings('search_placeholder_label') || 'Search Placeholder'}</label>
+          <input type="text" value={searchPlaceholder} onChange={(e) => setSearchPlaceholder(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
