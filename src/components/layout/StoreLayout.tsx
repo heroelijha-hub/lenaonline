@@ -15,6 +15,7 @@ type StoreLayoutProps = {
     supportPhone: string;
     supportEmail: string;
     menuLinks: Array<{ label: string, url: string }>;
+    topBarLinks?: Array<{ label: string, icon: string, url: string }>;
     footerBgColor: string;
     footerTextColor: string;
     footerAddress1: string;
@@ -99,6 +100,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         headerLogoHeight={settings.headerLogoHeight}
         mobileLogoHeight={settings.mobileLogoHeight}
         menuLinks={settings.menuLinks}
+        topBarLinks={settings.topBarLinks}
         categories={settings.categories}
         searchBorderColor={settings.searchBorderColor}
         searchPlaceholder={settings.searchPlaceholder}
