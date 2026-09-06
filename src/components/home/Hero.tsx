@@ -33,9 +33,55 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
     return vars as React.CSSProperties;
   };
 
+  const getAlignFlexClass = (prefix: string, defaultAlign: string) => {
+    const align = settings[`${prefix}_ALIGN`] || defaultAlign;
+    if (align === 'right') return 'items-end text-right';
+    if (align === 'center') return 'items-center text-center';
+    return 'items-start text-left';
+  };
+
+  const getAlignSelfClass = (prefix: string, defaultAlign: string) => {
+    const align = settings[`${prefix}_ALIGN`] || defaultAlign;
+    if (align === 'right') return 'ml-auto';
+    if (align === 'center') return 'mx-auto';
+    return 'mr-auto';
+  };
+
+  const getBtnRadiusClass = (prefix: string) => {
+    const style = settings[`${prefix}_BTN_STYLE`] || 'pill';
+    if (style === 'rounded') return 'rounded-lg';
+    if (style === 'square') return 'rounded-none';
+    return 'rounded-full'; // pill default
+  };
+
+  const getBadgeClasses = (prefix: string, type: 'subtitle' | 'price' = 'subtitle') => {
+    const style = settings[`${prefix}_BADGE_STYLE`] || 'light';
+    const mb = type === 'subtitle' ? 'mb-4' : 'mb-6';
+    if (style === 'none') return `${mb} font-bold tracking-wider uppercase text-responsive`;
+    if (style === 'dark') return `inline-block px-3 py-1 bg-gray-900/60 backdrop-blur-md rounded-md font-bold tracking-wide text-responsive border border-white/10 shadow-sm ${mb}`;
+    if (style === 'custom') return `inline-block px-3 py-1 rounded-md font-bold tracking-wide uppercase text-responsive shadow-sm ${mb}`;
+    return `inline-block px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full font-bold tracking-wider uppercase ${mb} shadow-sm border border-white/20 text-responsive`;
+  };
+
+  const getBadgeStyle = (prefix: string, colorKey: string, defaultColor: string) => {
+    const style = settings[`${prefix}_BADGE_STYLE`] || 'light';
+    const baseStyle: any = { ...getResponsiveVars(`${prefix}_SUBTITLE`, {m: '10px', t: '12px', d: '12px'}), color: settings[colorKey] || defaultColor };
+    if (style === 'custom') {
+      baseStyle.backgroundColor = settings[`${prefix}_BADGE_BG`] || '#ffffff';
+    }
+    return baseStyle;
+  };
+
+  const getOverlayClass = (prefix: string, defaultType: string) => {
+    const type = settings[`${prefix}_OVERLAY_TYPE`] || defaultType;
+    if (type === 'solid') return 'bg-black';
+    if (type === 'grad-r') return 'bg-gradient-to-r from-gray-900/95 via-gray-900/70 to-transparent';
+    return 'bg-gradient-to-t from-gray-900/95 via-gray-900/50 to-gray-900/10';
+  };
+
   const block1 = (
     <div 
-      className="rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col items-center justify-end text-center h-full min-h-[400px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-lg"
+      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col justify-end h-full min-h-[400px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-lg ${getAlignFlexClass('HERO_1', 'center')}`}
       style={{
         backgroundColor: settings.HERO_1_BG_COLOR || '#111827',
       }}
@@ -45,15 +91,15 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
           <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 z-[1] transition-opacity duration-300 bg-gradient-to-t from-gray-900/95 via-gray-900/50 to-gray-900/10" style={{ opacity: (parseInt(settings.HERO_1_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
+          <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_1', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_1_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
 
-      <div className="z-10 relative mt-auto flex flex-col items-center w-full max-w-md mx-auto">
+      <div className="z-10 relative mt-auto flex flex-col w-full max-w-md">
         {settings.HERO_1_SUBTITLE && (
           <span 
-            className="inline-block px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full font-bold tracking-wider uppercase mb-4 shadow-sm text-responsive"
-            style={{...getResponsiveVars('HERO_1_SUBTITLE', {m: '10px', t: '12px', d: '12px'}), color: settings.HERO_1_SUBTITLE_COLOR || '#e11d48'}}
+            className={getBadgeClasses('HERO_1')}
+            style={getBadgeStyle('HERO_1', 'HERO_1_SUBTITLE_COLOR', '#e11d48')}
             dangerouslySetInnerHTML={{ __html: settings.HERO_1_SUBTITLE }}
           />
         )}
@@ -64,15 +110,15 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
         {settings.HERO_1_PRICE && (
           <p 
-            className="inline-block px-4 py-1.5 bg-gray-900/60 backdrop-blur-md rounded-lg font-bold mb-6 border border-white/20 shadow-lg text-responsive" 
-            style={{...getResponsiveVars('HERO_1_PRICE', {m: '16px', t: '18px', d: '18px'}), color: settings.HERO_1_PRICE_COLOR || '#ffffff'}}
+            className={getBadgeClasses('HERO_1', 'price')} 
+            style={getBadgeStyle('HERO_1', 'HERO_1_PRICE_COLOR', '#ffffff')}
           >
             {settings.HERO_1_PRICE}
           </p>
         )}
         <Link 
           href={settings.HERO_1_LINK || '/#'} 
-          className="inline-block font-bold px-8 py-3.5 rounded-full shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-responsive ring-1 ring-white/20 w-full sm:w-auto"
+          className={`inline-block font-bold px-8 py-3.5 shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-responsive ring-1 ring-white/20 w-full sm:w-auto text-center ${getBtnRadiusClass('HERO_1')}`}
           style={{
             ...getResponsiveVars('HERO_1_CTA', {m: '15px', t: '16px', d: '16px'}),
             backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#f97316',
@@ -89,7 +135,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block2 = (
     <div 
-      className="rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md"
+      className={`rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_2', 'left')}`}
       style={{
         backgroundColor: settings.HERO_2_BG_COLOR || '#1f2937',
       }}
@@ -99,14 +145,14 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <>
           <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 z-[1] transition-opacity duration-300 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent" style={{ opacity: (parseInt(settings.HERO_2_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
+          <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_2', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_2_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-full relative mt-auto">
+      <div className="z-20 w-full relative mt-auto flex flex-col">
         {settings.HERO_2_SUBTITLE && (
           <span 
-            className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-md font-semibold mb-3 tracking-wide text-responsive border border-white/10"
-            style={{...getResponsiveVars('HERO_2_SUBTITLE', {m: '11px', t: '12px', d: '12px'}), color: settings.HERO_2_SUBTITLE_COLOR || '#fca5a5'}}
+            className={getBadgeClasses('HERO_2')}
+            style={getBadgeStyle('HERO_2', 'HERO_2_SUBTITLE_COLOR', '#fca5a5')}
             dangerouslySetInnerHTML={{ __html: settings.HERO_2_SUBTITLE }}
           />
         )}
@@ -117,7 +163,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
         <Link 
           href={settings.HERO_2_LINK || '/#'} 
-          className="inline-block font-bold px-6 py-2.5 rounded-full shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10"
+          className={`inline-block font-bold px-6 py-2.5 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10 text-center ${getBtnRadiusClass('HERO_2')} ${settings.HERO_2_ALIGN === 'right' ? 'self-end' : settings.HERO_2_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_2_CTA', {m: '13px', t: '14px', d: '14px'}),
             backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#f97316',
@@ -134,7 +180,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block3 = (
     <div 
-      className="rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md"
+      className={`rounded-2xl overflow-hidden relative p-8 flex-col justify-end border border-gray-100/10 group h-full min-h-[300px] lg:min-h-0 flex w-full shadow-md ${getAlignFlexClass('HERO_3', 'left')}`}
       style={{
         backgroundColor: settings.HERO_3_BG_COLOR || '#1f2937',
       }}
@@ -144,14 +190,14 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <>
           <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 z-[1] transition-opacity duration-300 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent" style={{ opacity: (parseInt(settings.HERO_3_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
+          <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_3', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_3_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-full relative mt-auto">
+      <div className="z-20 w-full relative mt-auto flex flex-col">
         {settings.HERO_3_SUBTITLE && (
           <span 
-            className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-md font-semibold mb-3 tracking-wide text-responsive border border-white/10"
-            style={{...getResponsiveVars('HERO_3_SUBTITLE', {m: '11px', t: '12px', d: '12px'}), color: settings.HERO_3_SUBTITLE_COLOR || '#fca5a5'}}
+            className={getBadgeClasses('HERO_3')}
+            style={getBadgeStyle('HERO_3', 'HERO_3_SUBTITLE_COLOR', '#fca5a5')}
             dangerouslySetInnerHTML={{ __html: settings.HERO_3_SUBTITLE }}
           />
         )}
@@ -162,7 +208,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         />
         <Link 
           href={settings.HERO_3_LINK || '/#'} 
-          className="inline-block font-bold px-6 py-2.5 rounded-full shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10"
+          className={`inline-block font-bold px-6 py-2.5 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10 text-center ${getBtnRadiusClass('HERO_3')} ${settings.HERO_3_ALIGN === 'right' ? 'self-end' : settings.HERO_3_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_3_CTA', {m: '13px', t: '14px', d: '14px'}),
             backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#f97316',
@@ -179,7 +225,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
   const block4 = (
     <div 
-      className="rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col justify-end h-full min-h-[300px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-md"
+      className={`rounded-2xl overflow-hidden relative p-8 sm:p-10 flex-col justify-end h-full min-h-[300px] lg:min-h-0 border border-gray-100/10 group flex w-full shadow-md ${getAlignFlexClass('HERO_4', 'left')}`}
       style={{
         backgroundColor: settings.HERO_4_BG_COLOR || '#111827',
       }}
@@ -189,10 +235,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
         <>
           <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
-          <div className="absolute inset-0 z-[1] transition-opacity duration-300 bg-gradient-to-r from-gray-900/95 via-gray-900/70 to-transparent" style={{ opacity: (parseInt(settings.HERO_4_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
+          <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_4', 'grad-r')}`} style={{ opacity: (parseInt(settings.HERO_4_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
-      <div className="z-20 w-[80%] md:w-[60%] lg:w-[50%] relative mt-auto">
+      <div className="z-20 w-[80%] md:w-[60%] lg:w-[50%] relative mt-auto flex flex-col">
         <h2 
           className="font-extrabold mb-3 leading-snug whitespace-pre-line text-responsive drop-shadow-md" 
           style={{...getResponsiveVars('HERO_4_TITLE', {m: '24px', t: '28px', d: '32px'}), color: settings.HERO_4_TEXT_COLOR || '#ffffff'}}
@@ -207,7 +253,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         )}
         <Link 
           href={settings.HERO_4_LINK || '/#'} 
-          className="inline-block font-bold px-8 py-3 rounded-full shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/20"
+          className={`inline-block font-bold px-8 py-3 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/20 text-center ${getBtnRadiusClass('HERO_4')} ${settings.HERO_4_ALIGN === 'right' ? 'self-end' : settings.HERO_4_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_4_CTA', {m: '14px', t: '15px', d: '15px'}),
             backgroundColor: settings.HERO_4_BTN_BG_COLOR || '#f97316',

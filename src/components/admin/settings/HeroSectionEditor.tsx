@@ -213,6 +213,92 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           </div>
         </div>
 
+        {/* Premium Layout & Styles */}
+        <div className="mt-8 border-t pt-6">
+          <h4 className="text-sm font-semibold text-gray-800 mb-4">Styles Premium (Alignement, Boutons, Badges)</h4>
+          
+          {/* Alignment */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-gray-700 mb-2">Alignement du Contenu</label>
+            <div className="flex bg-gray-50 p-1 rounded-lg border border-gray-200 inline-flex">
+              {['left', 'center', 'right'].map((align) => (
+                <button
+                  key={align}
+                  type="button"
+                  onClick={() => updateSectionSettings(section.id, `${prefix}_ALIGN`, align)}
+                  className={`p-2 rounded-md flex items-center justify-center transition-colors ${
+                    (section.settings[`${prefix}_ALIGN`] || (blockNum === 1 || blockNum === 2 || blockNum === 3 ? (blockNum === 1 ? 'center' : 'left') : 'left')) === align 
+                      ? 'bg-white shadow-sm border border-gray-200 text-orange-600' 
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
+                  title={`Aligner à ${align}`}
+                >
+                  {align === 'left' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h10M4 18h16" /></svg>}
+                  {align === 'center' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M7 12h10M4 18h16" /></svg>}
+                  {align === 'right' && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M10 12h10M4 18h16" /></svg>}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Button Style */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-gray-700 mb-2">Style du Bouton (CTA)</label>
+            <select
+              value={section.settings[`${prefix}_BTN_STYLE`] || 'pill'}
+              onChange={e => updateSectionSettings(section.id, `${prefix}_BTN_STYLE`, e.target.value)}
+              className="w-full border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="pill">Pilule (Très arrondi)</option>
+              <option value="rounded">Arrondi léger</option>
+              <option value="square">Carré</option>
+            </select>
+          </div>
+
+          {/* Badge Style */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-gray-700 mb-2">Style des Badges (Sous-titres/Prix)</label>
+            <select
+              value={section.settings[`${prefix}_BADGE_STYLE`] || 'light'}
+              onChange={e => updateSectionSettings(section.id, `${prefix}_BADGE_STYLE`, e.target.value)}
+              className="w-full border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="light">Badge Clair (Effet verre)</option>
+              <option value="dark">Badge Sombre (Effet verre)</option>
+              <option value="custom">Couleur personnalisée</option>
+              <option value="none">Texte simple (Sans badge)</option>
+            </select>
+            
+            {section.settings[`${prefix}_BADGE_STYLE`] === 'custom' && (
+              <div className="mt-2 flex items-center gap-3">
+                <input 
+                  type="color" 
+                  value={section.settings[`${prefix}_BADGE_BG`] || '#ffffff'} 
+                  onChange={e => updateSectionSettings(section.id, `${prefix}_BADGE_BG`, e.target.value)} 
+                  className="w-8 h-8 rounded border-0 p-0 cursor-pointer"
+                />
+                <span className="text-xs text-gray-500">Couleur de fond du badge</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Overlay Type */}
+          {section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false' && (
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-700 mb-2">Type de Filtre d'Image (Overlay)</label>
+              <select
+                value={section.settings[`${prefix}_OVERLAY_TYPE`] || (blockNum === 4 ? 'grad-r' : 'grad-t')}
+                onChange={e => updateSectionSettings(section.id, `${prefix}_OVERLAY_TYPE`, e.target.value)}
+                className="w-full border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
+              >
+                <option value="grad-t">Dégradé Bas ➔ Haut</option>
+                <option value="grad-r">Dégradé Gauche ➔ Droite</option>
+                <option value="solid">Couleur Unie</option>
+              </select>
+            </div>
+          )}
+        </div>
+
         {/* Typographie & Couleurs des textes */}
         <div className="mt-8 border-t pt-6">
           <h4 className="text-sm font-semibold text-gray-800 mb-4">Typography & Colors</h4>
