@@ -1095,6 +1095,7 @@
     "save_changes": "Save changes",
     "settings_category_only": "Settings for this category only.",
     "nav_seo": "SEO & OpenGraph",
+    "nav_robots": "Robots.txt",
     "col_1_logo_info": "Column 1: Logo & Info",
     "footer_logo_label": "Footer Logo",
     "change_logo": "Change Logo",
@@ -1512,5 +1513,23 @@
     "Yemen": "Yemen",
     "Zambia": "Zambia",
     "Zimbabwe": "Zimbabwe"
+  },
+  "AdminRobots": {
+    "title": "Robots.txt",
+    "description": "Manage your site's indexing rules for search engines.",
+    "disallow_paths_label": "Blocked paths (Disallow)",
+    "disallow_paths_help": "The paths below will be blocked from search engines. Default (protected) paths cannot be removed.",
+    "default_badge": "Default",
+    "remove_path": "Remove",
+    "add_path_placeholder": "staging/",
+    "add_btn": "Add",
+    "path_exists": "This path already exists.",
+    "crawl_delay_label": "Crawl Delay (seconds)",
+    "crawl_delay_help": "Minimum time between robot requests. Leave empty for no restriction.",
+    "preview_label": "robots.txt Preview",
+    "preview_help": "This is how the robots.txt file will be served to search engines.",
+    "save_success": "Robots.txt updated successfully",
+    "saving": "Saving...",
+    "save_btn": "Save changes"
   }
 }
