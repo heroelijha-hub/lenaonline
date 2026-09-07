@@ -72,12 +72,51 @@ export async function submitNewsletter(formData: FormData) {
       return { error: 'Veuillez entrer une adresse e-mail valide.' };
     }
 
+    // Validation format email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { error: 'Adresse e-mail invalide.' };
+    }
+
     const settings = await getSettings();
     const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
-    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Thank you for subscribing to our newsletter!';
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Top Kaminbrennstoffe';
+    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !';
 
-    // Newsletter subscription recorded — email notification can be added via SMTP mailer
-
+    // Envoi de l'email de notification à l'admin
+    try {
+      const { sendEmail } = await import('@/lib/mailer');
+      await sendEmail({
+        to: receiverEmail,
+        subject: `[Newsletter] Nouvelle inscription — ${email}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
+            <div style="background-color: #f97316; padding: 24px 32px;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 20px;">📬 Nouvelle inscription Newsletter</h1>
+            </div>
+            <div style="padding: 32px;">
+              <p style="font-size: 16px; margin-bottom: 16px;">Un nouveau visiteur vient de s'inscrire à la newsletter de <strong>${storeName}</strong>.</p>
+              <table style="width: 100%; border-collapse: collapse; background: #f9fafb; border-radius: 6px; overflow: hidden;">
+                <tr>
+                  <td style="padding: 12px 16px; font-weight: bold; color: #6b7280; width: 120px;">Email</td>
+                  <td style="padding: 12px 16px; color: #111827;">${email}</td>
+                </tr>
+                <tr style="background: #f3f4f6;">
+                  <td style="padding: 12px 16px; font-weight: bold; color: #6b7280;">Date</td>
+                  <td style="padding: 12px 16px; color: #111827;">${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td>
+                </tr>
+              </table>
+            </div>
+            <div style="padding: 16px 32px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 12px; color: #9ca3af;">
+              Cet email a été envoyé automatiquement par ${storeName}.
+            </div>
+          </div>
+        `,
+      });
+    } catch (emailErr) {
+      console.error('[NEWSLETTER] Failed to send notification email:', emailErr);
+      // On ne bloque pas l'inscription si l'email échoue
+    }
 
     return { success: true, message: successMsg };
   } catch (error) {
@@ -85,3 +124,4 @@ export async function submitNewsletter(formData: FormData) {
     return { error: "Une erreur est survenue lors de l'inscription." };
   }
 }
+

@@ -1,8 +1,8 @@
 "use client";
 import Image from 'next/image';
-
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import NewsletterFooterForm from './NewsletterFooterForm';
 
 type FooterProps = {
   supportPhone?: string;
@@ -201,17 +201,7 @@ export default function Footer({
             <p className="text-sm mb-6 leading-relaxed opacity-90">
               {footerNewsletterText}
             </p>
-            <form className="flex">
-              <input 
-                type="email" 
-                placeholder={footerNewsletterPlaceholder}
-                className="flex-grow px-4 py-3 rounded-l-sm bg-gray-50 text-gray-900 text-sm focus:outline-none"
-                required
-              />
-              <button type="submit" className="bg-[#fbbf24] hover:bg-yellow-500 text-gray-900 px-4 py-3 rounded-r-sm transition flex items-center justify-center">
-                <svg className="w-5 h-5 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </button>
-            </form>
+            <NewsletterFooterForm placeholder={footerNewsletterPlaceholder} />
           </div>
 
         </div>
