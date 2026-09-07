@@ -177,10 +177,14 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             ) : t('general')}
           </span>
           
-          <h3 
-            className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors"
-          >
-            {product.title}
+          <h3 className="text-lg font-bold text-gray-900 mb-2 transition-colors">
+            <Link
+              href={`/product/${product.slug}`}
+              className="hover:text-orange-500"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {product.title}
+            </Link>
           </h3>
 
           {ratingCount > 0 && (
@@ -267,11 +271,17 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         </span>
         
         {/* Title constrained to 2 lines max with ellipsis */}
-        <h3 
-          className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-500 transition-colors"
+        <h3
+          className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 transition-colors"
           title={product.title}
         >
-          {product.title}
+          <Link
+            href={`/product/${product.slug}`}
+            className="hover:text-orange-500"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {product.title}
+          </Link>
         </h3>
 
         {/* Rating */}
