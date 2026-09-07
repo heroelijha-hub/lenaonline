@@ -196,7 +196,7 @@ export default async function BestSeller({ config }: { config?: any }) {
   const smallProductsGroup2 = displayProducts.slice(6, 10);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
+    <section className={`max-w-7xl mx-auto px-4 w-full py-12 font-sans${config?.hideMobile ? ' hidden sm:block' : ''}`}>
       
       {/* Header Section */}
       <div className="flex items-center justify-between mb-6">

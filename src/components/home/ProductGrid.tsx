@@ -64,7 +64,7 @@ export default async function ProductGrid({ config }: ProductGridProps) {
   const seeAllUrl = (config as any).seeAllUrl || (categoryId ? `/product-category/${categoryId}` : '/shop');
 
   return (
-    <section className="max-w-7xl mx-auto px-4 w-full py-12 font-sans">
+    <section className={`max-w-7xl mx-auto px-4 w-full py-12 font-sans${(config as any)?.hideMobile ? ' hidden sm:block' : ''}`}>
       <div className="flex items-center justify-between mb-6">
         <h2 
           className="text-gray-900 font-bold text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"

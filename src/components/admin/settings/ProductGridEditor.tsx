@@ -138,6 +138,26 @@ export default function ProductGridEditor({
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-orange-500 focus:border-orange-500 outline-none mb-4"
               />
             </div>
+
+            {/* Toggle Masquer sur mobile */}
+            <div className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+              <div>
+                <p className="text-sm font-medium text-gray-800">Masquer sur mobile</p>
+                <p className="text-xs text-gray-500 mt-0.5">Cette section ne s'affichera pas sur les écrans mobiles</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => updateSectionSettings(section.id, 'hideMobile', !section.settings.hideMobile)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${section.settings.hideMobile ? 'bg-orange-500' : 'bg-gray-200'}`}
+                role="switch"
+                aria-checked={!!section.settings.hideMobile}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${section.settings.hideMobile ? 'translate-x-5' : 'translate-x-0'}`}
+                />
+              </button>
+            </div>
+
             {section.type === 'ProductGrid' && (
               <>
                 <div>
