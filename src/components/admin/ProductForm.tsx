@@ -54,10 +54,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
   const [description, setDescription] = useState(initialData?.description || '');
   
-  const [regularPrice, setRegularPrice] = useState(initialData?.price?.toString() || '');
-  const [salePrice, setSalePrice] = useState(initialData?.compareAtPrice?.toString() || '');
+  // Prix régulier = ancien prix barré (compareAtPrice en BDD)
+  // Prix promotionnel = prix payé par le client (price en BDD)
+  const [regularPrice, setRegularPrice] = useState(initialData?.compareAtPrice?.toString() || '');
+  const [salePrice, setSalePrice] = useState(initialData?.price?.toString() || '');
   const [gtin, setGtin] = useState(initialData?.gtin || '');
   
+  // Erreur si le prix promo est supérieur ou égal au prix régulier (promo doit être < régulier)
   const priceError = (salePrice && regularPrice && Number(salePrice) >= Number(regularPrice)) 
     ? t('price_error_msg') 
     : "";
@@ -325,19 +328,19 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('regular_price_label')}</label>
             <input 
-              type="number" step="0.01" name="price" 
+              type="number" step="0.01" name="compareAtPrice" 
               value={regularPrice} 
               onChange={(e) => setRegularPrice(e.target.value)} 
-              required 
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t("sale_price")}</label>
             <input 
-              type="number" step="0.01" name="compareAtPrice" 
+              type="number" step="0.01" name="price" 
               value={salePrice} 
               onChange={(e) => setSalePrice(e.target.value)} 
+              required
               className={`w-full px-4 py-2 border rounded-md focus:ring-orange-500 focus:border-orange-500 ${priceError ? 'border-red-500' : 'border-gray-300'}`} 
             />
             {priceError && <p className="text-red-500 text-xs font-semibold mt-1">{priceError}</p>}
