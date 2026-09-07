@@ -487,10 +487,10 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
         </HeroMobileSliderWrapper>
       ) : (
         <HeroMobileSliderWrapper>
-          {settings.STYLE2_HERO_1_HIDE_MOBILE !== 'true' && block1}
-          {settings.STYLE2_HERO_2_HIDE_MOBILE !== 'true' && block2}
-          {settings.STYLE2_HERO_3_HIDE_MOBILE !== 'true' && block3}
-          {settings.STYLE2_HERO_4_HIDE_MOBILE !== 'true' && block4}
+          {settings.HERO_1_HIDE_MOBILE !== 'true' && block1}
+          {settings.HERO_2_HIDE_MOBILE !== 'true' && block2}
+          {settings.HERO_3_HIDE_MOBILE !== 'true' && block3}
+          {settings.HERO_4_HIDE_MOBILE !== 'true' && block4}
         </HeroMobileSliderWrapper>
       )}
     </section>
