@@ -28,6 +28,28 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
     notFound();
   }
 
+  // Parse customer metadata stored in destinationAddress field
+  let orderMeta: any = null;
+  try {
+    if (order.destinationAddress) {
+      const parsed = JSON.parse(order.destinationAddress);
+      // Check if it's the metadata object (has billing key) vs a plain address string
+      if (parsed && parsed.billing) {
+        orderMeta = parsed;
+      }
+    }
+  } catch {
+    // Plain address string, not JSON metadata
+  }
+
+  const billing = orderMeta?.billing || null;
+  const shipping = orderMeta?.shipping || null;
+  const couponCode = orderMeta?.couponCode || null;
+  const discount = orderMeta?.discount || 0;
+  const subTotal = orderMeta?.subTotal || null;
+  const shippingCost = orderMeta?.shippingCost ?? null;
+  const shippingMethodName = orderMeta?.shippingMethodName || null;
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex justify-between items-center mb-8">
@@ -36,8 +58,10 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Order Details */}
-        <div className="lg:col-span-2 space-y-8">
+        {/* Left column: Articles + Customer Info */}
+        <div className="lg:col-span-2 space-y-6">
+
+          {/* Order Items */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-lg font-bold text-gray-900 mb-4">{t('items')}</h2>
             <div className="space-y-4">
@@ -68,23 +92,145 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                 </div>
               ))}
             </div>
-            <div className="mt-4 pt-4 border-t flex justify-between items-center font-bold">
-              <span>{t('total')}</span>
-              <span><Price amount={order.total} showTax={false} /></span>
+
+            {/* Price breakdown */}
+            <div className="mt-4 pt-4 border-t space-y-2">
+              {subTotal !== null && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>{t('subtotal')}</span>
+                  <span><Price amount={subTotal} showTax={false} /></span>
+                </div>
+              )}
+              {couponCode && discount > 0 && (
+                <div className="flex justify-between text-sm text-green-600 font-medium">
+                  <span>
+                    🏷️ {t('coupon_applied_label')}{' '}
+                    <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold text-xs">{couponCode}</span>
+                  </span>
+                  <span>- <Price amount={discount} showTax={false} /></span>
+                </div>
+              )}
+              {shippingCost !== null && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>{t('shipping_cost')}{shippingMethodName ? ` (${shippingMethodName})` : ''}</span>
+                  <span><Price amount={shippingCost} showTax={false} /></span>
+                </div>
+              )}
+              <div className="flex justify-between items-center font-bold text-gray-900 pt-2 border-t">
+                <span>{t('total')}</span>
+                <span><Price amount={order.total} showTax={false} /></span>
+              </div>
             </div>
           </div>
+
+          {/* Customer Information */}
+          {billing && (
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Billing Address */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">{t('billing_address')}</h3>
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <div className="flex items-start gap-2">
+                      <span className="text-gray-400 w-4 shrink-0">👤</span>
+                      <span className="font-medium">{[billing.firstName, billing.lastName].filter(Boolean).join(' ') || '—'}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gray-400 w-4 shrink-0">✉️</span>
+                      <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-600 hover:underline break-all">
+                        {billing.email || order.user?.email || '—'}
+                      </a>
+                    </div>
+                    {billing.phone && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400 w-4 shrink-0">📞</span>
+                        <a href={`tel:${billing.phone}`} className="hover:underline">{billing.phone}</a>
+                      </div>
+                    )}
+                    <div className="flex items-start gap-2 pt-1">
+                      <span className="text-gray-400 w-4 shrink-0">📍</span>
+                      <div>
+                        {billing.address1 && <p>{billing.address1}</p>}
+                        {billing.address2 && <p>{billing.address2}</p>}
+                        <p>{[billing.postalCode, billing.city].filter(Boolean).join(' ')}</p>
+                        {billing.country && <p className="font-medium">{billing.country}</p>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shipping Address (if different) */}
+                {shipping ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-orange-500 uppercase tracking-wide mb-3">
+                      🚚 {t('shipping_address_different')}
+                    </h3>
+                    <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-4">
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-400 w-4 shrink-0">👤</span>
+                        <span className="font-medium">{[shipping.firstName, shipping.lastName].filter(Boolean).join(' ') || '—'}</span>
+                      </div>
+                      {shipping.company && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-400 w-4 shrink-0">🏢</span>
+                          <span>{shipping.company}</span>
+                        </div>
+                      )}
+                      {shipping.phone && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-gray-400 w-4 shrink-0">📞</span>
+                          <a href={`tel:${shipping.phone}`} className="hover:underline">{shipping.phone}</a>
+                        </div>
+                      )}
+                      <div className="flex items-start gap-2 pt-1">
+                        <span className="text-gray-400 w-4 shrink-0">📍</span>
+                        <div>
+                          {shipping.address1 && <p>{shipping.address1}</p>}
+                          {shipping.address2 && <p>{shipping.address2}</p>}
+                          <p>{[shipping.postalCode, shipping.city].filter(Boolean).join(' ')}</p>
+                          {shipping.country && <p className="font-medium">{shipping.country}</p>}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address')}</h3>
+                    <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Fallback: show user email if no metadata */}
+          {!billing && order.user?.email && (
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
+              <div className="flex items-center gap-2 text-sm text-gray-700">
+                <span className="text-gray-400">✉️</span>
+                <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline">{order.user.email}</a>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Suivi Livraison */}
+        {/* Right column: Delivery Tracker */}
         <div className="lg:col-span-1">
           <DeliveryTracker 
             orderId={order.id}
             trackingNumber={order.trackingNumber}
             originCity={order.originCity}
             originCountry={order.originCountry}
-            destinationAddress={order.destinationAddress}
+            destinationAddress={orderMeta ? null : order.destinationAddress}
             destinationCountry={order.destinationCountry}
             deliveryPositions={order.deliveryPositions}
+            preparationStartedAt={order.preparationStartedAt ?? null}
+            deliveryDays={order.deliveryDays ?? null}
+            delayNote={order.delayNote ?? null}
+            orderStatus={order.status}
           />
         </div>
       </div>

@@ -111,6 +111,9 @@ model Order {
   updatedAt          DateTime           @updatedAt
   deliveredAt        DateTime?
   reviewRequestSent  Boolean            @default(false)
+  preparationStartedAt DateTime?          // Date/heure d'activation du mode "En Préparation"
+  deliveryDays        Int?               // Délai de livraison (3, 5 ou 7 jours)
+  delayNote           String?            // Note de contretemps (bascule sur mode manuel)
   deliveryPositions  DeliveryPosition[]
   user               User               @relation(fields: [userId], references: [id])
   orderItems         OrderItem[]

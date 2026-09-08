@@ -117,3 +117,44 @@ export async function deleteDeliveryPosition(positionId: string, orderId: string
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath('/tracking');
 }
+
+// Activer le mode "En Préparation" avec délai automatique
+export async function activatePreparation(orderId: string, deliveryDays: number) {
+  await requireAdmin();
+  await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      preparationStartedAt: new Date(),
+      deliveryDays,
+      status: 'PROCESSING',
+      delayNote: null, // reset any previous delay note
+    }
+  });
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
+// Annuler le mode automatique (réinitialiser)
+export async function cancelPreparation(orderId: string) {
+  await requireAdmin();
+  await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      preparationStartedAt: null,
+      deliveryDays: null,
+      delayNote: null,
+      status: 'PAID',
+    }
+  });
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
+// Ajouter une note de contretemps (bascule en mode manuel)
+export async function addDelayNote(orderId: string, note: string) {
+  await requireAdmin();
+  await prisma.order.update({
+    where: { id: orderId },
+    data: { delayNote: note }
+  });
+  revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath('/order-tracking');
+}
