@@ -55,7 +55,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
   const billing = orderMeta?.billing || null;
   const customerName = billing
     ? [billing.firstName, billing.lastName].filter(Boolean).join(' ')
-    : order?.user?.email || '';
+    : '';
 
   // First product info
   const firstItem = order?.orderItems?.[0];

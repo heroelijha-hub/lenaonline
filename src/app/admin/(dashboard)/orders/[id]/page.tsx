@@ -205,13 +205,25 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
             </div>
           )}
 
-          {/* Fallback: show user email if no metadata */}
-          {!billing && order.user?.email && (
+          {/* Fallback: show user email + plain address if no JSON metadata */}
+          {!billing && (
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
-              <div className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-gray-400">✉️</span>
-                <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline">{order.user.email}</a>
+              <div className="space-y-3 text-sm text-gray-700">
+                {order.user?.email && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400">✉️</span>
+                    <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline break-all">
+                      {order.user.email}
+                    </a>
+                  </div>
+                )}
+                {order.destinationAddress && (
+                  <div className="flex items-start gap-2 pt-1">
+                    <span className="text-gray-400">📍</span>
+                    <p className="whitespace-pre-wrap leading-relaxed">{order.destinationAddress}</p>
+                  </div>
+                )}
               </div>
             </div>
           )}
