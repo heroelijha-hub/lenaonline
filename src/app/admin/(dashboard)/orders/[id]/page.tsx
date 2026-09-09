@@ -50,18 +50,31 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
   const shippingCost = orderMeta?.shippingCost ?? null;
   const shippingMethodName = orderMeta?.shippingMethodName || null;
 
+  // For old orders without JSON metadata, look up name from AbandonedCart by email
+  let fallbackCustomerName = '';
+  if (!billing && order.user?.email) {
+    const abandonedCart = await prisma.abandonedCart.findUnique({
+      where: { email: order.user.email },
+      select: { firstName: true, lastName: true }
+    });
+    if (abandonedCart) {
+      fallbackCustomerName = [abandonedCart.firstName, abandonedCart.lastName].filter(Boolean).join(' ');
+    }
+  }
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">{t('order_number')}{order.id.split('-')[0]}</h1>
         <a href="/admin/orders" className="text-sm font-medium text-gray-600 hover:text-gray-900">{t('back_to_orders')}</a>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left column: Articles + Customer Info */}
-        <div className="lg:col-span-2 space-y-6">
+      {/* ── ROW 1 : Articles (gauche) + Infos client (droite) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-          {/* Order Items */}
+        {/* Articles — 2/3 */}
+        <div className="lg:col-span-2">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-lg font-bold text-gray-900 mb-4">{t('items')}</h2>
             <div className="space-y-4">
@@ -122,130 +135,133 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Customer Information */}
-          {billing && (
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
+        {/* Infos client — 1/3 */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-full">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Billing Address */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">{t('billing_address')}</h3>
-                  <div className="space-y-2 text-sm text-gray-700">
-                    <div className="flex items-start gap-2">
-                      <span className="text-gray-400 w-4 shrink-0">👤</span>
-                      <span className="font-medium">{[billing.firstName, billing.lastName].filter(Boolean).join(' ') || '—'}</span>
+            {billing ? (
+              <>
+                {/* Adresse de facturation */}
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">{t('billing_address')}</p>
+                <div className="space-y-2 text-sm text-gray-700 mb-5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 w-4 shrink-0">👤</span>
+                    <span className="font-medium">{[billing.firstName, billing.lastName].filter(Boolean).join(' ') || '—'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 w-4 shrink-0">✉️</span>
+                    <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-600 hover:underline break-all text-xs">
+                      {billing.email || order.user?.email || '—'}
+                    </a>
+                  </div>
+                  {billing.phone && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400 w-4 shrink-0">📞</span>
+                      <a href={`tel:${billing.phone}`} className="hover:underline">{billing.phone}</a>
                     </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-gray-400 w-4 shrink-0">✉️</span>
-                      <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-600 hover:underline break-all">
-                        {billing.email || order.user?.email || '—'}
-                      </a>
-                    </div>
-                    {billing.phone && (
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-400 w-4 shrink-0">📞</span>
-                        <a href={`tel:${billing.phone}`} className="hover:underline">{billing.phone}</a>
-                      </div>
-                    )}
-                    <div className="flex items-start gap-2 pt-1">
-                      <span className="text-gray-400 w-4 shrink-0">📍</span>
-                      <div>
-                        {billing.address1 && <p>{billing.address1}</p>}
-                        {billing.address2 && <p>{billing.address2}</p>}
-                        <p>{[billing.postalCode, billing.city].filter(Boolean).join(' ')}</p>
-                        {billing.country && <p className="font-medium">{billing.country}</p>}
-                      </div>
+                  )}
+                  <div className="flex items-start gap-2">
+                    <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                    <div className="leading-5">
+                      {billing.address1 && <p>{billing.address1}</p>}
+                      {billing.address2 && <p>{billing.address2}</p>}
+                      <p>{[billing.postalCode, billing.city].filter(Boolean).join(' ')}</p>
+                      {billing.country && <p className="font-medium">{billing.country}</p>}
                     </div>
                   </div>
                 </div>
 
-                {/* Shipping Address (if different) */}
-                {shipping ? (
-                  <div>
-                    <h3 className="text-sm font-semibold text-orange-500 uppercase tracking-wide mb-3">
-                      🚚 {t('shipping_address_different')}
-                    </h3>
-                    <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-4">
-                      <div className="flex items-start gap-2">
-                        <span className="text-gray-400 w-4 shrink-0">👤</span>
-                        <span className="font-medium">{[shipping.firstName, shipping.lastName].filter(Boolean).join(' ') || '—'}</span>
-                      </div>
-                      {shipping.company && (
+                {/* Adresse de livraison */}
+                <div className="border-t pt-4">
+                  {shipping ? (
+                    <>
+                      <p className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address_different')}</p>
+                      <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-400 w-4 shrink-0">👤</span>
+                          <span className="font-medium">{[shipping.firstName, shipping.lastName].filter(Boolean).join(' ') || '—'}</span>
+                        </div>
+                        {shipping.company && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 w-4 shrink-0">🏢</span>
+                            <span>{shipping.company}</span>
+                          </div>
+                        )}
+                        {shipping.phone && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 w-4 shrink-0">📞</span>
+                            <a href={`tel:${shipping.phone}`} className="hover:underline">{shipping.phone}</a>
+                          </div>
+                        )}
                         <div className="flex items-start gap-2">
-                          <span className="text-gray-400 w-4 shrink-0">🏢</span>
-                          <span>{shipping.company}</span>
-                        </div>
-                      )}
-                      {shipping.phone && (
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-400 w-4 shrink-0">📞</span>
-                          <a href={`tel:${shipping.phone}`} className="hover:underline">{shipping.phone}</a>
-                        </div>
-                      )}
-                      <div className="flex items-start gap-2 pt-1">
-                        <span className="text-gray-400 w-4 shrink-0">📍</span>
-                        <div>
-                          {shipping.address1 && <p>{shipping.address1}</p>}
-                          {shipping.address2 && <p>{shipping.address2}</p>}
-                          <p>{[shipping.postalCode, shipping.city].filter(Boolean).join(' ')}</p>
-                          {shipping.country && <p className="font-medium">{shipping.country}</p>}
+                          <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                          <div className="leading-5">
+                            {shipping.address1 && <p>{shipping.address1}</p>}
+                            {shipping.address2 && <p>{shipping.address2}</p>}
+                            <p>{[shipping.postalCode, shipping.city].filter(Boolean).join(' ')}</p>
+                            {shipping.country && <p className="font-medium">{shipping.country}</p>}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address')}</h3>
-                    <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
+                      <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* Fallback: commandes sans métadonnées JSON */
+              <div className="space-y-3 text-sm text-gray-700">
+                {fallbackCustomerName && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 w-4 shrink-0">👤</span>
+                    <span className="font-medium">{fallbackCustomerName}</span>
                   </div>
                 )}
-              </div>
-            </div>
-          )}
-
-          {/* Fallback: show user email + plain address if no JSON metadata */}
-          {!billing && (
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
-              <div className="space-y-3 text-sm text-gray-700">
                 {order.user?.email && (
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400">✉️</span>
-                    <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline break-all">
+                    <span className="text-gray-400 w-4 shrink-0">✉️</span>
+                    <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline break-all text-xs">
                       {order.user.email}
                     </a>
                   </div>
                 )}
                 {order.destinationAddress && (
                   <div className="flex items-start gap-2 pt-1">
-                    <span className="text-gray-400">📍</span>
+                    <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
                     <p className="whitespace-pre-wrap leading-relaxed">{order.destinationAddress}</p>
                   </div>
                 )}
+                <div className="border-t pt-3 mt-1">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">🚚 {t('shipping_address')}</p>
+                  <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right column: Delivery Tracker */}
-        <div className="lg:col-span-1">
-          <DeliveryTracker 
-            orderId={order.id}
-            trackingNumber={order.trackingNumber}
-            originCity={order.originCity}
-            originCountry={order.originCountry}
-            destinationAddress={orderMeta ? null : order.destinationAddress}
-            destinationCountry={order.destinationCountry}
-            deliveryPositions={order.deliveryPositions}
-            preparationStartedAt={order.preparationStartedAt ?? null}
-            deliveryDays={order.deliveryDays ?? null}
-            delayNote={order.delayNote ?? null}
-            orderStatus={order.status}
-          />
+            )}
+          </div>
         </div>
       </div>
+
+      {/* ── ROW 2 : Tracking (3 colonnes via DeliveryTracker) ── */}
+      <DeliveryTracker
+        orderId={order.id}
+        trackingNumber={order.trackingNumber}
+        originCity={order.originCity}
+        originCountry={order.originCountry}
+        destinationAddress={orderMeta ? null : order.destinationAddress}
+        destinationCountry={order.destinationCountry}
+        deliveryPositions={order.deliveryPositions}
+        preparationStartedAt={order.preparationStartedAt ?? null}
+        deliveryDays={order.deliveryDays ?? null}
+        delayNote={order.delayNote ?? null}
+        orderStatus={order.status}
+      />
     </div>
   );
 }

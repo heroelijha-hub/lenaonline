@@ -165,7 +165,7 @@ export default function DeliveryTracker({
     : [];
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
       {/* ══════════════════════════════════════════════════
           SECTION 1 — MODE AUTOMATIQUE "EN PRÉPARATION"
@@ -267,38 +267,31 @@ export default function DeliveryTracker({
                 </div>
               ))}
             </div>
+
+        {/* Note de contretemps — intégrée dans la carte Auto Tracking */}
+        {preparationStartedAt && !delayNote && (
+          <div className="mt-4 pt-4 border-t border-amber-100">
+            <p className="text-xs font-semibold text-amber-600 mb-2">⚠️ {t('delay_note_title')}</p>
+            <p className="text-xs text-gray-500 mb-2">{t('delay_note_hint')}</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={delayNoteValue}
+                onChange={(e) => setDelayNoteValue(e.target.value)}
+                placeholder={t('delay_note_placeholder')}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-orange-500 focus:border-orange-500"
+              />
+              <button
+                onClick={handleAddDelayNote}
+                disabled={loadingDelay || !delayNoteValue.trim()}
+                className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-2 rounded-lg text-sm disabled:opacity-50 transition-colors"
+              >
+                {loadingDelay ? '⏳' : t('save')}
+              </button>
+            </div>
           </div>
         )}
       </div>
-
-      {/* ══════════════════════════════════════════════════
-          SECTION 2 — NOTE DE CONTRETEMPS
-          (visible seulement si mode auto activé et pas encore de note)
-      ══════════════════════════════════════════════════ */}
-      {preparationStartedAt && !delayNote && (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-amber-200">
-          <h2 className="text-base font-bold text-gray-900 mb-1 flex items-center gap-2">
-            ⚠️ {t('delay_note_title')}
-          </h2>
-          <p className="text-xs text-gray-500 mb-3">{t('delay_note_hint')}</p>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={delayNoteValue}
-              onChange={(e) => setDelayNoteValue(e.target.value)}
-              placeholder={t('delay_note_placeholder')}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-orange-500 focus:border-orange-500"
-            />
-            <button
-              onClick={handleAddDelayNote}
-              disabled={loadingDelay || !delayNoteValue.trim()}
-              className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-sm disabled:opacity-50 transition-colors"
-            >
-              {loadingDelay ? '⏳' : t('save')}
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ══════════════════════════════════════════════════
           SECTION 3 — INFORMATIONS DE LIVRAISON (MANUEL)
