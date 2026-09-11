@@ -1,37 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
+function PostHogPageView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    // Ne pas charger PostHog du tout sur les pages d'administration
-    if (pathname?.startsWith('/admin')) {
-      return;
-    }
-
-    // Only initialize PostHog if the keys are available
-    if (process.env.NEXT_PUBLIC_POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_HOST) {
-      // Check if already initialized to avoid re-init in strict mode
-      import('posthog-js').then((m) => {
-        const posthog = m.default;
-        if (!posthog.__loaded) {
-          posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-            api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
-            person_profiles: 'identified_only',
-            capture_pageview: false,
-            session_recording: {
-              maskAllInputs: true,
-              maskTextSelector: '*[data-ph-mask="true"]'
-            }
-          });
-        }
-      });
-    }
-  }, [pathname]);
 
   useEffect(() => {
     if (pathname?.startsWith('/admin')) {
@@ -61,5 +35,44 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     }
   }, [pathname, searchParams]);
 
-  return <>{children}</>;
+  return null;
+}
+
+export function PostHogProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Ne pas charger PostHog du tout sur les pages d'administration
+    if (pathname?.startsWith('/admin')) {
+      return;
+    }
+
+    // Only initialize PostHog if the keys are available
+    if (process.env.NEXT_PUBLIC_POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_HOST) {
+      // Check if already initialized to avoid re-init in strict mode
+      import('posthog-js').then((m) => {
+        const posthog = m.default;
+        if (!posthog.__loaded) {
+          posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+            api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+            person_profiles: 'identified_only',
+            capture_pageview: false,
+            session_recording: {
+              maskAllInputs: true,
+              maskTextSelector: '*[data-ph-mask="true"]'
+            }
+          });
+        }
+      });
+    }
+  }, [pathname]);
+
+  return (
+    <>
+      <Suspense fallback={null}>
+        <PostHogPageView />
+      </Suspense>
+      {children}
+    </>
+  );
 }
