@@ -121,7 +121,7 @@ export default async function OrderDetailsPage({
       if (parsed.shippingCost !== undefined) shippingCostAmount = Number(parsed.shippingCost);
       else shippingCostAmount = order.total - subTotalAmount;
       
-      if (parsed.shippingMethod) shippingMethodName = parsed.shippingMethod;
+      if (parsed.shippingMethodName) shippingMethodName = parsed.shippingMethodName;
 
       // Format Shipping
       const sParts = [];
@@ -234,11 +234,11 @@ export default async function OrderDetailsPage({
                 <span><Price amount={subTotalAmount} showTax={false} /></span>
               </div>
               <div className="flex justify-between text-sm text-gray-600">
-                <span>Expédition {shippingMethodName ? `(${shippingMethodName})` : ''}</span>
+                <span>{t('shipping_cost')} {shippingMethodName ? `(${shippingMethodName})` : ''}</span>
                 <span><Price amount={shippingCostAmount} showTax={false} /></span>
               </div>
               <div className="flex justify-between text-sm text-gray-600">
-                <span>Mode de paiement</span>
+                <span>{t('payment_method')}</span>
                 <span>{currentPaymentMethod}</span>
               </div>
               <div className="flex justify-between items-center font-bold text-gray-900 pt-3 mt-1 border-t">

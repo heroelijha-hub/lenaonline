@@ -340,7 +340,9 @@
     "order_intro": "Order #{id} was placed on {date} and is currently {status}.",
     "product": "Product",
     "payment_stripe": "Credit Card (Stripe)",
-    "payment_bank_transfer": "Bank Transfer"
+    "payment_bank_transfer": "Bank Transfer",
+    "shipping_cost": "Shipping",
+    "payment_method": "Payment Method"
   },
   "AccountDetails": {
     "save_success": "Changes saved.",

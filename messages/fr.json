@@ -340,7 +340,9 @@
     "order_intro": "La commande #{id} a été passée le {date} et est actuellement {status}.",
     "product": "Produit",
     "payment_stripe": "Carte bancaire (Stripe)",
-    "payment_bank_transfer": "Virement bancaire"
+    "payment_bank_transfer": "Virement bancaire",
+    "shipping_cost": "Expédition",
+    "payment_method": "Mode de paiement"
   },
   "AccountDetails": {
     "save_success": "Modifications enregistrées.",
