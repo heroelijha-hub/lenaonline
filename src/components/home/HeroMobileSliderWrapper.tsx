@@ -26,15 +26,20 @@ export default function HeroMobileSliderWrapper({ children, childCount }: { chil
     return () => clearInterval(interval);
   }, [childCount]);
 
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
   const handleScroll = () => {
-    if (scrollRef.current) {
-      const scrollLeft = scrollRef.current.scrollLeft;
-      const childWidth = scrollRef.current.clientWidth;
-      const index = Math.round(scrollLeft / childWidth);
-      if (index !== activeIndex) {
-        setActiveIndex(index);
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    scrollTimeout.current = setTimeout(() => {
+      if (scrollRef.current) {
+        const scrollLeft = scrollRef.current.scrollLeft;
+        const childWidth = scrollRef.current.clientWidth;
+        const index = Math.round(scrollLeft / childWidth);
+        if (index !== activeIndex) {
+          setActiveIndex(index);
+        }
       }
-    }
+    }, 100);
   };
 
   if (childCount === 0) return null;

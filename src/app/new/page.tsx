@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import Price from '@/components/Price';
+import ProductCard from '@/components/shop/ProductCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,7 +9,7 @@ export default async function NewArrivalsPage() {
   const t = await getTranslations('NewArrivals');
 
   const products = await prisma.product.findMany({
-    include: { categories: true },
+    include: { categories: true, reviews: { select: { rating: true } } },
     orderBy: { createdAt: 'desc' },
     take: 12 // Fetch latest 12 products
   });
@@ -36,40 +36,13 @@ export default async function NewArrivalsPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition group flex flex-col h-full">
-                <Link href={`/product/${product.slug}`} className="relative h-40 sm:h-56 p-4 flex items-center justify-center bg-white overflow-hidden">
-                  {product.images && product.images.length > 0 ? (
-                    <img 
-                      src={product.images[0]} 
-                      alt={product.title} 
-                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-500 text-xs">
-                      {t('no_image')}
-                    </div>
-                  )}
-                  <span className="absolute top-2 left-2 bg-blue-500 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded">
-                    {t('new_badge')}
-                  </span>
-                </Link>
-                <div className="p-3 sm:p-4 flex-grow flex flex-col">
-                  {product.categories && product.categories.length > 0 && (
-                    <span className="text-[10px] sm:text-xs text-gray-500 mb-1">{product.categories[0].name}</span>
-                  )}
-                  <Link href={`/product/${product.slug}`} className="text-xs sm:text-sm font-medium text-gray-900 hover:text-orange-700 transition line-clamp-2 mb-2 flex-grow">
-                    {product.title}
-                  </Link>
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <Price amount={product.price} showTax={false} className="font-bold text-orange-700 text-sm sm:text-base" />
-                      {product.compareAtPrice && product.compareAtPrice > product.price && (
-                        <Price amount={product.compareAtPrice} showTax={false} className="text-[10px] sm:text-xs text-gray-500 line-through" />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard 
+                key={product.id} 
+                product={{
+                  ...product,
+                  discountLabel: t('new_badge')
+                } as any} 
+              />
             ))}
           </div>
         )}
