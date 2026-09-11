@@ -1,81 +1,78 @@
 const fs = require('fs');
 const path = require('path');
 
-const COUNTRIES = [
-  "Afghanistan", "South Africa", "Albania", "Algeria", "Germany", "Andorra", "Angola", "Antigua and Barbuda",
-  "Saudi Arabia", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
-  "Barbados", "Belgium", "Belize", "Benin", "Bhutan", "Belarus", "Myanmar", "Bolivia", "Bosnia and Herzegovina",
-  "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde",
-  "Chile", "China", "Cyprus", "Colombia", "Comoros", "Congo", "North Korea", "South Korea", "Costa Rica", "Ivory Coast",
-  "Croatia", "Cuba", "Denmark", "Djibouti", "Dominica", "Egypt", "United Arab Emirates", "Ecuador", "Eritrea", "Spain",
-  "Estonia", "Eswatini", "United States", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Ghana",
-  "Greece", "Grenada", "Guatemala", "Guinea", "Equatorial Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
-  "Hungary", "India", "Indonesia", "Iraq", "Iran", "Ireland", "Iceland", "Israel", "Italy", "Jamaica", "Japan", "Jordan",
-  "Kazakhstan", "Kenya", "Kyrgyzstan", "Kiribati", "Kuwait", "Laos", "Lesotho", "Latvia", "Lebanon", "Liberia", "Libya",
-  "Liechtenstein", "Lithuania", "Luxembourg", "North Macedonia", "Madagascar", "Malaysia", "Malawi", "Maldives", "Mali",
-  "Malta", "Morocco", "Mauritius", "Mauritania", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro",
-  "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Niger", "Nigeria", "Niue", "Norway", "New Zealand",
-  "Oman", "Uganda", "Uzbekistan", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Netherlands",
-  "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Central African Republic", "Democratic Republic of the Congo",
-  "Dominican Republic", "Romania", "United Kingdom", "Russia", "Rwanda", "Saint Kitts and Nevis", "San Marino",
-  "Saint Vincent and the Grenadines", "Saint Lucia", "Solomon Islands", "El Salvador", "Samoa", "Sao Tome and Principe", "Senegal",
-  "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Somalia", "Sudan", "South Sudan",
-  "Sri Lanka", "Sweden", "Switzerland", "Suriname", "Syria", "Tajikistan", "Tanzania", "Chad", "Czech Republic", "Thailand",
-  "East Timor", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkmenistan", "Turkey", "Tuvalu", "Ukraine",
-  "Uruguay", "Vanuatu", "Vatican", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-];
-
-// Map of common countries to their translations
-const translations = {
-  "Germany": { fr: "Allemagne", de: "Deutschland", es: "Alemania" },
-  "France": { fr: "France", de: "Frankreich", es: "Francia" },
-  "Austria": { fr: "Autriche", de: "Österreich", es: "Austria" },
-  "Switzerland": { fr: "Suisse", de: "Schweiz", es: "Suiza" },
-  "Belgium": { fr: "Belgique", de: "Belgien", es: "Bélgica" },
-  "Netherlands": { fr: "Pays-Bas", de: "Niederlande", es: "Países Bajos" },
-  "Italy": { fr: "Italie", de: "Italien", es: "Italia" },
-  "Spain": { fr: "Espagne", de: "Spanien", es: "España" },
-  "Luxembourg": { fr: "Luxembourg", de: "Luxemburg", es: "Luxemburgo" },
-  "United Kingdom": { fr: "Royaume-Uni", de: "Vereinigtes Königreich", es: "Reino Unido" },
-  "United States": { fr: "États-Unis", de: "Vereinigte Staaten", es: "Estados Unidos" },
-  "Poland": { fr: "Pologne", de: "Polen", es: "Polonia" },
-  "Czech Republic": { fr: "République tchèque", de: "Tschechien", es: "República Checa" },
-  "Denmark": { fr: "Danemark", de: "Dänemark", es: "Dinamarca" },
-  "Sweden": { fr: "Suède", de: "Schweden", es: "Suecia" },
-  "Norway": { fr: "Norvège", de: "Norwegen", es: "Noruega" },
-  "Finland": { fr: "Finlande", de: "Finnland", es: "Finlandia" },
-  "Ireland": { fr: "Irlande", de: "Irland", es: "Irlanda" },
-  "Portugal": { fr: "Portugal", de: "Portugal", es: "Portugal" },
-  "Greece": { fr: "Grèce", de: "Griechenland", es: "Grecia" }
+// Simple map of some English names to ISO-3166-1 alpha-2 codes to use with Intl
+// We only need this to translate the English keys into other languages
+const enToCode = {
+  "Afghanistan": "AF", "South Africa": "ZA", "Albania": "AL", "Algeria": "DZ", "Germany": "DE", 
+  "Andorra": "AD", "Angola": "AO", "Antigua and Barbuda": "AG", "Saudi Arabia": "SA", "Argentina": "AR", 
+  "Armenia": "AM", "Australia": "AU", "Austria": "AT", "Azerbaijan": "AZ", "Bahamas": "BS", 
+  "Bahrain": "BH", "Bangladesh": "BD", "Barbados": "BB", "Belgium": "BE", "Belize": "BZ", 
+  "Benin": "BJ", "Bhutan": "BT", "Belarus": "BY", "Myanmar": "MM", "Bolivia": "BO", 
+  "Bosnia and Herzegovina": "BA", "Botswana": "BW", "Brazil": "BR", "Brunei": "BN", "Bulgaria": "BG", 
+  "Burkina Faso": "BF", "Burundi": "BI", "Cambodia": "KH", "Cameroon": "CM", "Canada": "CA", 
+  "Cape Verde": "CV", "Chile": "CL", "China": "CN", "Cyprus": "CY", "Colombia": "CO", 
+  "Comoros": "KM", "Congo": "CG", "North Korea": "KP", "South Korea": "KR", "Costa Rica": "CR", 
+  "Ivory Coast": "CI", "Croatia": "HR", "Cuba": "CU", "Denmark": "DK", "Djibouti": "DJ", 
+  "Dominica": "DM", "Egypt": "EG", "United Arab Emirates": "AE", "Ecuador": "EC", "Eritrea": "ER", 
+  "Spain": "ES", "Estonia": "EE", "Eswatini": "SZ", "United States": "US", "Ethiopia": "ET", 
+  "Fiji": "FJ", "Finland": "FI", "France": "FR", "Gabon": "GA", "Gambia": "GM", 
+  "Georgia": "GE", "Ghana": "GH", "Greece": "GR", "Grenada": "GD", "Guatemala": "GT", 
+  "Guinea": "GN", "Equatorial Guinea": "GQ", "Guinea-Bissau": "GW", "Guyana": "GY", "Haiti": "HT", 
+  "Honduras": "HN", "Hungary": "HU", "India": "IN", "Indonesia": "ID", "Iraq": "IQ", 
+  "Iran": "IR", "Ireland": "IE", "Iceland": "IS", "Israel": "IL", "Italy": "IT", 
+  "Jamaica": "JM", "Japan": "JP", "Jordan": "JO", "Kazakhstan": "KZ", "Kenya": "KE", 
+  "Kyrgyzstan": "KG", "Kiribati": "KI", "Kuwait": "KW", "Laos": "LA", "Lesotho": "LS", 
+  "Latvia": "LV", "Lebanon": "LB", "Liberia": "LR", "Libya": "LY", "Liechtenstein": "LI", 
+  "Lithuania": "LT", "Luxembourg": "LU", "Madagascar": "MG", "Malaysia": "MY", "Malawi": "MW", 
+  "Maldives": "MV", "Mali": "ML", "Malta": "MT", "Morocco": "MA", "Mauritius": "MU", 
+  "Mauritania": "MR", "Mexico": "MX", "Micronesia": "FM", "Moldova": "MD", "Monaco": "MC", 
+  "Mongolia": "MN", "Montenegro": "ME", "Mozambique": "MZ", "Namibia": "NA", "Nauru": "NR", 
+  "Nepal": "NP", "Nicaragua": "NI", "Niger": "NE", "Nigeria": "NG", "Norway": "NO", 
+  "New Zealand": "NZ", "Oman": "OM", "Uganda": "UG", "Uzbekistan": "UZ", "Pakistan": "PK", 
+  "Palau": "PW", "Panama": "PA", "Papua New Guinea": "PG", "Paraguay": "PY", "Netherlands": "NL", 
+  "Peru": "PE", "Philippines": "PH", "Poland": "PL", "Portugal": "PT", "Qatar": "QA", 
+  "Central African Republic": "CF", "DR Congo": "CD", "Dominican Republic": "DO", "Czech Republic": "CZ", "Romania": "RO", 
+  "United Kingdom": "GB", "Russia": "RU", "Rwanda": "RW", "Saint Kitts and Nevis": "KN", "Saint Vincent and the Grenadines": "VC", 
+  "Saint Lucia": "LC", "San Marino": "SM", "El Salvador": "SV", "Samoa": "WS", "Sao Tome and Principe": "ST", 
+  "Senegal": "SN", "Serbia": "RS", "Seychelles": "SC", "Sierra Leone": "SL", "Singapore": "SG", 
+  "Slovakia": "SK", "Slovenia": "SI", "Somalia": "SO", "Sudan": "SD", "South Sudan": "SS", 
+  "Sri Lanka": "LK", "Sweden": "SE", "Switzerland": "CH", "Suriname": "SR", "Syria": "SY", 
+  "Tajikistan": "TJ", "Tanzania": "TZ", "Chad": "TD", "Czechia": "CZ", "Thailand": "TH", 
+  "East Timor": "TL", "Togo": "TG", "Tonga": "TO", "Trinidad and Tobago": "TT", "Tunisia": "TN", 
+  "Turkmenistan": "TM", "Turkey": "TR", "Tuvalu": "TV", "Ukraine": "UA", "Uruguay": "UY", 
+  "Vanuatu": "VU", "Vatican": "VA", "Venezuela": "VE", "Vietnam": "VN", "Yemen": "YE", 
+  "Zambia": "ZM", "Zimbabwe": "ZW"
 };
 
-const locales = ['en', 'fr', 'de', 'es'];
-const messagesDir = path.join(__dirname, 'messages');
+const locales = ['fr', 'de', 'es'];
 
 locales.forEach(locale => {
-  const filePath = path.join(messagesDir, `${locale}.json`);
-  if (fs.existsSync(filePath)) {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    const messages = JSON.parse(fileContent);
-
-    if (!messages.Countries) {
-      messages.Countries = {};
+  const filePath = path.join(__dirname, 'messages', `${locale}.json`);
+  let data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  
+  if (data.Countries) {
+    let translator;
+    try {
+      translator = new Intl.DisplayNames([locale], { type: 'region' });
+    } catch (e) {
+      console.log('Intl not fully supported, skipping automated translation');
+      return;
     }
-
-    COUNTRIES.forEach(country => {
-      if (locale === 'en') {
-        messages.Countries[country] = country;
-      } else {
-        if (translations[country] && translations[country][locale]) {
-          messages.Countries[country] = translations[country][locale];
-        } else {
-          // Fallback to English name if not translated
-          messages.Countries[country] = country;
+    
+    for (const enName in data.Countries) {
+      const code = enToCode[enName];
+      if (code) {
+        // Only update if it's currently identical to the English name (meaning it's untranslated)
+        if (data.Countries[enName] === enName) {
+          try {
+            data.Countries[enName] = translator.of(code);
+          } catch (e) {}
         }
       }
-    });
-
-    fs.writeFileSync(filePath, JSON.stringify(messages, null, 2), 'utf8');
-    console.log(`Updated Countries in ${locale}.json`);
+    }
+    
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
+    console.log(`Updated countries in ${locale}.json`);
   }
 });

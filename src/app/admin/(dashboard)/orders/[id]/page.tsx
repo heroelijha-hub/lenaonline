@@ -46,8 +46,19 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
   const shipping = orderMeta?.shipping || null;
   const couponCode = orderMeta?.couponCode || null;
   const discount = orderMeta?.discount || 0;
-  const subTotal = orderMeta?.subTotal || null;
-  const shippingCost = orderMeta?.shippingCost ?? null;
+  
+  let subTotal = orderMeta?.subTotal;
+  if (subTotal === undefined || subTotal === null) {
+    subTotal = order.orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  }
+  
+  let shippingCost = orderMeta?.shippingCost;
+  if (shippingCost === undefined || shippingCost === null) {
+    shippingCost = order.total - subTotal;
+    // ensure no floating point weirdness
+    shippingCost = Math.max(0, Math.round(shippingCost * 100) / 100);
+  }
+  
   const shippingMethodName = orderMeta?.shippingMethodName || null;
 
   // For old orders without JSON metadata, look up name from AbandonedCart by email
