@@ -8,12 +8,11 @@ import DeferredWidgets from "@/components/layout/DeferredWidgets";
 import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
-import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
 import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { Toaster } from 'react-hot-toast';
-import { createClient } from '@/utils/supabase/server';
+import { getCachedSettings, getCachedCategoriesTree, getCachedProductCounts } from '@/lib/cache';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -75,19 +74,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
   const locale = await getLocale();
   
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
   let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
-  if (user) {
-    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-    if (dbUser) {
-      userRole = dbUser.role;
-    }
-  }
   
-  const settingsDb = await prisma.setting.findMany();
-  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const settingsMap = await getCachedSettings();
   
   const currencyOptions = {
     currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
@@ -138,11 +127,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     }
   } catch (e) {}
 
-  const [newProductsCount, hotProductsCount, saleProductsCount] = await Promise.all([
-    prisma.product.count(),
-    prisma.product.count({ where: { orderItems: { some: {} } } }),
-    prisma.product.count({ where: { compareAtPrice: { not: null } } })
-  ]);
+  const { newCount: newProductsCount, hotCount: hotProductsCount, saleCount: saleProductsCount } = await getCachedProductCounts();
 
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
@@ -184,10 +169,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerPaymentMastercard: settingsMap.FOOTER_PAYMENT_MASTERCARD !== 'false',
     footerPaymentVisa: settingsMap.FOOTER_PAYMENT_VISA !== 'false',
     footerPaymentOpay: settingsMap.FOOTER_PAYMENT_OPAY !== 'false',
-    categories: await prisma.category.findMany({ 
-      where: { products: { some: {} } },
-      select: { id: true, name: true, slug: true, parentId: true } 
-    }),
+    categories: await getCachedCategoriesTree(),
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
     maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Under Maintenance',
     maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!',
@@ -219,9 +201,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     contactSlug: contactSlug,
   };
 
-  const cookieStore = await cookies();
-  const previewFontCookie = cookieStore.get('preview_font');
-  const globalFont = previewFontCookie?.value || settingsMap.GLOBAL_FONT_FAMILY || 'Inter';
+  const globalFont = settingsMap.GLOBAL_FONT_FAMILY || 'Inter';
   const fontUrl = `https://fonts.googleapis.com/css2?family=${globalFont.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
 
   return (

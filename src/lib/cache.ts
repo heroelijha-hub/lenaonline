@@ -101,3 +101,16 @@ export const getCachedCategoriesTree = unstable_cache(
   ['categories-tree'],
   { tags: ['categories'], revalidate: 3600 }
 );
+
+export const getCachedProductCounts = unstable_cache(
+  async () => {
+    const [newCount, hotCount, saleCount] = await Promise.all([
+      prisma.product.count(),
+      prisma.product.count({ where: { orderItems: { some: {} } } }),
+      prisma.product.count({ where: { compareAtPrice: { not: null } } })
+    ]);
+    return { newCount, hotCount, saleCount };
+  },
+  ['layout-product-counts'],
+  { tags: ['products'], revalidate: 3600 }
+);

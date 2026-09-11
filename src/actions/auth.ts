@@ -165,3 +165,18 @@ export async function loginAdmin(formData: FormData) {
   revalidatePath('/admin', 'layout');
   return { success: true };
 }
+
+export async function getUserRole() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+      if (dbUser) return dbUser.role;
+    }
+  } catch (e) {
+    console.error("Error fetching user role", e);
+  }
+  return null;
+}
+

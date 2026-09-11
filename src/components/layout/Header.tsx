@@ -17,6 +17,7 @@ const MobileSearchOverlay = dynamic(() => import('@/components/layout/MobileSear
 const NotificationBell = dynamic(() => import('@/components/layout/NotificationBell'), { ssr: false });
 import { useTranslations } from 'next-intl';
 import Price from '@/components/Price';
+import { getUserRole } from '@/actions/auth';
 
 type HeaderProps = {
   announcement?: string;
@@ -101,6 +102,15 @@ export default function Header({
   const [isWishlistDrawerOpen, setIsWishlistDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  
+  const [actualUserRole, setActualUserRole] = useState<'ADMIN' | 'CUSTOMER' | null>(userRole);
+  
+  useEffect(() => {
+    // Always check if we need to fetch userRole
+    getUserRole().then(role => {
+      setActualUserRole(role as 'ADMIN' | 'CUSTOMER' | null);
+    });
+  }, []);
   
   const t = useTranslations('Header');
 
@@ -242,15 +252,15 @@ export default function Header({
             </Link>
           ))}
           
-          {userRole ? (
+          {actualUserRole ? (
             <Link 
-              href={userRole === 'ADMIN' ? '/admin' : '/account'}
+              href={actualUserRole === 'ADMIN' ? '/admin' : '/account'}
               className="flex items-center hover:opacity-75 transition text-orange-700 font-semibold"
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {userRole === 'ADMIN' ? (adminDashboardText || t('admin_dashboard')) : (myAccountText || t('my_account'))}
+              {actualUserRole === 'ADMIN' ? (adminDashboardText || t('admin_dashboard')) : (myAccountText || t('my_account'))}
             </Link>
           ) : (
             <button 
