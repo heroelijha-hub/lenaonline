@@ -148,7 +148,7 @@ export default function DeliveryTracker({
         {
           key: 'IN_TRANSIT',
           label: t('status_in_transit'),
-          icon: '✈️',
+          icon: '🛣️',
           date: formatDate(autoStatus.inTransitAt),
           done: ['IN_TRANSIT', 'DELIVERED'].includes(autoStatus.currentStatus),
           active: autoStatus.currentStatus === 'IN_TRANSIT',
@@ -289,6 +289,8 @@ export default function DeliveryTracker({
                 {loadingDelay ? '⏳' : t('save')}
               </button>
             </div>
+          </div>
+        )}
           </div>
         )}
       </div>
