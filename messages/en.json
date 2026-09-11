@@ -788,7 +788,10 @@
     "delay_note_saved": "Delay note saved.",
     "delay_note_active": "Delay note active",
     "delay_note_manual_mode_hint": "Tracking is now in manual mode. Use the position history below.",
-    "shipping_info_manual_hint": "Configure manual delivery information here."
+    "shipping_info_manual_hint": "Configure manual delivery information here.",
+    "payment_method": "Payment Method",
+    "payment_bank_transfer": "Bank Transfer",
+    "payment_stripe": "Credit Card"
   },
   "AdminAbandonedCarts": {
     "abandoned_carts": "Abandoned Carts",

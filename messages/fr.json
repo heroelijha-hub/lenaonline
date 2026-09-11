@@ -788,7 +788,10 @@
     "delay_note_saved": "Note de contretemps enregistrée.",
     "delay_note_active": "Note de contretemps active",
     "delay_note_manual_mode_hint": "Le suivi est maintenant en mode manuel. Utilisez l'historique des positions ci-dessous.",
-    "shipping_info_manual_hint": "Configurez les informations de livraison manuelles ici."
+    "shipping_info_manual_hint": "Configurez les informations de livraison manuelles ici.",
+    "payment_method": "Mode de paiement",
+    "payment_bank_transfer": "Virement bancaire",
+    "payment_stripe": "Carte Bancaire"
   },
   "AdminAbandonedCarts": {
     "abandoned_carts": "Paniers abandonnés",

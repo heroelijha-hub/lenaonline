@@ -788,7 +788,10 @@
     "delay_note_saved": "Verzögerungsnotiz gespeichert.",
     "delay_note_active": "Verzögerungsnotiz aktiv",
     "delay_note_manual_mode_hint": "Das Tracking befindet sich jetzt im manuellen Modus. Verwenden Sie den Positionsverlauf unten.",
-    "shipping_info_manual_hint": "Konfigurieren Sie hier die manuellen Lieferinformationen."
+    "shipping_info_manual_hint": "Konfigurieren Sie hier die manuellen Lieferinformationen.",
+    "payment_method": "Zahlungsmethode",
+    "payment_bank_transfer": "Banküberweisung",
+    "payment_stripe": "Kreditkarte"
   },
   "AdminAbandonedCarts": {
     "abandoned_carts": "Verlassene Warenkörbe",

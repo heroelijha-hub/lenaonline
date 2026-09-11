@@ -788,7 +788,10 @@
     "delay_note_saved": "Nota de retraso guardada.",
     "delay_note_active": "Nota de retraso activa",
     "delay_note_manual_mode_hint": "El seguimiento está ahora en modo manual. Use el historial de posiciones a continuación.",
-    "shipping_info_manual_hint": "Configure aquí la información de entrega manual."
+    "shipping_info_manual_hint": "Configure aquí la información de entrega manual.",
+    "payment_method": "Método de pago",
+    "payment_bank_transfer": "Transferencia bancaria",
+    "payment_stripe": "Tarjeta de crédito"
   },
   "AdminAbandonedCarts": {
     "abandoned_carts": "Carritos Abandonados",
