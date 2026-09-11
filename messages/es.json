@@ -50,7 +50,8 @@
     "subtotal": "Subtotal",
     "total": "Total",
     "view_cart": "Ver carrito",
-    "checkout": "Finalizar compra"
+    "checkout": "Finalizar compra",
+    "close": "Cerrar carrito"
   },
   "Home": {
     "hero_1_subtitle": "Oferta Especial",
@@ -78,7 +79,10 @@
     "promo_2_title": "Obtén 20% de descuento",
     "promo_2_subtitle": "Tienda de mujeres",
     "view_all": "Ver todo",
-    "add_to_cart": "Añadir al carrito"
+    "add_to_cart": "Añadir al carrito",
+    "quick_view": "Vista rápida",
+    "view": "Ver producto",
+    "wishlist": "Lista de deseos"
   },
   "Product": {
     "home": "Inicio",
@@ -482,7 +486,8 @@
     "view_full_wishlist": "Ver lista de deseos completa",
     "added_to_cart": "Añadido al carrito",
     "added_to_wishlist": "Añadido a la lista de deseos",
-    "removed_from_wishlist": "Eliminado de la lista de deseos"
+    "removed_from_wishlist": "Eliminado de la lista de deseos",
+    "close": "Cerrar lista"
   },
   "NewArrivals": {
     "title": "Novedades",
@@ -1217,7 +1222,8 @@
     "start_chat": "Iniciar chat",
     "connection_error": "Error de conexión al chat. Por favor, inténtalo de nuevo.",
     "send_message_prompt": "¡Envíanos un mensaje y responderemos lo antes posible!",
-    "your_message": "Tu mensaje..."
+    "your_message": "Tu mensaje...",
+    "open_chat": "Abrir chat"
   },
   "AdminReviews": {
     "title": "Reseñas de Clientes",
