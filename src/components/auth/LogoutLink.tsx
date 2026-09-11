@@ -21,7 +21,7 @@ export default function LogoutLink() {
     <button 
       onClick={handleLogout}
       disabled={isPending}
-      className="text-orange-500 hover:text-orange-600 font-medium transition-colors disabled:opacity-50 inline"
+      className="text-orange-600 hover:text-orange-700 font-medium transition-colors disabled:opacity-50 inline"
     >
       {t('nav_logout')}
     </button>

@@ -116,7 +116,7 @@ export default async function CheckoutSuccessPage({
               {order.orderItems.map((item) => (
                 <tr key={item.id} className="bg-white">
                   <td className="p-4 border border-gray-200 text-gray-700">
-                    <span className="text-orange-600 font-medium">{item.product.title}</span> <strong className="text-gray-900 ml-1">× {item.quantity}</strong>
+                    <span className="text-orange-700 font-medium">{item.product.title}</span> <strong className="text-gray-900 ml-1">× {item.quantity}</strong>
                   </td>
                   <td className="p-4 border border-gray-200 text-gray-900 font-medium">
                     {formatPrice(item.price * item.quantity)}
@@ -135,7 +135,7 @@ export default async function CheckoutSuccessPage({
               </tr>
               <tr className="bg-white">
                 <td className="p-4 border border-gray-200 font-bold text-gray-900 text-right">{t('total_colon')}</td>
-                <td className="p-4 border border-gray-200 font-bold text-orange-600 text-lg">{formatPrice(order.total)}</td>
+                <td className="p-4 border border-gray-200 font-bold text-orange-700 text-lg">{formatPrice(order.total)}</td>
               </tr>
               <tr className="bg-white">
                 <td className="p-4 border border-gray-200 font-bold text-gray-900 text-right">{t('payment_method_colon')}</td>
@@ -154,7 +154,7 @@ export default async function CheckoutSuccessPage({
             {order.orderItems.map((item) => (
               <div key={item.id} className="p-4 border-b border-gray-200 flex justify-between gap-4">
                 <div className="flex-1">
-                  <span className="text-orange-600 font-medium line-clamp-2">{item.product.title}</span> 
+                  <span className="text-orange-700 font-medium line-clamp-2">{item.product.title}</span> 
                   <strong className="text-gray-900 block mt-1">× {item.quantity}</strong>
                 </div>
                 <div className="font-medium text-gray-900">
@@ -177,7 +177,7 @@ export default async function CheckoutSuccessPage({
               </div>
               <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                 <span className="font-bold text-gray-900">{t('total_colon')}</span>
-                <span className="font-bold text-orange-600 text-lg">{formatPrice(order.total)}</span>
+                <span className="font-bold text-orange-700 text-lg">{formatPrice(order.total)}</span>
               </div>
             </div>
           </div>
@@ -198,12 +198,12 @@ export default async function CheckoutSuccessPage({
               <p>{addressToShow.postalCode} {addressToShow.city}, {addressToShow.country}</p>
               
               <div className="pt-4 mt-2 flex items-center gap-2">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                 {addressToShow.phone || metadata?.billing?.phone}
               </div>
               
               <div className="flex items-center gap-2 mt-1">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 {metadata?.billing?.email}
               </div>
             </>

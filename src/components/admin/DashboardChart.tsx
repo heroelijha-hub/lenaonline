@@ -20,7 +20,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
   // If no data, show a placeholder
   if (!data || data.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center text-gray-400">
+      <div className="w-full h-full flex items-center justify-center text-gray-500">
         No data available
       </div>
     );
@@ -39,7 +39,7 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
       return (
         <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
           <p className="text-sm font-semibold text-gray-800 mb-1">{label}</p>
-          <p className="text-sm text-orange-600 font-bold">
+          <p className="text-sm text-orange-700 font-bold">
             {formatPrice(payload[0].value)}
           </p>
         </div>
@@ -75,13 +75,13 @@ export default function DashboardChart({ data }: { data: SalesData[] }) {
           dx={-10}
           width={85}
         />
-        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#f97316', strokeWidth: 1, strokeDasharray: '5 5' }} />
+        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#c2410c', strokeWidth: 1, strokeDasharray: '5 5' }} />
         <Line 
           type="monotone" 
           dataKey="amount" 
-          stroke="#f97316" 
+          stroke="#c2410c" 
           strokeWidth={3}
-          dot={{ r: 4, fill: '#f97316', strokeWidth: 2, stroke: '#fff' }}
+          dot={{ r: 4, fill: '#c2410c', strokeWidth: 2, stroke: '#fff' }}
           activeDot={{ r: 6, fill: '#ea580c', strokeWidth: 0 }}
           animationDuration={1500}
         />

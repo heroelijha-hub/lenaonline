@@ -71,7 +71,7 @@ export default function SettingsSidebar() {
       <nav className="p-4 space-y-6">
         {navGroups.map((group, idx) => (
           <div key={idx}>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
               {group.title}
             </h3>
             <ul className="space-y-1">

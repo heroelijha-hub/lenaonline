@@ -134,7 +134,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           className={`inline-block font-bold px-8 py-3.5 shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-responsive ring-1 ring-white/20 w-full sm:w-auto text-center ${getBtnRadiusClass('HERO_1')}`}
           style={{
             ...getResponsiveVars('HERO_1_CTA', {m: '15px', t: '16px', d: '16px'}),
-            backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#f97316',
+            backgroundColor: settings.HERO_1_BTN_BG_COLOR || '#c2410c',
             color: settings.HERO_1_BTN_TEXT_COLOR || '#ffffff'
           }}
           dangerouslySetInnerHTML={{ __html: settings.HERO_1_CTA || t('shop_now') }}
@@ -179,7 +179,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           className={`inline-block font-bold px-6 py-2.5 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10 text-center ${getBtnRadiusClass('HERO_2')} ${settings.HERO_2_ALIGN === 'right' ? 'self-end' : settings.HERO_2_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_2_CTA', {m: '13px', t: '14px', d: '14px'}),
-            backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#f97316',
+            backgroundColor: settings.HERO_2_BTN_BG_COLOR || '#c2410c',
             color: settings.HERO_2_BTN_TEXT_COLOR || '#ffffff'
           }}
           dangerouslySetInnerHTML={{ __html: settings.HERO_2_CTA || t('shop_now') }}
@@ -224,7 +224,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           className={`inline-block font-bold px-6 py-2.5 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/10 text-center ${getBtnRadiusClass('HERO_3')} ${settings.HERO_3_ALIGN === 'right' ? 'self-end' : settings.HERO_3_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_3_CTA', {m: '13px', t: '14px', d: '14px'}),
-            backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#f97316',
+            backgroundColor: settings.HERO_3_BTN_BG_COLOR || '#c2410c',
             color: settings.HERO_3_BTN_TEXT_COLOR || '#ffffff'
           }}
           dangerouslySetInnerHTML={{ __html: settings.HERO_3_CTA || t('shop_now') }}
@@ -269,7 +269,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
           className={`inline-block font-bold px-8 py-3 shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg text-responsive ring-1 ring-white/20 text-center ${getBtnRadiusClass('HERO_4')} ${settings.HERO_4_ALIGN === 'right' ? 'self-end' : settings.HERO_4_ALIGN === 'center' ? 'self-center' : 'self-start'}`}
           style={{
             ...getResponsiveVars('HERO_4_CTA', {m: '14px', t: '15px', d: '15px'}),
-            backgroundColor: settings.HERO_4_BTN_BG_COLOR || '#f97316',
+            backgroundColor: settings.HERO_4_BTN_BG_COLOR || '#c2410c',
             color: settings.HERO_4_BTN_TEXT_COLOR || '#ffffff'
           }}
           dangerouslySetInnerHTML={{ __html: settings.HERO_4_CTA || t('shop_now') }}
@@ -478,19 +478,26 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
 
       {/* MOBILE VIEW (AutoSlider) */}
       {isStyle2 ? (
-        <HeroMobileSliderWrapper>
-          {block1Style2}
-          <div className="flex flex-col gap-4 h-full w-full">
+        <HeroMobileSliderWrapper childCount={2}>
+          <div className="w-full h-full flex-shrink-0 snap-center relative">
+            {block1Style2}
+          </div>
+          <div className="w-full h-full flex-shrink-0 snap-center relative flex flex-col gap-4">
             <div className="flex-1 min-h-[250px]">{block2Style2}</div>
             <div className="flex-1 min-h-[250px]">{block3Style2}</div>
           </div>
         </HeroMobileSliderWrapper>
       ) : (
-        <HeroMobileSliderWrapper>
-          {settings.HERO_1_HIDE_MOBILE !== 'true' && block1}
-          {settings.HERO_2_HIDE_MOBILE !== 'true' && block2}
-          {settings.HERO_3_HIDE_MOBILE !== 'true' && block3}
-          {settings.HERO_4_HIDE_MOBILE !== 'true' && block4}
+        <HeroMobileSliderWrapper childCount={[
+          settings.HERO_1_HIDE_MOBILE !== 'true',
+          settings.HERO_2_HIDE_MOBILE !== 'true',
+          settings.HERO_3_HIDE_MOBILE !== 'true',
+          settings.HERO_4_HIDE_MOBILE !== 'true'
+        ].filter(Boolean).length}>
+          {settings.HERO_1_HIDE_MOBILE !== 'true' && <div className="w-full h-full flex-shrink-0 snap-center relative">{block1}</div>}
+          {settings.HERO_2_HIDE_MOBILE !== 'true' && <div className="w-full h-full flex-shrink-0 snap-center relative">{block2}</div>}
+          {settings.HERO_3_HIDE_MOBILE !== 'true' && <div className="w-full h-full flex-shrink-0 snap-center relative">{block3}</div>}
+          {settings.HERO_4_HIDE_MOBILE !== 'true' && <div className="w-full h-full flex-shrink-0 snap-center relative">{block4}</div>}
         </HeroMobileSliderWrapper>
       )}
     </section>

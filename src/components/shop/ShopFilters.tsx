@@ -133,7 +133,7 @@ export default function ShopFilters({ categories, brands, globalMinPrice = 0, gl
     return Array(5).fill(0).map((_, i) => (
       <svg 
         key={i} 
-        className={`w-4 h-4 ${i < count ? 'text-orange-500' : 'text-gray-300'}`} 
+        className={`w-4 h-4 ${i < count ? 'text-orange-600' : 'text-gray-300'}`} 
         fill="currentColor" 
         viewBox="0 0 20 20"
       >
@@ -220,15 +220,15 @@ export default function ShopFilters({ categories, brands, globalMinPrice = 0, gl
                 <label key={cat.id} className="flex items-center cursor-pointer group">
                   <input
                     type="checkbox"
-                    className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                    className="form-checkbox h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
                     checked={selectedCategories.includes(cat.slug)}
                     onChange={() => handleCategoryChange(cat.slug)}
                   />
-                  <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1 truncate">
+                  <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-600 transition-colors flex-1 truncate">
                     {cat.name}
                   </span>
                   {cat._count !== undefined && (
-                    <span className="text-xs text-gray-400">({cat._count.products})</span>
+                    <span className="text-xs text-gray-500">({cat._count.products})</span>
                   )}
                 </label>
               ))}
@@ -263,15 +263,15 @@ export default function ShopFilters({ categories, brands, globalMinPrice = 0, gl
                     <label key={brand.id} className="flex items-center cursor-pointer group">
                       <input
                         type="checkbox"
-                        className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                        className="form-checkbox h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
                         checked={selectedBrands.includes(brand.slug)}
                         onChange={() => handleBrandChange(brand.slug)}
                       />
-                      <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-500 transition-colors flex-1 truncate">
+                      <span className="ml-3 text-sm text-gray-600 group-hover:text-orange-600 transition-colors flex-1 truncate">
                         {brand.name}
                       </span>
                       {brand._count !== undefined && (
-                        <span className="text-xs text-gray-400">({brand._count.products})</span>
+                        <span className="text-xs text-gray-500">({brand._count.products})</span>
                       )}
                     </label>
                   ))}
@@ -291,7 +291,7 @@ export default function ShopFilters({ categories, brands, globalMinPrice = 0, gl
             <label key={rating} className="flex items-center cursor-pointer group">
               <input
                 type="checkbox"
-                className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                className="form-checkbox h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
                 checked={selectedRatings.includes(rating)}
                 onChange={() => handleRatingChange(rating)}
               />

@@ -32,7 +32,7 @@ export default function CookieConsent() {
   return (
     <div 
       className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl z-50 p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
-      style={{ borderColor: 'var(--theme-color, #f97316)' }}
+      style={{ borderColor: 'var(--theme-color, #c2410c)' }}
     >
       <div className="flex-1 max-w-3xl">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('title')}</h3>
@@ -44,14 +44,14 @@ export default function CookieConsent() {
         <button
           onClick={handleDecline}
           className="flex-1 md:flex-none px-6 py-2.5 rounded-md border bg-white font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-          style={{ borderColor: 'var(--theme-color, #f97316)', color: 'var(--theme-color, #f97316)' }}
+          style={{ borderColor: 'var(--theme-color, #c2410c)', color: 'var(--theme-color, #c2410c)' }}
         >
           {t('decline')}
         </button>
         <button
           onClick={handleAccept}
           className="flex-1 md:flex-none px-6 py-2.5 rounded-md text-white font-medium hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm"
-          style={{ backgroundColor: 'var(--theme-color, #f97316)' }}
+          style={{ backgroundColor: 'var(--theme-color, #c2410c)' }}
         >
           {t('accept')}
         </button>

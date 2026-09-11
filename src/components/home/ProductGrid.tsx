@@ -75,7 +75,7 @@ export default async function ProductGrid({ config }: ProductGridProps) {
         {settings.SEE_ALL_TEXT !== '' && (
           <Link 
             href={seeAllUrl} 
-            className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
+            className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-600 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" 
             style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}
           >
             {settings.SEE_ALL_TEXT || t('view_all')}

@@ -38,7 +38,7 @@ export default async function DownloadsPage() {
             </div>
             <Link 
               href="/shop" 
-              className="text-sm font-semibold text-gray-900 hover:text-orange-500 hover:underline transition-colors ml-4 whitespace-nowrap"
+              className="text-sm font-semibold text-gray-900 hover:text-orange-600 hover:underline transition-colors ml-4 whitespace-nowrap"
             >
               {t('browse_products')}
             </Link>

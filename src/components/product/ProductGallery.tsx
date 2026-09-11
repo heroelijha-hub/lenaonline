@@ -33,7 +33,7 @@ export default function ProductGallery({ images, title, discountLabel, compareAt
         <button 
           onClick={() => setSelectedIndex(Math.max(0, selectedIndex - 1))}
           disabled={!hasImages || selectedIndex === 0}
-          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
+          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-500 disabled:hover:bg-transparent transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
         </button>
@@ -55,7 +55,7 @@ export default function ProductGallery({ images, title, discountLabel, compareAt
         <button 
           onClick={() => setSelectedIndex(Math.min((images?.length || 1) - 1, selectedIndex + 1))}
           disabled={!hasImages || selectedIndex >= Math.min(4, images.length - 1)}
-          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center mt-auto disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
+          className="w-full py-1 border border-[#ff4500] rounded text-[#ff4500] hover:bg-[#ff4500]/10 flex justify-center mt-auto disabled:opacity-50 disabled:border-gray-200 disabled:text-gray-500 disabled:hover:bg-transparent transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
         </button>

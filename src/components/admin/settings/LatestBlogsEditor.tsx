@@ -32,7 +32,7 @@ export default function LatestBlogsEditor({
           </button>
           <div>
             <h3 className="font-bold text-gray-900 leading-tight">Edit Section</h3>
-            <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
+            <span className="text-xs font-medium text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
               Latest Blogs
             </span>
           </div>

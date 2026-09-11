@@ -200,15 +200,15 @@ export default async function OrderDetailsPage({
                       <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 object-cover rounded border border-gray-100" />
                     ) : (
                       <div className="w-16 h-16 bg-gray-100 rounded border border-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400 text-xs">No image</span>
+                        <span className="text-gray-500 text-xs">No image</span>
                       </div>
                     )}
                     <div>
-                      <Link href={`/product/${item.product.slug}`} className="font-semibold text-sm text-gray-900 hover:text-orange-600 transition-colors">
+                      <Link href={`/product/${item.product.slug}`} className="font-semibold text-sm text-gray-900 hover:text-orange-700 transition-colors">
                         {item.product.title}
                       </Link>
                       {item.attributes && (
-                        <p className="text-xs text-orange-600 font-medium mt-1">
+                        <p className="text-xs text-orange-700 font-medium mt-1">
                           {(() => {
                             try {
                               const attrs = typeof item.attributes === 'string' ? JSON.parse(item.attributes) : item.attributes;
@@ -255,28 +255,28 @@ export default async function OrderDetailsPage({
             <h2 className="text-lg font-bold text-gray-900 mb-4">👤 Informations client</h2>
 
             {/* Adresse de facturation */}
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">ADRESSE DE FACTURATION</p>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">ADRESSE DE FACTURATION</p>
             <div className="space-y-2 text-sm text-gray-700 mb-5">
               <div className="flex items-center gap-2">
-                <span className="text-gray-400 w-4 shrink-0">👤</span>
+                <span className="text-gray-500 w-4 shrink-0">👤</span>
                 <span className="font-medium">{customerNameBilling || (user.email ? user.email.split('@')[0] : '')}</span>
               </div>
               {customerEmail && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-400 w-4 shrink-0">✉️</span>
-                  <a href={`mailto:${customerEmail}`} className="text-orange-600 hover:underline break-all text-xs">
+                  <span className="text-gray-500 w-4 shrink-0">✉️</span>
+                  <a href={`mailto:${customerEmail}`} className="text-orange-700 hover:underline break-all text-xs">
                     {customerEmail}
                   </a>
                 </div>
               )}
               {customerPhone && (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-400 w-4 shrink-0">📞</span>
+                  <span className="text-gray-500 w-4 shrink-0">📞</span>
                   <a href={`tel:${customerPhone}`} className="hover:underline">{customerPhone}</a>
                 </div>
               )}
               <div className="flex items-start gap-2">
-                <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
                 <p className="whitespace-pre-wrap leading-relaxed">{formattedBillingAddress}</p>
               </div>
             </div>
@@ -285,27 +285,27 @@ export default async function OrderDetailsPage({
             <div className="border-t pt-4">
               {formattedShippingAddress && formattedShippingAddress !== formattedBillingAddress ? (
                 <>
-                  <p className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address')}</p>
+                  <p className="text-xs font-semibold text-orange-600 uppercase tracking-wide mb-3">🚚 {t('shipping_address')}</p>
                   <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-400 w-4 shrink-0">👤</span>
+                      <span className="text-gray-500 w-4 shrink-0">👤</span>
                       <span className="font-medium">{customerNameShipping}</span>
                     </div>
                     {customerPhone && (
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-400 w-4 shrink-0">📞</span>
+                        <span className="text-gray-500 w-4 shrink-0">📞</span>
                         <a href={`tel:${customerPhone}`} className="hover:underline">{customerPhone}</a>
                       </div>
                     )}
                     <div className="flex items-start gap-2">
-                      <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                      <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
                       <p className="whitespace-pre-wrap leading-relaxed">{formattedShippingAddress}</p>
                     </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
                   <p className="text-sm text-gray-500 italic">Identique à l'adresse de facturation</p>
                 </>
               )}

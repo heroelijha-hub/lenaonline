@@ -38,7 +38,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="w-64 bg-white border-r border-gray-200">
         <div className="h-full flex flex-col">
           <div className="h-16 flex items-center px-6 border-b border-gray-200">
-            <Link href="/admin" className="text-[12px] font-bold text-orange-600">
+            <Link href="/admin" className="text-[12px] font-bold text-orange-700">
               {t('title')}
             </Link>
           </div>

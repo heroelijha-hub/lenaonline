@@ -71,12 +71,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         {/* Breadcrumb */}
         <div className="bg-gray-50 border-b border-gray-200 mb-10">
           <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
-            <Link href="/" className="hover:text-orange-500 transition">{t('home')}</Link>
+            <Link href="/" className="hover:text-orange-600 transition">{t('home')}</Link>
             <span className="text-gray-300">/</span>
             {(product as any).categories && (product as any).categories.length > 0 ? (
               <Link 
                 href={`/product-category/${(product as any).categories[0].slug || (product as any).categories[0].id}`}
-                className="hover:text-orange-500 transition"
+                className="hover:text-orange-600 transition"
               >
                 {(product as any).categories[0].name}
               </Link>
@@ -137,7 +137,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     </div>
                     <div className="mt-auto">
                       <p className="text-xs text-blue-500 font-semibold mb-1">{rp.categories && rp.categories.length > 0 ? rp.categories[0].name : t('general')}</p>
-                      <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">{rp.title}</h3>
+                      <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-600 transition">{rp.title}</h3>
                       <Price amount={rp.price} className="font-bold text-red-600" />
                     </div>
                   </Link>

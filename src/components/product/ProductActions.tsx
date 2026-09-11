@@ -178,7 +178,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       <div className="mb-6 flex flex-col gap-1">
         <div className="flex items-center">
           {product.compareAtPrice && !currentVariation && (
-            <span className="text-2xl text-gray-400 line-through mr-3">{formatPrice(product.compareAtPrice)}</span>
+            <span className="text-2xl text-gray-500 line-through mr-3">{formatPrice(product.compareAtPrice)}</span>
           )}
           <span className="text-3xl font-bold text-red-600">{formatPrice(currentPrice)}</span>
         </div>
@@ -197,7 +197,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
       {/* Force Sales UI */}
       {product.forceSales && product.forceSales.length > 0 && (
         <div className="mb-6 border-2 border-orange-500 bg-orange-50 rounded-lg p-4">
-          <h4 className="text-sm font-bold text-orange-600 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <h4 className="text-sm font-bold text-orange-700 uppercase tracking-wide mb-3 flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
             {t('force_sales_title')}
           </h4>
@@ -333,7 +333,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
                     if (e.target.checked) setSelectedSaleTogether(prev => [...prev, st.id]);
                     else setSelectedSaleTogether(prev => prev.filter(id => id !== st.id));
                   }}
-                  className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500"
+                  className="w-5 h-5 text-orange-700 rounded border-gray-300 focus:ring-orange-500"
                 />
                 {st.images?.[0] && <img src={st.images[0]} alt={st.title} className="w-12 h-12 object-cover rounded bg-white border border-gray-100" />}
                 <div className="flex-1">
@@ -351,7 +351,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
         <button 
           onClick={handleToggleWishlist}
           className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md border transition ${
-            isWishlisted ? 'bg-orange-500 text-white border-orange-500' : 'text-gray-600 hover:text-orange-500 bg-orange-50/50 border-orange-100'
+            isWishlisted ? 'bg-orange-500 text-white border-orange-500' : 'text-gray-600 hover:text-orange-600 bg-orange-50/50 border-orange-100'
           }`}
         >
           <svg className="w-4 h-4" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -360,7 +360,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
         <button 
           type="button"
           onClick={() => router.push('/compare')}
-          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
+          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-600 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
           {t('compare')}
@@ -368,7 +368,7 @@ export default function ProductActions({ product, enableBuyNow = false, onVariat
         <button 
           type="button"
           onClick={() => router.push(`/${contactSlug}`)}
-          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-500 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
+          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-600 bg-orange-50/50 px-4 py-2 rounded-md border border-orange-100 transition"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           {t('ask_question')}

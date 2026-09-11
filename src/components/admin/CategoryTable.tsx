@@ -116,7 +116,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                 type="checkbox" 
                 checked={categories.length > 0 && selectedIds.length === categories.length}
                 onChange={toggleSelectAll}
-                className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"
               />
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('id_th')}</th>
@@ -139,7 +139,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                     type="checkbox" 
                     checked={selectedIds.includes(cat.id)}
                     onChange={() => toggleSelect(cat.id)}
-                    className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                    className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -188,7 +188,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                       ))}
                     </select>
                   ) : (
-                    cat.parent ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">{cat.parent.name}</span> : <span className="text-gray-400 italic">{t("main_col")}</span>
+                    cat.parent ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">{cat.parent.name}</span> : <span className="text-gray-500 italic">{t("main_col")}</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -199,7 +199,7 @@ export default function CategoryTable({ categories }: { categories: Category[] }
                     </div>
                   ) : (
                     <div className="flex justify-end gap-3">
-                      <button onClick={() => handleEditClick(cat)} className="text-orange-600 hover:text-orange-900">{t("edit_col")}</button>
+                      <button onClick={() => handleEditClick(cat)} className="text-orange-700 hover:text-orange-900">{t("edit_col")}</button>
                       <button 
                         onClick={() => handleDelete(cat.id)} 
                         disabled={isDeleting === cat.id}

@@ -103,7 +103,7 @@ export default function WooCommerceImportModal() {
           <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 relative">
             <button 
               onClick={() => !loading && setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-600"
               disabled={loading}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -154,7 +154,7 @@ export default function WooCommerceImportModal() {
 
               {loading && importingCategories && (
                 <div className="space-y-2">
-                  <div className="flex justify-center text-sm font-medium text-orange-600">
+                  <div className="flex justify-center text-sm font-medium text-orange-700">
                     <span>{t('syncing_categories')}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">

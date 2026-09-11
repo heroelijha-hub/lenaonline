@@ -66,7 +66,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
               placeholder="Nom de la boutique | Slogan percutant"
               className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
-            <div className={`text-xs mt-1 ${metaTitle.length < 50 ? 'text-red-500' : metaTitle.length > 60 ? 'text-orange-500' : 'text-green-600'}`}>
+            <div className={`text-xs mt-1 ${metaTitle.length < 50 ? 'text-red-500' : metaTitle.length > 60 ? 'text-orange-600' : 'text-green-600'}`}>
               {metaTitle.length} {tSeo('chars') || 'caractères'} {metaTitle.length > 0 && (metaTitle.length < 50 ? tSeo('too_short') : metaTitle.length > 60 ? tSeo('too_long') : tSeo('perfect'))}
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
               placeholder="Découvrez notre boutique..."
               className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
-            <div className={`text-xs mt-1 ${metaDescription.length < 80 ? 'text-red-500' : metaDescription.length > 125 ? 'text-orange-500' : 'text-green-600'}`}>
+            <div className={`text-xs mt-1 ${metaDescription.length < 80 ? 'text-red-500' : metaDescription.length > 125 ? 'text-orange-600' : 'text-green-600'}`}>
               {metaDescription.length} {tSeo('chars') || 'caractères'} {metaDescription.length > 0 && (metaDescription.length < 80 ? tSeo('too_short') : metaDescription.length > 125 ? tSeo('too_long') : tSeo('perfect'))}
             </div>
           </div>

@@ -104,7 +104,7 @@ export default function MediaPickerModal({
           <button 
             type="button"
             onClick={onClose} 
-            className="text-gray-400 hover:text-gray-700 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200"
+            className="text-gray-500 hover:text-gray-700 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -119,7 +119,7 @@ export default function MediaPickerModal({
             onClick={() => setActiveTab('library')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-semibold border-b-2 transition ${
               activeTab === 'library' 
-                ? 'border-orange-500 text-orange-600' 
+                ? 'border-orange-500 text-orange-700' 
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -133,7 +133,7 @@ export default function MediaPickerModal({
             onClick={() => setActiveTab('upload')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-semibold border-b-2 transition ${
               activeTab === 'upload' 
-                ? 'border-orange-500 text-orange-600' 
+                ? 'border-orange-500 text-orange-700' 
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -166,7 +166,7 @@ export default function MediaPickerModal({
                     <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 ) : media.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+                  <div className="flex flex-col items-center justify-center py-16 text-gray-500">
                     <svg className="w-16 h-16 mb-3 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -184,7 +184,7 @@ export default function MediaPickerModal({
                           <img src={m.url} alt={m.altText || m.title || 'media'} className="object-cover w-full h-full" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 p-2">
-                            <svg className="w-8 h-8 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-8 h-8 text-gray-500 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                             <span className="text-[10px] text-gray-500 truncate w-full text-center">{m.title || 'Fichier'}</span>
@@ -244,30 +244,30 @@ export default function MediaPickerModal({
                   <div className="flex flex-col items-center gap-3">
                     <img src={uploadPreview} alt="Aperçu" className="max-h-48 max-w-full rounded-lg object-contain shadow-md" />
                     <p className="text-sm text-gray-600 font-medium">{uploadFile.name}</p>
-                    <p className="text-xs text-gray-400">{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                    <p className="text-xs text-gray-500">{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
                   </div>
                 ) : uploadFile ? (
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <p className="text-sm text-gray-600 font-medium">{uploadFile.name}</p>
-                    <p className="text-xs text-gray-400">{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                    <p className="text-xs text-gray-500">{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                       </svg>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-gray-700">Glissez-déposez un fichier ici</p>
-                      <p className="text-xs text-gray-400 mt-1">ou cliquez pour sélectionner</p>
+                      <p className="text-xs text-gray-500 mt-1">ou cliquez pour sélectionner</p>
                     </div>
-                    <p className="text-xs text-gray-400">Images, vidéos, documents — tous formats acceptés</p>
+                    <p className="text-xs text-gray-500">Images, vidéos, documents — tous formats acceptés</p>
                   </div>
                 )}
                 <input

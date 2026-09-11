@@ -27,7 +27,7 @@ type ProductReviewsProps = {
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-4 h-4 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -66,13 +66,13 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
       <div className="flex justify-center gap-2 mb-0 relative z-10">
         <button 
           onClick={() => setActiveTab('desc')}
-          className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'desc' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}
+          className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'desc' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-700 hover:bg-orange-100'}`}
         >
           {t('description_tab')}
         </button>
         <button 
           onClick={() => setActiveTab('reviews')}
-          className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'reviews' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}
+          className={`px-8 py-3 text-sm font-bold rounded-t-lg transition-colors ${activeTab === 'reviews' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-700 hover:bg-orange-100'}`}
         >
           {t('reviews_tab')}
         </button>
@@ -129,7 +129,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
               </p>
               
               {!isLoggedIn ? (
-                <p className="text-sm text-gray-600">{t('must_be_logged_in')} <a href="/login" className="text-orange-500 hover:underline">{t('login')}</a></p>
+                <p className="text-sm text-gray-600">{t('must_be_logged_in')} <a href="/login" className="text-orange-600 hover:underline">{t('login')}</a></p>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {msg.text && (
@@ -187,7 +187,7 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
                     <input 
                       type="checkbox" 
                       id="save-info" 
-                      className="mt-1 w-3.5 h-3.5 text-orange-600 border-gray-300 rounded-sm focus:ring-orange-500"
+                      className="mt-1 w-3.5 h-3.5 text-orange-700 border-gray-300 rounded-sm focus:ring-orange-500"
                     />
                     <label htmlFor="save-info" className="text-[11px] text-gray-600 font-medium">
                       {t('save_info')}

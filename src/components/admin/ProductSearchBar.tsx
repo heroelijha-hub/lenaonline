@@ -50,7 +50,7 @@ export default function ProductSearchBar({ defaultValue = '' }: { defaultValue?:
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         {isPending ? (
           <svg
-            className="h-4 w-4 text-orange-500 animate-spin"
+            className="h-4 w-4 text-orange-600 animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -60,7 +60,7 @@ export default function ProductSearchBar({ defaultValue = '' }: { defaultValue?:
           </svg>
         ) : (
           <svg
-            className="h-4 w-4 text-gray-400"
+            className="h-4 w-4 text-gray-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ export default function ProductSearchBar({ defaultValue = '' }: { defaultValue?:
         <button
           type="button"
           onClick={handleClear}
-          className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600 transition"
+          className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-500 hover:text-gray-600 transition"
           aria-label="Effacer la recherche"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

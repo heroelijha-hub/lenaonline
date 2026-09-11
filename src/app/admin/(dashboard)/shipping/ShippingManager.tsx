@@ -215,7 +215,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                 id="zoneIsActive"
                 checked={zoneIsActive}
                 onChange={(e) => setZoneIsActive(e.target.checked)}
-                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                className="w-4 h-4 text-orange-700 border-gray-300 rounded focus:ring-orange-500"
               />
               <label htmlFor="zoneIsActive" className="ml-2 text-sm text-gray-700 cursor-pointer">
                 {t('zone_active')}
@@ -299,7 +299,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                               : '-'}
                           </td>
                           <td className="px-3 py-2">
-                            <span className={method.isActive ? 'text-green-600' : 'text-gray-400'}>
+                            <span className={method.isActive ? 'text-green-600' : 'text-gray-500'}>
                               {method.isActive ? t('active') : t('inactive')}
                             </span>
                           </td>
@@ -369,7 +369,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                           type="checkbox"
                           checked={methodIsActive}
                           onChange={(e) => setMethodIsActive(e.target.checked)}
-                          className="w-4 h-4 text-orange-600 rounded"
+                          className="w-4 h-4 text-orange-700 rounded"
                         />
                         <label className="ml-2 text-sm text-gray-700">{t('active')}</label>
                       </div>
@@ -387,7 +387,7 @@ export default function ShippingManager({ initialZones }: { initialZones: Shippi
                 ) : (
                   <button 
                     onClick={() => { resetMethodForm(); setAddingMethodForZone(zone.id); }}
-                    className="text-sm font-medium text-orange-600 hover:text-orange-800"
+                    className="text-sm font-medium text-orange-700 hover:text-orange-800"
                   >
                     {t('add_method_for', { zone: zone.name })}
                   </button>

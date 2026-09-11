@@ -88,7 +88,7 @@ export default function ReviewTable({ reviews }: { reviews: Review[] }) {
                   </div>
                 ) : (
                   <div>
-                    <div className="font-bold text-orange-500">{review.rating} ★</div>
+                    <div className="font-bold text-orange-600">{review.rating} ★</div>
                     <div className="text-gray-700 line-clamp-2">{review.comment}</div>
                   </div>
                 )}

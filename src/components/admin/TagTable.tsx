@@ -69,7 +69,7 @@ export default function TagTable({ tags }: { tags: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left w-12"><input type="checkbox" onChange={(e) => setSelectedIds(e.target.checked ? tags.map(t => t.id) : [])} checked={tags.length > 0 && selectedIds.length === tags.length} className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/></th>
+            <th className="px-6 py-3 text-left w-12"><input type="checkbox" onChange={(e) => setSelectedIds(e.target.checked ? tags.map(t => t.id) : [])} checked={tags.length > 0 && selectedIds.length === tags.length} className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"/></th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -81,7 +81,7 @@ export default function TagTable({ tags }: { tags: any[] }) {
           ) : (
             tags.map((t) => (
               <tr key={t.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap"><input type="checkbox" checked={selectedIds.includes(t.id)} onChange={() => toggleSelect(t.id)} className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/></td>
+                <td className="px-6 py-4 whitespace-nowrap"><input type="checkbox" checked={selectedIds.includes(t.id)} onChange={() => toggleSelect(t.id)} className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"/></td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {editingId === t.id ? (
                     <input type="text" value={editName} onChange={(e) => { setEditName(e.target.value); setEditSlug(generateSlug(e.target.value)); }} className="px-2 py-1 border border-orange-300 rounded text-sm" autoFocus/>

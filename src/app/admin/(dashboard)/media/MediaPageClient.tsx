@@ -100,7 +100,7 @@ export default function MediaPageClient() {
       <div className="mb-6 flex items-center gap-4 text-sm bg-white p-4 shadow-sm border border-gray-200 rounded">
         {/* View toggles */}
         <div className="flex items-center gap-1 border-r border-gray-200 pr-4">
-          <button className="p-1.5 text-gray-400 hover:text-gray-700" title={t('list_view') || "List view"}>
+          <button className="p-1.5 text-gray-500 hover:text-gray-700" title={t('list_view') || "List view"}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
           <button className="p-1.5 text-gray-900 border border-gray-300 rounded bg-gray-100" title={t('grid_view') || "Grid view"}>
@@ -161,7 +161,7 @@ export default function MediaPageClient() {
               <button
                 type="button"
                 onClick={() => { setSearch(''); setPage(1); }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600 focus:outline-none"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>

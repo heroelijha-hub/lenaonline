@@ -100,7 +100,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Notifications"
-        className="relative p-2 text-gray-600 hover:text-orange-600 transition focus:outline-none flex items-center justify-center"
+        className="relative p-2 text-gray-600 hover:text-orange-700 transition focus:outline-none flex items-center justify-center"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -117,7 +117,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
           <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
             <h3 className="font-semibold text-gray-800 text-sm">{t('title')}</h3>
             {unreadCount > 0 && (
-              <button onClick={handleMarkAllAsRead} className="text-xs text-orange-600 hover:text-orange-700 font-medium">
+              <button onClick={handleMarkAllAsRead} className="text-xs text-orange-700 hover:text-orange-700 font-medium">
                 {t('mark_all_read')}
               </button>
             )}
@@ -135,7 +135,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
                         <div className="flex items-center gap-2 mb-1">
                           {n.type === 'CHAT' && <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">{t('label_chat')}</span>}
                           {n.type === 'ORDER' && <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">{t('label_order')}</span>}
-                          <span className="text-[10px] text-gray-400">
+                          <span className="text-[10px] text-gray-500">
                             {new Date(n.createdAt).toLocaleDateString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
@@ -146,7 +146,7 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
                           <Link
                             href={n.link}
                             onClick={() => { if (!n.isRead) handleMarkAsRead(n.id); setIsOpen(false); }}
-                            className="text-xs text-orange-600 hover:underline mt-2 inline-block font-medium"
+                            className="text-xs text-orange-700 hover:underline mt-2 inline-block font-medium"
                           >
                             {t('view_details')} &rarr;
                           </Link>

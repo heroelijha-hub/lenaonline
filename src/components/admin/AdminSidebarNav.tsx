@@ -19,7 +19,7 @@ export default function AdminSidebarNav({ links }: { links: { href: string, labe
              className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition ${
                isActive 
                  ? 'bg-orange-500 text-white shadow-sm' 
-                 : 'text-gray-700 hover:bg-orange-50 hover:text-orange-600'
+                 : 'text-gray-700 hover:bg-orange-50 hover:text-orange-700'
              }`}
            >
              {link.icon && <span className="mr-3">{link.icon}</span>}

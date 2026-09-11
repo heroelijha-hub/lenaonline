@@ -33,17 +33,17 @@ export default async function AccountDashboard() {
       <p className="text-gray-700 leading-relaxed">
         {t.rich('dashboard_desc', {
           orders_link: (chunks) => (
-            <Link href="/account/orders" className="text-orange-500 hover:text-orange-600 font-medium transition-colors">
+            <Link href="/account/orders" className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
               {chunks}
             </Link>
           ),
           addresses_link: (chunks) => (
-            <Link href="/account/addresses" className="text-orange-500 hover:text-orange-600 font-medium transition-colors">
+            <Link href="/account/addresses" className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
               {chunks}
             </Link>
           ),
           details_link: (chunks) => (
-            <Link href="/account/details" className="text-orange-500 hover:text-orange-600 font-medium transition-colors">
+            <Link href="/account/details" className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
               {chunks}
             </Link>
           )

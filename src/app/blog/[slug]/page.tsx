@@ -84,7 +84,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               
               {/* Header */}
               {article.category && (
-                <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full mb-4">
+                <span className="inline-block px-3 py-1 bg-orange-50 text-orange-700 text-xs font-semibold rounded-full mb-4">
                   {article.category}
                 </span>
               )}
@@ -129,15 +129,15 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   <div className="flex items-center gap-3">
                     <span className="font-semibold text-gray-900">{t('share')}</span>
                     {/* Share placeholders */}
-                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition">f</button>
-                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition">t</button>
-                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition">in</button>
+                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition">f</button>
+                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition">t</button>
+                    <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition">in</button>
                   </div>
                   
                   {nextPost && (
                     <div className="text-right">
                       <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">{t('next_article')}</div>
-                      <Link href={`/blog/${nextPost.slug}`} className="font-semibold text-gray-900 hover:text-orange-600 transition">
+                      <Link href={`/blog/${nextPost.slug}`} className="font-semibold text-gray-900 hover:text-orange-700 transition">
                         {nextPost.title}
                       </Link>
                     </div>
@@ -159,12 +159,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                     <Link href={`/blog/${post.slug}`} key={post.id} className="bg-white p-6 rounded-lg border border-gray-200 group hover:border-orange-200 transition h-full flex flex-col">
                       {post.category && (
                         <div className="mb-3">
-                          <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-[10px] uppercase font-bold rounded-full">
+                          <span className="inline-block px-3 py-1 bg-orange-50 text-orange-700 text-[10px] uppercase font-bold rounded-full">
                             {post.category}
                           </span>
                         </div>
                       )}
-                      <h4 className="font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition line-clamp-2">
+                      <h4 className="font-bold text-gray-900 mb-3 group-hover:text-orange-700 transition line-clamp-2">
                         {post.title}
                       </h4>
                       <p className="text-sm text-gray-600 line-clamp-2 flex-1 mb-4">

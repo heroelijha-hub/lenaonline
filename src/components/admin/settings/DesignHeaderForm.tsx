@@ -11,7 +11,7 @@ export default function DesignHeaderForm({ initialSettings }: { initialSettings:
   
   const [shopCardStyle, setShopCardStyle] = useState(initialSettings.SHOP_CARD_STYLE || 'design2');
   const [shopCardBorderColor, setShopCardBorderColor] = useState(initialSettings.SHOP_CARD_BORDER_COLOR || '#e5e7eb');
-  const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#f97316');
+  const [themeColor, setThemeColor] = useState(initialSettings.THEME_COLOR || '#c2410c');
   const [headerAnnouncement, setHeaderAnnouncement] = useState(initialSettings.HEADER_ANNOUNCEMENT || 'Welcome to our store!');
   const [searchPlaceholder, setSearchPlaceholder] = useState(initialSettings.SEARCH_PLACEHOLDER || 'Search products...');
   const [headerSupportPhone, setHeaderSupportPhone] = useState(initialSettings.HEADER_SUPPORT_PHONE ?? '+08 9229 8228');

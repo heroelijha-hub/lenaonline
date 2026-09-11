@@ -47,7 +47,7 @@ export default async function CouponsPage({ searchParams }: { searchParams: Prom
             <input type="number" step="0.01" name="value" required min="0.01" placeholder={t("discount_value_ex")} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
           </div>
           <div className="flex items-center">
-            <input type="checkbox" name="isActive" id="isActive" defaultChecked className="w-4 h-4 text-orange-600 border-gray-300 rounded" />
+            <input type="checkbox" name="isActive" id="isActive" defaultChecked className="w-4 h-4 text-orange-700 border-gray-300 rounded" />
             <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">{t("active_immediately")}</label>
           </div>
           <button type="submit" className="w-full bg-orange-500 text-white font-medium py-2 rounded hover:bg-orange-600 transition">

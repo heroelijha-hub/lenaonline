@@ -165,7 +165,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
         <div className="lg:col-span-7 space-y-8">
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
-            {t('have_coupon')} <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-600 hover:underline font-medium">{t('click_to_enter_code')}</button>
+            {t('have_coupon')} <button type="button" onClick={() => setShowCouponInput(!showCouponInput)} className="text-orange-700 hover:underline font-medium">{t('click_to_enter_code')}</button>
           </div>
           
           {showCouponInput && !coupon && (
@@ -199,7 +199,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
           )}
           
           <div className="bg-gray-50 p-4 rounded text-sm text-gray-700">
-            {t('already_customer')} <Link href="/login" className="text-orange-600 hover:underline font-medium">{t('click_to_login')}</Link>
+            {t('already_customer')} <Link href="/login" className="text-orange-700 hover:underline font-medium">{t('click_to_login')}</Link>
           </div>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('billing_details')}</h2>
@@ -262,7 +262,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
           </div>
 
           <div className="flex items-center gap-2 pt-2">
-            <input type="checkbox" id="createAccount" name="createAccount" className="w-4 h-4 text-orange-600 rounded border-gray-300 focus:ring-orange-500" />
+            <input type="checkbox" id="createAccount" name="createAccount" className="w-4 h-4 text-orange-700 rounded border-gray-300 focus:ring-orange-500" />
             <label htmlFor="createAccount" className="text-sm text-gray-700 cursor-pointer">{t('create_account_question')}</label>
           </div>
 
@@ -273,7 +273,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
               name="shipToDifferentAddress" 
               checked={shipToDifferentAddress}
               onChange={(e) => setShipToDifferentAddress(e.target.checked)}
-              className="w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500" 
+              className="w-5 h-5 text-orange-700 rounded border-gray-300 focus:ring-orange-500" 
             />
             <label htmlFor="shipToDifferentAddress" className="text-lg font-bold text-gray-900 cursor-pointer">{t('ship_different_address')}</label>
           </div>
@@ -401,7 +401,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                         value={method.id} 
                         checked={shippingMethodId === method.id} 
                         onChange={() => setShippingMethodId(method.id)} 
-                        className="text-orange-600 focus:ring-orange-500" 
+                        className="text-orange-700 focus:ring-orange-500" 
                       />
                     </label>
                   ))
@@ -432,7 +432,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                       value="BANK_TRANSFER"
                       checked={paymentMethod === 'BANK_TRANSFER'} 
                       onChange={() => setPaymentMethod('BANK_TRANSFER')}
-                      className="w-4 h-4 text-orange-600 mr-3 focus:ring-orange-500" 
+                      className="w-4 h-4 text-orange-700 mr-3 focus:ring-orange-500" 
                     />
                     <span className="font-medium text-gray-900">{t('direct_bank_transfer')}</span>
                   </label>
@@ -456,7 +456,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                       value="STRIPE"
                       checked={paymentMethod === 'STRIPE'} 
                       onChange={() => setPaymentMethod('STRIPE')}
-                      className="w-4 h-4 text-orange-600 mr-3 focus:ring-orange-500" 
+                      className="w-4 h-4 text-orange-700 mr-3 focus:ring-orange-500" 
                     />
                     <span className="font-medium text-gray-900">{t('credit_card_stripe')}</span>
                   </label>
@@ -480,7 +480,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
                       value="PAYPAL"
                       checked={paymentMethod === 'PAYPAL'} 
                       onChange={() => setPaymentMethod('PAYPAL')}
-                      className="w-4 h-4 text-orange-600 mr-3 focus:ring-orange-500" 
+                      className="w-4 h-4 text-orange-700 mr-3 focus:ring-orange-500" 
                     />
                     <span className="font-medium text-gray-900">{t('paypal')}</span>
                   </label>
@@ -496,7 +496,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
             </div>
 
             <div className="text-xs text-gray-500 mb-6">
-              {t('privacy_policy_msg_1')}<Link href="/privacy" className="text-orange-600 hover:underline">{t('privacy_policy_link')}</Link>{t('privacy_policy_msg_2')}
+              {t('privacy_policy_msg_1')}<Link href="/privacy" className="text-orange-700 hover:underline">{t('privacy_policy_link')}</Link>{t('privacy_policy_msg_2')}
             </div>
 
             <button 

@@ -80,7 +80,7 @@ export default function BrandTable({ brands }: { brands: any[] }) {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left w-12"><input type="checkbox" onChange={(e) => setSelectedIds(e.target.checked ? brands.map(b => b.id) : [])} checked={brands.length > 0 && selectedIds.length === brands.length} className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/></th>
+            <th className="px-6 py-3 text-left w-12"><input type="checkbox" onChange={(e) => setSelectedIds(e.target.checked ? brands.map(b => b.id) : [])} checked={brands.length > 0 && selectedIds.length === brands.length} className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"/></th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Logo</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
@@ -93,7 +93,7 @@ export default function BrandTable({ brands }: { brands: any[] }) {
           ) : (
             brands.map((b) => (
               <tr key={b.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap"><input type="checkbox" checked={selectedIds.includes(b.id)} onChange={() => toggleSelect(b.id)} className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"/></td>
+                <td className="px-6 py-4 whitespace-nowrap"><input type="checkbox" checked={selectedIds.includes(b.id)} onChange={() => toggleSelect(b.id)} className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"/></td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {editingId === b.id ? (
                     <div className="flex items-center gap-2">

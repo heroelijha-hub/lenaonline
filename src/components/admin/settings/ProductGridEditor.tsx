@@ -114,7 +114,7 @@ export default function ProductGridEditor({
           </button>
           <div>
             <h3 className="font-bold text-gray-900 leading-tight">Edit Section</h3>
-            <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
+            <span className="text-xs font-medium text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
               {section.type}
             </span>
           </div>
@@ -255,7 +255,7 @@ export default function ProductGridEditor({
                     type="button"
                     title="Mobile"
                     onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_MOBILE', section.settings.SHOW_TIMER_MOBILE !== 'false' ? 'false' : 'true')}
-                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_MOBILE !== 'false' ? 'text-orange-600 bg-orange-50 border-orange-200' : 'text-gray-400 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
+                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_MOBILE !== 'false' ? 'text-orange-700 bg-orange-50 border-orange-200' : 'text-gray-500 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
                   </button>
@@ -263,7 +263,7 @@ export default function ProductGridEditor({
                     type="button"
                     title="Tablet"
                     onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_TABLET', section.settings.SHOW_TIMER_TABLET !== 'false' ? 'false' : 'true')}
-                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_TABLET !== 'false' ? 'text-orange-600 bg-orange-50 border-orange-200' : 'text-gray-400 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
+                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_TABLET !== 'false' ? 'text-orange-700 bg-orange-50 border-orange-200' : 'text-gray-500 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
                   </button>
@@ -271,7 +271,7 @@ export default function ProductGridEditor({
                     type="button"
                     title="Desktop"
                     onClick={() => updateSectionSettings(section.id, 'SHOW_TIMER_DESKTOP', section.settings.SHOW_TIMER_DESKTOP !== 'false' ? 'false' : 'true')}
-                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_DESKTOP !== 'false' ? 'text-orange-600 bg-orange-50 border-orange-200' : 'text-gray-400 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
+                    className={`p-1.5 rounded transition flex items-center justify-center border ${section.settings.SHOW_TIMER_DESKTOP !== 'false' ? 'text-orange-700 bg-orange-50 border-orange-200' : 'text-gray-500 hover:text-gray-600 bg-gray-50 border-gray-200'}`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                   </button>
@@ -287,7 +287,7 @@ export default function ProductGridEditor({
                   <button
                     type="button"
                     onClick={() => updateSectionSettings(section.id, `SHOW_PROMO_${blockNum}`, section.settings[`SHOW_PROMO_${blockNum}`] !== 'false' ? 'false' : 'true')}
-                    className={`flex items-center gap-1.5 text-xs font-medium transition ${section.settings[`SHOW_PROMO_${blockNum}`] !== 'false' ? 'text-gray-800' : 'text-gray-400'}`}
+                    className={`flex items-center gap-1.5 text-xs font-medium transition ${section.settings[`SHOW_PROMO_${blockNum}`] !== 'false' ? 'text-gray-800' : 'text-gray-500'}`}
                   >
                     {section.settings[`SHOW_PROMO_${blockNum}`] !== 'false' ? 'Visible' : 'Hidden'}
                   </button>

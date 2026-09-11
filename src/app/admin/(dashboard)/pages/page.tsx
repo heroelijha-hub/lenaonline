@@ -79,7 +79,7 @@ export default async function AdminPagesList({ searchParams }: { searchParams: P
                 <Link href={`/${contactSettings.slug}`} target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
                   {t('view')}
                 </Link>
-                <Link href="/admin/pages/contact" className="text-orange-600 hover:text-orange-900 font-medium text-sm">
+                <Link href="/admin/pages/contact" className="text-orange-700 hover:text-orange-900 font-medium text-sm">
                   {t('edit')}
                 </Link>
               </td>
@@ -100,7 +100,7 @@ export default async function AdminPagesList({ searchParams }: { searchParams: P
                     <Link href={`/${page.slug}`} target="_blank" className="text-blue-600 hover:text-blue-900 font-medium text-sm">
                       {t('view')}
                     </Link>
-                    <Link href={`/admin/pages/${page.id}`} className="text-orange-600 hover:text-orange-900 font-medium text-sm">
+                    <Link href={`/admin/pages/${page.id}`} className="text-orange-700 hover:text-orange-900 font-medium text-sm">
                       {t('edit')}
                     </Link>
                     <form action={async () => {

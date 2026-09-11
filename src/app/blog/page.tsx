@@ -59,12 +59,12 @@ export default async function BlogIndexPage({
                   <div className="p-6 md:w-3/5 flex flex-col">
                     {article.category && (
                       <div className="mb-2">
-                        <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full">
+                        <span className="inline-block px-3 py-1 bg-orange-50 text-orange-700 text-xs font-semibold rounded-full">
                           {article.category}
                         </span>
                       </div>
                     )}
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-orange-600 transition">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-orange-700 transition">
                       <Link href={`/blog/${article.slug}`}>{article.title}</Link>
                     </h2>
                     <div className="flex items-center text-xs text-gray-500 mb-4 gap-4">

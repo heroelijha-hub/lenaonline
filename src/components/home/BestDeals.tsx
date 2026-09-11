@@ -10,7 +10,7 @@ import { getTranslations } from 'next-intl/server';
 // Internal star component
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-4 h-4 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -109,7 +109,7 @@ export default async function BestDeals({ config }: { config?: any }) {
           </div>
 
           {config?.SEE_ALL_TEXT !== '' && (
-            <Link href={seeAllUrl} className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
+            <Link href={seeAllUrl} className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-600 transition whitespace-nowrap text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
               {config?.SEE_ALL_TEXT || t('see_all')}
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -156,7 +156,7 @@ export default async function BestDeals({ config }: { config?: any }) {
           >
             <div className="z-20 w-[60%] sm:w-1/2">
               <span 
-                className="text-orange-600 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
+                className="text-orange-700 font-bold block mb-2 text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]"
                 style={getResponsiveVars('PROMO_1_SUBTITLE', {m: '14px', t: '14px', d: '14px'})}
               >
                 {settings.PROMO_1_SUBTITLE || t('promo_1_subtitle')}

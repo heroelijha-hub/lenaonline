@@ -12,7 +12,7 @@ import Price from '@/components/Price';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-4 h-4 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -82,7 +82,7 @@ export default function BestDealsCard({
         {/* Product Image Area */}
         <div className="relative h-48 w-full bg-white mb-4 flex items-center justify-center overflow-hidden">
           {product.discount && (
-            <span className="absolute top-0 left-0 bg-orange-100 text-orange-600 text-xs font-bold px-2 py-1 rounded z-10">
+            <span className="absolute top-0 left-0 bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded z-10">
               {product.discount}
             </span>
           )}
@@ -135,7 +135,7 @@ export default function BestDealsCard({
         {/* Product Info */}
         <div className="mt-auto">
           <p className="text-xs text-gray-500 mb-1">{product.category}</p>
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover/card:text-orange-500 transition">
+          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 group-hover/card:text-orange-600 transition">
             {product.title}
           </h3>
           

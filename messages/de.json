@@ -50,7 +50,8 @@
     "subtotal": "Zwischensumme",
     "total": "Gesamt",
     "view_cart": "Warenkorb ansehen",
-    "checkout": "Zur Kasse"
+    "checkout": "Zur Kasse",
+    "close": "Schließen"
   },
   "Home": {
     "hero_1_subtitle": "Sonderangebot",
@@ -78,7 +79,10 @@
     "promo_2_title": "Erhalten Sie 20 % Rabatt",
     "promo_2_subtitle": "Damengeschäft",
     "view_all": "Alle anzeigen",
-    "add_to_cart": "In den Warenkorb"
+    "add_to_cart": "In den Warenkorb",
+    "quick_view": "Schnellansicht",
+    "view": "Ansehen",
+    "wishlist": "Auf den Wunschzettel"
   },
   "Product": {
     "home": "Startseite",
@@ -482,7 +486,8 @@
     "view_full_wishlist": "Gesamte Wunschliste anzeigen",
     "added_to_cart": "In den Warenkorb gelegt",
     "added_to_wishlist": "Zur Wunschliste hinzugefügt",
-    "removed_from_wishlist": "Von der Wunschliste entfernt"
+    "removed_from_wishlist": "Von der Wunschliste entfernt",
+    "close": "Schließen"
   },
   "NewArrivals": {
     "title": "Neu eingetroffen",
@@ -1217,7 +1222,8 @@
     "start_chat": "Chat starten",
     "connection_error": "Chat-Verbindungsfehler. Bitte stellen Sie sicher, dass die Datenbank auf dem neuesten Stand ist.",
     "send_message_prompt": "Senden Sie uns eine Nachricht und wir werden so schnell wie möglich antworten!",
-    "your_message": "Ihre Nachricht..."
+    "your_message": "Ihre Nachricht...",
+    "open_chat": "Chat öffnen"
   },
   "AdminReviews": {
     "title": "Kundenrezensionen",

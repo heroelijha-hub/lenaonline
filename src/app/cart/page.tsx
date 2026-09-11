@@ -85,7 +85,7 @@ export default function CartPage() {
                           {item.image ? (
                             <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
                           ) : (
-                            <span className="text-xs text-gray-400">{t('image')}</span>
+                            <span className="text-xs text-gray-500">{t('image')}</span>
                           )}
                         </Link>
                       </div>
@@ -101,7 +101,7 @@ export default function CartPage() {
                           </div>
                         )}
                         {item.forcedByItemId && (
-                          <div className="text-xs font-semibold text-orange-600 mt-1">
+                          <div className="text-xs font-semibold text-orange-700 mt-1">
                             {t('force_sales_title')}
                           </div>
                         )}

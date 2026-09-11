@@ -134,12 +134,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     {item.image ? (
                        <img src={item.image} alt={item.title} className="w-full h-full object-contain p-1" />
                     ) : (
-                       <span className="text-xs text-gray-400">{t('no_image')}</span>
+                       <span className="text-xs text-gray-500">{t('no_image')}</span>
                     )}
                   </div>
                   
                   <div className="flex-1 flex flex-col">
-                    <Link href={`/product/${item.productId}`} onClick={onClose} className="font-medium text-gray-900 text-sm hover:text-orange-600 line-clamp-2 leading-tight mb-2">
+                    <Link href={`/product/${item.productId}`} onClick={onClose} className="font-medium text-gray-900 text-sm hover:text-orange-700 line-clamp-2 leading-tight mb-2">
                       {item.title}
                     </Link>
                     
@@ -191,10 +191,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="mb-4">
               <button 
                 onClick={() => setShowCoupon(!showCoupon)}
-                className="flex items-center text-sm text-gray-700 hover:text-orange-600 transition"
+                className="flex items-center text-sm text-gray-700 hover:text-orange-700 transition"
               >
                 <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" /></svg>
-                <span className="font-semibold text-orange-600 mr-1">{t('click_here')}</span> {t('apply_coupon_text')}
+                <span className="font-semibold text-orange-700 mr-1">{t('click_here')}</span> {t('apply_coupon_text')}
               </button>
               {showCoupon && (
                 <div className="mt-3 flex flex-col gap-2">
@@ -210,7 +210,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className="border border-orange-500 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-900 font-medium">{t('subtotal')}</span>
-                <Price amount={cartTotal} className={coupon ? 'text-gray-400 line-through' : 'text-gray-900'} />
+                <Price amount={cartTotal} className={coupon ? 'text-gray-500 line-through' : 'text-gray-900'} />
               </div>
               {coupon && (
                 <div className="flex justify-between items-center mb-2 text-green-600">

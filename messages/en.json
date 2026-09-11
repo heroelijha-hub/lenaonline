@@ -50,7 +50,8 @@
     "subtotal": "Subtotal",
     "total": "Total",
     "view_cart": "View cart",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "close": "Close"
   },
   "Home": {
     "hero_1_subtitle": "Special Offer",
@@ -78,7 +79,10 @@
     "promo_2_title": "Get 20% Off",
     "promo_2_subtitle": "Women Store",
     "view_all": "View All",
-    "add_to_cart": "Add to Cart"
+    "add_to_cart": "Add to Cart",
+    "quick_view": "Quick view",
+    "view": "View",
+    "wishlist": "Add to wishlist"
   },
   "Product": {
     "home": "Home",
@@ -482,7 +486,8 @@
     "view_full_wishlist": "View Full Wishlist",
     "added_to_cart": "Added to cart",
     "added_to_wishlist": "Added to wishlist",
-    "removed_from_wishlist": "Removed from wishlist"
+    "removed_from_wishlist": "Removed from wishlist",
+    "close": "Close"
   },
   "NewArrivals": {
     "title": "New Arrivals",
@@ -1217,7 +1222,8 @@
     "start_chat": "Start chat",
     "connection_error": "Chat connection error. Please ensure the database is up to date.",
     "send_message_prompt": "Send us a message and we will reply as soon as possible!",
-    "your_message": "Your message..."
+    "your_message": "Your message...",
+    "open_chat": "Open chat"
   },
   "AdminReviews": {
     "title": "Customer Reviews",

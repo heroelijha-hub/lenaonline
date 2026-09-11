@@ -134,7 +134,7 @@ export default function AdminPageForm() {
               id="isPublished"
               checked={formData.isPublished}
               onChange={(e) => setFormData({...formData, isPublished: e.target.checked})}
-              className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded cursor-pointer"
+              className="h-4 w-4 text-orange-700 focus:ring-orange-500 border-gray-300 rounded cursor-pointer"
             />
             <label htmlFor="isPublished" className="ml-2 block text-sm text-gray-900 font-medium cursor-pointer">
               {t('publish_checkbox')}

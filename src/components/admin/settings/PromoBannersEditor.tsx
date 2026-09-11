@@ -40,7 +40,7 @@ export default function PromoBannersEditor({
             </button>
             <div>
               <h3 className="font-bold text-gray-900 leading-tight">Block {blockNum}</h3>
-              <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
+              <span className="text-xs font-medium text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
                 Promo Banners
               </span>
             </div>
@@ -153,7 +153,7 @@ export default function PromoBannersEditor({
             </button>
             <div>
               <h3 className="font-bold text-gray-900 leading-tight">Edit Section</h3>
-              <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
+              <span className="text-xs font-medium text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
                 Promo Banners
               </span>
             </div>
@@ -166,7 +166,7 @@ export default function PromoBannersEditor({
             {[1, 2].map((num) => (
               <div key={num} className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between hover:border-orange-300 hover:shadow-sm transition cursor-pointer" onClick={() => setActiveBlock(num)}>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-sm shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-sm shrink-0">
                     {num}
                   </div>
                   <div>
@@ -174,7 +174,7 @@ export default function PromoBannersEditor({
                     <p className="text-xs text-gray-500">{section.settings[`BANNER_${num}_TITLE`] || (num === 1 ? 'Left Banner' : 'Right Banner')}</p>
                   </div>
                 </div>
-                <button type="button" className="text-orange-500 hover:bg-orange-50 p-2 rounded-full transition">
+                <button type="button" className="text-orange-600 hover:bg-orange-50 p-2 rounded-full transition">
                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </button>
               </div>

@@ -71,7 +71,7 @@ export default function Header({
   searchBorderColor = '#d1d5db',
   searchPlaceholder = 'Search products...',
   searchBtnText = 'Search',
-  searchBtnBgColor = '#f97316',
+  searchBtnBgColor = '#c2410c',
   searchBtnTextColor = '#111827',
   showNew = true,
   showHot = true,
@@ -245,7 +245,7 @@ export default function Header({
           {userRole ? (
             <Link 
               href={userRole === 'ADMIN' ? '/admin' : '/account'}
-              className="flex items-center hover:opacity-75 transition text-orange-600 font-semibold"
+              className="flex items-center hover:opacity-75 transition text-orange-700 font-semibold"
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -367,9 +367,9 @@ export default function Header({
                           <div className="flex-1 min-w-0">
                             <h4 className="text-sm font-semibold text-gray-900 truncate">{product.title}</h4>
                             <div className="flex items-center gap-2 mt-1">
-                              <Price amount={product.price} showTax={false} className="text-orange-600 font-bold text-sm" />
+                              <Price amount={product.price} showTax={false} className="text-orange-700 font-bold text-sm" />
                               {product.compareAtPrice && product.compareAtPrice > product.price && (
-                                <Price amount={product.compareAtPrice} showTax={false} className="text-gray-400 line-through text-xs" />
+                                <Price amount={product.compareAtPrice} showTax={false} className="text-gray-500 line-through text-xs" />
                               )}
                             </div>
                           </div>
@@ -380,7 +380,7 @@ export default function Header({
                   <div className="border-t border-gray-100 p-2 text-center bg-gray-50">
                     <button 
                       onClick={handleSearchSubmit}
-                      className="text-sm text-orange-600 font-semibold hover:text-orange-700 w-full py-2"
+                      className="text-sm text-orange-700 font-semibold hover:text-orange-700 w-full py-2"
                     >
                       {t('view_all_results')} &quot;{searchQuery}&quot;
                     </button>
@@ -401,7 +401,7 @@ export default function Header({
           
           <button 
             onClick={() => wishlistStore.setIsOpen(true)}
-            className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-600 transition relative"
+            className="hidden lg:flex items-center justify-center p-2 text-gray-700 hover:text-orange-700 transition relative"
             title="My favorites"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -435,7 +435,7 @@ export default function Header({
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Menu"
-            className="lg:hidden p-2 text-gray-700 hover:text-orange-600 transition"
+            className="lg:hidden p-2 text-gray-700 hover:text-orange-700 transition"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
@@ -466,7 +466,7 @@ export default function Header({
                     <Link 
                       key={cat.id} 
                       href={`/product-category/${cat.slug || cat.id}`}
-                      className={`block px-6 py-2 hover:bg-orange-50 hover:text-orange-600 transition ${!cat.parentId ? 'font-bold text-gray-900' : 'text-gray-700'}`}
+                      className={`block px-6 py-2 hover:bg-orange-50 hover:text-orange-700 transition ${!cat.parentId ? 'font-bold text-gray-900' : 'text-gray-700'}`}
                       onClick={() => setIsBottomCategoryOpen(false)}
                     >
                       {cat.name}
@@ -479,7 +479,7 @@ export default function Header({
             {/* Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-6 font-semibold text-gray-800">
               {menuLinks.map((link, idx) => (
-                <Link key={idx} href={link.url} className="hover:text-orange-600 flex items-center transition">
+                <Link key={idx} href={link.url} className="hover:text-orange-700 flex items-center transition">
                   {link.label}
                 </Link>
               ))}
@@ -489,19 +489,19 @@ export default function Header({
           {/* Right side tags */}
           <div className="hidden lg:flex items-center space-x-4 text-sm font-semibold text-gray-800">
             {showNew && (
-              <Link href="/new" className="flex items-center hover:text-orange-600 transition">
+              <Link href="/new" className="flex items-center hover:text-orange-700 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                 {t('new')}
               </Link>
             )}
             {showHot && (
-              <Link href="/hot" className="flex items-center hover:text-orange-600 transition">
+              <Link href="/hot" className="flex items-center hover:text-orange-700 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                 {t('hot')}
               </Link>
             )}
             {showSale && (
-              <Link href="/sale" className="flex items-center hover:text-orange-600 transition">
+              <Link href="/sale" className="flex items-center hover:text-orange-700 transition">
                 <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                 {t('sale')}
               </Link>

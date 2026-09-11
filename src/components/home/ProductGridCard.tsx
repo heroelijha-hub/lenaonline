@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-3.5 h-3.5 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-3.5 h-3.5 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -194,10 +194,10 @@ export default function ProductGridCard({
       {/* Content Container */}
       <div className="p-4 flex flex-col flex-1">
         <div className="flex-1 flex flex-col">
-          <p className="text-xs text-gray-400 font-medium mb-1 truncate">
+          <p className="text-xs text-gray-500 font-medium mb-1 truncate">
             {product.categories && product.categories.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : 'General'}
           </p>
-          <h3 className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 mb-2 group-hover:text-orange-600 transition">
+          <h3 className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 mb-2 group-hover:text-orange-700 transition">
             {product.title}
           </h3>
           

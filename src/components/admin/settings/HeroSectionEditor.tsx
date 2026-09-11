@@ -63,7 +63,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                   className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                   placeholder="Taille"
                />
-               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+               <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
             </div>
           </div>
           
@@ -78,7 +78,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                   className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                   placeholder="LH"
                />
-               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
+               <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
             </div>
           </div>
 
@@ -93,7 +93,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                   className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                   placeholder="LS"
                />
-               <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+               <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
             </div>
           </div>
 
@@ -160,14 +160,14 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                 </div>
               </>
             ) : (
-              <button type="button" onClick={() => handleUpload(section.id, `${prefix}_BG_IMAGE`)} className="flex flex-col items-center text-gray-400 hover:text-gray-600 transition">
+              <button type="button" onClick={() => handleUpload(section.id, `${prefix}_BG_IMAGE`)} className="flex flex-col items-center text-gray-500 hover:text-gray-600 transition">
                 <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
                 <span className="text-xs font-medium">Add an image</span>
               </button>
             )}
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <input type="checkbox" id={`show_bg_${prefix}`} checked={section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_BG_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-600 focus:ring-orange-500" />
+            <input type="checkbox" id={`show_bg_${prefix}`} checked={section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_BG_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-700 focus:ring-orange-500" />
             <label htmlFor={`show_bg_${prefix}`} className="text-xs text-gray-600">Show background image</label>
           </div>
           {section.settings[`${prefix}_SHOW_BG_IMAGE`] !== 'false' && (
@@ -201,14 +201,14 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                 </div>
               </>
             ) : (
-              <button type="button" onClick={() => handleUpload(section.id, `${prefix}_IMAGE`)} className="flex flex-col items-center text-gray-400 hover:text-gray-600 transition">
+              <button type="button" onClick={() => handleUpload(section.id, `${prefix}_IMAGE`)} className="flex flex-col items-center text-gray-500 hover:text-gray-600 transition">
                 <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
                 <span className="text-xs font-medium">Add an image</span>
               </button>
             )}
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <input type="checkbox" id={`show_img_${prefix}`} checked={section.settings[`${prefix}_SHOW_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-600 focus:ring-orange-500" />
+            <input type="checkbox" id={`show_img_${prefix}`} checked={section.settings[`${prefix}_SHOW_IMAGE`] !== 'false'} onChange={e => updateSectionSettings(section.id, `${prefix}_SHOW_IMAGE`, e.target.checked ? 'true' : 'false')} className="rounded text-orange-700 focus:ring-orange-500" />
             <label htmlFor={`show_img_${prefix}`} className="text-xs text-gray-600">Show main image</label>
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                 })
               )}
             </div>
-            <p className="text-[10px] text-gray-400 mt-1">Gère l'alignement horizontal et vertical</p>
+            <p className="text-[10px] text-gray-500 mt-1">Gère l'alignement horizontal et vertical</p>
           </div>
 
           {/* Button Style */}
@@ -339,7 +339,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
           <div>
             <label className="block text-[11px] font-medium mb-1 text-gray-500">Button Background</label>
             <div className="relative w-full h-10 rounded-md overflow-hidden border border-gray-300 shadow-sm cursor-pointer">
-              <input type="color" value={section.settings[`${prefix}_BTN_BG_COLOR`] || '#f97316'} onChange={e => updateSectionSettings(section.id, `${prefix}_BTN_BG_COLOR`, e.target.value)} className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer border-0 p-0" />
+              <input type="color" value={section.settings[`${prefix}_BTN_BG_COLOR`] || '#c2410c'} onChange={e => updateSectionSettings(section.id, `${prefix}_BTN_BG_COLOR`, e.target.value)} className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer border-0 p-0" />
             </div>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
         {/* Link */}
         <div>
           <label className="block text-xs font-semibold text-gray-700 mb-1">Redirect link (URL)</label>
-          <input type="text" value={section.settings[`${prefix}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `${prefix}_LINK`, e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-500 focus:ring-orange-500 outline-none text-gray-400 placeholder-gray-300" placeholder="/product/..." />
+          <input type="text" value={section.settings[`${prefix}_LINK`] || ''} onChange={e => updateSectionSettings(section.id, `${prefix}_LINK`, e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-orange-500 focus:ring-orange-500 outline-none text-gray-500 placeholder-gray-300" placeholder="/product/..." />
         </div>
       </div>
     );
@@ -440,7 +440,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
 
             {/* BLOCS List */}
             <div className="pt-2">
-              <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider mb-3">Blocks</h3>
+              <h3 className="font-bold text-xs text-gray-500 uppercase tracking-wider mb-3">Blocks</h3>
               <div className="flex flex-col gap-2">
                 {Array.from({ length: totalBlocks }).map((_, i) => {
                   const num = i + 1;
@@ -456,7 +456,7 @@ export default function HeroSectionEditor({ section, previewMode, updateSectionS
                       className="w-full text-left px-5 py-4 font-bold text-sm bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-gray-700 flex justify-between items-center shadow-sm hover:shadow"
                     >
                       <span>{blockTitle}</span>
-                      <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>

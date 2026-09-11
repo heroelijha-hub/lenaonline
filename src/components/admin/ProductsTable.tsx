@@ -114,7 +114,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                 type="checkbox" 
                 checked={products.length > 0 && selectedIds.length === products.length}
                 onChange={toggleSelectAll}
-                className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"
               />
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('image_th')}</th>
@@ -141,14 +141,14 @@ export default function ProductsTable({ products, categories }: { products: any[
                       type="checkbox" 
                       checked={selectedIds.includes(product.id)}
                       onChange={() => toggleSelect(product.id)}
-                      className="rounded border-gray-300 text-orange-600 focus:ring-orange-500 mt-3"
+                      className="rounded border-gray-300 text-orange-700 focus:ring-orange-500 mt-3"
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap align-top">
                     {product.images && product.images[0] ? (
                       <img src={product.images[0]} alt={product.title} className="h-12 w-12 rounded object-cover border border-gray-200" />
                     ) : (
-                      <div className="h-12 w-12 rounded bg-gray-100 flex items-center justify-center text-xs text-gray-400 border border-gray-200">N/A</div>
+                      <div className="h-12 w-12 rounded bg-gray-100 flex items-center justify-center text-xs text-gray-500 border border-gray-200">N/A</div>
                     )}
                   </td>
                   <td className="px-6 py-4 align-top w-full">
@@ -191,7 +191,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                                       setEditData({...editData, categoryIds: editData.categoryIds.filter(id => id !== c.id)});
                                     }
                                   }}
-                                  className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                                  className="rounded border-gray-300 text-orange-700 focus:ring-orange-500"
                                 />
                                 {c.name}
                               </label>
@@ -209,7 +209,7 @@ export default function ProductsTable({ products, categories }: { products: any[
                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                           <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-[10px]">ID: {product.id.substring(0,8)}</span>
                           <span>•</span>
-                          <span className="text-orange-600 font-medium">{product.categories?.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : t('uncategorized')}</span>
+                          <span className="text-orange-700 font-medium">{product.categories?.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : t('uncategorized')}</span>
                         </div>
                         
                         {/* Woo-style Row Actions */}

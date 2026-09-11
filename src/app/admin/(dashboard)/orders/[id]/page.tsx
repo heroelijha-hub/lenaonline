@@ -98,7 +98,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     <div>
                       <p className="font-medium text-sm text-gray-900">{item.product.title}</p>
                       {item.attributes && (
-                        <p className="text-xs text-orange-600 font-medium">
+                        <p className="text-xs text-orange-700 font-medium">
                           {(() => {
                             try {
                               const attrs = typeof item.attributes === 'string' ? JSON.parse(item.attributes) : item.attributes;
@@ -160,26 +160,26 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
             {billing ? (
               <>
                 {/* Adresse de facturation */}
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">{t('billing_address')}</p>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{t('billing_address')}</p>
                 <div className="space-y-2 text-sm text-gray-700 mb-5">
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400 w-4 shrink-0">👤</span>
+                    <span className="text-gray-500 w-4 shrink-0">👤</span>
                     <span className="font-medium">{[billing.firstName, billing.lastName].filter(Boolean).join(' ') || '—'}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400 w-4 shrink-0">✉️</span>
-                    <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-600 hover:underline break-all text-xs">
+                    <span className="text-gray-500 w-4 shrink-0">✉️</span>
+                    <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-700 hover:underline break-all text-xs">
                       {billing.email || order.user?.email || '—'}
                     </a>
                   </div>
                   {billing.phone && (
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-400 w-4 shrink-0">📞</span>
+                      <span className="text-gray-500 w-4 shrink-0">📞</span>
                       <a href={`tel:${billing.phone}`} className="hover:underline">{billing.phone}</a>
                     </div>
                   )}
                   <div className="flex items-start gap-2">
-                    <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                    <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
                     <div className="leading-5">
                       {billing.address1 && <p>{billing.address1}</p>}
                       {billing.address2 && <p>{billing.address2}</p>}
@@ -193,26 +193,26 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                 <div className="border-t pt-4">
                   {shipping ? (
                     <>
-                      <p className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address_different')}</p>
+                      <p className="text-xs font-semibold text-orange-600 uppercase tracking-wide mb-3">🚚 {t('shipping_address_different')}</p>
                       <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-3">
                         <div className="flex items-center gap-2">
-                          <span className="text-gray-400 w-4 shrink-0">👤</span>
+                          <span className="text-gray-500 w-4 shrink-0">👤</span>
                           <span className="font-medium">{[shipping.firstName, shipping.lastName].filter(Boolean).join(' ') || '—'}</span>
                         </div>
                         {shipping.company && (
                           <div className="flex items-center gap-2">
-                            <span className="text-gray-400 w-4 shrink-0">🏢</span>
+                            <span className="text-gray-500 w-4 shrink-0">🏢</span>
                             <span>{shipping.company}</span>
                           </div>
                         )}
                         {shipping.phone && (
                           <div className="flex items-center gap-2">
-                            <span className="text-gray-400 w-4 shrink-0">📞</span>
+                            <span className="text-gray-500 w-4 shrink-0">📞</span>
                             <a href={`tel:${shipping.phone}`} className="hover:underline">{shipping.phone}</a>
                           </div>
                         )}
                         <div className="flex items-start gap-2">
-                          <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                          <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
                           <div className="leading-5">
                             {shipping.address1 && <p>{shipping.address1}</p>}
                             {shipping.address2 && <p>{shipping.address2}</p>}
@@ -224,7 +224,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     </>
                   ) : (
                     <>
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
                       <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
                     </>
                   )}
@@ -235,26 +235,26 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
               <div className="space-y-3 text-sm text-gray-700">
                 {fallbackCustomerName && (
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400 w-4 shrink-0">👤</span>
+                    <span className="text-gray-500 w-4 shrink-0">👤</span>
                     <span className="font-medium">{fallbackCustomerName}</span>
                   </div>
                 )}
                 {order.user?.email && (
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-400 w-4 shrink-0">✉️</span>
-                    <a href={`mailto:${order.user.email}`} className="text-orange-600 hover:underline break-all text-xs">
+                    <span className="text-gray-500 w-4 shrink-0">✉️</span>
+                    <a href={`mailto:${order.user.email}`} className="text-orange-700 hover:underline break-all text-xs">
                       {order.user.email}
                     </a>
                   </div>
                 )}
                 {order.destinationAddress && (
                   <div className="flex items-start gap-2 pt-1">
-                    <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                    <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
                     <p className="whitespace-pre-wrap leading-relaxed">{order.destinationAddress}</p>
                   </div>
                 )}
                 <div className="border-t pt-3 mt-1">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">🚚 {t('shipping_address')}</p>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">🚚 {t('shipping_address')}</p>
                   <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
                 </div>
               </div>

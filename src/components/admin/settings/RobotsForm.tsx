@@ -186,7 +186,7 @@ export default function RobotsForm({ initialSettings }: { initialSettings: Recor
           {/* Add new path */}
           <div className="flex items-center space-x-2">
             <div className="relative flex-1 max-w-md">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 text-sm font-mono">/</span>
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm font-mono">/</span>
               <input
                 type="text"
                 value={newPath}

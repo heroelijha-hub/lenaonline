@@ -105,7 +105,7 @@ export default async function OrdersPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <span className="font-medium text-gray-900"><Price amount={order.total} showTax={false} /></span>
-                      <span className="text-gray-400 text-xs ml-1">
+                      <span className="text-gray-500 text-xs ml-1">
                         {t('for_x_products', { count: totalItems })}
                       </span>
                     </td>

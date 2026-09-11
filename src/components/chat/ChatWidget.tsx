@@ -169,7 +169,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                 {storeIcon ? (
                   <img src={storeIcon} alt="Store Icon" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-orange-600 font-bold text-xl">{storeName.charAt(0)}</span>
+                  <span className="text-orange-700 font-bold text-xl">{storeName.charAt(0)}</span>
                 )}
               </div>
               <div>
@@ -230,7 +230,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
                       }`}>
                         {msg.content}
                       </div>
-                      <span className="text-[10px] text-gray-400 mt-1 px-1">
+                      <span className="text-[10px] text-gray-500 mt-1 px-1">
                         {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>

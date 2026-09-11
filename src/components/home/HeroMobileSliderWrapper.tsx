@@ -2,15 +2,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function HeroMobileSliderWrapper({ children }: { children: React.ReactNode }) {
+export default function HeroMobileSliderWrapper({ children, childCount }: { children: React.ReactNode, childCount: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const childrenArray = React.Children.toArray(children).filter(child => {
-    return React.isValidElement(child);
-  });
-
-  const childCount = childrenArray.length;
 
   useEffect(() => {
     if (childCount <= 1) return;
@@ -62,11 +56,7 @@ export default function HeroMobileSliderWrapper({ children }: { children: React.
             display: none;
           }
         `}} />
-        {React.Children.map(children, (child, index) => (
-          <div className="w-full h-full flex-shrink-0 snap-center relative">
-            {child}
-          </div>
-        ))}
+        {children}
       </div>
       
       {/* Indicators */}

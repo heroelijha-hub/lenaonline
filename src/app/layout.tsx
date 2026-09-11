@@ -195,7 +195,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     searchBorderColor: settingsMap.SEARCH_BORDER_COLOR || '#d1d5db',
     searchPlaceholder: settingsMap.SEARCH_PLACEHOLDER || 'Search products...',
     searchBtnText: settingsMap.SEARCH_BTN_TEXT || 'Search',
-    searchBtnBgColor: settingsMap.SEARCH_BTN_BG_COLOR || '#f97316',
+    searchBtnBgColor: settingsMap.SEARCH_BTN_BG_COLOR || '#c2410c',
     searchBtnTextColor: settingsMap.SEARCH_BTN_TEXT_COLOR || '#111827',
     showNew: newProductsCount > 0,
     showHot: hotProductsCount >= 3,
@@ -247,7 +247,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body className="min-h-full flex flex-col font-sans">
-        <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#f97316'} />
+        <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#c2410c'} />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <PostHogProvider>
             <CurrencyProvider options={currencyOptions}>

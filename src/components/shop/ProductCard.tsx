@@ -30,7 +30,7 @@ import { useTranslations } from 'next-intl';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-3.5 h-3.5 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-3.5 h-3.5 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -168,7 +168,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
             {product.categories && product.categories.length > 0 ? (
               product.categories.map((c, idx) => (
                 <span key={idx}>
-                  <Link href={`/product-category/${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                  <Link href={`/product-category/${c.slug}`} className="hover:text-orange-600 hover:underline" onClick={(e) => e.stopPropagation()}>
                     {c.name}
                   </Link>
                   {idx < product.categories!.length - 1 ? ', ' : ''}
@@ -180,7 +180,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <h3 className="text-lg font-bold text-gray-900 mb-2 transition-colors">
             <Link
               href={`/product/${product.slug}`}
-              className="hover:text-orange-500"
+              className="hover:text-orange-600"
               onClick={(e) => e.stopPropagation()}
             >
               {product.title}
@@ -201,7 +201,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           <div className="mt-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
               {product.compareAtPrice && (
-                <span className="text-sm text-gray-400 line-through">
+                <span className="text-sm text-gray-500 line-through">
                   <Price amount={product.compareAtPrice} />
                 </span>
               )}
@@ -261,7 +261,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
           {product.categories && product.categories.length > 0 ? (
             product.categories.map((c, idx) => (
               <span key={idx}>
-                <Link href={`/product-category/${c.slug}`} className="hover:text-orange-500 hover:underline" onClick={(e) => e.stopPropagation()}>
+                <Link href={`/product-category/${c.slug}`} className="hover:text-orange-600 hover:underline" onClick={(e) => e.stopPropagation()}>
                   {c.name}
                 </Link>
                 {idx < product.categories!.length - 1 ? ', ' : ''}
@@ -277,7 +277,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         >
           <Link
             href={`/product/${product.slug}`}
-            className="hover:text-orange-500"
+            className="hover:text-orange-600"
             onClick={(e) => e.stopPropagation()}
           >
             {product.title}
@@ -300,7 +300,7 @@ export default function ProductCard({ product, view = 'grid', cardStyle = 'desig
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             {product.compareAtPrice && (
-              <span className="text-xs text-gray-400 line-through">
+              <span className="text-xs text-gray-500 line-through">
                 <Price amount={product.compareAtPrice} />
               </span>
             )}

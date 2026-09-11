@@ -47,7 +47,7 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{formatPrice(stats.totalRevenue)}</p>
-          <p className="text-xs text-gray-400 mt-2">{t("total_revenue")}</p>
+          <p className="text-xs text-gray-500 mt-2">{t("total_revenue")}</p>
         </div>
 
         {/* Orders */}
@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.totalOrdersCount}</p>
-          <p className="text-xs text-gray-400 mt-2">{t("validated_orders")}</p>
+          <p className="text-xs text-gray-500 mt-2">{t("validated_orders")}</p>
         </div>
 
         {/* Customers */}
@@ -67,11 +67,11 @@ export default async function AdminDashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">{t('customers')}</h3>
             <div className="p-2 bg-orange-50 rounded-lg">
-              <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+              <svg className="w-5 h-5 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{stats.totalCustomers}</p>
-          <p className="text-xs text-gray-400 mt-2">{t('registered_customers')}</p>
+          <p className="text-xs text-gray-500 mt-2">{t('registered_customers')}</p>
         </div>
 
         {/* AOV */}
@@ -83,7 +83,7 @@ export default async function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-900">{formatPrice(stats.averageOrderValue)}</p>
-          <p className="text-xs text-gray-400 mt-2">{t('avg_spend')}</p>
+          <p className="text-xs text-gray-500 mt-2">{t('avg_spend')}</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export default async function AdminDashboardPage() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-gray-900">{t('latest_orders')}</h2>
-            <Link href="/admin/orders" className="text-sm font-medium text-orange-600 hover:text-orange-700">{t('view_all')}</Link>
+            <Link href="/admin/orders" className="text-sm font-medium text-orange-700 hover:text-orange-700">{t('view_all')}</Link>
           </div>
           
           <div className="flex-1 overflow-y-auto">
@@ -119,7 +119,7 @@ export default async function AdminDashboardPage() {
                     <div className="flex flex-col">
                       <span className="font-semibold text-sm text-gray-900">#{order.id.slice(-6).toUpperCase()}</span>
                       <span className="text-xs text-gray-500">{order.user.email}</span>
-                      <span className="text-xs text-gray-400 mt-0.5">{new Date(order.createdAt).toLocaleDateString(locale)}</span>
+                      <span className="text-xs text-gray-500 mt-0.5">{new Date(order.createdAt).toLocaleDateString(locale)}</span>
                     </div>
                     <div className="flex flex-col items-end">
                       <span className="font-bold text-sm text-gray-900">{formatPrice(order.total)}</span>

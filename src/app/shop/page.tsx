@@ -189,7 +189,7 @@ export default async function ShopPage({
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 px-4 sm:px-8 border-b border-gray-200">
         <div className="max-w-7xl mx-auto text-sm text-gray-500">
-          <Link href="/" className="hover:text-orange-500">{t('home')}</Link>
+          <Link href="/" className="hover:text-orange-600">{t('home')}</Link>
           <span className="mx-2">/</span>
           <span className="text-gray-900 font-medium">{pageTitle}</span>
         </div>

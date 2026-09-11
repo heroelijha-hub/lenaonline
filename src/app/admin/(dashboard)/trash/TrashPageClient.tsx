@@ -122,7 +122,7 @@ export default function TrashPageClient({ initialProducts, initialMedia }: { ini
                         {product.images?.[0] ? (
                           <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400">?</div>
+                          <div className="w-full h-full flex items-center justify-center text-gray-500">?</div>
                         )}
                       </div>
                       <span className="font-medium text-gray-800">{product.title}</span>

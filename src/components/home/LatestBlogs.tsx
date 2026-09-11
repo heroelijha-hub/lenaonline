@@ -59,7 +59,7 @@ export default async function LatestBlogs({ config }: { config?: any }) {
           {config?.title || t('latest_blogs_title')}
         </h2>
         {config?.SEE_ALL_TEXT !== '' && (
-          <Link href="/blog" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
+          <Link href="/blog" className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-600 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
             {config?.SEE_ALL_TEXT || t('see_all')}
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -84,14 +84,14 @@ export default async function LatestBlogs({ config }: { config?: any }) {
             {/* Category Badge */}
             {blog.category && (
               <div className="mb-3">
-                <span className="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded">
+                <span className="inline-block px-3 py-1 bg-orange-50 text-orange-700 text-xs font-semibold rounded">
                   {blog.category}
                 </span>
               </div>
             )}
             
             {/* Title */}
-            <h3 className="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-orange-500 transition line-clamp-2">
+            <h3 className="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-orange-600 transition line-clamp-2">
               {blog.title}
             </h3>
             

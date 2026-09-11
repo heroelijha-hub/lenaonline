@@ -91,7 +91,7 @@ export async function submitNewsletter(formData: FormData) {
         subject: `[Newsletter] Nouvelle inscription — ${email}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-            <div style="background-color: #f97316; padding: 24px 32px;">
+            <div style="background-color: #c2410c; padding: 24px 32px;">
               <h1 style="color: #ffffff; margin: 0; font-size: 20px;">📬 Nouvelle inscription Newsletter</h1>
             </div>
             <div style="padding: 32px;">

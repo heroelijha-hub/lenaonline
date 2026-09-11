@@ -118,7 +118,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
 
           {/* Carte info commande — style capture fournie */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">{t('order_number_label')}</p>
+            <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">{t('order_number_label')}</p>
             <p className="text-lg font-bold text-gray-900 mb-3">
               {order.id.split('-')[0].toUpperCase()}
             </p>
@@ -158,7 +158,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
             </div>
 
             <div className="mt-4">
-              <a href="/order-tracking" className="text-orange-500 text-sm font-medium hover:underline">
+              <a href="/order-tracking" className="text-orange-600 text-sm font-medium hover:underline">
                 ← {t('track_another')}
               </a>
             </div>
@@ -176,7 +176,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
                 style={{ width: `${autoStatus.progressPercent}%` }}
               />
             </div>
-            <div className="text-center mt-2 text-xs text-gray-400">
+            <div className="text-center mt-2 text-xs text-gray-500">
               {autoStatus.progressPercent}{t('estimated_flight_dist')}
             </div>
           </div>
@@ -226,7 +226,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
                       ? 'bg-orange-500 border-orange-500 text-white shadow-md shadow-orange-200'
                       : step.done
                       ? 'bg-green-500 border-green-500 text-white'
-                      : 'bg-white border-gray-200 text-gray-400'
+                      : 'bg-white border-gray-200 text-gray-500'
                   }`}>
                     {step.icon}
                   </div>
@@ -235,10 +235,10 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
                   )}
                 </div>
                 <div className="pb-6">
-                  <p className={`text-sm font-semibold ${step.active ? 'text-orange-600' : step.done ? 'text-green-700' : 'text-gray-400'}`}>
+                  <p className={`text-sm font-semibold ${step.active ? 'text-orange-700' : step.done ? 'text-green-700' : 'text-gray-500'}`}>
                     {step.label}
                     {step.active && (
-                      <span className="ml-2 text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">{t('current_step_badge')}</span>
+                      <span className="ml-2 text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">{t('current_step_badge')}</span>
                     )}
                   </p>
                   <p className={`text-xs mt-0.5 ${step.done || step.active ? 'text-gray-500' : 'text-gray-300'}`}>
@@ -262,7 +262,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
             <p className="text-sm text-center text-gray-600">{customerName}</p>
           )}
           <div className="text-center mt-4">
-            <a href="/order-tracking" className="text-orange-500 font-medium hover:underline">← {t('track_another')}</a>
+            <a href="/order-tracking" className="text-orange-600 font-medium hover:underline">← {t('track_another')}</a>
           </div>
         </div>
 
@@ -270,7 +270,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
         /* ─── MODE MANUEL (existant) ──────────────────────────────────────── */
         <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">{t('tracking_title')} <span className="text-orange-500">{order.trackingNumber}</span></h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('tracking_title')} <span className="text-orange-600">{order.trackingNumber}</span></h1>
             <span className={`px-4 py-1 rounded-full text-sm font-bold ${
               order.status === 'DELIVERED' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
             }`}>
@@ -304,14 +304,14 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
               <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div className="absolute top-0 left-0 h-full bg-green-500 transition-all duration-1000" style={{ width: `${percentage}%` }}></div>
               </div>
-              <div className="text-center mt-2 text-xs text-gray-400">{percentage}{t('estimated_flight_dist')}</div>
+              <div className="text-center mt-2 text-xs text-gray-500">{percentage}{t('estimated_flight_dist')}</div>
             </div>
           )}
 
           {order.deliveryPositions.length > 0 && order.status !== 'DELIVERED' && (
             <div className="mb-8">
               <p className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <span className="text-orange-500 text-xl">📍</span> 
+                <span className="text-orange-600 text-xl">📍</span> 
                 {t('current_pos')} {order.deliveryPositions[order.deliveryPositions.length - 1].city}, {order.deliveryPositions[order.deliveryPositions.length - 1].country}
               </p>
               <p className="text-sm text-gray-500 ml-7 mt-1">
@@ -340,7 +340,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
           </div>
 
           <div className="text-center">
-            <a href="/order-tracking" className="text-orange-500 font-medium hover:underline">&larr; {t('track_another')}</a>
+            <a href="/order-tracking" className="text-orange-600 font-medium hover:underline">&larr; {t('track_another')}</a>
           </div>
         </div>
       )}

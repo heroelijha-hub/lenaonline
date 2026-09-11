@@ -37,7 +37,7 @@ export default function BlogSidebar({
           ) : (
             recentArticles.map(article => (
               <li key={article.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-                <Link href={`/blog/${article.slug}`} className="text-sm font-medium text-gray-700 hover:text-orange-600 transition leading-snug block">
+                <Link href={`/blog/${article.slug}`} className="text-sm font-medium text-gray-700 hover:text-orange-700 transition leading-snug block">
                   {article.title}
                 </Link>
               </li>
@@ -56,7 +56,7 @@ export default function BlogSidebar({
             recentComments.map(comment => (
               <li key={comment.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0 text-sm text-gray-600">
                 <span className="font-semibold text-gray-900">{comment.author}</span> {t('on')}{' '}
-                <Link href={`/blog/${comment.article.slug}`} className="text-orange-600 hover:underline">
+                <Link href={`/blog/${comment.article.slug}`} className="text-orange-700 hover:underline">
                   {comment.article.title}
                 </Link>
               </li>

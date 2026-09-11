@@ -32,9 +32,9 @@ export default async function AccountReviewsPage() {
           <div className="bg-gray-50 rounded-lg p-6">
             <h2 className="font-bold text-gray-900 mb-4 text-lg">{t('my_space')}</h2>
             <nav className="space-y-3">
-              <Link href="/account" className="block text-gray-600 hover:text-orange-500">{t('dashboard')}</Link>
-              <Link href="/account/orders" className="block text-gray-600 hover:text-orange-500">{t('my_orders')}</Link>
-              <Link href="/account/reviews" className="block font-bold text-orange-500">{t('my_reviews')}</Link>
+              <Link href="/account" className="block text-gray-600 hover:text-orange-600">{t('dashboard')}</Link>
+              <Link href="/account/orders" className="block text-gray-600 hover:text-orange-600">{t('my_orders')}</Link>
+              <Link href="/account/reviews" className="block font-bold text-orange-600">{t('my_reviews')}</Link>
             </nav>
           </div>
         </aside>
@@ -55,12 +55,12 @@ export default async function AccountReviewsPage() {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="font-bold text-lg text-gray-900">
-                        <Link href={`/product/${review.product.slug}`} className="hover:text-orange-500">
+                        <Link href={`/product/${review.product.slug}`} className="hover:text-orange-600">
                           {review.product.title}
                         </Link>
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
-                        <div className="flex text-orange-500">
+                        <div className="flex text-orange-600">
                           {[1,2,3,4,5].map(i => (
                             <span key={i} className={i <= review.rating ? '' : 'text-gray-300'}>★</span>
                           ))}

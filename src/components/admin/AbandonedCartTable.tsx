@@ -46,7 +46,7 @@ export default function AbandonedCartTable({ carts }: { carts: any[] }) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {cart.email}<br/>
-                  <span className="text-xs text-gray-400">{cart.phone}</span>
+                  <span className="text-xs text-gray-500">{cart.phone}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(cart.lastActive).toLocaleString()}

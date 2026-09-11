@@ -56,7 +56,7 @@ export default function AdminPagination({ totalPages, currentPage }: { totalPage
             page === currentPage - 3 || 
             page === currentPage + 3
           ) {
-            return <span key={page} className="px-1 text-gray-400">...</span>;
+            return <span key={page} className="px-1 text-gray-500">...</span>;
           }
           return null;
         })}

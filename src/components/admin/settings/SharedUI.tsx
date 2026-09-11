@@ -52,7 +52,7 @@ export const renderDesignTextControls = (
                 className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                 placeholder="Taille"
              />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+             <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
           </div>
         </div>
         
@@ -67,7 +67,7 @@ export const renderDesignTextControls = (
                 className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                 placeholder="LH"
              />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
+             <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">lh</span>
           </div>
         </div>
 
@@ -82,7 +82,7 @@ export const renderDesignTextControls = (
                 className="flex-1 w-full text-center text-[13px] border-0 py-1.5 px-1 outline-none bg-transparent min-w-0"
                 placeholder="LS"
              />
-             <span className="text-[10px] text-gray-400 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
+             <span className="text-[10px] text-gray-500 bg-gray-50 h-8 px-1.5 border-l border-gray-300 flex items-center justify-center shrink-0">px</span>
           </div>
         </div>
 

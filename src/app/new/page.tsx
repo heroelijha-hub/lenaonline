@@ -45,7 +45,7 @@ export default async function NewArrivalsPage() {
                       className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-500 text-xs">
                       {t('no_image')}
                     </div>
                   )}
@@ -57,14 +57,14 @@ export default async function NewArrivalsPage() {
                   {product.categories && product.categories.length > 0 && (
                     <span className="text-[10px] sm:text-xs text-gray-500 mb-1">{product.categories[0].name}</span>
                   )}
-                  <Link href={`/product/${product.slug}`} className="text-xs sm:text-sm font-medium text-gray-900 hover:text-orange-600 transition line-clamp-2 mb-2 flex-grow">
+                  <Link href={`/product/${product.slug}`} className="text-xs sm:text-sm font-medium text-gray-900 hover:text-orange-700 transition line-clamp-2 mb-2 flex-grow">
                     {product.title}
                   </Link>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-1 sm:gap-2">
-                      <Price amount={product.price} showTax={false} className="font-bold text-orange-600 text-sm sm:text-base" />
+                      <Price amount={product.price} showTax={false} className="font-bold text-orange-700 text-sm sm:text-base" />
                       {product.compareAtPrice && product.compareAtPrice > product.price && (
-                        <Price amount={product.compareAtPrice} showTax={false} className="text-[10px] sm:text-xs text-gray-400 line-through" />
+                        <Price amount={product.compareAtPrice} showTax={false} className="text-[10px] sm:text-xs text-gray-500 line-through" />
                       )}
                     </div>
                   </div>

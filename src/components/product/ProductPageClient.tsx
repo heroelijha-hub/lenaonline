@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg
-    className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`}
+    className={`w-4 h-4 ${filled ? 'text-orange-600' : 'text-gray-300'}`}
     fill="currentColor"
     viewBox="0 0 20 20"
   >
@@ -126,7 +126,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
             {product.categories && product.categories.length > 0
               ? product.categories.map((c: any, index: number) => (
                   <span key={c.id}>
-                    <Link href={`/product-category/${c.slug || c.id}`} className="hover:text-orange-500 hover:underline transition-colors">
+                    <Link href={`/product-category/${c.slug || c.id}`} className="hover:text-orange-600 hover:underline transition-colors">
                       {c.name}
                     </Link>
                     {index < product.categories!.length - 1 ? ', ' : ''}
@@ -142,7 +142,7 @@ export default function ProductPageClient({ product, enableBuyNow = false, store
               <span className="font-semibold text-gray-900">{t?.tags ?? 'Tags :'} </span>
               {product.tags.map((tag: any, index: number) => (
                 <span key={tag.id}>
-                  <Link href={`/shop?tag=${tag.slug || tag.id}`} className="hover:text-orange-500 hover:underline transition-colors">
+                  <Link href={`/shop?tag=${tag.slug || tag.id}`} className="hover:text-orange-600 hover:underline transition-colors">
                     {tag.name}
                   </Link>
                   {index < product.tags!.length - 1 ? ', ' : ''}

@@ -10,7 +10,7 @@ import { AddToCartBtn, AddToCartBtnBig, WishlistBtn, QuickviewBtn } from './Best
 // ... (Star component kept the same)
 const Star = ({ filled = true }: { filled?: boolean }) => (
   <svg 
-    className={`w-4 h-4 ${filled ? 'text-orange-500' : 'text-gray-300'}`} 
+    className={`w-4 h-4 ${filled ? 'text-orange-600' : 'text-gray-300'}`} 
     fill="currentColor" 
     viewBox="0 0 20 20"
   >
@@ -41,7 +41,7 @@ const SmallCard = ({ product, icon, title, price, rating, ratingText, imageUrl, 
           </div>
         </Link>
         <Link href={linkUrl} className="cursor-pointer">
-          <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-500 transition">
+          <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-orange-600 transition">
             {title}
           </h3>
         </Link>
@@ -107,12 +107,12 @@ const BigCard = ({
         </Link>
         <div className="mt-auto">
           <p className="text-xs text-gray-500 mb-1 z-20 relative">
-            <Link href={(p as any).categorySlug ? `/product-category/${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-500 hover:underline">
+            <Link href={(p as any).categorySlug ? `/product-category/${(p as any).categorySlug}` : '/shop'} className="hover:text-orange-600 hover:underline">
               {category}
             </Link>
           </p>
           <Link href={linkUrl} className="cursor-pointer">
-            <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-500 transition">
+            <h3 className="text-base font-medium text-gray-900 line-clamp-2 mb-2 group-hover:text-orange-600 transition">
               {title}
             </h3>
           </Link>
@@ -207,7 +207,7 @@ export default async function BestSeller({ config }: { config?: any }) {
           {config?.title || t('best_seller_title')}
         </h2>
         {config?.SEE_ALL_TEXT !== '' && (
-          <Link href={seeAllUrl} className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-500 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
+          <Link href={seeAllUrl} className="flex items-center text-sm font-semibold text-gray-900 hover:text-orange-600 transition text-[length:var(--sz-m)] md:text-[length:var(--sz-t)] lg:text-[length:var(--sz-d)]" style={getResponsiveVars('SEE_ALL_TEXT', {m: '14px', t: '14px', d: '14px'})}>
             {config?.SEE_ALL_TEXT || t('see_all')}
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

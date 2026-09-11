@@ -239,7 +239,7 @@ export default function BlogForm({ article, existingCategories = [], existingAut
                         className={`text-xs px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${
                           formData.category === cat
                             ? 'bg-orange-500 text-white border-orange-500'
-                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600'
+                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700'
                         }`}
                       >
                         {cat}
@@ -282,7 +282,7 @@ export default function BlogForm({ article, existingCategories = [], existingAut
                         className={`text-xs px-2.5 py-1 rounded-full border transition-colors cursor-pointer flex items-center gap-1.5 ${
                           formData.authorName === author
                             ? 'bg-orange-500 text-white border-orange-500'
-                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600'
+                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700'
                         }`}
                       >
                         <span className="w-4 h-4 rounded-full bg-current opacity-20 inline-block" />

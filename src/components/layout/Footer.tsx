@@ -88,7 +88,7 @@ export default function Footer({
                 <Image src={footerLogoImage} alt="Footer Logo" width={200} height={48} className="max-h-12 w-auto object-contain" />
               ) : (
                 <>
-                  <span className="text-orange-500 font-bold text-xl mr-2">🔥 TOP KAMIN</span>
+                  <span className="text-orange-600 font-bold text-xl mr-2">🔥 TOP KAMIN</span>
                   <span className="text-xs uppercase opacity-70 tracking-widest mt-1">BRENNSTOFFE</span>
                 </>
               )}

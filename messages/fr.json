@@ -50,7 +50,8 @@
     "subtotal": "Sous-total",
     "total": "Total",
     "view_cart": "Voir le panier",
-    "checkout": "Paiement"
+    "checkout": "Paiement",
+    "close": "Fermer"
   },
   "Home": {
     "hero_1_subtitle": "Offre Spéciale",
@@ -78,7 +79,10 @@
     "promo_2_title": "Obtenez 20% de remise",
     "promo_2_subtitle": "Boutique Femme",
     "view_all": "Voir tout",
-    "add_to_cart": "Ajouter au panier"
+    "add_to_cart": "Ajouter au panier",
+    "quick_view": "Aperçu rapide",
+    "view": "Voir",
+    "wishlist": "Ajouter aux favoris"
   },
   "Product": {
     "home": "Accueil",
@@ -482,7 +486,8 @@
     "view_full_wishlist": "Voir tous mes favoris",
     "added_to_cart": "Ajouté au panier",
     "added_to_wishlist": "Ajouté aux favoris",
-    "removed_from_wishlist": "Retiré des favoris"
+    "removed_from_wishlist": "Retiré des favoris",
+    "close": "Fermer"
   },
   "NewArrivals": {
     "title": "Nouveautés",
@@ -1217,7 +1222,8 @@
     "start_chat": "Démarrer le chat",
     "connection_error": "Erreur de connexion au chat. Veuillez réessayer.",
     "send_message_prompt": "Envoyez-nous un message et nous vous répondrons dès que possible !",
-    "your_message": "Votre message..."
+    "your_message": "Votre message...",
+    "open_chat": "Ouvrir le chat"
   },
   "AdminReviews": {
     "title": "Avis Clients",
