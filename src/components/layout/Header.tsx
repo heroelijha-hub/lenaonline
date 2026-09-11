@@ -270,7 +270,7 @@ export default function Header({
         <div className="flex-shrink flex items-center min-w-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <Image src={logoImage} alt="Top Kamin Brennstoffe Logo" width={250} height={80} className="object-contain custom-logo-height max-w-full" style={{ width: 'auto' }} priority />
+              <Image src={logoImage} alt="Top Kamin Brennstoffe Logo" width={250} height={80} sizes="(max-width: 640px) 250px, 250px" className="object-contain custom-logo-height max-w-full" style={{ width: 'auto' }} priority />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
@@ -428,15 +428,16 @@ export default function Header({
               <span className="font-bold text-gray-900 text-sm md:text-base">
                 {mounted ? <Price amount={cartTotal} showTax={false} /> : <Price amount={0} showTax={false} />}
               </span>
-              <span className="text-[10px] text-gray-500 uppercase tracking-wider leading-none">{t('cart')}</span>
+              <span className="text-[10px] text-gray-700 uppercase tracking-wider leading-none">{t('cart')}</span>
             </div>
           </div>
 
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Menu"
             className="lg:hidden p-2 text-gray-700 hover:text-orange-600 transition"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
         </div>
       </div>

@@ -95,7 +95,7 @@ export default function ProductGridCard({
       {/* Image Container */}
       <div className="block relative bg-gray-50 aspect-square p-6 overflow-hidden">
         {image ? (
-          <Image src={image} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-contain transition duration-300 group-hover:opacity-80" />
+          <Image src={image} alt={product.title} width={600} height={600} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw" className="w-full h-full object-contain transition duration-300 group-hover:opacity-80" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-5xl">🛒</div>
         )}
@@ -106,6 +106,7 @@ export default function ProductGridCard({
           {variant === '2' && (
             <button
               onClick={handleAddToCart}
+              aria-label={`${t('add_to_cart')} - ${product.title}`}
               className="flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium text-sm shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] z-10"
               style={{ backgroundColor: btnBgColor, color: btnTextColor, '--btn-hover-bg': btnHoverBgColor || '#c2410c', '--btn-hover-text': btnHoverTextColor || '#ffffff' } as React.CSSProperties}
             >
@@ -125,6 +126,7 @@ export default function ProductGridCard({
           <div className="flex items-center justify-center gap-2 z-10">
             <button
               onClick={handleToggleWishlist}
+              aria-label={t('wishlist') || "Wishlist"}
               className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
@@ -143,6 +145,7 @@ export default function ProductGridCard({
             </button>
             <button
               onClick={handleQuickView}
+              aria-label={t('quick_view') || "Quick View"}
               className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
@@ -161,6 +164,7 @@ export default function ProductGridCard({
             </button>
             <button
               onClick={handleQuickView}
+              aria-label={t('view') || "View"}
               className="p-2 rounded-md shadow-sm transition-all duration-300 transform hover:scale-105 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)]"
               style={
                 (variant === '1'
@@ -218,6 +222,7 @@ export default function ProductGridCard({
           <div className="mt-4">
             <button
               onClick={handleAddToCart}
+              aria-label={`${t('add_to_cart')} - ${product.title}`}
               className="w-full flex items-center justify-center gap-2 py-2 border rounded-md font-medium text-sm transition-all duration-300 hover:[background-color:var(--btn-hover-bg)] hover:[color:var(--btn-hover-text)] hover:[border-color:var(--btn-hover-bg)] z-10 relative"
               style={
                 {
