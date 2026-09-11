@@ -151,7 +151,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
               )}
               {autoStatus.currentStatus === 'IN_TRANSIT' && (
                 <>
-                  <span className="text-2xl">✈️</span>
+                  <span className="text-2xl">🛣️</span>
                   <p className="text-base font-semibold text-gray-800">{t('in_transit_message')}</p>
                 </>
               )}
@@ -204,7 +204,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Pro
               },
               {
                 key: 'IN_TRANSIT',
-                icon: '✈️',
+                icon: '🛣️',
                 label: t('step_in_transit'),
                 date: formatDate(autoStatus.inTransitAt),
                 done: autoStatus.currentStatus === 'IN_TRANSIT',

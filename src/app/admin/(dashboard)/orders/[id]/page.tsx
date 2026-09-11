@@ -129,6 +129,10 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                   <span><Price amount={shippingCost} showTax={false} /></span>
                 </div>
               )}
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{t('payment_method')}</span>
+                <span>{order.paymentMethod === 'BANK_TRANSFER' ? t('payment_bank_transfer') : order.paymentMethod === 'STRIPE' ? t('payment_stripe') : order.paymentMethod === 'PAYPAL' ? 'PayPal' : order.paymentMethod}</span>
+              </div>
               <div className="flex justify-between items-center font-bold text-gray-900 pt-2 border-t">
                 <span>{t('total')}</span>
                 <span><Price amount={order.total} showTax={false} /></span>

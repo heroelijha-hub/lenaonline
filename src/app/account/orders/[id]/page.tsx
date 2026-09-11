@@ -185,101 +185,131 @@ export default async function OrderDetailsPage({
         })}
       </p>
 
-      {/* Order Details Table */}
-      <h2 className="text-xl font-bold text-gray-900 mb-6">{t('order_details')}</h2>
-      
-      <div className="overflow-x-auto mb-10">
-        <table className="w-full text-left border-collapse border border-gray-200 min-w-full">
-          <thead>
-            <tr>
-              <th className="border border-gray-200 p-4 font-bold bg-white text-gray-900">{t('product')}</th>
-              <th className="border border-gray-200 p-4 font-bold bg-white text-gray-900 w-1/3 md:w-1/4">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.orderItems.map((item) => (
-              <tr key={item.id}>
-                <td className="border border-gray-200 p-4 text-gray-700">
-                  <Link href={`/product/${item.product.slug}`} className="hover:text-orange-500 transition-colors">
-                    {item.product.title}
-                  </Link>
-                  {' '}<span className="text-gray-500 font-medium">× {item.quantity}</span>
-                  {item.attributes && (
-                    <div className="mt-1 text-xs text-gray-500">
-                      {Object.entries(item.attributes as Record<string, string>).map(([key, value]) => (
-                        <span key={key} className="mr-2">{key}: {value}</span>
-                      ))}
+      {/* Order Details Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        
+        {/* Articles — 2/3 */}
+        <div className="lg:col-span-2">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">{t('product')}</h2>
+            <div className="space-y-4">
+              {order.orderItems.map(item => (
+                <div key={item.id} className="flex justify-between items-center py-3 border-b last:border-0">
+                  <div className="flex items-center space-x-4">
+                    {item.product.images && item.product.images[0] ? (
+                      <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 object-cover rounded border border-gray-100" />
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-100 rounded border border-gray-200 flex items-center justify-center">
+                        <span className="text-gray-400 text-xs">No image</span>
+                      </div>
+                    )}
+                    <div>
+                      <Link href={`/product/${item.product.slug}`} className="font-semibold text-sm text-gray-900 hover:text-orange-600 transition-colors">
+                        {item.product.title}
+                      </Link>
+                      {item.attributes && (
+                        <p className="text-xs text-orange-600 font-medium mt-1">
+                          {(() => {
+                            try {
+                              const attrs = typeof item.attributes === 'string' ? JSON.parse(item.attributes) : item.attributes;
+                              return Object.entries(attrs).map(([k, v]) => `${k}: ${v}`).join(', ');
+                            } catch (e) {
+                              return '';
+                            }
+                          })()}
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">Quantité: {item.quantity}</p>
                     </div>
-                  )}
-                </td>
-                <td className="border border-gray-200 p-4 text-gray-700">
-                  <Price amount={item.price * item.quantity} />
-                </td>
-              </tr>
-            ))}
-            
-            <tr>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">{t('subtotal')} :</td>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">
-                <Price amount={subTotalAmount} />
-              </td>
-            </tr>
-            
-            <tr>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">Expédition :</td>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">
-                <Price amount={shippingCostAmount} /> 
-                {shippingMethodName && <span className="text-sm font-normal text-gray-500 ml-1">via {shippingMethodName}</span>}
-              </td>
-            </tr>
-            
-            <tr>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">{t('total')} :</td>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">
-                <Price amount={order.total} />
-              </td>
-            </tr>
-            
-            <tr>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">{t('payment')} :</td>
-              <td className="border border-gray-200 p-4 font-bold text-gray-900">
-                {currentPaymentMethod}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                  </div>
+                  <p className="font-bold text-sm text-gray-900"><Price amount={item.price * item.quantity} showTax={false} /></p>
+                </div>
+              ))}
+            </div>
 
-      {/* Addresses Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Billing Address */}
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Adresse de facturation</h3>
-          <div className="border border-gray-200 p-5 rounded-md text-gray-600 text-sm space-y-2">
-            <p className="font-medium text-gray-800">{customerNameBilling || (user.email ? user.email.split('@')[0] : '')}</p>
-            <p className="whitespace-pre-wrap leading-relaxed">{formattedBillingAddress}</p>
-            
-            {customerPhone && (
-              <p className="flex items-center gap-2 mt-4 text-gray-500">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                {customerPhone}
-              </p>
-            )}
-            {customerEmail && (
-              <p className="flex items-center gap-2 mt-2 text-gray-500 break-all">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                {customerEmail}
-              </p>
-            )}
+            {/* Price breakdown */}
+            <div className="mt-4 pt-4 border-t space-y-2">
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{t('subtotal')}</span>
+                <span><Price amount={subTotalAmount} showTax={false} /></span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Expédition {shippingMethodName ? `(${shippingMethodName})` : ''}</span>
+                <span><Price amount={shippingCostAmount} showTax={false} /></span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Mode de paiement</span>
+                <span>{currentPaymentMethod}</span>
+              </div>
+              <div className="flex justify-between items-center font-bold text-gray-900 pt-3 mt-1 border-t">
+                <span>{t('total')}</span>
+                <span className="text-lg"><Price amount={order.total} showTax={false} /></span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Shipping Address */}
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">{t('shipping_address')}</h3>
-          <div className="border border-gray-200 p-5 rounded-md text-gray-600 text-sm space-y-2">
-            <p className="font-medium text-gray-800">{customerNameShipping || (user.email ? user.email.split('@')[0] : '')}</p>
-            <p className="whitespace-pre-wrap leading-relaxed">{formattedShippingAddress}</p>
+        {/* Infos client — 1/3 */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-full">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">👤 Informations client</h2>
+
+            {/* Adresse de facturation */}
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">ADRESSE DE FACTURATION</p>
+            <div className="space-y-2 text-sm text-gray-700 mb-5">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400 w-4 shrink-0">👤</span>
+                <span className="font-medium">{customerNameBilling || (user.email ? user.email.split('@')[0] : '')}</span>
+              </div>
+              {customerEmail && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400 w-4 shrink-0">✉️</span>
+                  <a href={`mailto:${customerEmail}`} className="text-orange-600 hover:underline break-all text-xs">
+                    {customerEmail}
+                  </a>
+                </div>
+              )}
+              {customerPhone && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400 w-4 shrink-0">📞</span>
+                  <a href={`tel:${customerPhone}`} className="hover:underline">{customerPhone}</a>
+                </div>
+              )}
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                <p className="whitespace-pre-wrap leading-relaxed">{formattedBillingAddress}</p>
+              </div>
+            </div>
+
+            {/* Adresse de livraison */}
+            <div className="border-t pt-4">
+              {formattedShippingAddress && formattedShippingAddress !== formattedBillingAddress ? (
+                <>
+                  <p className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-3">🚚 {t('shipping_address')}</p>
+                  <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400 w-4 shrink-0">👤</span>
+                      <span className="font-medium">{customerNameShipping}</span>
+                    </div>
+                    {customerPhone && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-400 w-4 shrink-0">📞</span>
+                        <a href={`tel:${customerPhone}`} className="hover:underline">{customerPhone}</a>
+                      </div>
+                    )}
+                    <div className="flex items-start gap-2">
+                      <span className="text-gray-400 w-4 shrink-0 mt-0.5">📍</span>
+                      <p className="whitespace-pre-wrap leading-relaxed">{formattedShippingAddress}</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
+                  <p className="text-sm text-gray-500 italic">Identique à l'adresse de facturation</p>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
