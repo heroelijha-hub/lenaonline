@@ -7,6 +7,7 @@ import { defaultCurrencyOptions } from "@/lib/formatPrice";
 import DeferredWidgets from "@/components/layout/DeferredWidgets";
 import StoreLayout from "@/components/layout/StoreLayout";
 import ThemeProvider from "@/components/layout/ThemeProvider";
+import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
@@ -262,6 +263,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </CurrencyProvider>
           </PostHogProvider>
         </NextIntlClientProvider>
+        <GoogleAnalytics gaId={settingsMap.GOOGLE_ANALYTICS_ID} />
       </body>
     </html>
   );

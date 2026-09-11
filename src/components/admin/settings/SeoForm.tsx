@@ -13,6 +13,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
   const [metaDescription, setMetaDescription] = useState(initialSettings.HOME_META_DESCRIPTION || '');
   const [ogImage, setOgImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
   const [googleSiteVerification, setGoogleSiteVerification] = useState(initialSettings.GOOGLE_SITE_VERIFICATION || '');
+  const [googleAnalyticsId, setGoogleAnalyticsId] = useState(initialSettings.GOOGLE_ANALYTICS_ID || '');
   const [showMediaModal, setShowMediaModal] = useState(false);
   
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
       HOME_META_DESCRIPTION: metaDescription,
       HEADER_LOGO_IMAGE: ogImage,
       GOOGLE_SITE_VERIFICATION: googleSiteVerification,
+      GOOGLE_ANALYTICS_ID: googleAnalyticsId,
     };
 
     await updateSettingsBatch(settingsMap);
@@ -101,6 +103,22 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
               onChange={(e) => setGoogleSiteVerification(e.target.value)}
               placeholder="votre_code_de_verification"
               className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6">
+          <div className="mb-4 md:mb-0 md:w-1/3">
+            <label className="block text-sm font-medium text-gray-700">Google Analytics (G-XXXXX)</label>
+            <p className="text-xs text-gray-500 mt-1">ID de mesure de votre propriété Google Analytics 4. Le script s'activera automatiquement quand l'utilisateur accepte les cookies statistiques.</p>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              type="text"
+              value={googleAnalyticsId}
+              onChange={(e) => setGoogleAnalyticsId(e.target.value)}
+              placeholder="G-XXXXXXXXXX"
+              className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
             />
           </div>
         </div>
