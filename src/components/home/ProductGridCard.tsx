@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useRouter } from 'next/navigation';
 import Price from '@/components/Price';
@@ -197,8 +198,10 @@ export default function ProductGridCard({
           <p className="text-xs text-gray-500 font-medium mb-1 truncate">
             {product.categories && product.categories.length > 0 ? product.categories.map((c: any) => c.name).join(', ') : 'General'}
           </p>
-          <h3 className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 mb-2 group-hover:text-orange-700 transition">
-            {product.title}
+          <h3 className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2 mb-2 transition" title={product.title}>
+            <Link href={`/product/${product.slug}`} className="hover:text-orange-700" onClick={(e) => e.stopPropagation()}>
+              {product.title}
+            </Link>
           </h3>
           
           {ratingCount > 0 && (
