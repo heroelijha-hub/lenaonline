@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { submitReview } from '@/actions/reviews';
 import { useTranslations, useLocale } from 'next-intl';
-import DOMPurify from 'isomorphic-dompurify';
+// import DOMPurify from 'isomorphic-dompurify'; // Removed to avoid Vercel 500 error
+import SafeHTML from '@/components/SafeHTML';
 
 type Review = {
   id: string;
@@ -83,9 +84,9 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
           <div className="text-sm text-gray-700 leading-relaxed space-y-6">
             {description ? (
               <div className="w-full overflow-x-auto">
-                <div 
+                <SafeHTML 
+                  html={description}
                   className="prose prose-sm max-w-none min-w-full" 
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} 
                 />
               </div>
             ) : (
