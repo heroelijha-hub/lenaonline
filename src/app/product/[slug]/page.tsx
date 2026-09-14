@@ -64,6 +64,64 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'My Store';
 
+  const reviews = (product as any).reviews || [];
+  const avgRating = reviews.length > 0
+    ? reviews.reduce((acc: number, curr: any) => acc + curr.rating, 0) / reviews.length
+    : 0;
+
+  const schemaJson: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    image: product.images || [],
+    description: (product.description ? product.description.replace(/<[^>]*>?/gm, '') : undefined) || (product.shortDescription ? product.shortDescription.replace(/<[^>]*>?/gm, '') : undefined),
+    sku: product.id.split('-')[0].toUpperCase(),
+    offers: {
+      '@type': 'Offer',
+      url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://topkaminbrennstoffe.com'}/product/${product.slug}`,
+      priceCurrency: 'EUR',
+      price: product.price,
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: product.stock && product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      seller: {
+        '@type': 'Organization',
+        name: storeName
+      }
+    }
+  };
+
+  if (reviews.length > 0) {
+    schemaJson.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: avgRating.toFixed(1),
+      reviewCount: reviews.length,
+    };
+    schemaJson.review = reviews.map((r: any) => ({
+      '@type': 'Review',
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+      },
+      author: {
+        '@type': 'Person',
+        name: r.reviewerName || r.user?.email?.split('@')[0] || 'Client anonyme',
+      },
+      reviewBody: r.comment || '',
+      datePublished: r.createdAt ? new Date(r.createdAt).toISOString().split('T')[0] : undefined,
+    }));
+  }
+
+  if ((product as any).brand) {
+    schemaJson.brand = {
+      '@type': 'Brand',
+      name: (product as any).brand.name
+    };
+  }
+
+  if ((product as any).gtin) {
+    schemaJson.gtin = (product as any).gtin;
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
       
@@ -71,26 +129,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Product',
-              name: product.title,
-              image: product.images || [],
-              description: (product.description ? product.description.replace(/<[^>]*>?/gm, '') : undefined) || (product.shortDescription ? product.shortDescription.replace(/<[^>]*>?/gm, '') : undefined),
-              sku: product.id.split('-')[0].toUpperCase(),
-              offers: {
-                '@type': 'Offer',
-                url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://topkaminbrennstoffe.com'}/product/${product.slug}`,
-                priceCurrency: 'EUR',
-                price: product.price,
-                itemCondition: 'https://schema.org/NewCondition',
-                availability: product.stock && product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-                seller: {
-                  '@type': 'Organization',
-                  name: storeName
-                }
-              }
-            })
+            __html: JSON.stringify(schemaJson)
           }}
         />
         {/* Breadcrumb */}
