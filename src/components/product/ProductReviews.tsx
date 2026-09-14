@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { submitReview } from '@/actions/reviews';
 import { useTranslations, useLocale } from 'next-intl';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 
 type Review = {
   id: string;
