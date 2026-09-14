@@ -68,6 +68,31 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
       
       <main className="flex-grow pb-20">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: product.title,
+              image: product.images || [],
+              description: product.description?.replace(/<[^>]*>?/gm, '') || product.shortDescription?.replace(/<[^>]*>?/gm, ''),
+              sku: product.id.split('-')[0].toUpperCase(),
+              offers: {
+                '@type': 'Offer',
+                url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://topkaminbrennstoffe.com'}/product/${product.slug}`,
+                priceCurrency: 'EUR',
+                price: product.price,
+                itemCondition: 'https://schema.org/NewCondition',
+                availability: product.stock && product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                seller: {
+                  '@type': 'Organization',
+                  name: storeName
+                }
+              }
+            })
+          }}
+        />
         {/* Breadcrumb */}
         <div className="bg-gray-50 border-b border-gray-200 mb-10">
           <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
