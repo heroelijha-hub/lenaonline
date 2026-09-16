@@ -57,8 +57,24 @@ const nextConfig: NextConfig = {
         destination: '/blog',
         permanent: true,
       },
+
       {
-        source: '/wp-:path*',
+        source: '/wp-content/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/wp-json/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/wp-includes/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/wp-admin/:path*',
         destination: '/',
         permanent: true,
       }
