@@ -25,6 +25,45 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/categorie-produit/:path*',
+        destination: '/product-category/:path*',
+        permanent: true,
+      },
+      {
+        source: '/etiquette-produit/:path*',
+        destination: '/shop',
+        permanent: true,
+      },
+      {
+        source: '/produit/:path*',
+        destination: '/product/:path*',
+        permanent: true,
+      },
+      {
+        source: '/team/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/pricing-table',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blogs',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/wp-:path*',
+        destination: '/',
+        permanent: true,
+      }
+    ];
+  },
   async headers() {
     return [
       {
