@@ -1,7 +1,22 @@
 import { MetadataRoute } from 'next';
 import prisma from '@/lib/prisma';
 
-const DEFAULT_DISALLOW_PATHS = ['/admin/', '/account/', '/checkout/', '/api/'];
+const DEFAULT_DISALLOW_PATHS = [
+  '/admin/', 
+  '/account/', 
+  '/checkout/', 
+  '/api/', 
+  '/categorie-produit/', 
+  '/produit/',
+  '/*?filter_cat=/',
+  '/*?column=/',
+  '/*?per_page=/',
+  '/*?rating_filter=/',
+  '/*?stock_status=/',
+  '/*?featured=/',
+  '/*?best_seller=/',
+  '/*?add-to-cart=/'
+];
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com';
