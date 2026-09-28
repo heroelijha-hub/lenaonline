@@ -94,7 +94,7 @@
     "tags": "Schlagworte:",
     "uncategorized": "Nicht kategorisiert",
     "add_to_cart": "In den Warenkorb",
-    "related_products": "Verwandte Produkte",
+    "related_products": "Das könnte Ihnen auch gefallen",
     "no_related_products": "Keine verwandten Produkte gefunden.",
     "general": "Allgemein",
     "select_options_btn": "Wählen Sie Optionen aus",
@@ -144,7 +144,8 @@
     "save_info": "Speichern Sie meinen Namen, meine E-Mail-Adresse und meine Website in diesem Browser für den nächsten Kommentar.",
     "submit_review": "Einreichen",
     "brand": "Marke:",
-    "your_rating_text": "Ihre Bewertung"
+    "your_rating_text": "Ihre Bewertung",
+    "related_products_subtitle": "Entdecken Sie andere ähnliche Modelle oder in der gleichen Kategorie"
   },
   "Search": {
     "search_results": "Suchergebnisse",
