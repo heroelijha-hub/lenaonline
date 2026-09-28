@@ -227,6 +227,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body className="min-h-full flex flex-col font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Store",
+              "name": storeName,
+              "image": settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
+              "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com',
+              "telephone": settingsMap.FOOTER_SUPPORT_PHONE ?? settingsMap.HEADER_SUPPORT_PHONE,
+              "email": settingsMap.FOOTER_SUPPORT_EMAIL ?? settingsMap.HEADER_SUPPORT_EMAIL,
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": settingsMap.FOOTER_ADDRESS_1 || '',
+                "addressCountry": settingsMap.STORE_COUNTRY || "FR"
+              }
+            })
+          }}
+        />
         <ThemeProvider themeColor={settingsMap.THEME_COLOR || '#c2410c'} />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <PostHogProvider>

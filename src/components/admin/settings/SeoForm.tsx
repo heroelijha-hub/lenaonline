@@ -14,6 +14,11 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
   const [ogImage, setOgImage] = useState(initialSettings.HEADER_LOGO_IMAGE || '');
   const [googleSiteVerification, setGoogleSiteVerification] = useState(initialSettings.GOOGLE_SITE_VERIFICATION || '');
   const [googleAnalyticsId, setGoogleAnalyticsId] = useState(initialSettings.GOOGLE_ANALYTICS_ID || '');
+  
+  const [storeCountry, setStoreCountry] = useState(initialSettings.STORE_COUNTRY || 'FR');
+  const [rssBeforeContent, setRssBeforeContent] = useState(initialSettings.RSS_BEFORE_CONTENT || '');
+  const [rssAfterContent, setRssAfterContent] = useState(initialSettings.RSS_AFTER_CONTENT || 'L\'article {post_link} est apparu en premier sur {blog_link}.');
+
   const [showMediaModal, setShowMediaModal] = useState(false);
   
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +35,9 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
       HEADER_LOGO_IMAGE: ogImage,
       GOOGLE_SITE_VERIFICATION: googleSiteVerification,
       GOOGLE_ANALYTICS_ID: googleAnalyticsId,
+      STORE_COUNTRY: storeCountry,
+      RSS_BEFORE_CONTENT: rssBeforeContent,
+      RSS_AFTER_CONTENT: rssAfterContent,
     };
 
     await updateSettingsBatch(settingsMap);
@@ -151,6 +159,63 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
                 }}
               />
             )}
+          </div>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-gray-200">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Local SEO & Données Structurées</h3>
+          
+          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">Pays de la Boutique (Code ISO)</label>
+              <p className="text-xs text-gray-500 mt-1">Ex: FR, DE, CH, CA. Utilisé pour indiquer à Google la localisation principale.</p>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                value={storeCountry}
+                onChange={(e) => setStoreCountry(e.target.value.toUpperCase())}
+                placeholder="FR"
+                maxLength={2}
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 pt-8 border-t border-gray-200">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Flux RSS & Protection de Contenu</h3>
+          <p className="text-sm text-gray-500 mb-6">Ajoutez du contenu personnalisé avant ou après chaque article dans votre flux RSS. Utilisez les variables <code>{'{post_link}'}</code>, <code>{'{blog_link}'}</code> et <code>{'{author}'}</code>.</p>
+          
+          <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6 mb-6">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">Contenu avant l'article (RSS)</label>
+            </div>
+            <div className="md:w-2/3">
+              <textarea
+                value={rssBeforeContent}
+                onChange={(e) => setRssBeforeContent(e.target.value)}
+                rows={2}
+                placeholder="Ex: Bienvenue sur notre blog..."
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-start justify-between pb-2">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">Contenu après l'article (RSS)</label>
+              <p className="text-xs text-gray-500 mt-1">Recommandé pour l'attribution SEO (RankMath style).</p>
+            </div>
+            <div className="md:w-2/3">
+              <textarea
+                value={rssAfterContent}
+                onChange={(e) => setRssAfterContent(e.target.value)}
+                rows={3}
+                placeholder="L'article {post_link} est apparu en premier sur {blog_link}."
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
           </div>
         </div>
       </div>
