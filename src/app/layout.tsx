@@ -210,6 +210,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${inter.variable} h-full antialiased`}
     >
       <head>
+        <link rel="alternate" type="application/rss+xml" title={`${storeName} - Blog RSS`} href="/rss.xml" />
         {globalFont !== 'Inter' && (
           <>
             <link rel="preconnect" href="https://fonts.googleapis.com" />

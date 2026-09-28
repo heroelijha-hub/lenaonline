@@ -29,6 +29,9 @@ export async function generateMetadata({
       return {
         title: category.metaTitle ? category.metaTitle : `${category.name} | ${storeName}`,
         description: category.metaDescription || `Kaufen Sie ${category.name} günstig online bei ${storeName}.`,
+        alternates: {
+          canonical: `/shop?category=${categories[0]}`,
+        },
       };
     }
   }
@@ -36,6 +39,9 @@ export async function generateMetadata({
   return {
     title: `Shop | ${storeName}`,
     description: 'Entdecken Sie unser großes Sortiment an Kaminöfen, Pelletöfen, Brennholz und Holzbriketts.',
+    alternates: {
+      canonical: '/shop',
+    },
   };
 }
 

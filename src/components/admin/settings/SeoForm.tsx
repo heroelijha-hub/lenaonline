@@ -101,15 +101,15 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
 
         <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6">
           <div className="mb-4 md:mb-0 md:w-1/3">
-            <label className="block text-sm font-medium text-gray-700">Google Search Console</label>
-            <p className="text-xs text-gray-500 mt-1">Clé de vérification (ex: xxxxxxx-yyyyyy). Récupérez-la lors de l'ajout de la propriété "Préfixe de l'URL" (méthode balise HTML).</p>
+            <label className="block text-sm font-medium text-gray-700">{tSeo('gsc_label') || 'Google Search Console'}</label>
+            <p className="text-xs text-gray-500 mt-1">{tSeo('gsc_help') || 'Clé de vérification (ex: xxxxxxx-yyyyyy). Récupérez-la lors de l\'ajout de la propriété "Préfixe de l\'URL" (méthode balise HTML).'}</p>
           </div>
           <div className="md:w-2/3">
             <input
               type="text"
               value={googleSiteVerification}
               onChange={(e) => setGoogleSiteVerification(e.target.value)}
-              placeholder="votre_code_de_verification"
+              placeholder={tSeo('gsc_placeholder') || "votre_code_de_verification"}
               className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -117,15 +117,15 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
 
         <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6">
           <div className="mb-4 md:mb-0 md:w-1/3">
-            <label className="block text-sm font-medium text-gray-700">Google Analytics (G-XXXXX)</label>
-            <p className="text-xs text-gray-500 mt-1">ID de mesure de votre propriété Google Analytics 4. Le script s'activera automatiquement quand l'utilisateur accepte les cookies statistiques.</p>
+            <label className="block text-sm font-medium text-gray-700">{tSeo('ga_label') || 'Google Analytics (G-XXXXX)'}</label>
+            <p className="text-xs text-gray-500 mt-1">{tSeo('ga_help') || 'ID de mesure de votre propriété Google Analytics 4. Le script s\'activera automatiquement quand l\'utilisateur accepte les cookies statistiques.'}</p>
           </div>
           <div className="md:w-2/3">
             <input
               type="text"
               value={googleAnalyticsId}
               onChange={(e) => setGoogleAnalyticsId(e.target.value)}
-              placeholder="G-XXXXXXXXXX"
+              placeholder={tSeo('ga_placeholder') || "G-XXXXXXXXXX"}
               className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
             />
           </div>
@@ -163,12 +163,12 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Local SEO & Données Structurées</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">{tSeo('local_seo_title') || 'Local SEO & Données Structurées'}</h3>
           
           <div className="flex flex-col md:flex-row md:items-center justify-between pb-6">
             <div className="mb-4 md:mb-0 md:w-1/3">
-              <label className="block text-sm font-medium text-gray-700">Pays de la Boutique (Code ISO)</label>
-              <p className="text-xs text-gray-500 mt-1">Ex: FR, DE, CH, CA. Utilisé pour indiquer à Google la localisation principale.</p>
+              <label className="block text-sm font-medium text-gray-700">{tSeo('store_country_label') || 'Pays de la Boutique (Code ISO)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('store_country_help') || 'Ex: FR, DE, CH, CA. Utilisé pour indiquer à Google la localisation principale.'}</p>
             </div>
             <div className="md:w-2/3">
               <input
@@ -184,19 +184,19 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
         </div>
 
         <div className="mt-4 pt-8 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Flux RSS & Protection de Contenu</h3>
-          <p className="text-sm text-gray-500 mb-6">Ajoutez du contenu personnalisé avant ou après chaque article dans votre flux RSS. Utilisez les variables <code>{'{post_link}'}</code>, <code>{'{blog_link}'}</code> et <code>{'{author}'}</code>.</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">{tSeo('rss_protection_title') || 'Flux RSS & Protection de Contenu'}</h3>
+          <p className="text-sm text-gray-500 mb-6" dangerouslySetInnerHTML={{ __html: tSeo.raw ? tSeo.raw('rss_protection_desc') : tSeo('rss_protection_desc') || "Ajoutez du contenu personnalisé avant ou après chaque article dans votre flux RSS. Utilisez les variables <code>{post_link}</code>, <code>{blog_link}</code>, <code>{author}</code> et <code>{featuredimage}</code>." }}></p>
           
           <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-gray-100 pb-6 mb-6">
             <div className="mb-4 md:mb-0 md:w-1/3">
-              <label className="block text-sm font-medium text-gray-700">Contenu avant l'article (RSS)</label>
+              <label className="block text-sm font-medium text-gray-700">{tSeo('rss_before_label') || 'Contenu avant l\'article (RSS)'}</label>
             </div>
             <div className="md:w-2/3">
               <textarea
                 value={rssBeforeContent}
                 onChange={(e) => setRssBeforeContent(e.target.value)}
                 rows={2}
-                placeholder="Ex: Bienvenue sur notre blog..."
+                placeholder={tSeo('rss_before_placeholder') || "Ex: Bienvenue sur notre blog..."}
                 className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -204,15 +204,15 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
 
           <div className="flex flex-col md:flex-row md:items-start justify-between pb-2">
             <div className="mb-4 md:mb-0 md:w-1/3">
-              <label className="block text-sm font-medium text-gray-700">Contenu après l'article (RSS)</label>
-              <p className="text-xs text-gray-500 mt-1">Recommandé pour l'attribution SEO (RankMath style).</p>
+              <label className="block text-sm font-medium text-gray-700">{tSeo('rss_after_label') || 'Contenu après l\'article (RSS)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('rss_after_help') || 'Recommandé pour l\'attribution SEO (RankMath style).'}</p>
             </div>
             <div className="md:w-2/3">
               <textarea
                 value={rssAfterContent}
                 onChange={(e) => setRssAfterContent(e.target.value)}
                 rows={3}
-                placeholder="L'article {post_link} est apparu en premier sur {blog_link}."
+                placeholder={tSeo('rss_after_placeholder') || "L'article {post_link} est apparu en premier sur {blog_link}."}
                 className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

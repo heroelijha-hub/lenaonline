@@ -26,6 +26,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: article.metaTitle || article.title,
     description: description,
     keywords: article.metaKeywords || undefined,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     openGraph: {
       title: article.metaTitle || article.title,
       description: description,
@@ -73,8 +76,66 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     orderBy: { createdAt: 'asc' }
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://topkaminbrennstoffe.com';
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Top Kaminbrennstoffe';
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.metaDescription || article.excerpt || article.content.replace(/<[^>]*>?/gm, '').substring(0, 160),
+    image: article.image || undefined,
+    datePublished: article.createdAt.toISOString(),
+    dateModified: article.updatedAt.toISOString(),
+    author: {
+      '@type': 'Person',
+      name: article.authorName || storeName,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: storeName,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/blog/${article.slug}`,
+    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: baseUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: `${baseUrl}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: article.title,
+        item: `${baseUrl}/blog/${article.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-4 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           

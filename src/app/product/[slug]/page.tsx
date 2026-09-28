@@ -167,6 +167,35 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             __html: JSON.stringify(schemaJson)
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: process.env.NEXT_PUBLIC_SITE_URL || 'https://topkaminbrennstoffe.com',
+                },
+                ...((product as any).categories && (product as any).categories.length > 0 ? [{
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: (product as any).categories[0].name,
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://topkaminbrennstoffe.com'}/product-category/${(product as any).categories[0].slug || (product as any).categories[0].id}`,
+                }] : []),
+                {
+                  '@type': 'ListItem',
+                  position: (product as any).categories && (product as any).categories.length > 0 ? 3 : 2,
+                  name: product.title,
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://topkaminbrennstoffe.com'}/product/${product.slug}`,
+                },
+              ],
+            })
+          }}
+        />
         {/* Breadcrumb */}
         <div className="bg-gray-50 border-b border-gray-200 mb-10">
           <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-500 flex items-center gap-2 flex-wrap">

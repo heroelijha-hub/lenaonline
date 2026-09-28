@@ -19,6 +19,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: category?.metaTitle ? category.metaTitle : `${category?.name || 'Category'} | ${storeName}`,
     description: category?.metaDescription || `Shop products in ${category?.name}`,
     keywords: category?.metaKeywords || undefined,
+    alternates: {
+      canonical: `/product-category/${category?.slug}`,
+    },
     openGraph: {
       title: category?.metaTitle || category?.name || 'Category',
       description: category?.metaDescription || `Shop products in ${category?.name}`,
