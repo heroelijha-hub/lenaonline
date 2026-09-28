@@ -94,7 +94,7 @@
     "tags": "Tags:",
     "uncategorized": "Uncategorized",
     "add_to_cart": "Add to cart",
-    "related_products": "You might also like",
+    "related_products": "Related products",
     "no_related_products": "No related products found.",
     "general": "General",
     "select_options_btn": "Select options",
@@ -144,8 +144,7 @@
     "save_info": "Save my name, email, and website in this browser for the next time I comment.",
     "submit_review": "Submit",
     "brand": "Brand:",
-    "your_rating_text": "Your rating",
-    "related_products_subtitle": "Discover other similar models or in the same category"
+    "your_rating_text": "Your rating"
   },
   "Search": {
     "search_results": "Search Results",

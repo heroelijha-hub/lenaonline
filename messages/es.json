@@ -94,7 +94,7 @@
     "tags": "Etiquetas:",
     "uncategorized": "Sin clasificar",
     "add_to_cart": "Añadir al carrito",
-    "related_products": "También te puede interesar",
+    "related_products": "Productos relacionados",
     "select_options_btn": "Seleccionar opciones",
     "no_related_products": "No se encontraron productos relacionados.",
     "general": "General",
@@ -144,8 +144,7 @@
     "email_placeholder": "Correo electrónico *",
     "save_info": "Guardar mi nombre, correo electrónico y sitio web en este navegador para la próxima vez que comente.",
     "submit_review": "Enviar",
-    "brand": "Marca:",
-    "related_products_subtitle": "Descubra otros modelos similares o en la misma categoría"
+    "brand": "Marca:"
   },
   "Search": {
     "search_results": "Resultados de búsqueda",

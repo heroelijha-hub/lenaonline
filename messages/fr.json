@@ -94,7 +94,7 @@
     "tags": "Tags :",
     "uncategorized": "Non catégorisé",
     "add_to_cart": "Ajouter au panier",
-    "related_products": "Vous aimerez aussi",
+    "related_products": "Produits apparentés",
     "no_related_products": "Aucun produit associé trouvé.",
     "general": "Général",
     "select_options_btn": "Sélectionner les options",
@@ -144,8 +144,7 @@
     "submit_review": "Soumettre",
     "sending": "Envoi...",
     "brand": "Marque :",
-    "submit": "Soumettre",
-    "related_products_subtitle": "Découvrez d'autres modèles similaires ou dans la même catégorie"
+    "submit": "Soumettre"
   },
   "Search": {
     "search_results": "Résultats de recherche",

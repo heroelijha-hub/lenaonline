@@ -250,7 +250,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mt-20">
             <div className="border-b border-gray-200 pb-4 mb-8">
               <h2 className="text-xl font-bold text-gray-900">{t('related_products')}</h2>
-              <p className="text-sm text-gray-500 mt-2">{t('related_products_subtitle')}</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

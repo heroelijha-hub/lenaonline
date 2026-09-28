@@ -62,7 +62,7 @@ export const getCachedRelatedProducts = async (categoryIds: string[], excludePro
         id: { not: excludeProductId } 
       },
       include: { categories: true },
-      take: 3,
+      take: 4,
     }),
     ['related-products', sortedIds.join(','), excludeProductId],
     { tags: ['products'], revalidate: 3600 }
