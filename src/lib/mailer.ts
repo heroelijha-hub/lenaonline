@@ -154,58 +154,151 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : '';
 
+    let metadata: any = {};
+    if (order.destinationAddress) {
+      try {
+        metadata = typeof order.destinationAddress === 'string' ? JSON.parse(order.destinationAddress) : order.destinationAddress;
+      } catch (e) {}
+    }
+
+    const subTotal = metadata?.subTotal || order.orderItems?.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0) || order.total;
+    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 €");
+    const shippingMethod = metadata?.shippingMethodName ? `(${metadata.shippingMethodName})` : "";
+    
+    // Addresses
+    const b = metadata?.billing || {};
+    const s = metadata?.shipping || b;
+    const billingName = `${b.firstName || ''} ${b.lastName || ''}`.trim() || escapeHtml(customerDetails.name) || 'Kunde';
+    const shippingName = `${s.firstName || ''} ${s.lastName || ''}`.trim() || billingName;
+    const billingAddressHtml = `${b.address1 || ''}<br/>${b.postalCode || ''} ${b.city || ''}${b.country ? `, ${b.country}` : ''}`;
+    const shippingAddressHtml = `${s.address1 || ''}<br/>${s.postalCode || ''} ${s.city || ''}${s.country ? `, ${s.country}` : ''}`;
+    
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kamin Brennstoffe";
+    
+    // Payment Method mapping
+    let paymentMethodStr = order.paymentMethod;
+    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte Banküberweisung';
+    if (paymentMethodStr === 'STRIPE') paymentMethodStr = 'Kreditkarte';
+    if (paymentMethodStr === 'PAYPAL') paymentMethodStr = 'PayPal';
+
+    const orderId = order.id.slice(-6).toUpperCase();
+
+    const itemsHtml = order.orderItems?.map((item: any) => {
+      let imageUrl = '';
+      if (item.product?.images && Array.isArray(item.product.images) && item.product.images.length > 0) {
+        imageUrl = typeof item.product.images[0] === 'string' ? item.product.images[0] : item.product.images[0].url;
+      } else if (typeof item.product?.images === 'string') {
+        try {
+          const imgs = JSON.parse(item.product.images);
+          if (imgs.length > 0) imageUrl = imgs[0];
+        } catch(e) {}
+      }
+
+      const imgTag = imageUrl ? `<img src="${imageUrl}" alt="Product" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;" />` : '';
+      
+      let sku = item.product?.sku ? `(#${item.product.sku})` : '';
+
+      return `
+        <tr style="border-bottom: 1px dashed #eee;">
+          <td style="padding: 15px 0;">
+            <table style="width: 100%; border: none;">
+              <tr>
+                <td style="width: 65px; vertical-align: middle;">${imgTag}</td>
+                <td style="vertical-align: middle;">
+                  <span style="font-size: 13px; color: #333;">${escapeHtml(item.product?.title || 'Produkt')}</span><br/>
+                  <span style="font-size: 12px; color: #666;">${sku}</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">×${item.quantity}</td>
+          <td style="padding: 15px 0; text-align: right; vertical-align: middle; color: #666; font-size: 13px;">${formatPrice(item.price)}</td>
+        </tr>
+      `;
+    }).join('') || '';
+
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Neue Bestellung: Nr. ${order.id.slice(-6).toUpperCase()}</h1>
-        <p>Sie haben eine neue Bestellung von <strong>${escapeHtml(customerDetails.name) || 'einem Kunden'}</strong> erhalten:</p>
+        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Neue Bestellung: Nr. ${orderId}</h1>
+        <p style="font-size: 13px; color: #666;">Du hast eine neue Bestellung von ${escapeHtml(customerDetails.name) || 'einem Kunden'} erhalten:</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Zusammenfassung der Bestellung</h3>
-        <p style="color: #666; font-size: 13px;">Bestellung Nr. ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Bestellübersicht</h3>
+        <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px;">Produkt</th>
-              <th style="padding-bottom: 10px; text-align: center;">Menge</th>
-              <th style="padding-bottom: 10px; text-align: right;">Preis</th>
+              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Produkt</th>
+              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Anzahl</th>
+              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Preis</th>
             </tr>
           </thead>
           <tbody>
-            ${order.orderItems?.map((item: any) => `
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px 0;">${item.product?.title || 'Produkt'}</td>
-                <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
-                <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
-              </tr>
-            `).join('') || ''}
+            ${itemsHtml}
           </tbody>
         </table>
         
-        <div style="margin-top: 20px; text-align: right; font-size: 16px;">
-          <p><strong>Total: ${formatPrice(order.total)}</strong></p>
+        <div style="margin-top: 25px;">
+          <table style="width: 100%; font-size: 13px; color: #666; line-height: 2;">
+            <tr>
+              <td>Zwischensumme:</td>
+              <td style="text-align: right;">${formatPrice(subTotal)}</td>
+            </tr>
+            <tr>
+              <td>Versand: Gratis Lieferung ${shippingMethod}</td>
+              <td style="text-align: right;">${shippingCostStr}</td>
+            </tr>
+            <tr style="color: #1a1a1a; font-size: 14px;">
+              <td><strong>Gesamt:</strong></td>
+              <td style="text-align: right;"><strong>${formatPrice(order.total)}</strong></td>
+            </tr>
+            <tr>
+              <td>Zahlungsart:</td>
+              <td style="text-align: right;">${paymentMethodStr}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin-top: 30px; padding-top: 25px; padding-bottom: 25px;">
+          <table style="width: 100%; font-size: 12px; color: #333; line-height: 1.4;">
+            <tr>
+              <td style="vertical-align: top; width: 50%;">
+                <strong style="font-size: 13px;">Rechnungsadresse</strong><br/>
+                <div style="margin-top: 8px;">
+                  ${billingName}<br/>
+                  ${billingAddressHtml}<br/>
+                  ${b.phone ? `<span style="color: #eab308;">${escapeHtml(b.phone)}</span><br/>` : ''}
+                  ${b.email ? `<a href="mailto:${b.email}" style="color: #2563eb; text-decoration: underline;">${escapeHtml(b.email)}</a>` : ''}
+                </div>
+              </td>
+              <td style="vertical-align: top; width: 50%;">
+                <strong style="font-size: 13px;">Lieferadresse</strong><br/>
+                <div style="margin-top: 8px;">
+                  ${shippingName}<br/>
+                  ${shippingAddressHtml}<br/>
+                  ${s.phone ? `<span style="color: #eab308;">${escapeHtml(s.phone)}</span>` : ''}
+                </div>
+              </td>
+            </tr>
+          </table>
         </div>
         
-        <table style="width: 100%; margin-top: 30px;">
-          <tr>
-            <td style="vertical-align: top; width: 50%;">
-              <strong>Kunde / Kontakt</strong><br/>
-              ${escapeHtml(customerDetails.name) || ''}<br/>
-              ${escapeHtml(customerDetails.email) || ''}
-            </td>
-            <td style="vertical-align: top; width: 50%;">
-              <strong>Zahlung</strong><br/>
-              Zahlungsmethode: ${order.paymentMethod}<br/>
-              Status: ${order.status}
-            </td>
-          </tr>
-        </table>
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
+          <p style="margin-bottom: 8px; color: #333;">Herzlichen Glückwunsch zum Verkauf!</p>
+          <p style="color: #666; margin-top: 0;">Verarbeite deine Bestellungen unterwegs. <a href="#" style="color: #eab308; text-decoration: underline;">Hol dir die App</a>.</p>
+        </div>
+        
+        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
+          <strong>${storeName}</strong><br/>
+          GRAZER STR. 29, 40789 MONHEIM, DEUTSCHLAND
+        </div>
       </div>
     `;
 
     return sendEmail({
       to: adminEmail,
-      subject: `Neue Bestellung #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Neue Bestellung #${orderId}`,
       html
     });
   } catch (e) {

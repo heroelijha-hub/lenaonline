@@ -40,15 +40,17 @@ export async function submitContactMessage(formData: FormData) {
       const { sendEmail } = await import('@/lib/mailer');
       await sendEmail({
         to: receiverEmail,
-        subject: subject ? `[Contact] ${subject}` : `[Contact] Message from ${name}`,
+        subject: subject ? `Neue Nachricht: "${subject}"` : `Neue Nachricht von ${name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-            <h2>New Contact Message</h2>
-            <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
-            ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
-            ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
-            <hr/>
-            <p>${message.replace(/\n/g, '<br/>')}</p>
+            <h2 style="color: #1a1a1a;">Sie haben eine neue Nachricht erhalten.</h2>
+            <p><strong>Von:</strong> ${name} &lt;${email}&gt;</p>
+            ${phone ? `<p><strong>Telefon:</strong> ${phone}</p>` : ''}
+            ${subject ? `<p><strong>Betreff:</strong> ${subject}</p>` : ''}
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;"/>
+            <p><strong>Nachricht:</strong><br/><br/>${message.replace(/\n/g, '<br/>')}</p>
+            <br/>
+            <p style="color: #666; font-size: 13px;"><em>Bitte antworten Sie dem Kunden so schnell wie möglich.</em></p>
           </div>
         `,
       });

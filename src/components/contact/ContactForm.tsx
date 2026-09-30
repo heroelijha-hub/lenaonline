@@ -11,10 +11,11 @@ export default function ContactForm({ phonePlaceholder }: { phonePlaceholder?: s
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setStatus('loading');
     setMessage('');
     
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const res = await submitContactMessage(formData);
     
     if (res.error) {
@@ -23,7 +24,7 @@ export default function ContactForm({ phonePlaceholder }: { phonePlaceholder?: s
     } else if (res.success) {
       setStatus('success');
       setMessage(t('success_sending'));
-      e.currentTarget.reset();
+      form.reset();
     }
   };
 
