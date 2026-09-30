@@ -72,12 +72,17 @@ export default function ContactForm({ phonePlaceholder }: { phonePlaceholder?: s
           />
         </div>
         <div>
-          <input 
-            type="text" 
+          <select 
             name="subject"
-            placeholder={t('subject_placeholder')} 
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500" 
-          />
+            required
+            defaultValue=""
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-sm focus:ring-orange-500 focus:border-orange-500 text-gray-700" 
+          >
+            <option value="" disabled>{t('subject_placeholder')}</option>
+            <option value={t('subject_order_return')}>{t('subject_order_return')}</option>
+            <option value={t('subject_refund')}>{t('subject_refund')}</option>
+            <option value={t('subject_info')}>{t('subject_info')}</option>
+          </select>
         </div>
       </div>
 

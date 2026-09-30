@@ -194,7 +194,10 @@
     "success_sending": "¡Su mensaje ha sido enviado con éxito!",
     "error_sending": "Se produjo un error al enviar el mensaje.",
     "missing_fields": "Por favor, complete todos los campos obligatorios.",
-    "fields_too_long": "Uno o más campos exceden la longitud máxima permitida."
+    "fields_too_long": "Uno o más campos exceden la longitud máxima permitida.",
+    "subject_order_return": "Devolución de pedido",
+    "subject_refund": "Reembolso",
+    "subject_info": "Solicitud de información"
   },
   "Checkout": {
     "select_payment": "Por favor, selecciona un método de pago.",

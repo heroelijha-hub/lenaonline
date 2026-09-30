@@ -194,7 +194,10 @@
     "success_sending": "Ihre Nachricht wurde erfolgreich gesendet!",
     "error_sending": "Beim Senden der Nachricht ist ein Fehler aufgetreten.",
     "missing_fields": "Bitte füllen Sie alle erforderlichen Felder aus.",
-    "fields_too_long": "Ein oder mehrere Felder überschreiten die maximal zulässige Länge."
+    "fields_too_long": "Ein oder mehrere Felder überschreiten die maximal zulässige Länge.",
+    "subject_order_return": "Rücksendung",
+    "subject_refund": "Rückerstattung",
+    "subject_info": "Informationsanfrage"
   },
   "Checkout": {
     "select_payment": "Bitte wählen Sie eine Zahlungsmethode aus.",

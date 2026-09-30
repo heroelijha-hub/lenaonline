@@ -194,7 +194,10 @@
     "success_sending": "Your message has been sent successfully!",
     "error_sending": "An error occurred while sending the message.",
     "missing_fields": "Please fill out all required fields.",
-    "fields_too_long": "One or more fields exceed the maximum allowed length."
+    "fields_too_long": "One or more fields exceed the maximum allowed length.",
+    "subject_order_return": "Order return",
+    "subject_refund": "Refund",
+    "subject_info": "Information request"
   },
   "Checkout": {
     "select_payment": "Please select a payment method.",
