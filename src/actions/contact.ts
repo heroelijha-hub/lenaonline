@@ -90,31 +90,36 @@ export async function submitNewsletter(formData: FormData) {
       const { sendEmail } = await import('@/lib/mailer');
       await sendEmail({
         to: receiverEmail,
-        subject: `[Newsletter] Nouvelle inscription — ${email}`,
+        subject: `Neue Newsletter-Anmeldung — ${email}`,
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-            <div style="background-color: #c2410c; padding: 24px 32px;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 20px;">📬 Nouvelle inscription Newsletter</h1>
-            </div>
-            <div style="padding: 32px;">
-              <p style="font-size: 16px; margin-bottom: 16px;">Un nouveau visiteur vient de s'inscrire à la newsletter de <strong>${storeName}</strong>.</p>
-              <table style="width: 100%; border-collapse: collapse; background: #f9fafb; border-radius: 6px; overflow: hidden;">
-                <tr>
-                  <td style="padding: 12px 16px; font-weight: bold; color: #6b7280; width: 120px;">Email</td>
-                  <td style="padding: 12px 16px; color: #111827;">${email}</td>
-                </tr>
-                <tr style="background: #f3f4f6;">
-                  <td style="padding: 12px 16px; font-weight: bold; color: #6b7280;">Date</td>
-                  <td style="padding: 12px 16px; color: #111827;">${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td>
-                </tr>
-              </table>
-            </div>
-            <div style="padding: 16px 32px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 12px; color: #9ca3af;">
-              Cet email a été envoyé automatiquement par ${storeName}.
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
+            <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">📬 Neue Newsletter-Anmeldung</h1>
+            <p style="font-size: 13px; color: #666;">Ein neuer Besucher hat sich gerade für den Newsletter von <strong>${storeName}</strong> angemeldet.</p>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
+              <tr>
+                <td style="padding: 10px; font-size: 13px; font-weight: bold; width: 120px;">E-Mail:</td>
+                <td style="padding: 10px; font-size: 13px;">
+                  <a href="mailto:${email}" style="color: #2563eb;">${email}</a>
+                </td>
+              </tr>
+              <tr style="border-top: 1px solid #e5e7eb;">
+                <td style="padding: 10px; font-size: 13px; font-weight: bold;">Datum:</td>
+                <td style="padding: 10px; font-size: 13px;">${new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })}</td>
+              </tr>
+            </table>
+            
+            <div style="border-top: 1px solid #eee; margin-top: 40px; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
+              <strong>${storeName}</strong><br/>
+              DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
             </div>
           </div>
         `,
       });
+      
+      // Envoi de l'email de bienvenue au client
+      const { sendNewsletterWelcomeEmail } = await import('@/lib/mailer');
+      await sendNewsletterWelcomeEmail(email);
     } catch (emailErr) {
       console.error('[NEWSLETTER] Failed to send notification email:', emailErr);
       // On ne bloque pas l'inscription si l'email échoue

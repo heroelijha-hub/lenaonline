@@ -895,3 +895,58 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
   }
 }
 
+// 8. Newsletter Welcome Email for Client
+export async function sendNewsletterWelcomeEmail(userEmail: string) {
+  try {
+    const { logo, from } = await getTransporter().catch(() => ({ logo: '', from: '' }));
+    
+    const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : "";
+    
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kamin Brennstoffe";
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
+        ${logoHtml}
+        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">🎁 Willkommen! 25 € Rabatt auf Ihren nächsten Einkauf</h1>
+        
+        <p style="font-size: 14px; color: #333; margin-bottom: 20px;">Wir freuen uns sehr, Sie als neuen Abonnenten unseres Newsletters begrüßen zu dürfen! 🌿</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 25px;">🎁 Als Willkommensgeschenk erhalten Sie <strong>25 € Rabatt</strong> auf Ihren nächsten Einkauf!</p>
+        
+        <div style="background-color: #fef3c7; border: 1px dashed #d97706; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 25px;">
+          <p style="margin: 0; font-size: 14px; color: #92400e;">Verwenden Sie einfach den folgenden exklusiven Aktionscode:</p>
+          <p style="margin: 10px 0 0 0; font-size: 22px; font-weight: bold; color: #b45309; letter-spacing: 2px;">🏷️ BH874XP</p>
+        </div>
+        
+        <p style="font-size: 13px; color: #666; margin-bottom: 30px;">Geben Sie den Code bei Ihrem nächsten Einkauf ein – es gibt keinen Mindestbestellwert! 🛒</p>
+        
+        <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Als Abonnent(in) unseres Newsletters erhalten Sie regelmäßig:</h3>
+        <ul style="font-size: 14px; color: #333; padding-left: 20px; margin-bottom: 30px; line-height: 1.8;">
+          <li>✨ Exklusive Angebote und Rabatte</li>
+          <li>🔥 Neuigkeiten zu unseren Produkten</li>
+          <li>💡 Praktische Tipps und Informationen rund um unsere Kaminbrennstoffe</li>
+        </ul>
+        
+        <div style="background-color: #f9fafb; border-left: 4px solid #3b82f6; padding: 15px; margin-bottom: 30px; border-radius: 0 4px 4px 0;">
+          <p style="margin: 0; font-size: 13px; color: #4b5563;">📩 <strong>Tipp:</strong> Speichern Sie unsere E-Mail-Adresse in Ihren Kontakten, damit Sie keine unserer Angebote und Neuigkeiten verpassen!</p>
+        </div>
+        
+        <p style="font-size: 14px; color: #333; margin-bottom: 10px;">Wir freuen uns, bald wieder von Ihnen zu hören, und wünschen Ihnen viel Freude beim Einkaufen! 😊</p>
+        <p style="font-size: 14px; font-weight: bold; color: #ea580c; margin-bottom: 40px;">🔥 Ihr Team von ${storeName}</p>
+        
+        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
+          <strong>${storeName}</strong><br/>
+          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+        </div>
+      </div>
+    `;
+
+    return sendEmail({
+      to: userEmail,
+      subject: `Willkommen! Hier ist Ihr 25 € Gutschein 🎁`,
+      html
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
