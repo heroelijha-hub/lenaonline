@@ -65,11 +65,11 @@ export async function sendEmail({ to, subject, html, attachments }: { to: string
 
 // FORMATTER HELPERS
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(price);
 };
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
+  return new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(date);
 };
 
 // --- EMAIL TEMPLATES ---
@@ -84,13 +84,13 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Merci pour votre commande</h1>
-        <p>Bonjour ${escapeHtml(userName) || 'Client'},</p>
-        <p>We have received your order <strong>#${order.id.slice(-6).toUpperCase()}</strong>.</p>
-        <p>Elle est en cours de traitement et sera expédiée très prochainement.</p>
+        <h1 style="font-size: 24px; color: #1a1a1a;">Vielen Dank für Ihre Bestellung</h1>
+        <p>Hallo ${escapeHtml(userName) || 'Kunde'},</p>
+        <p>Wir haben Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> erhalten.</p>
+        <p>Sie wird derzeit bearbeitet und in Kürze versandt.</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
-        <p style="color: #666; font-size: 13px;">Commande n°${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Zusammenfassung der Bestellung</h3>
+        <p style="color: #666; font-size: 13px;">Bestellung Nr. ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           ${order.orderItems?.map((item: any) => {
@@ -105,7 +105,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
             return `
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 15px 0;">
-                <strong>${item.product?.title || 'Produit'}</strong>${attrString}
+                <strong>${item.product?.title || 'Produkt'}</strong>${attrString}
               </td>
               <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
               <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
@@ -118,7 +118,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         </div>
         
         <p style="margin-top: 40px; color: #666; font-size: 14px;">
-          Encore merci ! Contactez-nous si vous avez besoin d'aide avec votre commande.
+          Nochmals vielen Dank! Kontaktieren Sie uns, wenn Sie Hilfe bei Ihrer Bestellung benötigen.
         </p>
       </div>
     `;
@@ -138,7 +138,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
 
     return sendEmail({
       to: userEmail,
-      subject: `Confirmation de commande #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Bestellbestätigung #${order.id.slice(-6).toUpperCase()}`,
       html,
       attachments: pdfAttachment ? [pdfAttachment] : []
     });
@@ -157,24 +157,24 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Nouvelle Commande : Nr. ${order.id.slice(-6).toUpperCase()}</h1>
-        <p>You have received a new order from <strong>${escapeHtml(customerDetails.name) || 'a customer'}</strong> :</p>
+        <h1 style="font-size: 24px; color: #1a1a1a;">Neue Bestellung: Nr. ${order.id.slice(-6).toUpperCase()}</h1>
+        <p>Sie haben eine neue Bestellung von <strong>${escapeHtml(customerDetails.name) || 'einem Kunden'}</strong> erhalten:</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Order Summary</h3>
-        <p style="color: #666; font-size: 13px;">Commande N° ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Zusammenfassung der Bestellung</h3>
+        <p style="color: #666; font-size: 13px;">Bestellung Nr. ${order.id.slice(-6).toUpperCase()} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px;">Product</th>
-              <th style="padding-bottom: 10px; text-align: center;">Quantity</th>
-              <th style="padding-bottom: 10px; text-align: right;">Price</th>
+              <th style="padding-bottom: 10px;">Produkt</th>
+              <th style="padding-bottom: 10px; text-align: center;">Menge</th>
+              <th style="padding-bottom: 10px; text-align: right;">Preis</th>
             </tr>
           </thead>
           <tbody>
             ${order.orderItems?.map((item: any) => `
               <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px 0;">${item.product?.title || 'Produit'}</td>
+                <td style="padding: 15px 0;">${item.product?.title || 'Produkt'}</td>
                 <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
                 <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
               </tr>
@@ -189,14 +189,14 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
         <table style="width: 100%; margin-top: 30px;">
           <tr>
             <td style="vertical-align: top; width: 50%;">
-              <strong>Client / Contact</strong><br/>
+              <strong>Kunde / Kontakt</strong><br/>
               ${escapeHtml(customerDetails.name) || ''}<br/>
               ${escapeHtml(customerDetails.email) || ''}
             </td>
             <td style="vertical-align: top; width: 50%;">
-              <strong>Paiement</strong><br/>
-              Moyen de paiement : ${order.paymentMethod}<br/>
-              Statut : ${order.status}
+              <strong>Zahlung</strong><br/>
+              Zahlungsmethode: ${order.paymentMethod}<br/>
+              Status: ${order.status}
             </td>
           </tr>
         </table>
@@ -205,7 +205,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
 
     return sendEmail({
       to: adminEmail,
-      subject: `Nouvelle Commande #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Neue Bestellung #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
@@ -220,21 +220,21 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : '';
 
-    let title = "Votre commande a été mise à jour";
-    let message = `Le statut de votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été mis à jour.`;
+    let title = "Ihre Bestellung wurde aktualisiert";
+    let message = `Der Status Ihrer Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> wurde aktualisiert.`;
     let color = "#333";
 
     if (status === 'SHIPPED') {
-      title = "Bonne nouvelle ! Votre commande est en route 🚚";
-      message = `Your order <strong>#${order.id.slice(-6).toUpperCase()}</strong> a été expédiée. Vous pouvez suivre la livraison depuis votre compte.`;
+      title = "Gute Neuigkeiten! Ihre Bestellung ist unterwegs 🚚";
+      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> wurde versandt. Sie können die Lieferung in Ihrem Konto verfolgen.`;
       color = "#16a34a"; // green
     } else if (status === 'CANCELLED') {
-      title = "Information concernant votre commande";
-      message = `Nous vous informons que votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> a malheureusement été <strong>annulée</strong>. Si un paiement a été effectué, le remboursement est en cours de traitement.`;
+      title = "Informationen zu Ihrer Bestellung";
+      message = `Wir möchten Sie darüber informieren, dass Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> leider <strong>storniert</strong> wurde. Falls eine Zahlung getätigt wurde, wird die Rückerstattung derzeit bearbeitet.`;
       color = "#dc2626"; // red
     } else if (status === 'DELIVERED') {
-      title = "Votre commande a été livrée !";
-      message = `Votre commande <strong>#${order.id.slice(-6).toUpperCase()}</strong> est marquée comme livrée. Nous espérons que vous en êtes satisfait !`;
+      title = "Ihre Bestellung wurde zugestellt!";
+      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> wurde als zugestellt markiert. Wir hoffen, Sie sind zufrieden!`;
       color = "#16a34a";
     }
 
@@ -242,18 +242,18 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: ${color};">${title}</h1>
-        <p>Bonjour,</p>
+        <p>Hallo,</p>
         <p>${message}</p>
         
         <p style="margin-top: 40px; color: #666; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px;">
-          N'hésitez pas à nous contacter pour toute question supplémentaire.
+          Zögern Sie nicht, uns bei weiteren Fragen zu kontaktieren.
         </p>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Mise à jour de votre commande #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Aktualisierung Ihrer Bestellung #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
@@ -274,21 +274,21 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Panier abandonné</h1>
-        <p>Bonjour ${escapeHtml(userName) || 'Client'},</p>
-        <p>Nous avons remarqué que vous avez laissé des articles dans votre panier. Ils vous attendent !</p>
+        <h1 style="font-size: 24px; color: #1a1a1a;">Verlassener Warenkorb</h1>
+        <p>Hallo ${escapeHtml(userName) || 'Kunde'},</p>
+        <p>Wir haben festgestellt, dass Sie Artikel in Ihrem Warenkorb gelassen haben. Sie warten auf Sie!</p>
         
         <div style="margin: 20px 0;">
           ${couponMessage ? `<p style="font-size: 16px; font-weight: bold; color: #d97706;">${couponMessage}</p>` : ''}
         </div>
 
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Résumé de votre panier</h3>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Zusammenfassung Ihres Warenkorbs</h3>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           ${cart.cartData?.map((item: any) => `
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 15px 0;">
-                <strong>${item.title || 'Produit'}</strong>
+                <strong>${item.title || 'Produkt'}</strong>
               </td>
               <td style="padding: 15px 0; text-align: center;">×${item.quantity}</td>
               <td style="padding: 15px 0; text-align: right;">${formatPrice(item.price)}</td>
@@ -298,19 +298,19 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
         
         <div style="margin-top: 30px; text-align: center;">
           <a href="${checkoutUrl}" style="background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            Finaliser ma commande
+            Bestellung abschließen
           </a>
         </div>
         
         <p style="margin-top: 40px; color: #666; font-size: 14px;">
-          Si vous avez des questions, n'hésitez pas à nous contacter.
+          Wenn Sie Fragen haben, zögern Sie nicht, uns zu kontaktieren.
         </p>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Finalisez votre commande`,
+      subject: `Schließen Sie Ihre Bestellung ab`,
       html
     });
   } catch (e) {
@@ -329,22 +329,22 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Comment s'est passée votre commande ?</h1>
-        <p>Bonjour ${escapeHtml(userName) || "Client"},</p>
-        <p>Nous espérons que vous profitez bien des articles de votre récente commande sur notre boutique !</p>
-        <p>Votre avis est très important pour nous et aide d'autres clients à faire le bon choix.</p>
+        <h1 style="font-size: 24px; color: #1a1a1a;">Wie war Ihre Bestellung?</h1>
+        <p>Hallo ${escapeHtml(userName) || "Kunde"},</p>
+        <p>Wir hoffen, dass Sie die Artikel aus Ihrer letzten Bestellung in unserem Shop genießen!</p>
+        <p>Ihre Meinung ist uns sehr wichtig und hilft anderen Kunden, die richtige Wahl zu treffen.</p>
         
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Laissez un avis sur vos articles</h3>
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">Hinterlassen Sie eine Bewertung</h3>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           ${order.orderItems?.map((item: any) => `
             <tr style="border-bottom: 1px solid #eee;">
               <td style="padding: 15px 0;">
-                <strong>${item.product?.title || "Produit"}</strong>
+                <strong>${item.product?.title || "Produkt"}</strong>
               </td>
               <td style="padding: 15px 0; text-align: right;">
                 <a href="${storeUrl}/product/${item.product?.slug || item.product?.id}" style="background-color: #ea580c; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">
-                  Donner mon avis
+                  Meine Bewertung abgeben
                 </a>
               </td>
             </tr>
@@ -352,14 +352,14 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
         </table>
         
         <p style="margin-top: 40px; color: #666; font-size: 14px;">
-          Merci de prendre le temps de partager votre expérience.
+          Vielen Dank, dass Sie sich die Zeit nehmen, Ihre Erfahrung zu teilen.
         </p>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Laissez un avis sur votre récente commande #${order.id.slice(-6).toUpperCase()}`,
+      subject: `Hinterlassen Sie eine Bewertung zu Ihrer letzten Bestellung #${order.id.slice(-6).toUpperCase()}`,
       html
     });
   } catch (e) {
@@ -380,18 +380,18 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #dc2626;">Alerte : Stock Faible</h1>
-        <p>Bonjour,</p>
-        <p>Le stock du produit suivant est passé sous le seuil d'alerte (${threshold} unités).</p>
+        <h1 style="font-size: 24px; color: #dc2626;">Warnung: Geringer Bestand</h1>
+        <p>Hallo,</p>
+        <p>Der Bestand des folgenden Produkts ist unter die Warnschwelle gefallen (${threshold} Einheiten).</p>
         
         <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0;">
           <h3 style="margin-top: 0; color: #991b1b;">${escapeHtml(productName)}</h3>
-          <p style="margin-bottom: 0; font-size: 16px;"><strong>Stock restant : <span style="color: #dc2626;">${currentStock}</span></strong></p>
+          <p style="margin-bottom: 0; font-size: 16px;"><strong>Verbleibender Bestand: <span style="color: #dc2626;">${currentStock}</span></strong></p>
         </div>
         
         <p style="margin-top: 30px;">
           <a href="${storeUrl}/admin/products/${productId}/edit" style="background-color: #ea580c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            Gérer le stock
+            Bestand verwalten
           </a>
         </p>
       </div>
@@ -399,7 +399,7 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
 
     return sendEmail({
       to: adminEmail,
-      subject: `[Alerte Stock] ${productName} - Plus que ${currentStock} en stock`,
+      subject: `[Bestandswarnung] ${productName} - Nur noch ${currentStock} auf Lager`,
       html
     });
   } catch (e) {
@@ -418,24 +418,24 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a;">Nouveau message de support</h1>
-        <p>Un visiteur vient de laisser un message sur le chat de votre boutique.</p>
+        <h1 style="font-size: 24px; color: #1a1a1a;">Neue Support-Nachricht</h1>
+        <p>Ein Besucher hat gerade eine Nachricht im Chat Ihres Shops hinterlassen.</p>
 
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
           <tr>
-            <td style="padding: 10px;"><strong>De :</strong></td>
-            <td style="padding: 10px;">${escapeHtml(guestName) || "Visiteur"} ${guestEmail ? `(${escapeHtml(guestEmail)})` : ""}</td>
+            <td style="padding: 10px;"><strong>Von:</strong></td>
+            <td style="padding: 10px;">${escapeHtml(guestName) || "Besucher"} ${guestEmail ? `(${escapeHtml(guestEmail)})` : ""}</td>
           </tr>
           <tr>
-            <td style="padding: 10px; vertical-align: top;"><strong>Message :</strong></td>
+            <td style="padding: 10px; vertical-align: top;"><strong>Nachricht:</strong></td>
             <td style="padding: 10px; font-style: italic;">"${escapeHtml(messageContent)}"</td>
           </tr>
         </table>
         
         <p style="margin-top: 30px;">
           <a href="${storeUrl}/admin/chat" style="background-color: #000; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            Ouvrir le Chat Admin
+            Admin-Chat öffnen
           </a>
         </p>
       </div>
@@ -443,7 +443,7 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
 
     return sendEmail({
       to: adminEmail,
-      subject: `[Support Chat] Nouveau message de ${escapeHtml(guestName) || "Visiteur"}`,
+      subject: `[Support-Chat] Neue Nachricht von ${escapeHtml(guestName) || "Besucher"}`,
       html
     });
   } catch (e) {
