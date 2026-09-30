@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const { data: page } = await getPageBySlug(resolvedParams.slug);
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Top Kaminbrennstoffe";
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
   
   if (!page || !page.isPublished) {
     return {

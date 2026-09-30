@@ -23,7 +23,7 @@ export async function uploadImage(formData: FormData) {
 
   return new Promise<string>((resolve, reject) => {
     cloudinary.uploader.upload_stream(
-      { folder: 'topkaminbrennstoffe' },
+      { folder: 'lenaonline' },
       (error, result) => {
         if (error || !result) {
           console.error("Erreur d'upload Cloudinary:", error);
@@ -779,7 +779,7 @@ export async function sendRecoveryEmail(id: string) {
     if (!cart.email) return { error: "Email non fourni pour ce panier." };
 
     const { sendAbandonedCartRecoveryEmail } = await import('@/lib/mailer');
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.topkaminbrennstoffe.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.lenaonline.com';
     const checkoutUrl = `${baseUrl}/checkout`;
 
     const name = cart.firstName ? `${cart.firstName} ${cart.lastName || ''}`.trim() : '';

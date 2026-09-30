@@ -140,7 +140,7 @@ export async function uploadMediaAction(formData: FormData) {
 
     const secureUrl = await new Promise<string>((resolve, reject) => {
       cloudinary.uploader.upload_stream(
-        { folder: 'topkaminbrennstoffe/media' },
+        { folder: 'lenaonline/media' },
         (error, result) => {
           if (error || !result) reject(error);
           else resolve(result.secure_url);

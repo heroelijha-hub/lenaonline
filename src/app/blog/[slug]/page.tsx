@@ -76,8 +76,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     orderBy: { createdAt: 'asc' }
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://topkaminbrennstoffe.com';
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Top Kaminbrennstoffe';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://lenaonline.com';
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'LEÑA ONLINE SL';
 
   const articleSchema = {
     '@context': 'https://schema.org',

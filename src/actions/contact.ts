@@ -82,7 +82,7 @@ export async function submitNewsletter(formData: FormData) {
 
     const settings = await getSettings();
     const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Top Kaminbrennstoffe';
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'LE�A ONLINE SL';
     const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !';
 
     // Envoi de l'email de notification à l'admin
