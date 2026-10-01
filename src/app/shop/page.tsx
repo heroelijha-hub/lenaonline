@@ -6,7 +6,7 @@ import ShopPagination from '@/components/shop/ShopPagination';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
-const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
 export async function generateMetadata({
   searchParams,
@@ -14,7 +14,7 @@ export async function generateMetadata({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const params = await searchParams;
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
   
   // Extract category
   const categoryParams = params.category;
@@ -28,7 +28,7 @@ export async function generateMetadata({
     if (category) {
       return {
         title: category.metaTitle ? category.metaTitle : `${category.name} | ${storeName}`,
-        description: category.metaDescription || `Kaufen Sie ${category.name} günstig online bei ${storeName}.`,
+        description: category.metaDescription || `Kaufen Sie ${category.name} gÃ¼nstig online bei ${storeName}.`,
         alternates: {
           canonical: `/shop?category=${categories[0]}`,
         },
@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   return {
     title: `Shop | ${storeName}`,
-    description: 'Entdecken Sie unser großes Sortiment an Kaminöfen, Pelletöfen, Brennholz und Holzbriketts.',
+    description: 'Entdecken Sie unser groÃŸes Sortiment an KaminÃ¶fen, PelletÃ¶fen, Brennholz und Holzbriketts.',
     alternates: {
       canonical: '/shop',
     },
@@ -222,7 +222,7 @@ export default async function ShopPage({
               </div>
             ) : (
               <div className="text-center py-20 bg-gray-50 rounded-lg border border-gray-100">
-                <div className="text-6xl mb-4">🔍</div>
+                <div className="text-6xl mb-4">ðŸ”</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{t('no_products_found')}</h3>
                 <p className="text-gray-500">{t('try_modifying_filters')}</p>
               </div>

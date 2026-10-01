@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import TaxesForm from '@/components/admin/settings/TaxesForm';
 
 export const metadata = {
-  title: 'Taxes and VAT Settings | LEÑA ONLINE SL Admin',
+  title: 'Taxes and VAT Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function TaxesSettingsPage() {

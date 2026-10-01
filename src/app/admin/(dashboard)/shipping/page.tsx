@@ -3,7 +3,7 @@ import ShippingManager from './ShippingManager';
 import { getTranslations } from 'next-intl/server';
 
 export const metadata = {
-  title: 'Shipping Settings | LEÑA ONLINE SL Admin',
+  title: 'Shipping Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function ShippingPage() {

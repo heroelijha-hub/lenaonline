@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import PaymentsForm from '@/components/admin/settings/PaymentsForm';
 
 export const metadata = {
-  title: 'Payments Settings | LEÑA ONLINE SL Admin',
+  title: 'Payments Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function PaymentsSettingsPage() {

@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import LanguageForm from '@/components/admin/settings/LanguageForm';
 
 export const metadata = {
-  title: 'Language Settings | LEÑA ONLINE SL Admin',
+  title: 'Language Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function LanguageSettingsPage() {

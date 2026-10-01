@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import NavigationForm from '@/components/admin/settings/NavigationForm';
 
 export const metadata = {
-  title: 'Navigation menu Settings | LEÑA ONLINE SL Admin',
+  title: 'Navigation menu Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function NavigationSettingsPage() {

@@ -5,7 +5,7 @@ import { getTrashedProducts, getTrashedMedia } from '@/actions/trash';
 export async function generateMetadata() {
   const t = await getTranslations('AdminTrash');
   return {
-    title: `${t('title')} | LEÑA ONLINE SL Admin`,
+    title: `${t('title')} | LEÃ‘A ONLINE SL Admin`,
   };
 }
 

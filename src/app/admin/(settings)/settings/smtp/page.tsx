@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import SmtpForm from '@/components/admin/settings/SmtpForm';
 
 export const metadata = {
-  title: 'Email server (SMTP) Settings | LEÑA ONLINE SL Admin',
+  title: 'Email server (SMTP) Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function SmtpSettingsPage() {

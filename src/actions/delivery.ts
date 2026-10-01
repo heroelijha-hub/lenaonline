@@ -12,7 +12,7 @@ export async function geocodeCity(city: string, country: string): Promise<{ lat:
   try {
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'LE�A ONLINE SL-Tracking-System/1.0',
+        'User-Agent': 'LEÑA ONLINE SL-Tracking-System/1.0',
       },
     });
     
@@ -118,7 +118,7 @@ export async function deleteDeliveryPosition(positionId: string, orderId: string
   revalidatePath('/tracking');
 }
 
-// Activer le mode "En Préparation" avec délai automatique
+// Activer le mode "En PrÃ©paration" avec dÃ©lai automatique
 export async function activatePreparation(orderId: string, deliveryDays: number) {
   await requireAdmin();
   await prisma.order.update({
@@ -133,7 +133,7 @@ export async function activatePreparation(orderId: string, deliveryDays: number)
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
-// Annuler le mode automatique (réinitialiser)
+// Annuler le mode automatique (rÃ©initialiser)
 export async function cancelPreparation(orderId: string) {
   await requireAdmin();
   await prisma.order.update({

@@ -37,11 +37,11 @@ type HeaderProps = {
   searchBtnText?: string;
   searchBtnBgColor?: string;
   searchBtnTextColor?: string;
-  showNew?: boolean;
-  showHot?: boolean;
-  showSale?: boolean;
-  mobileAboutTitle?: string;
-  mobileAboutDesc?: string;
+  showNew?: booLEÑAn;
+  showHot?: booLEÑAn;
+  showSale?: booLEÑAn;
+  mobiLEÑAboutTitle?: string;
+  mobiLEÑAboutDesc?: string;
   mobileMenuLinks?: Array<{ label: string, url: string }>;
   mobileContactAddress?: string;
   mobileContactPhone?: string;
@@ -77,8 +77,8 @@ export default function Header({
   showNew = true,
   showHot = true,
   showSale = true,
-  mobileAboutTitle = '',
-  mobileAboutDesc = '',
+  mobiLEÑAboutTitle = '',
+  mobiLEÑAboutDesc = '',
   mobileMenuLinks = [],
   mobileContactAddress = '',
   mobileContactPhone = '',
@@ -192,7 +192,7 @@ export default function Header({
       }
     }, 400);
 
-    return () => clearTimeout(timer);
+    return () => cLEÑArTimeout(timer);
   }, [searchQuery, selectedCategory]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -280,7 +280,7 @@ export default function Header({
         <div className="flex-shrink flex items-center min-w-0">
           <Link href="/" className="flex items-center">
             {logoImage ? (
-              <Image src={logoImage} alt="LE�A ONLINE SL Logo" width={250} height={80} sizes="(max-width: 640px) 250px, 250px" className="object-contain custom-logo-height max-w-full" style={{ width: 'auto' }} priority />
+              <Image src={logoImage} alt="LEÑA ONLINE SL Logo" width={250} height={80} sizes="(max-width: 640px) 250px, 250px" className="object-contain custom-logo-height max-w-full" style={{ width: 'auto' }} priority />
             ) : (
               <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">LOGO</span>
             )}
@@ -438,7 +438,7 @@ export default function Header({
               <span className="font-bold text-gray-900 text-sm md:text-base">
                 {mounted ? <Price amount={cartTotal} showTax={false} /> : <Price amount={0} showTax={false} />}
               </span>
-              <span className="text-[10px] text-gray-700 uppercase tracking-wider leading-none">{t('cart')}</span>
+              <span className="text-[10px] text-gray-700 uppercase tracking-wider LEÑAding-none">{t('cart')}</span>
             </div>
           </div>
 
@@ -554,8 +554,8 @@ export default function Header({
         onClose={() => setIsMobileMenuOpen(false)}
         logoImage={logoImage}
         logoHeight={mobileLogoHeight}
-        aboutTitle={mobileAboutTitle}
-        aboutDesc={mobileAboutDesc}
+        aboutTitle={mobiLEÑAboutTitle}
+        aboutDesc={mobiLEÑAboutDesc}
         menuLinks={mobileMenuLinks}
         contactAddress={mobileContactAddress}
         contactPhone={mobileContactPhone}

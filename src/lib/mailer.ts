@@ -89,7 +89,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
     }
 
     const subTotal = metadata?.subTotal || order.orderItems?.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0) || order.total;
-    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 €");
+    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 â‚¬");
     const shippingMethod = metadata?.shippingMethodName ? `(${metadata.shippingMethodName})` : "";
     
     // Addresses
@@ -100,13 +100,13 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
     const billingAddressHtml = `${b.address1 || ''}<br/>${b.postalCode || ''} ${b.city || ''}${b.country ? `, ${b.country}` : ''}`;
     const shippingAddressHtml = `${s.address1 || ''}<br/>${s.postalCode || ''} ${s.city || ''}${s.country ? `, ${s.country}` : ''}`;
     
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
     const storeEmailMatch = from.match(/<(.+)>/);
     const storeEmail = storeEmailMatch ? storeEmailMatch[1] : "info@lenaonline.com";
     
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
-    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte Banküberweisung';
+    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte BankÃ¼berweisung';
     if (paymentMethodStr === 'STRIPE') paymentMethodStr = 'Kreditkarte';
     if (paymentMethodStr === 'PAYPAL') paymentMethodStr = 'PayPal';
 
@@ -140,7 +140,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
               </tr>
             </table>
           </td>
-          <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">×${item.quantity}</td>
+          <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">Ã—${item.quantity}</td>
           <td style="padding: 15px 0; text-align: right; vertical-align: middle; color: #666; font-size: 13px;">${formatPrice(item.price)}</td>
         </tr>
       `;
@@ -156,8 +156,8 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
       
       bankDetailsHtml = `
         <div style="background-color: #fafafa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-top: 25px; margin-bottom: 25px;">
-          <h4 style="margin-top: 0; margin-bottom: 15px; color: #1a1a1a; font-size: 14px;">Ihre Banküberweisung Details</h4>
-          <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Bitte überweisen Sie den Rechnungsbetrag auf folgendes Konto. Geben Sie als Verwendungszweck Ihre Bestellnummer <strong>${orderId}</strong> an.</p>
+          <h4 style="margin-top: 0; margin-bottom: 15px; color: #1a1a1a; font-size: 14px;">Ihre BankÃ¼berweisung Details</h4>
+          <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Bitte Ã¼berweisen Sie den Rechnungsbetrag auf folgendes Konto. Geben Sie als Verwendungszweck Ihre Bestellnummer <strong>${orderId}</strong> an.</p>
           <table style="width: 100%; font-size: 13px; color: #333; line-height: 1.6;">
             ${settings.BANK_TRANSFER_ACCOUNT_HOLDER ? `<tr><td style="width: 150px; color: #666;">Kontoinhaber:</td><td><strong>${settings.BANK_TRANSFER_ACCOUNT_HOLDER}</strong></td></tr>` : ''}
             ${settings.BANK_TRANSFER_IBAN ? `<tr><td style="color: #666;">IBAN:</td><td><strong>${settings.BANK_TRANSFER_IBAN}</strong></td></tr>` : ''}
@@ -175,7 +175,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         <p style="font-size: 13px; color: #666;">Hallo ${escapeHtml(userName) || 'Kunde'},</p>
         <p style="font-size: 13px; color: #666;">Hier sind die Einzelheiten deiner Bestellung vom ${formatDate(new Date(order.createdAt))}:</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Bestellübersicht</h3>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">BestellÃ¼bersicht</h3>
         <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -239,12 +239,12 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
         </div>
         
         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="color: #333;">Nochmals vielen Dank! Wenn du Hilfe bei deiner Bestellung benötigst, kannst du uns jederzeit unter <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> kontaktieren.</p>
+          <p style="color: #333;">Nochmals vielen Dank! Wenn du Hilfe bei deiner Bestellung benÃ¶tigst, kannst du uns jederzeit unter <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> kontaktieren.</p>
         </div>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -264,7 +264,7 @@ export async function sendClientOrderConfirmation(order: any, userEmail: string,
 
     return sendEmail({
       to: userEmail,
-      subject: `Bestellbestätigung #${orderId}`,
+      subject: `BestellbestÃ¤tigung #${orderId}`,
       html,
       attachments: pdfAttachment ? [pdfAttachment] : []
     });
@@ -288,7 +288,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
     }
 
     const subTotal = metadata?.subTotal || order.orderItems?.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0) || order.total;
-    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 €");
+    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 â‚¬");
     const shippingMethod = metadata?.shippingMethodName ? `(${metadata.shippingMethodName})` : "";
     
     // Addresses
@@ -299,11 +299,11 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
     const billingAddressHtml = `${b.address1 || ''}<br/>${b.postalCode || ''} ${b.city || ''}${b.country ? `, ${b.country}` : ''}`;
     const shippingAddressHtml = `${s.address1 || ''}<br/>${s.postalCode || ''} ${s.city || ''}${s.country ? `, ${s.country}` : ''}`;
     
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
     
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
-    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte Banküberweisung';
+    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte BankÃ¼berweisung';
     if (paymentMethodStr === 'STRIPE') paymentMethodStr = 'Kreditkarte';
     if (paymentMethodStr === 'PAYPAL') paymentMethodStr = 'PayPal';
 
@@ -337,7 +337,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
               </tr>
             </table>
           </td>
-          <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">×${item.quantity}</td>
+          <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">Ã—${item.quantity}</td>
           <td style="padding: 15px 0; text-align: right; vertical-align: middle; color: #666; font-size: 13px;">${formatPrice(item.price)}</td>
         </tr>
       `;
@@ -349,7 +349,7 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
         <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Neue Bestellung: Nr. ${orderId}</h1>
         <p style="font-size: 13px; color: #666;">Du hast eine neue Bestellung von ${escapeHtml(customerDetails.name) || 'einem Kunden'} erhalten:</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Bestellübersicht</h3>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">BestellÃ¼bersicht</h3>
         <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -411,13 +411,13 @@ export async function sendAdminOrderNotification(order: any, adminEmail: string,
         </div>
         
         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="margin-bottom: 8px; color: #333;">Herzlichen Glückwunsch zum Verkauf!</p>
+          <p style="margin-bottom: 8px; color: #333;">Herzlichen GlÃ¼ckwunsch zum Verkauf!</p>
           <p style="color: #666; margin-top: 0;">Verarbeite deine Bestellungen unterwegs. <a href="#" style="color: #eab308; text-decoration: underline;">Hol dir die App</a>.</p>
         </div>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -444,12 +444,12 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     let color = "#1a1a1a";
 
     if (status === 'SHIPPED') {
-      title = "Ihre Bestellung ist unterwegs 🚚";
-      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> wurde versandt. Sie können die Lieferung in Ihrem Konto verfolgen.`;
+      title = "Ihre Bestellung ist unterwegs ðŸšš";
+      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> wurde versandt. Sie kÃ¶nnen die Lieferung in Ihrem Konto verfolgen.`;
       color = "#16a34a"; // green
     } else if (status === 'CANCELLED') {
       title = "Informationen zu Ihrer Bestellung";
-      message = `Wir möchten Sie darüber informieren, dass Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> leider <strong>storniert</strong> wurde. Falls eine Zahlung getätigt wurde, wird die Rückerstattung derzeit bearbeitet.`;
+      message = `Wir mÃ¶chten Sie darÃ¼ber informieren, dass Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> leider <strong>storniert</strong> wurde. Falls eine Zahlung getÃ¤tigt wurde, wird die RÃ¼ckerstattung derzeit bearbeitet.`;
       color = "#dc2626"; // red
     } else if (status === 'DELIVERED') {
       title = "Ihre Bestellung wurde zugestellt!";
@@ -465,7 +465,7 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     }
 
     const subTotal = metadata?.subTotal || order.orderItems?.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0) || order.total;
-    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 €");
+    const shippingCostStr = metadata?.shippingCost === 0 ? "Kostenlos!" : (metadata?.shippingCost ? formatPrice(metadata.shippingCost) : "0,00 â‚¬");
     const shippingMethod = metadata?.shippingMethodName ? `(${metadata.shippingMethodName})` : "";
     
     // Addresses
@@ -476,13 +476,13 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
     const billingAddressHtml = `${b.address1 || ''}<br/>${b.postalCode || ''} ${b.city || ''}${b.country ? `, ${b.country}` : ''}`;
     const shippingAddressHtml = `${s.address1 || ''}<br/>${s.postalCode || ''} ${s.city || ''}${s.country ? `, ${s.country}` : ''}`;
     
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
     const storeEmailMatch = from?.match(/<(.+)>/);
     const storeEmail = storeEmailMatch ? storeEmailMatch[1] : "info@lenaonline.com";
     
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
-    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte Banküberweisung';
+    if (paymentMethodStr === 'BANK_TRANSFER') paymentMethodStr = 'Direkte BankÃ¼berweisung';
     if (paymentMethodStr === 'STRIPE') paymentMethodStr = 'Kreditkarte';
     if (paymentMethodStr === 'PAYPAL') paymentMethodStr = 'PayPal';
 
@@ -517,7 +517,7 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
                 </tr>
               </table>
             </td>
-            <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">×${item.quantity}</td>
+            <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">Ã—${item.quantity}</td>
             <td style="padding: 15px 0; text-align: right; vertical-align: middle; color: #666; font-size: 13px;">${formatPrice(item.price)}</td>
           </tr>
         `;
@@ -531,7 +531,7 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
         <p style="font-size: 13px; color: #666;">Hallo,</p>
         <p style="font-size: 13px; color: #666;">${message}</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Bestellübersicht</h3>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">BestellÃ¼bersicht</h3>
         <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         ${itemsHtml ? `
@@ -595,12 +595,12 @@ export async function sendOrderStatusUpdate(order: any, userEmail: string, statu
         </div>
         
         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="color: #333;">Zögern Sie nicht, uns bei weiteren Fragen unter <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> zu kontaktieren.</p>
+          <p style="color: #333;">ZÃ¶gern Sie nicht, uns bei weiteren Fragen unter <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> zu kontaktieren.</p>
         </div>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -625,7 +625,7 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
     // USER TODO: Add your coupon code here! For example: "Use code COMEBACK10 for 10% off!"
     const couponMessage = ""; 
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     let itemsHtml = '';
     if (cart.cartData && cart.cartData.length > 0) {
@@ -654,7 +654,7 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
                 </tr>
               </table>
             </td>
-            <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">×${item.quantity}</td>
+            <td style="padding: 15px 0; text-align: center; vertical-align: middle; color: #666; font-size: 13px;">Ã—${item.quantity}</td>
             <td style="padding: 15px 0; text-align: right; vertical-align: middle; color: #666; font-size: 13px;">${formatPrice(item.price)}</td>
           </tr>
         `;
@@ -689,24 +689,24 @@ export async function sendAbandonedCartRecoveryEmail(cart: any, userEmail: strin
         
         <div style="margin-top: 30px; text-align: center;">
           <a href="${checkoutUrl}" style="background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            Bestellung abschließen
+            Bestellung abschlieÃŸen
           </a>
         </div>
         
         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="color: #666;">Wenn Sie Fragen haben, zögern Sie nicht, uns zu kontaktieren.</p>
+          <p style="color: #666;">Wenn Sie Fragen haben, zÃ¶gern Sie nicht, uns zu kontaktieren.</p>
         </div>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Schließen Sie Ihre Bestellung ab`,
+      subject: `SchlieÃŸen Sie Ihre Bestellung ab`,
       html
     });
   } catch (e) {
@@ -722,7 +722,7 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>` : "";
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     let itemsHtml = '';
     if (order.orderItems && order.orderItems.length > 0) {
@@ -766,7 +766,7 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Wie war Ihre Bestellung?</h1>
         <p style="font-size: 13px; color: #666;">Hallo ${escapeHtml(userName) || "Kunde"},</p>
-        <p style="font-size: 13px; color: #666;">Wir hoffen, dass Sie die Artikel aus Ihrer letzten Bestellung in unserem Shop genießen!</p>
+        <p style="font-size: 13px; color: #666;">Wir hoffen, dass Sie die Artikel aus Ihrer letzten Bestellung in unserem Shop genieÃŸen!</p>
         <p style="font-size: 13px; color: #666;">Ihre Meinung ist uns sehr wichtig und hilft anderen Kunden, die richtige Wahl zu treffen.</p>
         
         <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Hinterlassen Sie eine Bewertung</h3>
@@ -783,7 +783,7 @@ export async function sendReviewRequestEmail(order: any, userEmail: string, user
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -808,7 +808,7 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
 
     const productName = variationName ? `${productTitle} (${variationName})` : productTitle;
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
@@ -830,7 +830,7 @@ export async function sendLowStockAlertEmail(productTitle: string, variationName
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -853,7 +853,7 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : "";
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
@@ -874,13 +874,13 @@ export async function sendAdminNewChatMessageEmail(guestName: string, guestEmail
         
         <p style="margin-top: 30px; text-align: center; margin-bottom: 40px;">
           <a href="${storeUrl}/admin/chat" style="background-color: #ea580c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-            Admin-Chat öffnen
+            Admin-Chat Ã¶ffnen
           </a>
         </p>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
@@ -902,47 +902,47 @@ export async function sendNewsletterWelcomeEmail(userEmail: string) {
     
     const logoHtml = logo ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>` : "";
     
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LE�A ONLINE SL";
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">🎁 Willkommen! 25 € Rabatt auf Ihren nächsten Einkauf</h1>
+        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">ðŸŽ Willkommen! 25 â‚¬ Rabatt auf Ihren nÃ¤chsten Einkauf</h1>
         
-        <p style="font-size: 14px; color: #333; margin-bottom: 20px;">Wir freuen uns sehr, Sie als neuen Abonnenten unseres Newsletters begrüßen zu dürfen! 🌿</p>
-        <p style="font-size: 14px; color: #333; margin-bottom: 25px;">🎁 Als Willkommensgeschenk erhalten Sie <strong>25 € Rabatt</strong> auf Ihren nächsten Einkauf!</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 20px;">Wir freuen uns sehr, Sie als neuen Abonnenten unseres Newsletters begrÃ¼ÃŸen zu dÃ¼rfen! ðŸŒ¿</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 25px;">ðŸŽ Als Willkommensgeschenk erhalten Sie <strong>25 â‚¬ Rabatt</strong> auf Ihren nÃ¤chsten Einkauf!</p>
         
         <div style="background-color: #fef3c7; border: 1px dashed #d97706; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 25px;">
           <p style="margin: 0; font-size: 14px; color: #92400e;">Verwenden Sie einfach den folgenden exklusiven Aktionscode:</p>
-          <p style="margin: 10px 0 0 0; font-size: 22px; font-weight: bold; color: #b45309; letter-spacing: 2px;">🏷️ BH874XP</p>
+          <p style="margin: 10px 0 0 0; font-size: 22px; font-weight: bold; color: #b45309; letter-spacing: 2px;">ðŸ·ï¸ BH874XP</p>
         </div>
         
-        <p style="font-size: 13px; color: #666; margin-bottom: 30px;">Geben Sie den Code bei Ihrem nächsten Einkauf ein – es gibt keinen Mindestbestellwert! 🛒</p>
+        <p style="font-size: 13px; color: #666; margin-bottom: 30px;">Geben Sie den Code bei Ihrem nÃ¤chsten Einkauf ein â€“ es gibt keinen Mindestbestellwert! ðŸ›’</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Als Abonnent(in) unseres Newsletters erhalten Sie regelmäßig:</h3>
+        <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Als Abonnent(in) unseres Newsletters erhalten Sie regelmÃ¤ÃŸig:</h3>
         <ul style="font-size: 14px; color: #333; padding-left: 20px; margin-bottom: 30px; line-height: 1.8;">
-          <li>✨ Exklusive Angebote und Rabatte</li>
-          <li>🔥 Neuigkeiten zu unseren Produkten</li>
-          <li>💡 Praktische Tipps und Informationen rund um unsere Kaminbrennstoffe</li>
+          <li>âœ¨ Exklusive Angebote und Rabatte</li>
+          <li>ðŸ”¥ Neuigkeiten zu unseren Produkten</li>
+          <li>ðŸ’¡ Praktische Tipps und Informationen rund um unsere Kaminbrennstoffe</li>
         </ul>
         
         <div style="background-color: #f9fafb; border-left: 4px solid #3b82f6; padding: 15px; margin-bottom: 30px; border-radius: 0 4px 4px 0;">
-          <p style="margin: 0; font-size: 13px; color: #4b5563;">📩 <strong>Tipp:</strong> Speichern Sie unsere E-Mail-Adresse in Ihren Kontakten, damit Sie keine unserer Angebote und Neuigkeiten verpassen!</p>
+          <p style="margin: 0; font-size: 13px; color: #4b5563;">ðŸ“© <strong>Tipp:</strong> Speichern Sie unsere E-Mail-Adresse in Ihren Kontakten, damit Sie keine unserer Angebote und Neuigkeiten verpassen!</p>
         </div>
         
-        <p style="font-size: 14px; color: #333; margin-bottom: 10px;">Wir freuen uns, bald wieder von Ihnen zu hören, und wünschen Ihnen viel Freude beim Einkaufen! 😊</p>
-        <p style="font-size: 14px; font-weight: bold; color: #ea580c; margin-bottom: 40px;">🔥 Ihr Team von ${storeName}</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 10px;">Wir freuen uns, bald wieder von Ihnen zu hÃ¶ren, und wÃ¼nschen Ihnen viel Freude beim Einkaufen! ðŸ˜Š</p>
+        <p style="font-size: 14px; font-weight: bold; color: #ea580c; margin-bottom: 40px;">ðŸ”¥ Ihr Team von ${storeName}</p>
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
         </div>
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Willkommen! Hier ist Ihr 25 € Gutschein 🎁`,
+      subject: `Willkommen! Hier ist Ihr 25 â‚¬ Gutschein ðŸŽ`,
       html
     });
   } catch (e) {

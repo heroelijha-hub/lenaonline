@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import NotFoundPageForm from '@/components/admin/settings/NotFoundPageForm';
 
 export const metadata = {
-  title: '404 page Settings | LEÑA ONLINE SL Admin',
+  title: '404 page Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function NotFoundPageSettingsPage() {

@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import DesignHeaderForm from '@/components/admin/settings/DesignHeaderForm';
 
 export const metadata = {
-  title: 'Header and product cards Settings | LEÑA ONLINE SL Admin',
+  title: 'Header and product cards Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function DesignHeaderSettingsPage() {

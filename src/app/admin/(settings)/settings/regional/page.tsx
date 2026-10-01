@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import RegionalForm from '@/components/admin/settings/RegionalForm';
 
 export const metadata = {
-  title: 'Regional and Currency Settings | LEÑA ONLINE SL Admin',
+  title: 'Regional and Currency Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function RegionalSettingsPage() {

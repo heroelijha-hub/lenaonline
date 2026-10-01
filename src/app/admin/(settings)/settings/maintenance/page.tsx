@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import MaintenanceForm from '@/components/admin/settings/MaintenanceForm';
 
 export const metadata = {
-  title: 'Maintenance mode Settings | LEÑA ONLINE SL Admin',
+  title: 'Maintenance mode Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function MaintenanceSettingsPage() {

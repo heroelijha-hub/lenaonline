@@ -56,7 +56,7 @@ function generateHeader(doc: typeof PDFDocument) {
     .fontSize(24)
     .text('RECHNUNG', 50, 57)
     .fontSize(10)
-    .text('LE�A ONLINE SL', 200, 65, { align: 'right' })
+    .text('LEÑA ONLINE SL', 200, 65, { align: 'right' })
     // If they have an address, you can add it here, or just keep it simple
     .moveDown();
 }
@@ -152,7 +152,7 @@ function generateFooter(doc: typeof PDFDocument) {
   doc
     .fontSize(10)
     .text(
-      'Vielen Dank für Ihren Einkauf. Bei Fragen kontaktieren Sie uns bitte.',
+      'Vielen Dank fÃ¼r Ihren Einkauf. Bei Fragen kontaktieren Sie uns bitte.',
       50,
       700,
       { align: 'center', width: 500 }

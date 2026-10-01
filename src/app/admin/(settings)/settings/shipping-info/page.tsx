@@ -2,7 +2,7 @@ import { getSettings } from '@/actions/settings';
 import ShippingInfoForm from '@/components/admin/settings/ShippingInfoForm';
 
 export const metadata = {
-  title: 'Product shipping info Settings | LEÑA ONLINE SL Admin',
+  title: 'Product shipping info Settings | LEÃ‘A ONLINE SL Admin',
 };
 
 export default async function ShippingInfoSettingsPage() {

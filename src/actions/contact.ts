@@ -21,7 +21,7 @@ export async function submitContactMessage(formData: FormData) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return { error: 'Please provide a valid email address.' };
+      return { error: 'PLEÑAse provide a valid email address.' };
     }
 
     // Limit field lengths to prevent abuse
@@ -50,7 +50,7 @@ export async function submitContactMessage(formData: FormData) {
             <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;"/>
             <p><strong>Nachricht:</strong><br/><br/>${message.replace(/\n/g, '<br/>')}</p>
             <br/>
-            <p style="color: #666; font-size: 13px;"><em>Bitte antworten Sie dem Kunden so schnell wie möglich.</em></p>
+            <p style="color: #666; font-size: 13px;"><em>Bitte antworten Sie dem Kunden so schnell wie mÃ¶glich.</em></p>
           </div>
         `,
       });
@@ -82,19 +82,19 @@ export async function submitNewsletter(formData: FormData) {
 
     const settings = await getSettings();
     const receiverEmail = settings.CONTACT_RECEIVER_EMAIL || 'admin@mystore.com';
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'LE�A ONLINE SL';
-    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription à notre newsletter !';
+    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'LEÑA ONLINE SL';
+    const successMsg = settings.NEWSLETTER_SUCCESS_MESSAGE || 'Merci pour votre inscription Ã  notre newsletter !';
 
-    // Envoi de l'email de notification à l'admin
+    // Envoi de l'email de notification Ã  l'admin
     try {
       const { sendEmail } = await import('@/lib/mailer');
       await sendEmail({
         to: receiverEmail,
-        subject: `Neue Newsletter-Anmeldung — ${email}`,
+        subject: `Neue Newsletter-Anmeldung â€” ${email}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
-            <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">📬 Neue Newsletter-Anmeldung</h1>
-            <p style="font-size: 13px; color: #666;">Ein neuer Besucher hat sich gerade für den Newsletter von <strong>${storeName}</strong> angemeldet.</p>
+            <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">ðŸ“¬ Neue Newsletter-Anmeldung</h1>
+            <p style="font-size: 13px; color: #666;">Ein neuer Besucher hat sich gerade fÃ¼r den Newsletter von <strong>${storeName}</strong> angemeldet.</p>
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
               <tr>
@@ -111,7 +111,7 @@ export async function submitNewsletter(formData: FormData) {
             
             <div style="border-top: 1px solid #eee; margin-top: 40px; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
               <strong>${storeName}</strong><br/>
-              DÜNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+              DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
             </div>
           </div>
         `,
@@ -122,7 +122,7 @@ export async function submitNewsletter(formData: FormData) {
       await sendNewsletterWelcomeEmail(email);
     } catch (emailErr) {
       console.error('[NEWSLETTER] Failed to send notification email:', emailErr);
-      // On ne bloque pas l'inscription si l'email échoue
+      // On ne bloque pas l'inscription si l'email Ã©choue
     }
 
     return { success: true, message: successMsg };
