@@ -6,6 +6,7 @@ import Price from '@/components/Price';
 import ProductReviews from '@/components/product/ProductReviews';
 import { createClient } from '@/utils/supabase/server';
 import { getTranslations } from 'next-intl/server';
+import { safeJsonLd } from '@/lib/security';
 
 import { Metadata } from 'next';
 
@@ -164,13 +165,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schemaJson)
+            __html: safeJsonLd(schemaJson)
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               '@context': 'https://schema.org',
               '@type': 'BreadcrumbList',
               itemListElement: [

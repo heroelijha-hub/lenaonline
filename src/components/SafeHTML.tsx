@@ -61,5 +61,5 @@ export default function SafeHTML({
   // Actually, to avoid hydration mismatch, we render empty string until client loads
   // Or we could dangerouslySetInnerHTML the raw HTML if we trust the DB. 
   // Let's render empty string to be safe and avoid hydration mismatch.
-  return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: clean || (typeof window === 'undefined' ? html : '') }} />;
+  return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: clean }} />;
 }

@@ -7,8 +7,21 @@ import { requireAdmin } from '@/lib/auth';
 export async function getSettings() {
   const settings = await prisma.setting.findMany();
   const settingsMap: Record<string, string> = {};
+  
+  let isAdmin = false;
+  try {
+    await requireAdmin();
+    isAdmin = true;
+  } catch {
+    isAdmin = false;
+  }
+
+  const hiddenKeys = ['STRIPE_SECRET_KEY', 'PAYPAL_SECRET', 'CRON_SECRET', 'SMTP_PASSWORD'];
+
   settings.forEach(s => {
-    settingsMap[s.key] = s.value;
+    if (isAdmin || !hiddenKeys.includes(s.key)) {
+      settingsMap[s.key] = s.value;
+    }
   });
   return settingsMap;
 }

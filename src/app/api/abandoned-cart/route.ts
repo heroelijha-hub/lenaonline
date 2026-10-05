@@ -40,7 +40,8 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, abandonedCart });
+    // SECURITY: never echo the stored record back to avoid leaking PII
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error in abandoned-cart route:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

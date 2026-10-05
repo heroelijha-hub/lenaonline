@@ -56,6 +56,16 @@ export async function getAdminNotifications() {
 export async function getUserNotifications(userId?: string, guestId?: string) {
   if (!userId && !guestId) return [];
   
+  if (userId) {
+    const { requireAuth } = await import('@/lib/auth');
+    try {
+      const user = await requireAuth();
+      if (user.id !== userId) return [];
+    } catch {
+      return [];
+    }
+  }
+
   return await prisma.notification.findMany({
     where: {
       isAdmin: false,
@@ -79,6 +89,16 @@ export async function markAsRead(notificationId: string) {
 }
 
 export async function markAllAsRead(isAdmin: boolean, userId?: string, guestId?: string) {
+  if (!isAdmin && userId) {
+    const { requireAuth } = await import('@/lib/auth');
+    try {
+      const user = await requireAuth();
+      if (user.id !== userId) return;
+    } catch {
+      return;
+    }
+  }
+
   const whereClause: any = { isAdmin };
   
   if (!isAdmin) {

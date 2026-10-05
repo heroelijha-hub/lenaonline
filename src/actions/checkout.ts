@@ -2,6 +2,10 @@
 
 import prisma from '@/lib/prisma';
 
+const ALLOWED_PAYMENT_METHODS = ['STRIPE', 'PAYPAL', 'BANK_TRANSFER'] as const;
+const MAX_CART_LINES = 50;
+const MAX_QTY_PER_LINE = 999;
+
 export async function validateCoupon(code: string) {
   try {
     const coupon = await prisma.coupon.findUnique({
@@ -43,6 +47,14 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     
     const effectiveCountry = shipToDifferentAddress ? shippingCountry : country;
 
+    if (!(ALLOWED_PAYMENT_METHODS as readonly string[]).includes(paymentMethod)) {
+      return { error: "Invalid payment method." };
+    }
+    
+    if (!Array.isArray(cartItems) || cartItems.length === 0 || cartItems.length > MAX_CART_LINES) {
+      return { error: "Your cart is invalid." };
+    }
+
     // Validate that shippingMethodId is a valid UUID to prevent Prisma P2023 errors
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!shippingMethodId || !uuidRegex.test(shippingMethodId)) {
@@ -77,12 +89,17 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     let serverCartTotal = 0;
     const verifiedItems: any[] = [];
     for (const item of cartItems) {
+      const qty = Number(item?.quantity);
+      if (!Number.isInteger(qty) || qty < 1 || qty > MAX_QTY_PER_LINE) {
+        return { error: "Invalid quantity in cart." };
+      }
+      
       const dbPrice = productPriceMap.get(item.productId);
       if (dbPrice === undefined) {
         return { error: `Product not found: ${item.productId}. Please refresh your cart.` };
       }
-      serverCartTotal += dbPrice * item.quantity;
-      verifiedItems.push({ ...item, price: dbPrice }); // Use DB price, not client price
+      serverCartTotal += dbPrice * qty;
+      verifiedItems.push({ ...item, quantity: qty, price: dbPrice }); // Use DB price, not client price
     }
 
     // Apply coupon discount server-side if provided

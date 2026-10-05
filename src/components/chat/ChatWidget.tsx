@@ -132,7 +132,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     setMessages([...messages, tempMsg]);
     setNewMessage('');
     
-    const savedMsg = await sendMessage(sessionId, ChatSender.CUSTOMER, tempMsg.content);
+    const savedMsg = await sendMessage(sessionId, tempMsg.content);
     setMessages(prev => prev.map(m => m.id === tempMsg.id ? savedMsg : m));
   };
 
