@@ -400,7 +400,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 
                 {items.length > 0 && (
                   <div className="mt-4 text-xs text-gray-500 bg-blue-50 text-blue-800 p-3 rounded border border-blue-100">
-                    <span className="font-semibold">{t('note_save_menu')}
+                    {t('note_save_menu')}
                   </div>
                 )}
               </div>
