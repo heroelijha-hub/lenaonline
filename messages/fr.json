@@ -1169,7 +1169,8 @@
         "auth_links": "Liens d'authentification",
         "login_text": "Texte de connexion",
         "my_account_text": "Texte \"Mon compte\"",
-        "admin_dashboard_text": "Texte du tableau de bord"
+        "admin_dashboard_text": "Texte du tableau de bord",
+        "nav_menus": "Menus de navigation"
     },
     "AdminShipping": {
         "title": "Paramètres de Livraison",

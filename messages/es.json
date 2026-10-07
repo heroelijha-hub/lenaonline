@@ -1169,7 +1169,8 @@
         "auth_links": "Enlaces de autenticación",
         "login_text": "Texto de inicio de sesión",
         "my_account_text": "Texto \"Mi cuenta\"",
-        "admin_dashboard_text": "Texto del panel de control"
+        "admin_dashboard_text": "Texto del panel de control",
+        "nav_menus": "Menús de navegación"
     },
     "AdminShipping": {
         "title": "Configuración de Envío",
