@@ -1308,7 +1308,18 @@
         "save_error": "Error saving",
         "confirm_delete_menu": "Are you sure you want to delete this menu?",
         "delete_error": "Error deleting",
-        "menu_creation_error": "Error creating menu"
+        "menu_creation_error": "Error creating menu",
+        "create_new_menu": "Create a new menu",
+        "select_menu_to_edit": "Select a menu to edit:",
+        "id_slug": "ID (Slug):",
+        "menu_information": "Menu Information",
+        "menu_name": "Menu Name",
+        "available_pages": "Available Pages",
+        "click_to_add_page": "Click on a page to automatically add it to the menu.",
+        "no_links_add_one": "No links in this menu. Add one!",
+        "new_menu_name_prompt": "New menu name:",
+        "delete_this_menu": "Delete this menu",
+        "add_a_link": "+ Add a link"
     },
     "AdminMedia": {
         "title": "Media Library",

@@ -1308,7 +1308,18 @@
         "save_error": "Error al guardar",
         "confirm_delete_menu": "¿Estás seguro de que quieres eliminar este menú?",
         "delete_error": "Error al eliminar",
-        "menu_creation_error": "Error al crear el menú"
+        "menu_creation_error": "Error al crear el menú",
+        "create_new_menu": "Crear un nuevo menú",
+        "select_menu_to_edit": "Select a menu to edit:",
+        "id_slug": "ID (Slug):",
+        "menu_information": "Menu Information",
+        "menu_name": "Menu Name",
+        "available_pages": "Available Pages",
+        "click_to_add_page": "Click on a page to automatically add it to the menu.",
+        "no_links_add_one": "No links in this menu. Add one!",
+        "new_menu_name_prompt": "Nombre del nuevo menú:",
+        "delete_this_menu": "Eliminar este menú",
+        "add_a_link": "+ Añadir un enlace"
     },
     "AdminMedia": {
         "title": "Biblioteca de Medios",

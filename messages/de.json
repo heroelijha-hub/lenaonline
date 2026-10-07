@@ -1308,7 +1308,18 @@
         "save_error": "Fehler beim Speichern",
         "confirm_delete_menu": "Sind Sie sicher, dass Sie dieses Menü löschen möchten?",
         "delete_error": "Fehler beim Löschen",
-        "menu_creation_error": "Fehler beim Erstellen des Menüs"
+        "menu_creation_error": "Fehler beim Erstellen des Menüs",
+        "create_new_menu": "Neues Menü erstellen",
+        "select_menu_to_edit": "Select a menu to edit:",
+        "id_slug": "ID (Slug):",
+        "menu_information": "Menu Information",
+        "menu_name": "Menu Name",
+        "available_pages": "Available Pages",
+        "click_to_add_page": "Click on a page to automatically add it to the menu.",
+        "no_links_add_one": "No links in this menu. Add one!",
+        "new_menu_name_prompt": "Neuer Menüname:",
+        "delete_this_menu": "Dieses Menü löschen",
+        "add_a_link": "+ Link hinzufügen"
     },
     "AdminMedia": {
         "title": "Medienbibliothek",

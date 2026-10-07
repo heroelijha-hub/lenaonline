@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { createMenu, updateMenu, deleteMenu, updateMenuItems, MenuItemInput } from '@/actions/menus';
-// import removed
 
 type PageItem = { label: string; url: string };
 
@@ -20,7 +19,6 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
   const [menus, setMenus] = useState(initialMenus);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(initialMenus[0]?.id || null);
   
-  const [newMenuName, setNewMenuName] = useState('');
   const [isCreatingMenu, setIsCreatingMenu] = useState(false);
 
   // Active menu state
@@ -28,31 +26,28 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
   const [items, setItems] = useState<MenuItemInput[]>(
     activeMenu ? activeMenu.items.map((i: any) => ({ ...i })) : []
   );
+  const [activeMenuName, setActiveMenuName] = useState(activeMenu?.name || '');
   const [isSavingItems, setIsSavingItems] = useState(false);
-
-  // New item form
-  const [newItemType, setNewItemType] = useState<'system' | 'custom' | 'link'>('system');
-  const [newItemUrl, setNewItemUrl] = useState('');
-  const [newItemLabel, setNewItemLabel] = useState('');
 
   // Update items when active menu changes
   React.useEffect(() => {
     if (activeMenu) {
       setItems(activeMenu.items.map((i: any) => ({ ...i })));
+      setActiveMenuName(activeMenu.name);
     } else {
       setItems([]);
+      setActiveMenuName('');
     }
   }, [activeMenuId, menus]);
 
-  const handleCreateMenu = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMenuName.trim()) return;
+  const handleCreateMenu = async () => {
+    const newName = prompt(t('new_menu_name_prompt'));
+    if (!newName || !newName.trim()) return;
     setIsCreatingMenu(true);
-    const res = await createMenu(newMenuName.trim());
+    const res = await createMenu(newName.trim());
     if (res.success && res.menu) {
       setMenus([...menus, { ...res.menu, items: [] }]);
       setActiveMenuId(res.menu.id);
-      setNewMenuName('');
       router.refresh();
     } else {
       alert(res.error || t('menu_creation_error'));
@@ -60,42 +55,47 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
     setIsCreatingMenu(false);
   };
 
-  const handleDeleteMenu = async (id: string) => {
+  const handleDeleteMenu = async () => {
+    if (!activeMenuId) return;
     if (!confirm(t('confirm_delete_menu'))) return;
-    const res = await deleteMenu(id);
+    const res = await deleteMenu(activeMenuId);
     if (res.success) {
-      const updated = menus.filter(m => m.id !== id);
+      const updated = menus.filter(m => m.id !== activeMenuId);
       setMenus(updated);
-      if (activeMenuId === id) setActiveMenuId(updated[0]?.id || null);
+      if (updated.length > 0) setActiveMenuId(updated[0].id);
+      else setActiveMenuId(null);
       router.refresh();
     } else {
       alert(res.error || t('delete_error'));
     }
   };
 
-  const handleAddItem = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newItemLabel.trim() || !newItemUrl.trim()) return;
-    
+  const handleAddPredefinedPage = (page: PageItem) => {
     const newItem: MenuItemInput = {
-      label: newItemLabel.trim(),
-      url: newItemUrl.trim(),
+      label: page.label,
+      url: page.url,
       order: items.length
     };
-    
     setItems([...items, newItem]);
+  };
+
+  const handleAddCustomLink = () => {
+    const label = prompt(t('link_text'));
+    if (!label) return;
+    const url = prompt(t('url_link'));
+    if (!url) return;
     
-    // Reset form based on type
-    if (newItemType === 'link') {
-      setNewItemLabel('');
-      setNewItemUrl('');
-    }
+    const newItem: MenuItemInput = {
+      label: label.trim(),
+      url: url.trim(),
+      order: items.length
+    };
+    setItems([...items, newItem]);
   };
 
   const handleRemoveItem = (index: number) => {
     const newItems = [...items];
     newItems.splice(index, 1);
-    // Reorder
     newItems.forEach((item, i) => item.order = i);
     setItems(newItems);
   };
@@ -120,15 +120,20 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
     setItems(newItems);
   };
 
-  const handleSaveItems = async () => {
+  const handleSaveMenu = async () => {
     if (!activeMenuId) return;
     setIsSavingItems(true);
+    
+    // update menu name if changed
+    if (activeMenuName !== activeMenu?.name) {
+      await updateMenu(activeMenuId, { name: activeMenuName });
+    }
+    
     const res = await updateMenuItems(activeMenuId, items);
     if (res.success) {
       alert(t('menu_saved_success'));
       router.refresh();
-      // Update local state to avoid jump
-      setMenus(menus.map(m => m.id === activeMenuId ? { ...m, items } : m));
+      setMenus(menus.map(m => m.id === activeMenuId ? { ...m, name: activeMenuName, items } : m));
     } else {
       alert(res.error || t('save_error'));
     }
@@ -136,278 +141,236 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-6">
-      {/* Sidebar: Menus List */}
-      <div className="w-full md:w-1/3 bg-white p-4 rounded-lg shadow-sm border border-gray-200 h-fit">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800">{t('menu_manager_title')}</h2>
-        
-        <form onSubmit={handleCreateMenu} className="mb-6 flex gap-2">
-          <input
-            type="text"
-            value={newMenuName}
-            onChange={e => setNewMenuName(e.target.value)}
-            placeholder={t('new_menu_placeholder')}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
-            disabled={isCreatingMenu}
-          />
-          <button
-            type="submit"
-            disabled={isCreatingMenu || !newMenuName.trim()}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-md transition-colors disabled:opacity-50"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-          </button>
-        </form>
-
-        <ul className="space-y-2">
-          {menus.length === 0 ? (
-            <li className="text-gray-500 text-sm italic">{t('no_menu_created')}</li>
-          ) : (
-            menus.map(menu => (
-              <li 
-                key={menu.id} 
-                className={`flex justify-between items-center p-3 rounded-md cursor-pointer transition-colors ${activeMenuId === menu.id ? 'bg-orange-50 border border-orange-200' : 'hover:bg-gray-50 border border-transparent'}`}
-                onClick={() => setActiveMenuId(menu.id)}
-              >
-                <div>
-                  <span className={`font-medium ${activeMenuId === menu.id ? 'text-orange-800' : 'text-gray-700'}`}>{menu.name}</span>
-                  <div className="text-xs text-gray-500">/{menu.slug}</div>
-                </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleDeleteMenu(menu.id); }}
-                  className="text-red-500 hover:text-red-700 p-2"
-                  title={t('delete_menu_title')}
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                </button>
-              </li>
-            ))
-          )}
-        </ul>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      {/* Top Header */}
+      <div className="flex justify-between items-center p-6 border-b border-gray-200">
+        <h2 className="text-xl font-bold text-gray-900">{t('menu_manager_title')}</h2>
+        <button
+          onClick={handleCreateMenu}
+          disabled={isCreatingMenu}
+          className="bg-[#e46c14] hover:bg-[#c95c0f] text-white px-4 py-2 rounded font-medium text-sm transition-colors disabled:opacity-50"
+        >
+          {t('create_new_menu')}
+        </button>
       </div>
 
-      {/* Main Content: Edit active menu */}
-      <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        {!activeMenuId ? (
-          <div className="text-center py-12 text-gray-500">
-            Sélectionnez ou créez un menu pour le gérer.
+      {menus.length === 0 ? (
+        <div className="p-12 text-center text-gray-500">
+          {t('no_menu_created')}
+        </div>
+      ) : (
+        <div className="p-6">
+          {/* Menu Selector */}
+          <div className="flex items-center gap-4 mb-6">
+            <label className="text-sm text-gray-600">{t('select_menu_to_edit')}</label>
+            <select
+              value={activeMenuId || ''}
+              onChange={e => setActiveMenuId(e.target.value)}
+              className="border border-gray-300 rounded px-3 py-1.5 text-sm font-medium focus:ring-1 focus:ring-[#e46c14] focus:border-[#e46c14]"
+            >
+              {menus.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            {activeMenu && (
+              <div className="text-xs text-gray-500 flex items-center gap-1">
+                {t('id_slug')} <span className="bg-gray-100 px-2 py-0.5 rounded border border-gray-200 font-mono">{activeMenu.slug}</span>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <div className="flex justify-between items-center mb-6 border-b pb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Gérer les liens : <span className="text-orange-600">{activeMenu?.name}</span>
-              </h2>
-              <button
-                onClick={handleSaveItems}
-                disabled={isSavingItems}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-                {isSavingItems ? t('saving') : t('save_menu')}
-              </button>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Add items form */}
-              <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-                <h3 className="font-semibold text-gray-700 mb-4">{t('add_link')}</h3>
-                
-                <div className="flex gap-2 mb-4">
-                  <button
-                    type="button"
-                    onClick={() => setNewItemType('system')}
-                    className={`flex-1 py-1 text-sm font-medium rounded-md ${newItemType === 'system' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:bg-gray-100'}`}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left Column */}
+            <div className="lg:col-span-4 space-y-6">
+              
+              {/* Menu Information */}
+              <div className="border border-gray-200 rounded bg-[#fcfcfc] overflow-hidden">
+                <div className="bg-gray-50 p-3 border-b border-gray-200 font-semibold text-gray-800 text-sm">
+                  {t('menu_information')}
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">{t('menu_name')}</label>
+                    <input 
+                      type="text"
+                      value={activeMenuName}
+                      onChange={e => setActiveMenuName(e.target.value)}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-1 focus:ring-[#e46c14] focus:border-[#e46c14]"
+                    />
+                  </div>
+                  <button 
+                    onClick={handleDeleteMenu}
+                    className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors"
                   >
-                    Pages Système
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setNewItemType('custom')}
-                    className={`flex-1 py-1 text-sm font-medium rounded-md ${newItemType === 'custom' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:bg-gray-100'}`}
-                  >
-                    Vos Pages
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setNewItemType('link')}
-                    className={`flex-1 py-1 text-sm font-medium rounded-md ${newItemType === 'link' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:bg-gray-100'}`}
-                  >
-                    Lien personnalisé
+                    {t('delete_this_menu')}
                   </button>
                 </div>
-
-                <form onSubmit={handleAddItem} className="space-y-4">
-                  {newItemType === 'system' && (
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">{t('select_page')}</label>
-                      <select 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                        onChange={e => {
-                          const page = systemPages.find(p => p.url === e.target.value);
-                          if (page) {
-                            setNewItemUrl(page.url);
-                            setNewItemLabel(page.label);
-                          }
-                        }}
-                        defaultValue=""
-                      >
-                        <option value="" disabled>{t('choose')}</option>
-                        {systemPages.map(p => (
-                          <option key={p.url} value={p.url}>{p.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  {newItemType === 'custom' && (
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">{t('select_page')}</label>
-                      <select 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                        onChange={e => {
-                          const page = customPages.find(p => p.url === e.target.value);
-                          if (page) {
-                            setNewItemUrl(page.url);
-                            setNewItemLabel(page.label);
-                          }
-                        }}
-                        defaultValue=""
-                      >
-                        <option value="" disabled>{t('choose')}</option>
-                        {customPages.length === 0 && <option disabled>{t('no_page_created')}</option>}
-                        {customPages.map(p => (
-                          <option key={p.url} value={p.url}>{p.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  {newItemType === 'link' && (
-                    <>
-                      <div>
-                        <label className="block text-sm text-gray-600 mb-1">{t('url_link')}</label>
-                        <input
-                          type="text"
-                          value={newItemUrl}
-                          onChange={e => setNewItemUrl(e.target.value)}
-                          placeholder={t('url_placeholder')}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                        />
-                      </div>
-                    </>
-                  )}
-
-                  {(newItemType === 'system' || newItemType === 'custom') && newItemUrl && (
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">{t('link_text_editable')}</label>
-                      <input
-                        type="text"
-                        value={newItemLabel}
-                        onChange={e => setNewItemLabel(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                      />
-                    </div>
-                  )}
-
-                  {newItemType === 'link' && (
-                    <div>
-                      <label className="block text-sm text-gray-600 mb-1">{t('link_text')}</label>
-                      <input
-                        type="text"
-                        value={newItemLabel}
-                        onChange={e => setNewItemLabel(e.target.value)}
-                        placeholder={t('link_text_placeholder')}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                      />
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={!newItemLabel.trim() || !newItemUrl.trim()}
-                    className="w-full bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50"
-                  >
-                    Ajouter au menu
-                  </button>
-                </form>
               </div>
 
-              {/* Items List */}
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-4">{t('menu_structure')}</h3>
-                {items.length === 0 ? (
-                  <div className="text-gray-500 text-sm italic p-4 border border-dashed border-gray-300 rounded-md text-center">
-                    Ce menu est vide. Ajoutez des liens depuis le panneau de gauche.
+              {/* Available Pages */}
+              <div className="border border-gray-200 rounded bg-[#fcfcfc] overflow-hidden">
+                <div className="bg-gray-50 p-3 border-b border-gray-200 font-semibold text-gray-800 text-sm">
+                  {t('available_pages')}
+                </div>
+                <div className="p-4">
+                  <p className="text-xs text-gray-500 mb-4">{t('click_to_add_page')}</p>
+                  
+                  {/* System Pages Accordion (mocked open) */}
+                  <div className="border-b border-gray-200 pb-2 mb-2">
+                    <h4 className="text-sm font-medium text-gray-700 flex justify-between items-center mb-2">
+                      {t('system_pages')}
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </h4>
+                    <ul className="space-y-1 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                      {systemPages.map(page => (
+                        <li key={page.url}>
+                          <button 
+                            onClick={() => handleAddPredefinedPage(page)}
+                            className="w-full text-left text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1.5 rounded transition-colors"
+                          >
+                            + {page.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                ) : (
-                  <ul className="space-y-2">
-                    {items.map((item, index) => (
-                      <li key={index} className="flex items-center justify-between bg-white border border-gray-200 p-3 rounded-md shadow-sm">
-                        <div className="flex-1 min-w-0 mr-4">
-                          <input 
-                            type="text"
-                            value={item.label}
-                            onChange={(e) => {
-                              const newItems = [...items];
-                              newItems[index].label = e.target.value;
-                              setItems(newItems);
-                            }}
-                            className="font-medium text-gray-800 w-full border-none p-0 focus:ring-0 text-sm mb-1 bg-transparent"
-                          />
-                          <input 
-                            type="text"
-                            value={item.url}
-                            onChange={(e) => {
-                              const newItems = [...items];
-                              newItems[index].url = e.target.value;
-                              setItems(newItems);
-                            }}
-                            className="text-xs text-gray-500 w-full border-none p-0 focus:ring-0 bg-transparent"
-                          />
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <button
-                            type="button"
-                            onClick={() => handleMoveUp(index)}
-                            disabled={index === 0}
-                            className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition-colors bg-gray-50 rounded"
-                          >
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleMoveDown(index)}
-                            disabled={index === items.length - 1}
-                            className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition-colors bg-gray-50 rounded"
-                          >
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-                          </button>
-                          <div className="w-px h-6 bg-gray-200 mx-1"></div>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveItem(index)}
-                            className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                          >
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+
+                  {/* Custom Pages Accordion */}
+                  {customPages.length > 0 && (
+                    <div className="pt-2">
+                      <h4 className="text-sm font-medium text-gray-700 flex justify-between items-center mb-2">
+                        {t('custom_pages')}
+                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                      </h4>
+                      <ul className="space-y-1 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                        {customPages.map(page => (
+                          <li key={page.url}>
+                            <button 
+                              onClick={() => handleAddPredefinedPage(page)}
+                              className="w-full text-left text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1.5 rounded transition-colors"
+                            >
+                              + {page.label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Column */}
+            <div className="lg:col-span-8">
+              <div className="border border-gray-200 rounded h-full flex flex-col">
+                <div className="bg-gray-50 p-3 border-b border-gray-200 font-semibold text-gray-800 text-sm">
+                  {t('menu_items')}
+                </div>
                 
-                {items.length > 0 && (
-                  <div className="mt-4 text-xs text-gray-500 bg-blue-50 text-blue-800 p-3 rounded border border-blue-100">
-                    {t('note_save_menu')}
+                <div className="flex-1 p-6 flex flex-col">
+                  {items.length === 0 ? (
+                    <div className="flex-1 flex items-center justify-center text-sm text-gray-500 italic pb-8">
+                      {t('no_links_add_one')}
+                    </div>
+                  ) : (
+                    <div className="flex-1 mb-8">
+                      <ul className="space-y-2">
+                        {items.map((item, index) => (
+                          <li key={index} className="flex items-center justify-between bg-white border border-gray-200 p-3 rounded shadow-sm">
+                            <div className="flex-1 min-w-0 mr-4">
+                              <input 
+                                type="text"
+                                value={item.label}
+                                onChange={(e) => {
+                                  const newItems = [...items];
+                                  newItems[index].label = e.target.value;
+                                  setItems(newItems);
+                                }}
+                                className="font-medium text-gray-800 w-full border-none p-0 focus:ring-0 text-sm mb-1 bg-transparent"
+                              />
+                              <input 
+                                type="text"
+                                value={item.url}
+                                onChange={(e) => {
+                                  const newItems = [...items];
+                                  newItems[index].url = e.target.value;
+                                  setItems(newItems);
+                                }}
+                                className="text-xs text-gray-500 w-full border-none p-0 focus:ring-0 bg-transparent"
+                              />
+                            </div>
+                            
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => handleMoveUp(index)}
+                                disabled={index === 0}
+                                className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleMoveDown(index)}
+                                disabled={index === items.length - 1}
+                                className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                              </button>
+                              <div className="w-px h-6 bg-gray-200 mx-1"></div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveItem(index)}
+                                className="p-1.5 text-red-400 hover:text-red-600"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Bottom Actions */}
+                  <div className="mt-auto flex justify-between items-center border-t border-gray-100 pt-4">
+                    <button
+                      onClick={handleAddCustomLink}
+                      className="border border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                    >
+                      {t('add_a_link')}
+                    </button>
+                    
+                    <button
+                      onClick={handleSaveMenu}
+                      disabled={isSavingItems}
+                      className="bg-[#e46c14] hover:bg-[#c95c0f] text-white px-5 py-2 rounded font-medium text-sm transition-colors disabled:opacity-50"
+                    >
+                      {isSavingItems ? t('saving') : t('save_menu')}
+                    </button>
                   </div>
-                )}
+                </div>
               </div>
             </div>
+
           </div>
-        )}
-      </div>
+        </div>
+      )}
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1;
+          border-radius: 20px;
+        }
+      `}} />
     </div>
   );
 }
