@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createMenu, updateMenu, deleteMenu, updateMenuItems, MenuItemInput } from '@/actions/menus';
-import { FaTrash, FaPlus, FaArrowUp, FaArrowDown, FaSave, FaEdit } from 'react-icons/fa';
+// import removed
 
 type PageItem = { label: string; url: string };
 
@@ -153,7 +153,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
             disabled={isCreatingMenu || !newMenuName.trim()}
             className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-md transition-colors disabled:opacity-50"
           >
-            <FaPlus />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
           </button>
         </form>
 
@@ -176,7 +176,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                   className="text-red-500 hover:text-red-700 p-2"
                   title="Supprimer ce menu"
                 >
-                  <FaTrash size={14} />
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </li>
             ))
@@ -201,7 +201,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 disabled={isSavingItems}
                 className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50"
               >
-                <FaSave />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                 {isSavingItems ? 'Enregistrement...' : 'Enregistrer le menu'}
               </button>
             </div>
@@ -372,7 +372,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                             disabled={index === 0}
                             className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition-colors bg-gray-50 rounded"
                           >
-                            <FaArrowUp size={12} />
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                           </button>
                           <button
                             type="button"
@@ -380,7 +380,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                             disabled={index === items.length - 1}
                             className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition-colors bg-gray-50 rounded"
                           >
-                            <FaArrowDown size={12} />
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
                           </button>
                           <div className="w-px h-6 bg-gray-200 mx-1"></div>
                           <button
@@ -388,7 +388,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                             onClick={() => handleRemoveItem(index)}
                             className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                           >
-                            <FaTrash size={12} />
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                           </button>
                         </div>
                       </li>
