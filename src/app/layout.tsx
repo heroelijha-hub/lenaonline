@@ -13,7 +13,7 @@ import { getMessages, getLocale } from 'next-intl/server';
 import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { Toaster } from 'react-hot-toast';
 import { getCachedSettings, getCachedCategoriesTree, getCachedProductCounts } from '@/lib/cache';
-
+import { getMenus } from '@/actions/menus';
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -22,11 +22,13 @@ const inter = Inter({
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settingsDb = await prisma.setting.findMany({
-    where: { key: { in: ['FAVICON_IMAGE', 'HOME_META_TITLE', 'HOME_META_DESCRIPTION', 'HEADER_LOGO_IMAGE', 'GOOGLE_SITE_VERIFICATION'] } }
-  });
+  let settingsMap: Record<string, string> = {};
+  try {
+    settingsMap = await getCachedSettings();
+  } catch (e) {
+    console.warn("DB not available during generateMetadata build step.");
+  }
   
-  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
   const faviconUrl = settingsMap['FAVICON_IMAGE'];
   const title = settingsMap['HOME_META_TITLE'] || `${storeName} | E-commerce`;
   const description = settingsMap['HOME_META_DESCRIPTION'] || "Découvrez notre vaste sélection de produits de haute qualité sur notre boutique en ligne complète.";
@@ -77,6 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
   
   const settingsMap = await getCachedSettings();
+  const allMenus = await getMenus();
   
   const currencyOptions = {
     currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
@@ -136,6 +139,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     logoImage: settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
     supportPhone: settingsMap.FOOTER_SUPPORT_PHONE ?? settingsMap.HEADER_SUPPORT_PHONE ?? '+08 9229 8228',
     supportEmail: settingsMap.FOOTER_SUPPORT_EMAIL ?? settingsMap.HEADER_SUPPORT_EMAIL ?? 'support@mystore.com',
+    headerMainMenuId: settingsMap.HEADER_MAIN_MENU_ID || '',
+    footerCol2MenuId: settingsMap.FOOTER_COL2_MENU_ID || '',
+    footerCol3MenuId: settingsMap.FOOTER_COL3_MENU_ID || '',
+    footerCol4MenuId: settingsMap.FOOTER_COL4_MENU_ID || '',
+    resolvedMenus: allMenus,
     menuLinks: menuLinks,
     topBarLinks: topBarLinks,
     loginText: settingsMap.LOGIN_TEXT,

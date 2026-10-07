@@ -15,6 +15,11 @@ type StoreLayoutProps = {
     mobileLogoHeight?: string;
     supportPhone: string;
     supportEmail: string;
+    headerMainMenuId?: string;
+    footerCol2MenuId?: string;
+    footerCol3MenuId?: string;
+    footerCol4MenuId?: string;
+    resolvedMenus?: Array<any>;
     menuLinks: Array<{ label: string, url: string }>;
     topBarLinks?: Array<{ label: string, icon: string, url: string }>;
     loginText?: string;
@@ -35,6 +40,9 @@ type StoreLayoutProps = {
     footerSocialInstagram: string;
     footerSocialLinkedin: string;
     footerColumns: Array<{ title: string, links: Array<{ label: string, url: string }> }>;
+    footerCol2Title?: string;
+    footerCol3Title?: string;
+    footerCol4Title?: string;
     categories?: Array<{ id: string, name: string, slug: string | null }>;
     footerLogoImage?: string;
     footerDescription?: string;
@@ -95,6 +103,34 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
     );
   }
 
+  let finalMenuLinks = settings.menuLinks;
+  if (settings.headerMainMenuId && settings.resolvedMenus) {
+    const mm = settings.resolvedMenus.find(m => m.id === settings.headerMainMenuId);
+    if (mm && mm.items) {
+      finalMenuLinks = mm.items.map((it: any) => ({ label: it.label, url: it.url }));
+    }
+  }
+
+  let finalFooterColumns = settings.footerColumns || [];
+  if (settings.resolvedMenus) {
+    const col2 = settings.resolvedMenus.find(m => m.id === settings.footerCol2MenuId);
+    const col3 = settings.resolvedMenus.find(m => m.id === settings.footerCol3MenuId);
+    const col4 = settings.resolvedMenus.find(m => m.id === settings.footerCol4MenuId);
+    
+    if (col2 || col3 || col4) {
+      finalFooterColumns = [];
+      if (col2 && col2.items) {
+        finalFooterColumns.push({ title: settings.footerCol2Title || col2.name, links: col2.items.map((it: any) => ({ label: it.label, url: it.url })) });
+      }
+      if (col3 && col3.items) {
+        finalFooterColumns.push({ title: settings.footerCol3Title || col3.name, links: col3.items.map((it: any) => ({ label: it.label, url: it.url })) });
+      }
+      if (col4 && col4.items) {
+        finalFooterColumns.push({ title: settings.footerCol4Title || col4.name, links: col4.items.map((it: any) => ({ label: it.label, url: it.url })) });
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Header 
@@ -103,7 +139,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         logoImage={settings.logoImage} 
         headerLogoHeight={settings.headerLogoHeight}
         mobileLogoHeight={settings.mobileLogoHeight}
-        menuLinks={settings.menuLinks}
+        menuLinks={finalMenuLinks}
         topBarLinks={settings.topBarLinks}
         loginText={settings.loginText}
         myAccountText={settings.myAccountText}
@@ -148,7 +184,7 @@ export default function StoreLayout({ children, settings, userRole }: StoreLayou
         footerSocialTwitter={settings.footerSocialTwitter}
         footerSocialInstagram={settings.footerSocialInstagram}
         footerSocialLinkedin={settings.footerSocialLinkedin}
-        footerColumns={settings.footerColumns}
+        footerColumns={finalFooterColumns}
         categories={settings.categories}
         footerLogoImage={settings.footerLogoImage}
         footerDescription={settings.footerDescription}

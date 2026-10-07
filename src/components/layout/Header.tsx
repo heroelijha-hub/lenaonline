@@ -292,7 +292,7 @@ export default function Header({
           <form onSubmit={handleSearchSubmit} className="flex items-center w-full rounded-md overflow-hidden bg-white h-11 relative z-20" style={{ border: `1px solid ${searchBorderColor}` }}>
             <input 
               type="text" 
-              placeholder={searchPlaceholder} 
+              placeholder={t('search_placeholder') || searchPlaceholder} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => { if (searchQuery.length > 1) setShowSearchResults(true); }}
@@ -546,7 +546,7 @@ export default function Header({
       <MobileSearchOverlay 
         isOpen={isMobileSearchOpen}
         onClose={() => setIsMobileSearchOpen(false)}
-        placeholder={searchPlaceholder}
+        placeholder={t('search_placeholder') || searchPlaceholder}
       />
 
       <MobileSidebar 

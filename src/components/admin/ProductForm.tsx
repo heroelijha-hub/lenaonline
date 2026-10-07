@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCategories, getBrands, createBrandAction, createProduct, uploadImage, getMinimalProducts } from '@/actions/admin';
+import { getCategories, createCategory, getBrands, createBrandAction, createProduct, uploadImage, getMinimalProducts } from '@/actions/admin';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 import MediaPickerModal from './MediaPickerModal';
@@ -35,6 +35,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [newBrandName, setNewBrandName] = useState('');
   const [newBrandLogo, setNewBrandLogo] = useState('');
   const [showBrandMediaPicker, setShowBrandMediaPicker] = useState(false);
+
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryParentId, setNewCategoryParentId] = useState('');
+  const [isCreatingCategory, setIsCreatingCategory] = useState(false);
 
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [forceSalesIds, setForceSalesIds] = useState<string[]>(initialData?.forceSales?.map((p: any) => p.id) || []);
@@ -230,7 +235,71 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
         <div className="grid grid-cols-1 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('categories_label')}</label>
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-sm font-medium text-gray-700">{t('categories_label')}</label>
+              <button 
+                type="button" 
+                onClick={() => setShowNewCategory(!showNewCategory)}
+                className="text-sm text-orange-600 hover:text-orange-800 font-medium"
+              >
+                {showNewCategory ? t('cancel') : '+ Nouvelle catégorie'}
+              </button>
+            </div>
+
+            {showNewCategory && (
+              <div className="mb-4 p-4 border border-orange-200 bg-orange-50 rounded-md space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom de la catégorie</label>
+                  <input 
+                    type="text" 
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
+                    placeholder="Ex: T-shirts"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie parente (optionnel)</label>
+                  <select 
+                    value={newCategoryParentId}
+                    onChange={(e) => setNewCategoryParentId(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:ring-orange-500 focus:border-orange-500"
+                  >
+                    <option value="">Aucune (Catégorie principale)</option>
+                    {categories.filter(c => !c.parentId).map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <button 
+                  type="button"
+                  disabled={isCreatingCategory || !newCategoryName.trim()}
+                  onClick={async () => {
+                    setIsCreatingCategory(true);
+                    const fd = new FormData();
+                    fd.append('name', newCategoryName.trim());
+                    if (newCategoryParentId) fd.append('parentId', newCategoryParentId);
+                    
+                    const res = await createCategory(fd);
+                    if (res.success && res.category) {
+                      const cats = await getCategories();
+                      setCategories(cats);
+                      setSelectedCategories([...selectedCategories, res.category.id]);
+                      setNewCategoryName('');
+                      setNewCategoryParentId('');
+                      setShowNewCategory(false);
+                    } else {
+                      alert(res.error || "Erreur de création de catégorie");
+                    }
+                    setIsCreatingCategory(false);
+                  }}
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition disabled:opacity-50"
+                >
+                  {isCreatingCategory ? 'Création...' : 'Créer et sélectionner'}
+                </button>
+              </div>
+            )}
+
             <div className="border border-gray-300 rounded-md p-4 max-h-48 overflow-y-auto bg-gray-50 flex flex-col gap-2">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center gap-2 cursor-pointer">

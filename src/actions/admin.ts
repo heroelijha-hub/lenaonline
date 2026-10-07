@@ -200,7 +200,7 @@ export async function createCategory(formData: FormData) {
   const metaKeywords = formData.get('metaKeywords') as string || null;
 
   try {
-    await prisma.category.create({ 
+    const category = await prisma.category.create({ 
       data: { 
         name, 
         slug, 
@@ -213,7 +213,7 @@ export async function createCategory(formData: FormData) {
     revalidatePath('/admin/categories');
     refreshCacheTag('categories');
     revalidatePath('/', 'layout');
-    return { success: true };
+    return { success: true, category };
   } catch (error) {
     return { error: "Error creating category" };
   }

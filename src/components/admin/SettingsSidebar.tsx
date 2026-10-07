@@ -36,6 +36,7 @@ export default function SettingsSidebar() {
       title: tSettings('group_design') || 'DESIGN',
       items: [
         { label: tSettings('nav_design_header') || 'Header and product cards', href: '/admin/settings/design-header', icon: 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z' },
+        { label: tSettings('nav_menus') || 'Menu Manager', href: '/admin/settings/menus', icon: 'M4 6h16M4 12h16M4 18h16' },
         { label: tSettings('nav_navigation') || 'Navigation menu', href: '/admin/settings/navigation', icon: 'M4 6h16M4 12h16M4 18h16' },
         { label: tSettings('nav_footer') || 'Footer', href: '/admin/settings/footer', icon: 'M4 16h16M4 20h16M4 4h16v8H4V4z' }
       ]

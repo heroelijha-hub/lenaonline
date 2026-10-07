@@ -109,7 +109,14 @@ export default function AdminPageForm() {
                 required
                 className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
                 value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                onChange={(e) => {
+                  const newTitle = e.target.value;
+                  setFormData({
+                    ...formData, 
+                    title: newTitle,
+                    slug: newTitle.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+                  });
+                }}
               />
             </div>
             <div>
