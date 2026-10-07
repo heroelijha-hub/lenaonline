@@ -1310,20 +1310,21 @@
         "delete_error": "Fehler beim Löschen",
         "menu_creation_error": "Fehler beim Erstellen des Menüs",
         "create_new_menu": "Neues Menü erstellen",
-        "select_menu_to_edit": "Select a menu to edit:",
+        "select_menu_to_edit": "Wählen Sie ein Menü zum Bearbeiten:",
         "id_slug": "ID (Slug):",
-        "menu_information": "Menu Information",
-        "menu_name": "Menu Name",
-        "available_pages": "Available Pages",
-        "click_to_add_page": "Click on a page to automatically add it to the menu.",
-        "no_links_add_one": "No links in this menu. Add one!",
+        "menu_information": "Menüinformationen",
+        "menu_name": "Menüname",
+        "available_pages": "Verfügbare Seiten",
+        "click_to_add_page": "Klicken Sie auf eine Seite, um sie automatisch zum Menü hinzuzufügen.",
+        "no_links_add_one": "Keine Links in diesem Menü. Fügen Sie einen hinzu!",
         "new_menu_name_prompt": "Neuer Menüname:",
         "delete_this_menu": "Dieses Menü löschen",
         "add_a_link": "+ Link hinzufügen",
         "new_menu_name_label": "New menu name",
         "new_menu_name_placeholder": "Ex: Menu Footer 1",
         "create_btn": "Create",
-        "cancel_btn": "Cancel"
+        "cancel_btn": "Cancel",
+        "menu_items": "Menüpunkte"
     },
     "AdminMedia": {
         "title": "Medienbibliothek",
@@ -1653,5 +1654,9 @@
         "save_success": "Robots.txt erfolgreich aktualisiert",
         "saving": "Speichern...",
         "save_btn": "Änderungen speichern"
+    },
+    "AdminHeaderDesign": {
+        "favicon": "Favicon",
+        "header_menu": "Kopfzeilenmenü"
     }
 }

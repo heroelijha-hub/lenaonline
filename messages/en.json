@@ -1323,7 +1323,8 @@
         "new_menu_name_label": "New menu name",
         "new_menu_name_placeholder": "Ex: Menu Footer 1",
         "create_btn": "Create",
-        "cancel_btn": "Cancel"
+        "cancel_btn": "Cancel",
+        "menu_items": "Menu Items"
     },
     "AdminMedia": {
         "title": "Media Library",
@@ -1653,5 +1654,9 @@
         "save_success": "Robots.txt updated successfully",
         "saving": "Saving...",
         "save_btn": "Save changes"
+    },
+    "AdminHeaderDesign": {
+        "favicon": "Favicon",
+        "header_menu": "Header Menu"
     }
 }
