@@ -240,32 +240,32 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <button 
                 type="button" 
                 onClick={() => setShowNewCategory(!showNewCategory)}
-                className="text-sm text-orange-600 hover:text-orange-800 font-medium"
+                className="text-sm text-orange-600 hover:text-orange-800 font-medium flex items-center space-x-1"
               >
-                {showNewCategory ? t('cancel') : '+ Nouvelle catégorie'}
+                {showNewCategory ? <span>{t('cancel')}</span> : <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg> <span>{t('add_new_category')}</span></>}
               </button>
             </div>
 
             {showNewCategory && (
               <div className="mb-4 p-4 border border-orange-200 bg-orange-50 rounded-md space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom de la catégorie</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('category_name')}</label>
                   <input 
                     type="text" 
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
-                    placeholder="Ex: T-shirts"
+                    placeholder={t('category_name_placeholder')}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie parente (optionnel)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('parent_category_optional')}</label>
                   <select 
                     value={newCategoryParentId}
                     onChange={(e) => setNewCategoryParentId(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:ring-orange-500 focus:border-orange-500"
                   >
-                    <option value="">Aucune (Catégorie principale)</option>
+                    <option value="">{t('no_parent_category')}</option>
                     {categories.filter(c => !c.parentId).map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
@@ -289,13 +289,13 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                       setNewCategoryParentId('');
                       setShowNewCategory(false);
                     } else {
-                      alert(res.error || "Erreur de création de catégorie");
+                      alert(res.error || t('category_creation_error'));
                     }
                     setIsCreatingCategory(false);
                   }}
                   className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition disabled:opacity-50"
                 >
-                  {isCreatingCategory ? 'Création...' : 'Créer et sélectionner'}
+                  {isCreatingCategory ? t('creating') : t('create_and_select')}
                 </button>
               </div>
             )}

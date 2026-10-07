@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { createMenu, updateMenu, deleteMenu, updateMenuItems, MenuItemInput } from '@/actions/menus';
 // import removed
 
@@ -15,6 +16,7 @@ type MenuManagerProps = {
 
 export default function MenuManager({ initialMenus, systemPages, customPages }: MenuManagerProps) {
   const router = useRouter();
+  const t = useTranslations('Admin');
   const [menus, setMenus] = useState(initialMenus);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(initialMenus[0]?.id || null);
   
@@ -53,13 +55,13 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
       setNewMenuName('');
       router.refresh();
     } else {
-      alert(res.error || 'Erreur lors de la création du menu');
+      alert(res.error || t('menu_creation_error'));
     }
     setIsCreatingMenu(false);
   };
 
   const handleDeleteMenu = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce menu ?')) return;
+    if (!confirm(t('confirm_delete_menu'))) return;
     const res = await deleteMenu(id);
     if (res.success) {
       const updated = menus.filter(m => m.id !== id);
@@ -67,7 +69,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
       if (activeMenuId === id) setActiveMenuId(updated[0]?.id || null);
       router.refresh();
     } else {
-      alert(res.error || 'Erreur lors de la suppression');
+      alert(res.error || t('delete_error'));
     }
   };
 
@@ -123,12 +125,12 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
     setIsSavingItems(true);
     const res = await updateMenuItems(activeMenuId, items);
     if (res.success) {
-      alert('Menu sauvegardé avec succès !');
+      alert(t('menu_saved_success'));
       router.refresh();
       // Update local state to avoid jump
       setMenus(menus.map(m => m.id === activeMenuId ? { ...m, items } : m));
     } else {
-      alert(res.error || 'Erreur lors de la sauvegarde');
+      alert(res.error || t('save_error'));
     }
     setIsSavingItems(false);
   };
@@ -137,14 +139,14 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
     <div className="flex flex-col md:flex-row gap-6">
       {/* Sidebar: Menus List */}
       <div className="w-full md:w-1/3 bg-white p-4 rounded-lg shadow-sm border border-gray-200 h-fit">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800">Vos Menus</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-800">{t('menu_manager_title')}</h2>
         
         <form onSubmit={handleCreateMenu} className="mb-6 flex gap-2">
           <input
             type="text"
             value={newMenuName}
             onChange={e => setNewMenuName(e.target.value)}
-            placeholder="Nom du nouveau menu..."
+            placeholder={t('new_menu_placeholder')}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-orange-500 focus:border-orange-500"
             disabled={isCreatingMenu}
           />
@@ -159,7 +161,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
 
         <ul className="space-y-2">
           {menus.length === 0 ? (
-            <li className="text-gray-500 text-sm italic">Aucun menu créé.</li>
+            <li className="text-gray-500 text-sm italic">{t('no_menu_created')}</li>
           ) : (
             menus.map(menu => (
               <li 
@@ -174,7 +176,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 <button
                   onClick={(e) => { e.stopPropagation(); handleDeleteMenu(menu.id); }}
                   className="text-red-500 hover:text-red-700 p-2"
-                  title="Supprimer ce menu"
+                  title={t('delete_menu_title')}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -202,14 +204,14 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-                {isSavingItems ? 'Enregistrement...' : 'Enregistrer le menu'}
+                {isSavingItems ? t('saving') : t('save_menu')}
               </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Add items form */}
               <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-                <h3 className="font-semibold text-gray-700 mb-4">Ajouter un lien</h3>
+                <h3 className="font-semibold text-gray-700 mb-4">{t('add_link')}</h3>
                 
                 <div className="flex gap-2 mb-4">
                   <button
@@ -238,7 +240,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 <form onSubmit={handleAddItem} className="space-y-4">
                   {newItemType === 'system' && (
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Sélectionner une page</label>
+                      <label className="block text-sm text-gray-600 mb-1">{t('select_page')}</label>
                       <select 
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                         onChange={e => {
@@ -250,7 +252,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                         }}
                         defaultValue=""
                       >
-                        <option value="" disabled>-- Choisir --</option>
+                        <option value="" disabled>{t('choose')}</option>
                         {systemPages.map(p => (
                           <option key={p.url} value={p.url}>{p.label}</option>
                         ))}
@@ -260,7 +262,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
 
                   {newItemType === 'custom' && (
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Sélectionner une page</label>
+                      <label className="block text-sm text-gray-600 mb-1">{t('select_page')}</label>
                       <select 
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                         onChange={e => {
@@ -272,8 +274,8 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                         }}
                         defaultValue=""
                       >
-                        <option value="" disabled>-- Choisir --</option>
-                        {customPages.length === 0 && <option disabled>Aucune page créée</option>}
+                        <option value="" disabled>{t('choose')}</option>
+                        {customPages.length === 0 && <option disabled>{t('no_page_created')}</option>}
                         {customPages.map(p => (
                           <option key={p.url} value={p.url}>{p.label}</option>
                         ))}
@@ -284,12 +286,12 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                   {newItemType === 'link' && (
                     <>
                       <div>
-                        <label className="block text-sm text-gray-600 mb-1">URL / Lien</label>
+                        <label className="block text-sm text-gray-600 mb-1">{t('url_link')}</label>
                         <input
                           type="text"
                           value={newItemUrl}
                           onChange={e => setNewItemUrl(e.target.value)}
-                          placeholder="https://... ou /ma-page"
+                          placeholder={t('url_placeholder')}
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                         />
                       </div>
@@ -298,7 +300,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
 
                   {(newItemType === 'system' || newItemType === 'custom') && newItemUrl && (
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Texte du lien (modifiable)</label>
+                      <label className="block text-sm text-gray-600 mb-1">{t('link_text_editable')}</label>
                       <input
                         type="text"
                         value={newItemLabel}
@@ -310,12 +312,12 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
 
                   {newItemType === 'link' && (
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Texte du lien</label>
+                      <label className="block text-sm text-gray-600 mb-1">{t('link_text')}</label>
                       <input
                         type="text"
                         value={newItemLabel}
                         onChange={e => setNewItemLabel(e.target.value)}
-                        placeholder="Ex: Mon Lien"
+                        placeholder={t('link_text_placeholder')}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                       />
                     </div>
@@ -333,7 +335,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
 
               {/* Items List */}
               <div>
-                <h3 className="font-semibold text-gray-700 mb-4">Structure du menu</h3>
+                <h3 className="font-semibold text-gray-700 mb-4">{t('menu_structure')}</h3>
                 {items.length === 0 ? (
                   <div className="text-gray-500 text-sm italic p-4 border border-dashed border-gray-300 rounded-md text-center">
                     Ce menu est vide. Ajoutez des liens depuis le panneau de gauche.
@@ -398,7 +400,7 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 
                 {items.length > 0 && (
                   <div className="mt-4 text-xs text-gray-500 bg-blue-50 text-blue-800 p-3 rounded border border-blue-100">
-                    <span className="font-semibold">Note:</span> N'oubliez pas de cliquer sur "Enregistrer le menu" pour sauvegarder l'ordre et les liens de ce menu.
+                    <span className="font-semibold">{t('note_save_menu')}
                   </div>
                 )}
               </div>
