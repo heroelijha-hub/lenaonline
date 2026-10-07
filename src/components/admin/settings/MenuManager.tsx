@@ -9,16 +9,17 @@ type PageItem = { label: string; url: string };
 
 type MenuManagerProps = {
   initialMenus: any[];
-  systemPages: PageItem[];
   customPages: PageItem[];
 };
 
-export default function MenuManager({ initialMenus, systemPages, customPages }: MenuManagerProps) {
+export default function MenuManager({ initialMenus, customPages }: MenuManagerProps) {
   const router = useRouter();
   const t = useTranslations('Admin');
   const [menus, setMenus] = useState(initialMenus);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(initialMenus[0]?.id || null);
   
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newMenuName, setNewMenuName] = useState('');
   const [isCreatingMenu, setIsCreatingMenu] = useState(false);
 
   // Active menu state
@@ -40,14 +41,16 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
     }
   }, [activeMenuId, menus]);
 
-  const handleCreateMenu = async () => {
-    const newName = prompt(t('new_menu_name_prompt'));
-    if (!newName || !newName.trim()) return;
+  const handleCreateMenu = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMenuName || !newMenuName.trim()) return;
     setIsCreatingMenu(true);
-    const res = await createMenu(newName.trim());
+    const res = await createMenu(newMenuName.trim());
     if (res.success && res.menu) {
       setMenus([...menus, { ...res.menu, items: [] }]);
       setActiveMenuId(res.menu.id);
+      setShowCreateForm(false);
+      setNewMenuName('');
       router.refresh();
     } else {
       alert(res.error || t('menu_creation_error'));
@@ -145,16 +148,52 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
       {/* Top Header */}
       <div className="flex justify-between items-center p-6 border-b border-gray-200">
         <h2 className="text-xl font-bold text-gray-900">{t('menu_manager_title')}</h2>
-        <button
-          onClick={handleCreateMenu}
-          disabled={isCreatingMenu}
-          className="bg-[#e46c14] hover:bg-[#c95c0f] text-white px-4 py-2 rounded font-medium text-sm transition-colors disabled:opacity-50"
-        >
-          {t('create_new_menu')}
-        </button>
+        {!showCreateForm && (
+          <button
+            onClick={() => setShowCreateForm(true)}
+            className="bg-[#e46c14] hover:bg-[#c95c0f] text-white px-4 py-2 rounded font-medium text-sm transition-colors"
+          >
+            {t('create_new_menu')}
+          </button>
+        )}
       </div>
 
-      {menus.length === 0 ? (
+      {showCreateForm ? (
+        <div className="p-6">
+          <div className="bg-[#f9fafb] border border-gray-200 rounded-md p-6 max-w-4xl">
+            <label className="block text-sm text-gray-600 mb-2">{t('new_menu_name_label')}</label>
+            <form onSubmit={handleCreateMenu} className="flex flex-col sm:flex-row gap-3">
+              <input 
+                type="text"
+                autoFocus
+                value={newMenuName}
+                onChange={e => setNewMenuName(e.target.value)}
+                placeholder={t('new_menu_name_placeholder')}
+                className="flex-1 border border-gray-300 rounded px-4 py-2 text-sm focus:ring-1 focus:ring-[#1d4ed8] focus:border-[#1d4ed8]"
+              />
+              <div className="flex gap-2">
+                <button 
+                  type="submit"
+                  disabled={isCreatingMenu || !newMenuName.trim()}
+                  className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-6 py-2 rounded text-sm font-medium transition-colors disabled:opacity-50"
+                >
+                  {isCreatingMenu ? t('saving') : t('create_btn')}
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setShowCreateForm(false);
+                    setNewMenuName('');
+                  }}
+                  className="bg-[#e2e8f0] hover:bg-[#cbd5e1] text-gray-700 px-6 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  {t('cancel_btn')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : menus.length === 0 ? (
         <div className="p-12 text-center text-gray-500">
           {t('no_menu_created')}
         </div>
@@ -214,35 +253,11 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-gray-500 mb-4">{t('click_to_add_page')}</p>
-                  
-                  {/* System Pages Accordion (mocked open) */}
-                  <div className="border-b border-gray-200 pb-2 mb-2">
-                    <h4 className="text-sm font-medium text-gray-700 flex justify-between items-center mb-2">
-                      {t('system_pages')}
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                    </h4>
-                    <ul className="space-y-1 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                      {systemPages.map(page => (
-                        <li key={page.url}>
-                          <button 
-                            onClick={() => handleAddPredefinedPage(page)}
-                            className="w-full text-left text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 py-1.5 rounded transition-colors"
-                          >
-                            + {page.label}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
 
-                  {/* Custom Pages Accordion */}
-                  {customPages.length > 0 && (
-                    <div className="pt-2">
-                      <h4 className="text-sm font-medium text-gray-700 flex justify-between items-center mb-2">
-                        {t('custom_pages')}
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                      </h4>
-                      <ul className="space-y-1 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                  {/* Custom Pages List */}
+                  {customPages.length > 0 ? (
+                    <div>
+                      <ul className="space-y-1 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
                         {customPages.map(page => (
                           <li key={page.url}>
                             <button 
@@ -254,6 +269,10 @@ export default function MenuManager({ initialMenus, systemPages, customPages }: 
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-400 italic">
+                      {t('no_page_created')}
                     </div>
                   )}
 

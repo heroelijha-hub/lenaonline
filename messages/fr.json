@@ -1319,7 +1319,11 @@
         "no_links_add_one": "No links in this menu. Add one!",
         "new_menu_name_prompt": "Nom du nouveau menu :",
         "delete_this_menu": "Supprimer ce menu",
-        "add_a_link": "+ Ajouter un lien"
+        "add_a_link": "+ Ajouter un lien",
+        "new_menu_name_label": "New menu name",
+        "new_menu_name_placeholder": "Ex: Menu Footer 1",
+        "create_btn": "Create",
+        "cancel_btn": "Cancel"
     },
     "AdminMedia": {
         "title": "Bibliothèque de médias",

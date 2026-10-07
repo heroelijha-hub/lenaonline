@@ -18,22 +18,9 @@ export default async function MenusSettingsPage() {
 
   const customPages = dbPages.map(p => ({ label: p.title, url: `/pages/${p.slug}` }));
 
-  // System pages
-  const systemPages = [
-    { label: 'Accueil', url: '/' },
-    { label: 'Boutique', url: '/shop' },
-    { label: 'Panier', url: '/cart' },
-    { label: 'Favoris', url: '/wishlist' },
-    { label: 'Validation (Checkout)', url: '/checkout' },
-    { label: 'Mon Compte', url: '/account' },
-    { label: 'Contact', url: '/admin/pages/contact' },
-    { label: 'Blog', url: '/blog' },
-    { label: 'Nos Marques', url: '/marques' }
-  ];
-
   return (
     <div className="max-w-6xl">
-      <MenuManager initialMenus={menus} systemPages={systemPages} customPages={customPages} />
+      <MenuManager initialMenus={menus} customPages={customPages} />
     </div>
   );
 }
