@@ -3,7 +3,7 @@ import MenuManager from '@/components/admin/settings/MenuManager';
 import prisma from '@/lib/prisma';
 
 export const metadata = {
-  title: 'Menu Manager | Admin',
+  title: 'Menu manager | Admin',
 };
 
 export default async function MenusSettingsPage() {
@@ -11,7 +11,7 @@ export default async function MenusSettingsPage() {
 
   // Fetch custom pages from DB
   const dbPages = await prisma.page.findMany({
-    where: { isDeleted: false, isPublished: true },
+    where: { isPublished: true },
     select: { title: true, slug: true },
     orderBy: { title: 'asc' }
   });
