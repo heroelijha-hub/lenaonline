@@ -37,8 +37,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: `Shop | ${storeName}`,
-    description: 'Entdecken Sie unser groÃŸes Sortiment an KaminÃ¶fen, PelletÃ¶fen, Brennholz und Holzbriketts.',
+    title: `Tienda | ${storeName}`,
+    description: 'Descubre nuestro amplio catálogo de estufas de pellets, leña y briquetas. Calidad garantizada y envío a toda España en Leña Online.',
     alternates: {
       canonical: '/shop',
     },
