@@ -1170,7 +1170,13 @@
         "login_text": "Login Text",
         "my_account_text": "My Account Text",
         "admin_dashboard_text": "Admin Dashboard Text",
-        "nav_menus": "Navigation Menus"
+        "nav_menus": "Navigation Menus",
+        "column_2": "Column 2",
+        "assigned_menu": "Assigned menu",
+        "no_menu": "No menu",
+        "column_3": "Column 3",
+        "column_4": "Column 4",
+        "advanced_mode": "Advanced mode"
     },
     "AdminShipping": {
         "title": "Shipping Settings",

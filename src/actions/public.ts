@@ -81,18 +81,23 @@ export async function searchProducts(query: string, categoryId?: string, limit: 
     where.categories = { some: { id: categoryId } };
   }
 
-  return await prisma.product.findMany({
-    where,
-    select: {
-      id: true,
-      title: true,
-      price: true,
-      compareAtPrice: true,
-      images: true,
-      slug: true,
-    },
-    take: limit,
-  });
+  try {
+    return await prisma.product.findMany({
+      where,
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        compareAtPrice: true,
+        images: true,
+        slug: true,
+      },
+      take: limit,
+    });
+  } catch (error) {
+    console.error("Error in searchProducts:", error);
+    return [];
+  }
 }
 
 export async function getProductsByIds(ids: string[]) {

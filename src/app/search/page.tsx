@@ -28,19 +28,28 @@ export default async function SearchPage({
     where.categories = { some: { id: category } };
   }
 
-  const products = await prisma.product.findMany({
-    where,
-    include: { 
-      categories: true,
-      reviews: { select: { rating: true } }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  let products: any[] = [];
+  let settingsMap: Record<string, string> = {};
 
-  const settingsDb = await prisma.setting.findMany({
-    where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
-  });
-  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  try {
+    products = await prisma.product.findMany({
+      where,
+      include: { 
+        categories: true,
+        reviews: { select: { rating: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    const settingsDb = await prisma.setting.findMany({
+      where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
+    });
+    settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    // Continue with empty products array and empty settingsMap
+  }
+
   const cardStyle = (settingsMap.SHOP_CARD_STYLE as 'design1' | 'design2') || 'design2';
   const borderColor = settingsMap.SHOP_CARD_BORDER_COLOR || '';
 

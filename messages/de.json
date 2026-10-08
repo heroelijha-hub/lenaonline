@@ -1170,7 +1170,13 @@
         "login_text": "Login-Text",
         "my_account_text": "Mein Konto Text",
         "admin_dashboard_text": "Admin-Dashboard Text",
-        "nav_menus": "Navigationsmenüs"
+        "nav_menus": "Navigationsmenüs",
+        "column_2": "Spalte 2",
+        "assigned_menu": "Zugewiesenes Menü",
+        "no_menu": "Kein Menü",
+        "column_3": "Spalte 3",
+        "column_4": "Spalte 4",
+        "advanced_mode": "Erweiterter Modus"
     },
     "AdminShipping": {
         "title": "Versandeinstellungen",
