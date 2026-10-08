@@ -48,9 +48,7 @@
     "typescript": "^5"
   },
   "browserslist": [
-    ">0.3%",
-    "not dead",
-    "not op_mini all",
-    "not IE > 0"
+    "defaults and supports es6-module",
+    "maintained node versions"
   ]
 }

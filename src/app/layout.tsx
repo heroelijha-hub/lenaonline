@@ -78,8 +78,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   
   let userRole: 'ADMIN' | 'CUSTOMER' | null = null;
   
-  const settingsMap = await getCachedSettings();
-  const allMenus = await getMenus();
+  // Parallélisation des requêtes pour réduire le temps de réponse du serveur (TTFB)
+  const [
+    settingsMap,
+    allMenus,
+    { newCount: newProductsCount, hotCount: hotProductsCount, saleCount: saleProductsCount },
+    categories
+  ] = await Promise.all([
+    getCachedSettings(),
+    getMenus(),
+    getCachedProductCounts(),
+    getCachedCategoriesTree()
+  ]);
   
   const currencyOptions = {
     currencySymbol: settingsMap.currencySymbol || defaultCurrencyOptions.currencySymbol,
@@ -130,8 +140,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     }
   } catch (e) {}
 
-  const { newCount: newProductsCount, hotCount: hotProductsCount, saleCount: saleProductsCount } = await getCachedProductCounts();
-
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
 
   const storeSettings = {
@@ -177,7 +185,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     footerPaymentMastercard: settingsMap.FOOTER_PAYMENT_MASTERCARD !== 'false',
     footerPaymentVisa: settingsMap.FOOTER_PAYMENT_VISA !== 'false',
     footerPaymentOpay: settingsMap.FOOTER_PAYMENT_OPAY !== 'false',
-    categories: await getCachedCategoriesTree(),
+    categories: categories,
     maintenanceMode: settingsMap.MAINTENANCE_MODE === 'true',
     maintenanceTitle: settingsMap.MAINTENANCE_TITLE || 'Under Maintenance',
     maintenanceMessage: settingsMap.MAINTENANCE_MESSAGE || 'We are currently updating our store. Come back very soon!',
