@@ -103,7 +103,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.HERO_1_BG_IMAGE && settings.HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_1', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_1_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
@@ -157,7 +157,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.HERO_2_BG_IMAGE && settings.HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_2', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_2_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
@@ -202,7 +202,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.HERO_3_BG_IMAGE && settings.HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_3', 'grad-t')}`} style={{ opacity: (parseInt(settings.HERO_3_BG_OVERLAY || '70', 10) / 100).toFixed(2) }}></div>
         </>
       )}
@@ -247,7 +247,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.HERO_4_BG_IMAGE && settings.HERO_4_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.HERO_4_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className={`absolute inset-0 z-[1] transition-opacity duration-300 ${getOverlayClass('HERO_4', 'grad-r')}`} style={{ opacity: (parseInt(settings.HERO_4_BG_OVERLAY || '80', 10) / 100).toFixed(2) }}></div>
         </>
       )}
@@ -294,7 +294,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.STYLE2_HERO_1_BG_IMAGE && settings.STYLE2_HERO_1_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.STYLE2_HERO_1_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_1_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
         </>
       )}
@@ -354,7 +354,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.STYLE2_HERO_2_BG_IMAGE && settings.STYLE2_HERO_2_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.STYLE2_HERO_2_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_2_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
         </>
       )}
@@ -403,7 +403,7 @@ export default async function Hero({ config, isPreview, sectionId }: { config?: 
       
       {settings.STYLE2_HERO_3_BG_IMAGE && settings.STYLE2_HERO_3_SHOW_BG_IMAGE !== 'false' && (
         <>
-          <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" unoptimized={true} className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
+          <Image src={settings.STYLE2_HERO_3_BG_IMAGE} alt="Background" fill priority fetchPriority="high" className="object-cover object-center z-0" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px" quality={60} />
           <div className="absolute inset-0 z-[1] transition-opacity duration-300" style={{ backgroundColor: `rgba(0,0,0,${(parseInt(settings.STYLE2_HERO_3_BG_OVERLAY || '40', 10) / 100).toFixed(2)})` }}></div>
         </>
       )}
