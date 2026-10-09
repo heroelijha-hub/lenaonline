@@ -338,7 +338,7 @@ export async function sendClientOrderConfirmation(
     try {
       const pdfBuffer = await generateInvoicePDF(order);
       pdfAttachment = {
-        filename: `rechnung-${orderId}.pdf`,
+        filename: `factura-${orderId}.pdf`,
         content: pdfBuffer,
         contentType: "application/pdf",
       };

@@ -11,7 +11,25 @@ const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("es-ES", { dateStyle: "long" }).format(date);
 };
 
-export function generateInvoicePDF(order: any): Promise<Buffer> {
+export async function generateInvoicePDF(order: any): Promise<Buffer> {
+  const { PrismaClient } = require('@prisma/client');
+  const prisma = new PrismaClient();
+  let logoUrl = "";
+  try {
+    const s = await prisma.setting.findUnique({ where: { key: "HEADER_LOGO_IMAGE" } });
+    if (s?.value) logoUrl = s.value;
+  } catch (e) {}
+
+  let logoBuffer: Buffer | null = null;
+  if (logoUrl) {
+    try {
+      const res = await fetch(logoUrl);
+      if (res.ok) {
+        logoBuffer = Buffer.from(await res.arrayBuffer());
+      }
+    } catch (e) {}
+  }
+
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 50 });
@@ -25,6 +43,7 @@ export function generateInvoicePDF(order: any): Promise<Buffer> {
       let customerName = "Cliente";
       let customerEmail = order.user?.email || "";
       let customerAddress = "";
+      let shippingMethodName = "";
 
       if (order.destinationAddress) {
         try {
@@ -32,13 +51,14 @@ export function generateInvoicePDF(order: any): Promise<Buffer> {
             typeof order.destinationAddress === "string"
               ? JSON.parse(order.destinationAddress)
               : order.destinationAddress;
+          shippingMethodName = metadata?.shippingMethodName || "";
           const billing = metadata?.billing || metadata?.shipping;
           if (billing) {
             customerName =
               `${billing.firstName || ""} ${billing.lastName || ""}`.trim();
             customerEmail = billing.email || customerEmail;
             customerAddress =
-              `${billing.address || ""}\n${billing.zipCode || ""} ${billing.city || ""}\n${billing.country || ""}`.trim();
+              `${billing.address1 || ""}\n${billing.postalCode || ""} ${billing.city || ""}\n${billing.country || ""}`.trim();
           }
         } catch (e) {
           // ignore
@@ -46,13 +66,14 @@ export function generateInvoicePDF(order: any): Promise<Buffer> {
       }
 
       // Generate content
-      generateHeader(doc);
+      generateHeader(doc, logoBuffer);
       generateCustomerInformation(
         doc,
         order,
         customerName,
         customerEmail,
         customerAddress,
+        shippingMethodName
       );
       generateInvoiceTable(doc, order);
       generateFooter(doc);
@@ -64,14 +85,24 @@ export function generateInvoicePDF(order: any): Promise<Buffer> {
   });
 }
 
-function generateHeader(doc: typeof PDFDocument) {
+function generateHeader(doc: typeof PDFDocument, logoBuffer: Buffer | null) {
+  if (logoBuffer) {
+    try {
+      doc.image(logoBuffer, 50, 45, { height: 50 });
+    } catch (e) {
+      doc.fillColor("#444444").fontSize(20).text("LEÑA ONLINE SL", 50, 57);
+    }
+  } else {
+    doc.fillColor("#444444").fontSize(20).text("LEÑA ONLINE SL", 50, 57);
+  }
+
   doc
     .fillColor("#444444")
     .fontSize(24)
-    .text("FACTURA", 50, 57)
+    .text("FACTURA", 200, 50, { align: "right" })
     .fontSize(10)
-    .text("LEÑA ONLINE SL", 200, 65, { align: "right" })
-    // If they have an address, you can add it here, or just keep it simple
+    .text("LEÑA ONLINE SL", 200, 80, { align: "right" })
+    .text("info@toplenaolline.com", 200, 95, { align: "right" })
     .moveDown();
 }
 
@@ -81,12 +112,20 @@ function generateCustomerInformation(
   customerName: string,
   customerEmail: string,
   customerAddress: string,
+  shippingMethodName: string
 ) {
   doc.fillColor("#444444").fontSize(20).text("Detalles de la factura", 50, 160);
 
   generateHr(doc, 185);
 
   const customerInformationTop = 200;
+
+  let deliveryTime = "7 días hábiles"; // default standard/free
+  if (shippingMethodName && shippingMethodName.toLowerCase().includes("exprés")) {
+    deliveryTime = "3 días hábiles"; // max express
+  } else if (order.deliveryDays) {
+    deliveryTime = `${order.deliveryDays} días hábiles`;
+  }
 
   doc
     .fontSize(10)
@@ -102,6 +141,8 @@ function generateCustomerInformation(
     )
     .text("Método de pago:", 50, customerInformationTop + 30)
     .text(order.paymentMethod || "N/A", 150, customerInformationTop + 30)
+    .text("Tiempo de entrega:", 50, customerInformationTop + 45)
+    .text(deliveryTime, 150, customerInformationTop + 45)
 
     .text("Cliente:", 300, customerInformationTop)
     .font("Helvetica-Bold")
