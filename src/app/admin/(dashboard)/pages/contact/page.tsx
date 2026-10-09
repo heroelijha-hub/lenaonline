@@ -139,7 +139,7 @@ export default function AdminContactPageForm() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('phone_placeholder_label') || 'Placeholder du Numéro de téléphone (Formulaire)'}</label>
             <input
               type="text"
-              placeholder="+32 XXX ....."
+              placeholder="+34 XXX ....."
               className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition"
               value={formData.phonePlaceholder}
               onChange={(e) => setFormData({...formData, phonePlaceholder: e.target.value})}

@@ -22,7 +22,7 @@ export async function submitContactMessage(formData: FormData) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return { error: 'PLEÑAse provide a valid email address.' };
+      return { error: 'Por favor, introduzca una dirección de correo electrónico válida.' };
     }
 
     // Limit field lengths to prevent abuse
@@ -41,17 +41,17 @@ export async function submitContactMessage(formData: FormData) {
       const { sendEmail } = await import('@/lib/mailer');
       await sendEmail({
         to: receiverEmail,
-        subject: subject ? `Neue Nachricht: "${subject}"` : `Neue Nachricht von ${name}`,
+        subject: subject ? `Nuevo mensaje: "${subject}"` : `Nuevo mensaje de ${name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-            <h2 style="color: #1a1a1a;">Sie haben eine neue Nachricht erhalten.</h2>
-            <p><strong>Von:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p>
-            ${phone ? `<p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>` : ''}
-            ${subject ? `<p><strong>Betreff:</strong> ${escapeHtml(subject)}</p>` : ''}
+            <h2 style="color: #1a1a1a;">Ha recibido un nuevo mensaje.</h2>
+            <p><strong>De:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p>
+            ${phone ? `<p><strong>Teléfono:</strong> ${escapeHtml(phone)}</p>` : ''}
+            ${subject ? `<p><strong>Asunto:</strong> ${escapeHtml(subject)}</p>` : ''}
             <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;"/>
-            <p><strong>Nachricht:</strong><br/><br/>${escapeHtml(message).replace(/\n/g, '<br/>')}</p>
+            <p><strong>Mensaje:</strong><br/><br/>${escapeHtml(message).replace(/\n/g, '<br/>')}</p>
             <br/>
-            <p style="color: #666; font-size: 13px;"><em>Bitte antworten Sie dem Kunden so schnell wie mÃ¶glich.</em></p>
+            <p style="color: #666; font-size: 13px;"><em>Por favor, responda al cliente lo antes posible.</em></p>
           </div>
         `,
       });
@@ -97,15 +97,15 @@ export async function submitNewsletter(formData: FormData) {
       const { sendEmail } = await import('@/lib/mailer');
       await sendEmail({
         to: email,
-        subject: `Bestätigen Sie Ihre Newsletter-Anmeldung`,
+        subject: `Confirme su suscripción al boletín`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
-            <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Bitte bestätigen Sie Ihre Anmeldung</h1>
-            <p style="font-size: 14px; color: #333; margin-bottom: 20px;">Vielen Dank für Ihr Interesse an unserem Newsletter! Bitte klicken Sie auf den folgenden Link, um Ihre Anmeldung zu bestätigen:</p>
+            <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Por favor, confirme su suscripción</h1>
+            <p style="font-size: 14px; color: #333; margin-bottom: 20px;">¡Gracias por su interés en nuestro boletín! Por favor, haga clic en el siguiente enlace para confirmar su suscripción:</p>
             <p style="text-align: center; margin: 30px 0;">
-              <a href="${confirmUrl}" style="background-color: #f97316; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">Anmeldung bestätigen</a>
+              <a href="${confirmUrl}" style="background-color: #f97316; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">Confirmar suscripción</a>
             </p>
-            <p style="font-size: 12px; color: #666;">Falls Sie sich nicht angemeldet haben, können Sie diese E-Mail einfach ignorieren.</p>
+            <p style="font-size: 12px; color: #666;">Si no se suscribió, puede ignorar este correo electrónico.</p>
           </div>
         `,
       });
@@ -113,7 +113,7 @@ export async function submitNewsletter(formData: FormData) {
       console.error('[NEWSLETTER] Failed to send opt-in email:', emailErr);
     }
 
-    return { success: true, message: 'Bitte überprüfen Sie Ihren Posteingang, um Ihre Anmeldung zu bestätigen (Double Opt-in).' };
+    return { success: true, message: 'Por favor, revise su bandeja de entrada para confirmar su suscripción (Double Opt-in).' };
   } catch (error) {
     console.error('Newsletter submission error:', error);
     return { error: "Une erreur est survenue lors de l'inscription." };
