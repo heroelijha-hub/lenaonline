@@ -139,7 +139,7 @@ export async function sendClientOrderConfirmation(
         ? "¡Gratis!"
         : metadata?.shippingCost
           ? formatPrice(metadata.shippingCost)
-          : "0,00 â‚¬";
+          : "0,00 €";
     const shippingMethod = metadata?.shippingMethodName
       ? `(${metadata.shippingMethodName})`
       : "";
@@ -389,10 +389,10 @@ export async function sendAdminOrderNotification(
       order.total;
     const shippingCostStr =
       metadata?.shippingCost === 0
-        ? "Kostenlos!"
+        ? "¡Gratis!"
         : metadata?.shippingCost
           ? formatPrice(metadata.shippingCost)
-          : "0,00 â‚¬";
+          : "0,00 €";
     const shippingMethod = metadata?.shippingMethodName
       ? `(${metadata.shippingMethodName})`
       : "";
@@ -472,15 +472,15 @@ export async function sendAdminOrderNotification(
         <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Nuevo pedido: n.º ${orderId}</h1>
         <p style="font-size: 13px; color: #666;">Ha recibido un nuevo pedido de ${escapeHtml(customerDetails.name) || "un cliente"} :</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">BestellÃ¼bersicht</h3>
-        <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Resumen del pedido</h3>
+        <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Pedido n.º ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Produkt</th>
-              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Anzahl</th>
-              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Preis</th>
+              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Producto</th>
+              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Cantidad</th>
+              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Precio</th>
             </tr>
           </thead>
           <tbody>
@@ -491,19 +491,19 @@ export async function sendAdminOrderNotification(
         <div style="margin-top: 25px;">
           <table style="width: 100%; font-size: 13px; color: #666; line-height: 2;">
             <tr>
-              <td>Zwischensumme:</td>
+              <td>Subtotal:</td>
               <td style="text-align: right;">${formatPrice(subTotal)}</td>
             </tr>
             <tr>
-              <td>Versand: Gratis Lieferung ${shippingMethod}</td>
+              <td>Envío: Envío gratis ${shippingMethod}</td>
               <td style="text-align: right;">${shippingCostStr}</td>
             </tr>
             <tr style="color: #1a1a1a; font-size: 14px;">
-              <td><strong>Gesamt:</strong></td>
+              <td><strong>Total:</strong></td>
               <td style="text-align: right;"><strong>${formatPrice(order.total)}</strong></td>
             </tr>
             <tr>
-              <td>Zahlungsart:</td>
+              <td>Método de pago:</td>
               <td style="text-align: right;">${paymentMethodStr}</td>
             </tr>
           </table>
@@ -513,7 +513,7 @@ export async function sendAdminOrderNotification(
           <table style="width: 100%; font-size: 12px; color: #333; line-height: 1.4;">
             <tr>
               <td style="vertical-align: top; width: 50%;">
-                <strong style="font-size: 13px;">Rechnungsadresse</strong><br/>
+                <strong style="font-size: 13px;">Dirección de facturación</strong><br/>
                 <div style="margin-top: 8px;">
                   ${billingName}<br/>
                   ${billingAddressHtml}<br/>
@@ -522,7 +522,7 @@ export async function sendAdminOrderNotification(
                 </div>
               </td>
               <td style="vertical-align: top; width: 50%;">
-                <strong style="font-size: 13px;">Lieferadresse</strong><br/>
+                <strong style="font-size: 13px;">Dirección de envío</strong><br/>
                 <div style="margin-top: 8px;">
                   ${shippingName}<br/>
                   ${shippingAddressHtml}<br/>
@@ -540,7 +540,7 @@ export async function sendAdminOrderNotification(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -577,7 +577,7 @@ export async function sendOrderStatusUpdate(
 
     if (status === "SHIPPED") {
       title = "Su pedido está en camino 🚚";
-      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> ha sido enviado. Puede realizar el seguimiento de la entrega en su cuenta.`;
+      message = `Su pedido <strong>#${order.id.slice(-6).toUpperCase()}</strong> ha sido enviado. Puede realizar el seguimiento de la entrega en su cuenta.`;
       color = "#16a34a"; // green
     } else if (status === "CANCELLED") {
       title = "Información sobre su pedido";
@@ -585,7 +585,7 @@ export async function sendOrderStatusUpdate(
       color = "#dc2626"; // red
     } else if (status === "DELIVERED") {
       title = "¡Su pedido ha sido entregado!";
-      message = `Ihre Bestellung <strong>#${order.id.slice(-6).toUpperCase()}</strong> ha sido marcado como entregado. ¡Esperamos que esté satisfecho!`;
+      message = `Su pedido <strong>#${order.id.slice(-6).toUpperCase()}</strong> ha sido marcado como entregado. ¡Esperamos que esté satisfecho!`;
       color = "#16a34a";
     }
 
@@ -608,10 +608,10 @@ export async function sendOrderStatusUpdate(
       order.total;
     const shippingCostStr =
       metadata?.shippingCost === 0
-        ? "Kostenlos!"
+        ? "¡Gratis!"
         : metadata?.shippingCost
           ? formatPrice(metadata.shippingCost)
-          : "0,00 â‚¬";
+          : "0,00 €";
     const shippingMethod = metadata?.shippingMethodName
       ? `(${metadata.shippingMethodName})`
       : "";
@@ -692,11 +692,11 @@ export async function sendOrderStatusUpdate(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: ${color}; margin-top: 0; margin-bottom: 15px;">${title}</h1>
-        <p style="font-size: 13px; color: #666;">Hallo,</p>
+        <p style="font-size: 13px; color: #666;">Hola,</p>
         <p style="font-size: 13px; color: #666;">${message}</p>
         
-        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">BestellÃ¼bersicht</h3>
-        <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Bestellung Nr. ${orderId} (${formatDate(new Date(order.createdAt))})</p>
+        <h3 style="font-size: 16px; font-weight: bold; margin-top: 35px; margin-bottom: 5px;">Resumen del pedido</h3>
+        <p style="color: #eab308; font-size: 12px; font-weight: bold; margin-top: 0; margin-bottom: 25px;">Pedido n.º ${orderId} (${formatDate(new Date(order.createdAt))})</p>
         
         ${
           itemsHtml
@@ -704,9 +704,9 @@ export async function sendOrderStatusUpdate(
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Produkt</th>
-              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Anzahl</th>
-              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Preis</th>
+              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Producto</th>
+              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Cantidad</th>
+              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Precio</th>
             </tr>
           </thead>
           <tbody>
@@ -720,19 +720,19 @@ export async function sendOrderStatusUpdate(
         <div style="margin-top: 25px;">
           <table style="width: 100%; font-size: 13px; color: #666; line-height: 2;">
             <tr>
-              <td>Zwischensumme:</td>
+              <td>Subtotal:</td>
               <td style="text-align: right;">${formatPrice(subTotal)}</td>
             </tr>
             <tr>
-              <td>Versand: Gratis Lieferung ${shippingMethod}</td>
+              <td>Envío: Envío gratis ${shippingMethod}</td>
               <td style="text-align: right;">${shippingCostStr}</td>
             </tr>
             <tr style="color: #1a1a1a; font-size: 14px;">
-              <td><strong>Gesamt:</strong></td>
+              <td><strong>Total:</strong></td>
               <td style="text-align: right;"><strong>${formatPrice(order.total)}</strong></td>
             </tr>
             <tr>
-              <td>Zahlungsart:</td>
+              <td>Método de pago:</td>
               <td style="text-align: right;">${paymentMethodStr}</td>
             </tr>
           </table>
@@ -742,7 +742,7 @@ export async function sendOrderStatusUpdate(
           <table style="width: 100%; font-size: 12px; color: #333; line-height: 1.4;">
             <tr>
               <td style="vertical-align: top; width: 50%;">
-                <strong style="font-size: 13px;">Rechnungsadresse</strong><br/>
+                <strong style="font-size: 13px;">Dirección de facturación</strong><br/>
                 <div style="margin-top: 8px;">
                   ${billingName}<br/>
                   ${billingAddressHtml}<br/>
@@ -751,7 +751,7 @@ export async function sendOrderStatusUpdate(
                 </div>
               </td>
               <td style="vertical-align: top; width: 50%;">
-                <strong style="font-size: 13px;">Lieferadresse</strong><br/>
+                <strong style="font-size: 13px;">Dirección de envío</strong><br/>
                 <div style="margin-top: 8px;">
                   ${shippingName}<br/>
                   ${shippingAddressHtml}<br/>
@@ -768,7 +768,7 @@ export async function sendOrderStatusUpdate(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -851,7 +851,7 @@ export async function sendAbandonedCartRecoveryEmail(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">Carrito abandonado</h1>
-        <p style="font-size: 13px; color: #666;">Hallo ${escapeHtml(userName) || "Cliente"},</p>
+        <p style="font-size: 13px; color: #666;">Hola ${escapeHtml(userName) || "Cliente"},</p>
         <p style="font-size: 13px; color: #666;">Hemos notado que dejó artículos en su carrito. ¡Lo están esperando!</p>
         
         <div style="margin: 20px 0;">
@@ -863,9 +863,9 @@ export async function sendAbandonedCartRecoveryEmail(
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
           <thead style="text-align: left; border-bottom: 1px solid #eee;">
             <tr>
-              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Produkt</th>
-              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Anzahl</th>
-              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Preis</th>
+              <th style="padding-bottom: 10px; font-weight: bold; font-size: 12px; color: #333;">Producto</th>
+              <th style="padding-bottom: 10px; text-align: center; font-weight: bold; font-size: 12px; color: #333;">Cantidad</th>
+              <th style="padding-bottom: 10px; text-align: right; font-weight: bold; font-size: 12px; color: #333;">Precio</th>
             </tr>
           </thead>
           <tbody>
@@ -885,7 +885,7 @@ export async function sendAbandonedCartRecoveryEmail(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -968,7 +968,7 @@ export async function sendReviewRequestEmail(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">¿Qué tal su pedido?</h1>
-        <p style="font-size: 13px; color: #666;">Hallo ${escapeHtml(userName) || "Kunde"},</p>
+        <p style="font-size: 13px; color: #666;">Hola ${escapeHtml(userName) || "Kunde"},</p>
         <p style="font-size: 13px; color: #666;">¡Esperamos que disfrute de los artículos de su último pedido en nuestra tienda!</p>
         <p style="font-size: 13px; color: #666;">Su opinión es muy importante para nosotros y ayuda a otros clientes a tomar la decisión correcta.</p>
         
@@ -986,7 +986,7 @@ export async function sendReviewRequestEmail(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -1028,7 +1028,7 @@ export async function sendLowStockAlertEmail(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
         <h1 style="font-size: 24px; color: #dc2626; margin-top: 0; margin-bottom: 15px;">Advertencia: Stock bajo</h1>
-        <p style="font-size: 13px; color: #666;">Hallo,</p>
+        <p style="font-size: 13px; color: #666;">Hola,</p>
         <p style="font-size: 13px; color: #666;">El stock del siguiente producto ha caído por debajo del umbral de advertencia (${threshold} unidades).</p>
         
         <div style="background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0;">
@@ -1044,7 +1044,7 @@ export async function sendLowStockAlertEmail(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -1101,7 +1101,7 @@ export async function sendAdminNewChatMessageEmail(
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
@@ -1161,7 +1161,7 @@ export async function sendNewsletterWelcomeEmail(userEmail: string) {
         
         <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
           <strong>${storeName}</strong><br/>
-          DÃœNNENRIEDE 3, 30853 LANGENHAGEN, DEUTSCHLAND
+          
         </div>
       </div>
     `;
