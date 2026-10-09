@@ -45,6 +45,7 @@ export async function getAdminNotifications() {
   return await prisma.notification.findMany({
     where: {
       isAdmin: true,
+      isRead: false,
     },
     orderBy: {
       createdAt: 'desc',
@@ -69,6 +70,7 @@ export async function getUserNotifications(userId?: string, guestId?: string) {
   return await prisma.notification.findMany({
     where: {
       isAdmin: false,
+      isRead: false,
       OR: [
         ...(userId ? [{ userId }] : []),
         ...(guestId ? [{ guestId }] : []),

@@ -194,7 +194,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     searchPlaceholder: settingsMap.SEARCH_PLACEHOLDER || 'Search products...',
     searchBtnText: settingsMap.SEARCH_BTN_TEXT || 'Search',
     searchBtnBgColor: settingsMap.SEARCH_BTN_BG_COLOR || '#c2410c',
-    searchBtnTextColor: settingsMap.SEARCH_BTN_TEXT_COLOR || '#111827',
+    searchBtnTextColor: (settingsMap.SEARCH_BTN_TEXT_COLOR === '#111827' ? '#ffffff' : settingsMap.SEARCH_BTN_TEXT_COLOR) || '#ffffff',
     showNew: newProductsCount > 0,
     showHot: hotProductsCount >= 3,
     showSale: saleProductsCount > 0,

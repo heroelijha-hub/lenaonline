@@ -73,7 +73,7 @@ export default function Header({
   searchPlaceholder = 'Search products...',
   searchBtnText = 'Search',
   searchBtnBgColor = '#c2410c',
-  searchBtnTextColor = '#111827',
+  searchBtnTextColor = '#ffffff',
   showNew = true,
   showHot = true,
   showSale = true,

@@ -87,12 +87,12 @@ export default function NotificationBell({ isAdmin = false, userId }: Notificati
 
   const handleMarkAsRead = async (id: string) => {
     await markAsRead(id);
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
   const handleMarkAllAsRead = async () => {
     await markAllAsRead(isAdmin, userId, guestId);
-    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    setNotifications([]);
   };
 
   return (
