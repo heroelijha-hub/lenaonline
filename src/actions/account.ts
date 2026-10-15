@@ -32,13 +32,28 @@ export async function updateAccountDetails(formData: FormData) {
   }
 
   if (newPassword || confirmPassword) {
+    if (!currentPassword) {
+      return { error: 'Current password is required to set a new password.' };
+    }
+
+    // Verify current password with Supabase
+    if (user.email) {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+      });
+      if (signInError) {
+        return { error: 'Current password is incorrect.' };
+      }
+    }
+
     if (newPassword !== confirmPassword) {
-      return { error: 'Les nouveaux mots de passe ne correspondent pas.' }
+      return { error: 'New passwords do not match.' };
     }
     if (!newPassword || newPassword.length < 8) {
-      return { error: 'Password must be at least 8 characters long.' }
+      return { error: 'Password must be at least 8 characters long.' };
     }
-    updates.password = newPassword
+    updates.password = newPassword;
   }
 
   const { error: updateError } = await supabase.auth.updateUser(updates)

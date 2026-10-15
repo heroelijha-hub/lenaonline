@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { getSettings } from '@/actions/settings';
 import { formatPriceNumber, defaultCurrencyOptions } from '@/lib/formatPrice';
+import { verifyOrderAccessToken } from '@/lib/security';
+import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +15,7 @@ export default async function CheckoutSuccessPage({
 }) {
   const resolvedParams = await searchParams;
   const orderId = resolvedParams.orderId as string;
+  const token = resolvedParams.token as string | undefined;
   const t = await getTranslations('Checkout');
   const tCart = await getTranslations('Cart');
   const locale = await getLocale();
@@ -35,6 +38,35 @@ export default async function CheckoutSuccessPage({
   });
 
   if (!order) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('order_not_found')}</h1>
+        <Link href="/shop" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded transition-colors">
+          {tCart('back_to_shop')}
+        </Link>
+      </div>
+    );
+  }
+
+  // Security Check: Verify that caller is either authorized via signed token or is the order owner / admin
+  const isTokenValid = verifyOrderAccessToken(order.id, token);
+  let isOwnerOrAdmin = false;
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      if (user.id === order.userId) {
+        isOwnerOrAdmin = true;
+      } else {
+        const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+        if (dbUser?.role === 'ADMIN') {
+          isOwnerOrAdmin = true;
+        }
+      }
+    }
+  } catch {}
+
+  if (!isTokenValid && !isOwnerOrAdmin) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('order_not_found')}</h1>

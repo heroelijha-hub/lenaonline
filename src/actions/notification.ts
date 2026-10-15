@@ -2,17 +2,13 @@
 
 import prisma from '@/lib/prisma';
 import { NotificationType } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { requireAdmin } from '@/lib/auth';
+import { requireAdmin, requireAuth } from '@/lib/auth';
+import { createNotification as internalCreateNotification } from '@/lib/notifications';
 
-export async function createNotification({
-  userId,
-  guestId,
-  isAdmin,
-  type,
-  message,
-  link
-}: {
+/**
+ * Public action - requires admin privileges if creating admin notifications.
+ */
+export async function createNotification(params: {
   userId?: string;
   guestId?: string;
   isAdmin: boolean;
@@ -20,24 +16,10 @@ export async function createNotification({
   message: string;
   link?: string;
 }) {
-  const notification = await prisma.notification.create({
-    data: {
-      userId,
-      guestId,
-      isAdmin,
-      type,
-      message,
-      link,
-    }
-  });
-  
-  if (isAdmin) {
-    revalidatePath('/admin');
-  } else {
-    revalidatePath('/');
+  if (params.isAdmin) {
+    await requireAdmin();
   }
-
-  return notification;
+  return await internalCreateNotification(params);
 }
 
 export async function getAdminNotifications() {
@@ -58,7 +40,6 @@ export async function getUserNotifications(userId?: string, guestId?: string) {
   if (!userId && !guestId) return [];
   
   if (userId) {
-    const { requireAuth } = await import('@/lib/auth');
     try {
       const user = await requireAuth();
       if (user.id !== userId) return [];
@@ -84,6 +65,25 @@ export async function getUserNotifications(userId?: string, guestId?: string) {
 }
 
 export async function markAsRead(notificationId: string) {
+  if (!notificationId || typeof notificationId !== 'string') return;
+
+  const notif = await prisma.notification.findUnique({
+    where: { id: notificationId }
+  });
+
+  if (!notif) return;
+
+  if (notif.isAdmin) {
+    await requireAdmin();
+  } else if (notif.userId) {
+    try {
+      const user = await requireAuth();
+      if (user.id !== notif.userId) return;
+    } catch {
+      return;
+    }
+  }
+
   await prisma.notification.update({
     where: { id: notificationId },
     data: { isRead: true },
@@ -91,8 +91,11 @@ export async function markAsRead(notificationId: string) {
 }
 
 export async function markAllAsRead(isAdmin: boolean, userId?: string, guestId?: string) {
+  if (isAdmin) {
+    await requireAdmin();
+  }
+
   if (!isAdmin && userId) {
-    const { requireAuth } = await import('@/lib/auth');
     try {
       const user = await requireAuth();
       if (user.id !== userId) return;

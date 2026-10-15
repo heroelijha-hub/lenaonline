@@ -14,8 +14,18 @@ export async function submitReview(productId: string, rating: number, comment: s
     return { error: "You must be logged in to leave a review." };
   }
 
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!productId || !uuidRegex.test(productId)) {
+    return { error: "Invalid product identifier." };
+  }
+
   if (rating < 1 || rating > 5) {
     return { error: "Rating must be between 1 and 5." };
+  }
+
+  const cleanComment = (comment || '').trim();
+  if (!cleanComment || cleanComment.length > 2000) {
+    return { error: "Review comment must be between 1 and 2000 characters." };
   }
 
   try {

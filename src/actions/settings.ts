@@ -4,6 +4,22 @@ import prisma from '@/lib/prisma';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
 
+const SENSITIVE_KEYS = new Set([
+  'STRIPE_SECRET_KEY',
+  'STRIPE_WEBHOOK_SECRET',
+  'PAYPAL_SECRET',
+  'CRON_SECRET',
+  'SMTP_PASS',
+  'SMTP_PASSWORD',
+  'CLOUDINARY_API_SECRET',
+]);
+
+function isSensitiveSettingKey(key: string): boolean {
+  if (SENSITIVE_KEYS.has(key)) return true;
+  const upper = key.toUpperCase();
+  return upper.endsWith('_SECRET') || upper.endsWith('_PASS') || upper.endsWith('_PASSWORD');
+}
+
 export async function getSettings() {
   const settings = await prisma.setting.findMany();
   const settingsMap: Record<string, string> = {};
@@ -16,10 +32,8 @@ export async function getSettings() {
     isAdmin = false;
   }
 
-  const hiddenKeys = ['STRIPE_SECRET_KEY', 'PAYPAL_SECRET', 'CRON_SECRET', 'SMTP_PASSWORD'];
-
   settings.forEach(s => {
-    if (isAdmin || !hiddenKeys.includes(s.key)) {
+    if (isAdmin || !isSensitiveSettingKey(s.key)) {
       settingsMap[s.key] = s.value;
     }
   });

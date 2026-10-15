@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     } catch (err: any) {
       console.error('[Stripe Webhook] Signature verification failed:', err.message);
       return NextResponse.json(
-        { error: `Webhook signature verification failed: ${err.message}` },
+        { error: 'Webhook signature verification failed' },
         { status: 400 }
       );
     }
@@ -77,7 +77,13 @@ export async function POST(request: Request) {
         );
       }
 
-      // Update order status to PAID
+      // Verify payment status is confirmed as paid
+      if (session.payment_status !== 'paid') {
+        console.warn(`[Stripe Webhook] Order ${orderId} payment_status is '${session.payment_status}', not 'paid'`);
+        return NextResponse.json({ received: true });
+      }
+
+      // Fetch order
       const order = await prisma.order.findUnique({ where: { id: orderId } });
 
       if (!order) {
@@ -88,13 +94,23 @@ export async function POST(request: Request) {
         );
       }
 
-      // Only process if order is still PENDING (idempotency)
-      if (order.status === 'PENDING') {
-        await prisma.order.update({
-          where: { id: orderId },
-          data: { status: 'PAID', stripeSessionId: session.id },
-        });
+      // Verify payment amount matches order total in cents
+      const expectedCents = Math.round(order.total * 100);
+      if (typeof session.amount_total === 'number' && session.amount_total !== expectedCents) {
+        console.error(`[Stripe Webhook] Order ${orderId} total mismatch: expected ${expectedCents} cents, got ${session.amount_total} cents`);
+        return NextResponse.json(
+          { error: 'Amount mismatch' },
+          { status: 400 }
+        );
+      }
 
+      // Atomic update for idempotency (only transition if status is PENDING)
+      const updated = await prisma.order.updateMany({
+        where: { id: orderId, status: 'PENDING' },
+        data: { status: 'PAID', stripeSessionId: session.id },
+      });
+
+      if (updated.count === 1) {
         // Trigger post-payment logic (emails, stock, notifications)
         const { finalizeOrder } = await import('@/lib/orderFinalizer');
         await finalizeOrder(orderId);

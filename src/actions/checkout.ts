@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { getOrderAccessToken } from '@/lib/security';
 
 const ALLOWED_PAYMENT_METHODS = ['STRIPE', 'PAYPAL', 'BANK_TRANSFER'] as const;
 const MAX_CART_LINES = 50;
@@ -8,8 +9,12 @@ const MAX_QTY_PER_LINE = 999;
 
 export async function validateCoupon(code: string) {
   try {
+    if (!code || typeof code !== 'string') {
+      return { error: "Invalid coupon code." };
+    }
+
     const coupon = await prisma.coupon.findUnique({
-      where: { code: code.toUpperCase() }
+      where: { code: code.trim().toUpperCase() }
     });
 
     if (!coupon) {
@@ -34,18 +39,27 @@ export async function validateCoupon(code: string) {
   }
 }
 
-
 export async function processCheckout(formData: FormData, cartItems: any[], finalTotal: number, paymentMethod: string) {
   try {
-    const email = formData.get('email') as string;
-    const firstName = formData.get('firstName') as string;
-    const lastName = formData.get('lastName') as string;
-    const country = formData.get('country') as string;
+    const email = (formData.get('email') as string || '').trim().toLowerCase();
+    const firstName = (formData.get('firstName') as string || '').trim().slice(0, 100);
+    const lastName = (formData.get('lastName') as string || '').trim().slice(0, 100);
+    const country = (formData.get('country') as string || '').trim().slice(0, 100);
     const shippingMethodId = formData.get('shippingMethod') as string;
     const shipToDifferentAddress = formData.get('shipToDifferentAddress') === 'on';
-    const shippingCountry = formData.get('shippingCountry') as string;
+    const shippingCountry = (formData.get('shippingCountry') as string || '').trim().slice(0, 100);
     
     const effectiveCountry = shipToDifferentAddress ? shippingCountry : country;
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email) || email.length > 254) {
+      return { error: "Please provide a valid email address." };
+    }
+
+    if (!firstName || !lastName || !country) {
+      return { error: "Please fill in all required name and address fields." };
+    }
 
     if (!(ALLOWED_PAYMENT_METHODS as readonly string[]).includes(paymentMethod)) {
       return { error: "Invalid payment method." };
@@ -76,16 +90,15 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
 
     const shippingRate = validZone.methods[0].rate;
     
-    // ===== SERVER-SIDE PRICE VERIFICATION =====
-    // Never trust client-provided prices. Fetch real prices from database.
-    const productIds = cartItems.map((item: any) => item.productId);
+    // ===== SERVER-SIDE PRICE AND VARIATION VERIFICATION =====
+    // Fetch products and their real prices & variations from database
+    const productIds = cartItems.map((item: any) => item.productId).filter(Boolean);
     const dbProducts = await prisma.product.findMany({
-      where: { id: { in: productIds } },
-      select: { id: true, price: true, title: true },
+      where: { id: { in: productIds }, isDeleted: false },
+      select: { id: true, price: true, title: true, images: true, variations: true },
     });
-    const productPriceMap = new Map(dbProducts.map(p => [p.id, p.price]));
+    const productMap = new Map(dbProducts.map(p => [p.id, p]));
 
-    // Verify all products exist and recalculate total from DB prices
     let serverCartTotal = 0;
     const verifiedItems: any[] = [];
     for (const item of cartItems) {
@@ -94,16 +107,52 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         return { error: "Invalid quantity in cart." };
       }
       
-      const dbPrice = productPriceMap.get(item.productId);
-      if (dbPrice === undefined) {
+      const dbProduct = productMap.get(item.productId);
+      if (!dbProduct) {
         return { error: `Product not found: ${item.productId}. Please refresh your cart.` };
       }
-      serverCartTotal += dbPrice * qty;
-      verifiedItems.push({ ...item, quantity: qty, price: dbPrice }); // Use DB price, not client price
+
+      let verifiedPrice = dbProduct.price;
+      let verifiedTitle = dbProduct.title;
+      let verifiedImage = dbProduct.images && dbProduct.images.length > 0 ? dbProduct.images[0] : null;
+
+      // Handle variable product variation price securely
+      if (item.variationId && dbProduct.variations) {
+        const variations = dbProduct.variations as any[];
+        const matchedVar = variations.find((v: any) => v.id === item.variationId);
+        if (matchedVar) {
+          if (matchedVar.price !== undefined && matchedVar.price !== null && matchedVar.price !== '') {
+            const parsedVarPrice = Number(matchedVar.price);
+            if (!isNaN(parsedVarPrice) && parsedVarPrice >= 0) {
+              verifiedPrice = parsedVarPrice;
+            }
+          }
+          if (matchedVar.image) {
+            verifiedImage = matchedVar.image;
+          }
+          if (matchedVar.attributes && typeof matchedVar.attributes === 'object') {
+            const varSuffix = Object.values(matchedVar.attributes).join(', ');
+            if (varSuffix) {
+              verifiedTitle = `${dbProduct.title} (${varSuffix})`;
+            }
+          }
+        }
+      }
+
+      serverCartTotal += verifiedPrice * qty;
+      verifiedItems.push({
+        productId: dbProduct.id,
+        title: verifiedTitle,
+        image: verifiedImage,
+        price: verifiedPrice,
+        quantity: qty,
+        variationId: item.variationId || null,
+        attributes: item.attributes || null
+      });
     }
 
     // Apply coupon discount server-side if provided
-    const couponCode = formData.get('couponCode') as string;
+    const couponCode = (formData.get('couponCode') as string || '').trim();
     let discountAmount = 0;
     if (couponCode) {
       const coupon = await prisma.coupon.findUnique({
@@ -119,10 +168,8 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     }
 
     const serverTotal = Math.max(0, serverCartTotal - discountAmount) + shippingRate;
-    // Round to 2 decimal places to avoid floating point issues
     const verifiedTotal = Math.round(serverTotal * 100) / 100;
 
-    
     // Find or create user
     let user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
@@ -139,22 +186,22 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         firstName,
         lastName,
         email,
-        phone: formData.get('phone') as string,
-        address1: formData.get('address1') as string,
-        address2: formData.get('address2') as string,
-        city: formData.get('city') as string,
-        postalCode: formData.get('postalCode') as string,
+        phone: (formData.get('phone') as string || '').slice(0, 50),
+        address1: (formData.get('address1') as string || '').slice(0, 200),
+        address2: (formData.get('address2') as string || '').slice(0, 200),
+        city: (formData.get('city') as string || '').slice(0, 100),
+        postalCode: (formData.get('postalCode') as string || '').slice(0, 30),
         country: country
       },
       shipping: shipToDifferentAddress ? {
-        firstName: formData.get('shippingFirstName') as string,
-        lastName: formData.get('shippingLastName') as string,
-        company: formData.get('shippingCompany') as string,
-        phone: formData.get('shippingPhone') as string,
-        address1: formData.get('shippingAddress1') as string,
-        address2: formData.get('shippingAddress2') as string,
-        city: formData.get('shippingCity') as string,
-        postalCode: formData.get('shippingPostalCode') as string,
+        firstName: (formData.get('shippingFirstName') as string || '').slice(0, 100),
+        lastName: (formData.get('shippingLastName') as string || '').slice(0, 100),
+        company: (formData.get('shippingCompany') as string || '').slice(0, 100),
+        phone: (formData.get('shippingPhone') as string || '').slice(0, 50),
+        address1: (formData.get('shippingAddress1') as string || '').slice(0, 200),
+        address2: (formData.get('shippingAddress2') as string || '').slice(0, 200),
+        city: (formData.get('shippingCity') as string || '').slice(0, 100),
+        postalCode: (formData.get('shippingPostalCode') as string || '').slice(0, 30),
         country: shippingCountry
       } : null,
       shippingCost: shippingRate,
@@ -175,7 +222,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
           create: verifiedItems.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
-            price: item.price, // DB-verified price
+            price: item.price,
             variationId: item.variationId || null,
             attributes: item.attributes || null
           }))
@@ -184,6 +231,8 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       }
     });
 
+    const orderToken = getOrderAccessToken(order.id);
+
     // Fetch settings once for currency and payment config
     const allSettings = await prisma.setting.findMany();
     const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
@@ -191,10 +240,6 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.lenaonline.com';
 
     // ===== PAYMENT METHOD HANDLING =====
-    // For STRIPE and PAYPAL: finalization (emails, stock, notifications) is deferred
-    // to the webhook/capture handler AFTER payment is confirmed.
-    // For BANK_TRANSFER: finalize immediately since no online payment is needed.
-
     if (paymentMethod === 'STRIPE') {
       const stripeSecretKey = settingsMap['STRIPE_SECRET_KEY'];
       if (!stripeSecretKey) {
@@ -204,33 +249,65 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       const { default: Stripe } = await import('stripe');
       const stripe = new Stripe(stripeSecretKey);
 
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: verifiedItems.map(item => ({
+      const line_items: any[] = verifiedItems.map(item => ({
+        price_data: {
+          currency: storeCurrencyCode.toLowerCase(),
+          product_data: {
+            name: item.title,
+            images: item.image ? [item.image] : [],
+          },
+          unit_amount: Math.round(item.price * 100),
+        },
+        quantity: item.quantity,
+      }));
+
+      // Include shipping fee in Stripe session
+      if (shippingRate > 0) {
+        line_items.push({
           price_data: {
             currency: storeCurrencyCode.toLowerCase(),
             product_data: {
-              name: item.title,
-              images: item.image ? [item.image] : [],
+              name: `Livraison: ${validZone.methods[0].type || 'Standard'}`,
+              images: [],
             },
-            unit_amount: Math.round(item.price * 100),
+            unit_amount: Math.round(shippingRate * 100),
           },
-          quantity: item.quantity,
-        })),
+          quantity: 1,
+        });
+      }
+
+      const sessionParams: any = {
+        payment_method_types: ['card'],
+        line_items,
         mode: 'payment',
-        success_url: `${baseUrl}/checkout/success?orderId=${order.id}`,
+        success_url: `${baseUrl}/checkout/success?orderId=${order.id}&token=${orderToken}`,
         cancel_url: `${baseUrl}/checkout`,
         client_reference_id: order.id,
         customer_email: user.email,
-      });
+      };
+
+      // Apply coupon discount in Stripe if any
+      if (discountAmount > 0) {
+        try {
+          const stripeCoupon = await stripe.coupons.create({
+            amount_off: Math.round(discountAmount * 100),
+            currency: storeCurrencyCode.toLowerCase(),
+            duration: 'once',
+            name: couponCode ? `Coupon ${couponCode.toUpperCase()}` : 'Remise',
+          });
+          sessionParams.discounts = [{ coupon: stripeCoupon.id }];
+        } catch (couponErr) {
+          console.error('[Stripe Checkout] Failed to create Stripe discount coupon:', couponErr);
+        }
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
 
       await prisma.order.update({
         where: { id: order.id },
         data: { stripeSessionId: session.id }
       });
 
-      // NOTE: Emails, stock, notifications will be handled by the Stripe webhook
-      // at /api/stripe/webhook after payment confirmation.
       return { success: true, orderId: order.id, redirectUrl: session.url };
     } 
     else if (paymentMethod === 'PAYPAL') {
@@ -272,8 +349,6 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
             }
           }],
           application_context: {
-            // Redirect to capture route instead of success page
-            // The capture route will verify payment before showing success
             return_url: `${baseUrl}/api/paypal/capture?orderId=${order.id}`,
             cancel_url: `${baseUrl}/checkout`
           }
@@ -284,19 +359,17 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       const approveLink = orderData.links?.find((l: any) => l.rel === 'approve');
       
       if (approveLink) {
-        // NOTE: Emails, stock, notifications will be handled by the PayPal capture
-        // route at /api/paypal/capture after payment confirmation.
         return { success: true, orderId: order.id, redirectUrl: approveLink.href };
       } else {
         return { error: "Unable to create PayPal payment session." };
       }
     } 
     else {
-      // BANK_TRANSFER — Finalize immediately (no online payment to confirm)
+      // BANK_TRANSFER — Finalize post-order tasks (emails, notifications)
       const { finalizeOrder } = await import('@/lib/orderFinalizer');
       finalizeOrder(order.id).catch(e => console.error('Bank transfer finalization failed', e));
       
-      return { success: true, orderId: order.id, redirectUrl: '/checkout/success?orderId=' + order.id };
+      return { success: true, orderId: order.id, redirectUrl: `/checkout/success?orderId=${order.id}&token=${orderToken}` };
     }
 
   } catch (error: any) {

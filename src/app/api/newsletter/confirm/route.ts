@@ -25,11 +25,17 @@ export async function GET(request: Request) {
       return new NextResponse('Link expired. Please subscribe again.', { status: 400 });
     }
 
-    const secret = process.env.NEXTAUTH_SECRET || process.env.CRON_SECRET || 'fallback-secret';
+    const secret = process.env.NEXTAUTH_SECRET || process.env.CRON_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (!secret) {
+      return new NextResponse('Configuration error.', { status: 500 });
+    }
     const payload = `${email}|${expiry}`;
     const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
-    if (signature !== expectedSignature) {
+    if (
+      signature.length !== expectedSignature.length ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+    ) {
       return new NextResponse('Invalid signature.', { status: 400 });
     }
 
@@ -40,21 +46,23 @@ export async function GET(request: Request) {
 
     try {
       const { sendEmail, sendNewsletterWelcomeEmail } = await import('@/lib/mailer');
+      const { escapeHtml } = await import('@/lib/security');
+      const safeEmail = escapeHtml(email);
       
       // Notify Admin
       await sendEmail({
         to: receiverEmail,
-        subject: `Neue Newsletter-Anmeldung — ${email} (Bestätigt)`,
+        subject: `Neue Newsletter-Anmeldung — ${safeEmail} (Bestätigt)`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
             <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">📬 Neue Newsletter-Anmeldung</h1>
-            <p style="font-size: 13px; color: #666;">Ein Besucher hat seine Newsletter-Anmeldung für <strong>${storeName}</strong> soeben bestätigt (Double Opt-in).</p>
+            <p style="font-size: 13px; color: #666;">Ein Besucher hat seine Newsletter-Anmeldung für <strong>${escapeHtml(storeName)}</strong> soeben bestätigt (Double Opt-in).</p>
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #f9fafb; padding: 15px; border-radius: 8px;">
               <tr>
                 <td style="padding: 10px; font-size: 13px; font-weight: bold; width: 120px;">E-Mail:</td>
                 <td style="padding: 10px; font-size: 13px;">
-                  <a href="mailto:${email}" style="color: #2563eb;">${email}</a>
+                  <a href="mailto:${safeEmail}" style="color: #2563eb;">${safeEmail}</a>
                 </td>
               </tr>
             </table>

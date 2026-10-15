@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAdmin } from '@/lib/auth';
 
 function generateSlug(text: string) {
   return text
@@ -72,9 +73,23 @@ export async function getMenuBySlug(slug: string) {
   }
 }
 
+function isValidMenuUrl(url: string): boolean {
+  if (!url || typeof url !== 'string') return false;
+  const trimmed = url.trim();
+  if (/^(javascript|data|vbscript):/i.test(trimmed)) return false;
+  if (trimmed.startsWith('/') || trimmed.startsWith('#')) return true;
+  if (/^(https?|mailto|tel):/i.test(trimmed)) return true;
+  return false;
+}
+
 export async function createMenu(name: string) {
+  await requireAdmin();
   try {
-    const slug = generateSlug(name);
+    const trimmedName = name?.trim();
+    if (!trimmedName || trimmedName.length > 100) {
+      return { success: false, error: 'Nom de menu invalide' };
+    }
+    const slug = generateSlug(trimmedName);
     
     // Check if slug exists
     const existing = await prisma.menu.findUnique({ where: { slug } });
@@ -82,7 +97,7 @@ export async function createMenu(name: string) {
 
     const menu = await prisma.menu.create({
       data: {
-        name,
+        name: trimmedName,
         slug: finalSlug,
       },
     });
@@ -95,11 +110,17 @@ export async function createMenu(name: string) {
   }
 }
 
-export async function updateMenu(id: string, name: string) {
+export async function updateMenu(id: string, nameOrData: string | { name: string }) {
+  await requireAdmin();
   try {
+    const rawName = typeof nameOrData === 'string' ? nameOrData : nameOrData?.name;
+    const trimmedName = rawName?.trim();
+    if (!trimmedName || trimmedName.length > 100) {
+      return { success: false, error: 'Nom de menu invalide' };
+    }
     const menu = await prisma.menu.update({
       where: { id },
-      data: { name },
+      data: { name: trimmedName },
     });
     
     revalidatePath('/admin/settings/menus');
@@ -111,6 +132,7 @@ export async function updateMenu(id: string, name: string) {
 }
 
 export async function deleteMenu(id: string) {
+  await requireAdmin();
   try {
     await prisma.menu.delete({
       where: { id },
@@ -133,26 +155,31 @@ export type MenuItemInput = {
 };
 
 export async function updateMenuItems(menuId: string, items: MenuItemInput[]) {
+  await requireAdmin();
   try {
-    // We will do a transaction:
-    // 1. Delete items that are not in the new list (or simply delete all and recreate, but we want to keep IDs if possible).
-    // The easiest way is to delete all existing items for the menu, then create the new ones.
-    // However, recreating them changes their IDs, which is fine for menu items unless they are referenced elsewhere (they are not).
+    if (!Array.isArray(items)) {
+      return { success: false, error: 'Invalid items array' };
+    }
+
+    const sanitizedItems = items.map((item, index) => {
+      const cleanUrl = isValidMenuUrl(item.url) ? item.url.trim() : '#';
+      return {
+        menuId,
+        label: (item.label || '').trim().slice(0, 100),
+        url: cleanUrl,
+        icon: item.icon ? item.icon.slice(0, 50) : undefined,
+        order: typeof item.order === 'number' ? item.order : index,
+      };
+    });
     
     await prisma.$transaction(async (tx) => {
       await tx.menuItem.deleteMany({
         where: { menuId },
       });
       
-      if (items.length > 0) {
+      if (sanitizedItems.length > 0) {
         await tx.menuItem.createMany({
-          data: items.map((item) => ({
-            menuId,
-            label: item.label,
-            url: item.url,
-            icon: item.icon,
-            order: item.order,
-          })),
+          data: sanitizedItems,
         });
       }
     });

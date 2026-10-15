@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { ChatSender, ChatSessionStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
+import { createNotification } from '@/lib/notifications';
 
 // UUID validation helper
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -45,7 +46,7 @@ export async function getOrCreateSession(guestId: string, guestName?: string, gu
   return session;
 }
 
-export async function sendMessage(sessionId: string, content: string) {
+export async function sendMessage(sessionId: string, content: string, guestId?: string) {
   // Validate sessionId format
   if (!sessionId || !UUID_REGEX.test(sessionId)) {
     throw new Error('Invalid session identifier.');
@@ -67,6 +68,11 @@ export async function sendMessage(sessionId: string, content: string) {
     throw new Error('Chat session not found.');
   }
 
+  // Validate ownership if guestId is provided
+  if (guestId && session.guestId !== guestId) {
+    throw new Error('Unauthorized: Session mismatch.');
+  }
+
   const message = await prisma.chatMessage.create({
     data: {
       sessionId,
@@ -81,8 +87,6 @@ export async function sendMessage(sessionId: string, content: string) {
     data: { updatedAt: new Date() },
   });
 
-  // Create notification
-  const { createNotification } = await import('./notification');
   // Notify Admin via Email
   try {
     const allSettings = await prisma.setting.findMany();
@@ -114,10 +118,32 @@ export async function sendMessage(sessionId: string, content: string) {
   return message;
 }
 
-export async function getSessionMessages(sessionId: string) {
+export async function getSessionMessages(sessionId: string, guestId?: string) {
   // Validate sessionId format
   if (!sessionId || !UUID_REGEX.test(sessionId)) {
     throw new Error('Invalid session identifier.');
+  }
+
+  const session = await prisma.chatSession.findUnique({
+    where: { id: sessionId }
+  });
+  if (!session) return [];
+
+  // Check if admin
+  let isAuthorized = false;
+  try {
+    await requireAdmin();
+    isAuthorized = true;
+  } catch {
+    // If not admin, check if caller provided matching guestId
+    if (guestId && session.guestId === guestId) {
+      isAuthorized = true;
+    }
+  }
+
+  // If no guestId was passed, allow if it matches the current session's guestId format or if authorized
+  if (!isAuthorized && guestId && session.guestId !== guestId) {
+    return [];
   }
 
   return await prisma.chatMessage.findMany({
@@ -145,7 +171,6 @@ export async function sendAdminMessage(sessionId: string, content: string) {
     data: { updatedAt: new Date() },
   });
 
-  const { createNotification } = await import('./notification');
   await createNotification({
     isAdmin: false,
     guestId: session.guestId,
@@ -182,4 +207,3 @@ export async function closeSession(sessionId: string) {
   });
   revalidatePath('/admin/chat');
 }
-

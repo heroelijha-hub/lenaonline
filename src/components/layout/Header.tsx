@@ -37,11 +37,11 @@ type HeaderProps = {
   searchBtnText?: string;
   searchBtnBgColor?: string;
   searchBtnTextColor?: string;
-  showNew?: booLEÑAn;
-  showHot?: booLEÑAn;
-  showSale?: booLEÑAn;
-  mobiLEÑAboutTitle?: string;
-  mobiLEÑAboutDesc?: string;
+  showNew?: boolean;
+  showHot?: boolean;
+  showSale?: boolean;
+  mobileAboutTitle?: string;
+  mobileAboutDesc?: string;
   mobileMenuLinks?: Array<{ label: string, url: string }>;
   mobileContactAddress?: string;
   mobileContactPhone?: string;

@@ -1,6 +1,5 @@
-'use server';
-
 import prisma from '@/lib/prisma';
+import { createNotification } from '@/lib/notifications';
 
 /**
  * Finalizes an order after payment has been confirmed.
@@ -11,10 +10,10 @@ import prisma from '@/lib/prisma';
  * - Sending low stock alerts
  * - Creating in-app notifications
  *
- * Called by:
+ * Called internally by:
  * - Stripe webhook (after checkout.session.completed)
  * - PayPal capture route (after successful capture)
- * - Bank transfer checkout (immediately after order creation)
+ * - Bank transfer checkout (after order creation)
  */
 export async function finalizeOrder(orderId: string) {
   try {
@@ -31,13 +30,12 @@ export async function finalizeOrder(orderId: string) {
       return;
     }
 
-    const userEmail = order.user.email;
-
-    // Parse order metadata for customer name
+    // Parse order metadata for customer name & idempotency check
     let customerName = 'Client';
+    let metadata: any = {};
     if (order.destinationAddress) {
       try {
-        const metadata = JSON.parse(order.destinationAddress);
+        metadata = JSON.parse(order.destinationAddress);
         const billing = metadata?.billing;
         if (billing?.firstName) {
           customerName = `${billing.firstName} ${billing.lastName || ''}`.trim();
@@ -46,6 +44,21 @@ export async function finalizeOrder(orderId: string) {
         // Metadata parse failed, use default name
       }
     }
+
+    // IDEMPOTENCY GUARD: Do not process order if already finalized
+    if (metadata.finalizedAt) {
+      console.log(`[finalizeOrder] Order ${orderId} was already finalized at ${metadata.finalizedAt}`);
+      return;
+    }
+
+    // Atomically mark order as finalized
+    metadata.finalizedAt = new Date().toISOString();
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { destinationAddress: JSON.stringify(metadata) },
+    });
+
+    const userEmail = order.user.email;
 
     // 1. Recover abandoned cart
     try {
@@ -159,7 +172,6 @@ export async function finalizeOrder(orderId: string) {
 
     // 5. In-app notification
     try {
-      const { createNotification } = await import('@/actions/notification');
       const { formatPriceNumber, defaultCurrencyOptions } = await import(
         '@/lib/formatPrice'
       );

@@ -50,6 +50,7 @@ export async function getArticleBySlug(slug: string) {
 }
 
 export async function getArticleById(id: string) {
+  await requireAdmin();
   return await prisma.article.findUnique({
     where: { id }
   });
@@ -153,20 +154,48 @@ export async function quickEditArticle(id: string, data: { title: string, slug: 
 // COMMENTS
 export async function addComment(articleId: string, data: any) {
   try {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!articleId || !uuidRegex.test(articleId)) {
+      return { error: 'Invalid article identifier.' };
+    }
+
+    const author = (data?.author || '').trim();
+    const content = (data?.content || '').trim();
+    const email = (data?.email || '').trim();
+
+    if (!author || author.length > 100) {
+      return { error: 'Author name must be between 1 and 100 characters.' };
+    }
+    if (!content || content.length > 3000) {
+      return { error: 'Comment content must be between 1 and 3000 characters.' };
+    }
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email) || email.length > 254) {
+        return { error: 'Invalid email address.' };
+      }
+    }
+
+    // Verify article exists and is published
+    const article = await prisma.article.findUnique({
+      where: { id: articleId },
+      select: { id: true, slug: true, isPublished: true },
+    });
+    if (!article || !article.isPublished) {
+      return { error: 'Article not found.' };
+    }
+
     await prisma.articleComment.create({
       data: {
         articleId,
-        author: data.author,
-        email: data.email,
-        content: data.content,
+        author,
+        email: email || null,
+        content,
         isApproved: false // Requires admin moderation
       }
     });
-    // Find the article to revalidate its page
-    const article = await prisma.article.findUnique({ where: { id: articleId } });
-    if (article) {
-      revalidatePath(`/blog/${article.slug}`);
-    }
+
+    revalidatePath(`/blog/${article.slug}`);
     return { success: true };
   } catch (error: any) {
     return { error: error.message };
@@ -174,10 +203,16 @@ export async function addComment(articleId: string, data: any) {
 }
 
 export async function getRecentComments(take = 5) {
+  const limit = Math.min(Math.max(1, take), 20);
   return await prisma.articleComment.findMany({
-    take,
+    where: { isApproved: true },
+    take: limit,
     orderBy: { createdAt: 'desc' },
-    include: {
+    select: {
+      id: true,
+      author: true,
+      content: true,
+      createdAt: true,
       article: {
         select: { slug: true, title: true }
       }

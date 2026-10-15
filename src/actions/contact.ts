@@ -83,10 +83,14 @@ export async function submitNewsletter(formData: FormData) {
 
     const crypto = await import('crypto');
     
-    // Generate confirmation token
-    const secret = process.env.NEXTAUTH_SECRET || process.env.CRON_SECRET || 'fallback-secret';
+    // Generate confirmation token with environment secret
+    const secret = process.env.NEXTAUTH_SECRET || process.env.CRON_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (!secret) {
+      console.error('[NEWSLETTER] Missing token secret');
+      return { error: "Le service d'inscription est temporairement indisponible." };
+    }
     const expiry = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-    const payload = `${email}|${expiry}`;
+    const payload = `${email.trim().toLowerCase()}|${expiry}`;
     const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
     const token = Buffer.from(`${payload}|${signature}`).toString('base64');
     

@@ -155,9 +155,11 @@ export async function GET(request: Request) {
         await finalizeOrder(orderId);
       }
 
+      const { getOrderAccessToken } = await import('@/lib/security');
+      const orderToken = getOrderAccessToken(orderId);
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.lenaonline.com';
       return NextResponse.redirect(
-        new URL(`/checkout/success?orderId=${orderId}`, baseUrl)
+        new URL(`/checkout/success?orderId=${orderId}&token=${orderToken}`, baseUrl)
       );
     } else {
       console.error(
