@@ -77,8 +77,8 @@ export default function Header({
   showNew = true,
   showHot = true,
   showSale = true,
-  mobiLEÑAboutTitle = '',
-  mobiLEÑAboutDesc = '',
+  mobileAboutTitle = '',
+  mobileAboutDesc = '',
   mobileMenuLinks = [],
   mobileContactAddress = '',
   mobileContactPhone = '',
@@ -192,7 +192,7 @@ export default function Header({
       }
     }, 400);
 
-    return () => cLEÑArTimeout(timer);
+    return () => clearTimeout(timer);
   }, [searchQuery, selectedCategory]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -554,8 +554,8 @@ export default function Header({
         onClose={() => setIsMobileMenuOpen(false)}
         logoImage={logoImage}
         logoHeight={mobileLogoHeight}
-        aboutTitle={mobiLEÑAboutTitle}
-        aboutDesc={mobiLEÑAboutDesc}
+        aboutTitle={mobileAboutTitle}
+        aboutDesc={mobileAboutDesc}
         menuLinks={mobileMenuLinks}
         contactAddress={mobileContactAddress}
         contactPhone={mobileContactPhone}
