@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import ProductPageClient from '@/components/product/ProductPageClient';
 import Price from '@/components/Price';
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: product.metaTitle ? product.metaTitle : `${product.title} | ${storeName}`,
     description: product.metaDescription || (product.shortDescription ? product.shortDescription.replace(/<[^>]*>?/gm, '').substring(0, 160) : '') || (product.description ? product.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : ''),
     alternates: {
-      canonical: `/product/${slug}`,
+      canonical: `/product/${product.slug}`,
     }
   };
 }
@@ -38,6 +38,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   
   const product = await getCachedProductBySlug(slug);
+
+  if (!product) {
+    return notFound();
+  }
+
+  let decodedSlug = slug;
+  try { decodedSlug = decodeURIComponent(slug); } catch (e) {}
+
+  // 301 Permanent redirect if accessed via old slug (e.g. containing %e2%89%88 / ≈)
+  if (product.slug !== slug && product.slug !== decodedSlug) {
+    permanentRedirect(`/product/${product.slug}`);
+  }
 
   const t = await getTranslations('Product');
 
@@ -49,10 +61,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     settingsMap.SHIPPING_INFO_3 || 'Free shipping: Orders over €200.00',
     settingsMap.SHIPPING_INFO_4 || 'Free returns: within 30 days',
   ];
-
-  if (!product) {
-    return notFound();
-  }
 
   // Related products (same category)
   const categoryIds = (product as any).categories?.map((c: any) => c.id) || [];

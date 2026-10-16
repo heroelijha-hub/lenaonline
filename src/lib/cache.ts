@@ -17,12 +17,15 @@ export const getCachedSettings = unstable_cache(
 // We need a helper for dynamic tags per slug since unstable_cache tags must be statically defined in the wrapper
 // A common pattern is a factory function:
 export const getCachedProductBySlug = async (slug: string) => {
+  const safeTag = slug.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64) || 'item';
   return unstable_cache(
     async () => {
       const encodedSlugLower = encodeURIComponent(slug).toLowerCase();
       const encodedSlugUpper = encodeURIComponent(slug);
       let decodedSlug = slug;
       try { decodedSlug = decodeURIComponent(slug); } catch (e) {}
+      // Fallback for slugs that previously contained ≈ (%e2%89%88) or other symbols
+      const normalizedSlug = decodedSlug.replace(/[≈~]/g, '').replace(/(%e2%89%88)/gi, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
       return prisma.product.findFirst({
         where: { 
@@ -30,7 +33,8 @@ export const getCachedProductBySlug = async (slug: string) => {
             { slug: slug },
             { slug: encodedSlugLower },
             { slug: encodedSlugUpper },
-            { slug: decodedSlug }
+            { slug: decodedSlug },
+            { slug: normalizedSlug }
           ]
         },
         include: {
@@ -47,8 +51,8 @@ export const getCachedProductBySlug = async (slug: string) => {
         }
       });
     },
-    ['product-details', slug],
-    { tags: ['products', `product-${slug}`], revalidate: 3600 }
+    ['product-details', safeTag],
+    { tags: ['products', `product-${safeTag}`], revalidate: 3600 }
   )();
 };
 
