@@ -11,6 +11,7 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const t = useTranslations('AdminProducts');
+  const tSeo = useTranslations('AdminSEO');
 
   const router = useRouter();
   const parseJSON = (data: any, fallback: any = []) => {
@@ -64,6 +65,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   const [regularPrice, setRegularPrice] = useState(initialData?.compareAtPrice?.toString() || '');
   const [salePrice, setSalePrice] = useState(initialData?.price?.toString() || '');
   const [gtin, setGtin] = useState(initialData?.gtin || '');
+  const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle || '');
+  const [metaDescription, setMetaDescription] = useState(initialData?.metaDescription || '');
   
   // Erreur si le prix promo est supérieur ou égal au prix régulier (promo doit être < régulier)
   const priceError = (salePrice && regularPrice && Number(salePrice) >= Number(regularPrice)) 
@@ -163,6 +166,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       formData.append('slug', slug);
       formData.append('categoryIds', JSON.stringify(selectedCategories));
       if (gtin) formData.append('gtin', gtin);
+      if (metaTitle) formData.append('metaTitle', metaTitle);
+      if (metaDescription) formData.append('metaDescription', metaDescription);
 
       // If editing, we will call updateProduct (to be created), otherwise createProduct
       if (isEditing) {
@@ -816,6 +821,81 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
         </div>
 
+      </div>
+
+      {/* SEO SECTION */}
+      <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-5 shadow-sm">
+        <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="p-2 bg-orange-50 text-orange-600 rounded-lg">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
+            <div>
+              <h2 className="text-base font-semibold text-gray-900">{tSeo('seo_section_title') || 'Optimización SEO'}</h2>
+              <p className="text-xs text-gray-500">{tSeo('seo_section_desc') || 'Personalice cómo aparece este producto en Google y otros motores de búsqueda.'}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Google Preview Snippet */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-1 text-sm">
+          <span className="text-[11px] uppercase font-bold text-gray-400 tracking-wider">Vista previa en Google</span>
+          <div className="pt-1">
+            <div className="text-xs text-gray-600 truncate flex items-center gap-1">
+              <span className="text-gray-400">https://lenaonline.es</span>
+              <span className="text-gray-400">›</span>
+              <span className="text-gray-500">product</span>
+              <span className="text-gray-400">›</span>
+              <span className="text-gray-700 font-medium">{slug || 'producto'}</span>
+            </div>
+            <div className="text-base text-blue-800 font-medium hover:underline cursor-pointer truncate mt-0.5">
+              {metaTitle || (title ? `${title} | LEÑA ONLINE SL` : 'Título del producto | LEÑA ONLINE SL')}
+            </div>
+            <div className="text-xs text-gray-600 line-clamp-2 mt-1 leading-relaxed">
+              {metaDescription || shortDescription?.replace(/<[^>]*>?/gm, '').substring(0, 160) || description?.replace(/<[^>]*>?/gm, '').substring(0, 160) || 'Añada una meta descripción personalizada para optimizar el porcentaje de clics (CTR) en Google.'}
+            </div>
+          </div>
+        </div>
+
+        {/* Meta Title */}
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="block text-sm font-medium text-gray-700">{tSeo('meta_title_label') || 'Meta Título'}</label>
+            <span className={`text-xs font-semibold ${metaTitle.length === 0 ? 'text-gray-400' : metaTitle.length < 50 ? 'text-amber-600' : metaTitle.length <= 60 ? 'text-green-600' : 'text-red-500'}`}>
+              {metaTitle.length} / 60 {tSeo('chars') || 'caracteres'} {metaTitle.length >= 50 && metaTitle.length <= 60 ? `✓ ${tSeo('perfect') || 'Perfecto'}` : metaTitle.length > 60 ? `⚠ ${tSeo('too_long') || 'Demasiado largo'}` : metaTitle.length > 0 ? `(Recomendado: 50-60)` : ''}
+            </span>
+          </div>
+          <input 
+            type="text" 
+            name="metaTitle" 
+            value={metaTitle} 
+            onChange={(e) => setMetaTitle(e.target.value)} 
+            placeholder={tSeo('meta_title_placeholder') || "Ej: Excellent Pellets DINplus ENplus A1 Palé 975kg | Leña Online"} 
+            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+          />
+          <p className="text-xs text-gray-400 mt-1">{tSeo('meta_title_help') || "Si se deja vacío, se utilizará automáticamente el título principal del producto."}</p>
+        </div>
+
+        {/* Meta Description */}
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="block text-sm font-medium text-gray-700">{tSeo('meta_desc_label') || 'Meta Descripción'}</label>
+            <span className={`text-xs font-semibold ${metaDescription.length === 0 ? 'text-gray-400' : metaDescription.length < 120 ? 'text-amber-600' : metaDescription.length <= 160 ? 'text-green-600' : 'text-red-500'}`}>
+              {metaDescription.length} / 160 {tSeo('chars') || 'caracteres'} {metaDescription.length >= 135 && metaDescription.length <= 160 ? `✓ ${tSeo('perfect') || 'Perfecto'}` : metaDescription.length > 160 ? `⚠ ${tSeo('too_long') || 'Demasiado largo'}` : metaDescription.length > 0 ? `(Recomendado: 140-160)` : ''}
+            </span>
+          </div>
+          <textarea 
+            name="metaDescription" 
+            rows={3} 
+            value={metaDescription} 
+            onChange={(e) => setMetaDescription(e.target.value)} 
+            placeholder={tSeo('meta_desc_placeholder') || "Ej: Compre palé de 65 sacos de 15 kg de Excellent Pellets DINplus y ENplus A1. 100% madera resinosa, alto poder calorífico y envío a domicilio."} 
+            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" 
+          />
+          <p className="text-xs text-gray-400 mt-1">{tSeo('meta_desc_help') || "Recomendado entre 140 y 160 caracteres. Resuma los beneficios clave e incluya una llamada a la acción."}</p>
+        </div>
       </div>
 
       {/* Flags / Labels */}

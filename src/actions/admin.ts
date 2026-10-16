@@ -336,6 +336,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
 
   const providedSlug = formData.get('slug') as string;
+  const metaTitle = (formData.get('metaTitle') as string)?.trim() || null;
+  const metaDescription = (formData.get('metaDescription') as string)?.trim() || null;
 
   if (!title || !price || categoryIds.length === 0) {
     return { error: "Title, price and at least one category are required." };
@@ -372,6 +374,8 @@ export async function createProduct(formData: FormData, imageUrls: string[]) {
         isDealOfTheDay,
         discountLabel,
         gtin,
+        metaTitle,
+        metaDescription,
         tags: {
           connectOrCreate: tags.map((t: string) => ({
             where: { name: t },
@@ -435,6 +439,8 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
   const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
 
   const providedSlug = formData.get('slug') as string;
+  const metaTitle = (formData.get('metaTitle') as string)?.trim() || null;
+  const metaDescription = (formData.get('metaDescription') as string)?.trim() || null;
 
   if (!id || !title || !price || categoryIds.length === 0) {
     return { error: "ID, title, price and at least one category are required." };
@@ -467,6 +473,8 @@ export async function updateProduct(id: string, formData: FormData, imageUrls: s
         isDealOfTheDay,
         discountLabel,
         gtin,
+        metaTitle,
+        metaDescription,
         tags: {
           set: [],
           connectOrCreate: tags.map((t: string) => ({
