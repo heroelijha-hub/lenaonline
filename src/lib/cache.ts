@@ -26,6 +26,8 @@ export const getCachedProductBySlug = async (slug: string) => {
       try { decodedSlug = decodeURIComponent(slug); } catch (e) {}
       // Fallback for slugs that previously contained ≈ (%e2%89%88) or other symbols
       const normalizedSlug = decodedSlug.replace(/[≈~]/g, '').replace(/(%e2%89%88)/gi, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      const normalizedSlugNoNumberHyphen = normalizedSlug.replace(/(\d+)-(\d+)/g, '$1$2');
+      const normalizedSlugWithNumberHyphen = normalizedSlug.replace(/(\b\d{1,2})(\d{3}\b)/g, '$1-$2');
 
       return prisma.product.findFirst({
         where: { 
@@ -34,7 +36,9 @@ export const getCachedProductBySlug = async (slug: string) => {
             { slug: encodedSlugLower },
             { slug: encodedSlugUpper },
             { slug: decodedSlug },
-            { slug: normalizedSlug }
+            { slug: normalizedSlug },
+            { slug: normalizedSlugNoNumberHyphen },
+            { slug: normalizedSlugWithNumberHyphen }
           ]
         },
         include: {
