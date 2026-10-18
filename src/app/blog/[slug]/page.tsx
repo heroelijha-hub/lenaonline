@@ -76,7 +76,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     orderBy: { createdAt: 'asc' }
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://lenaonline.com';
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'LEÑA ONLINE SL';
 
   const articleSchema = {

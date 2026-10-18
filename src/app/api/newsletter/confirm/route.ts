@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     }
 
     // Redirect to a success page or home
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.lenaonline.com';
+    const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
     return NextResponse.redirect(new URL('/?newsletter=success', baseUrl));
   } catch (error) {
     console.error('Newsletter confirmation error:', error);

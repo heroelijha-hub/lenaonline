@@ -160,7 +160,7 @@ export async function sendClientOrderConfirmation(
     const storeEmailMatch = from.match(/<(.+)>/);
     const storeEmail = storeEmailMatch
       ? storeEmailMatch[1]
-      : "info@lenaonline.com";
+      : "info@toplenaolline.com";
 
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
@@ -630,7 +630,7 @@ export async function sendOrderStatusUpdate(
     const storeEmailMatch = from?.match(/<(.+)>/);
     const storeEmail = storeEmailMatch
       ? storeEmailMatch[1]
-      : "info@lenaonline.com";
+      : "info@toplenaolline.com";
 
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;

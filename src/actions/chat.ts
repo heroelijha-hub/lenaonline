@@ -92,7 +92,7 @@ export async function sendMessage(sessionId: string, content: string, guestId?: 
     const allSettings = await prisma.setting.findMany();
     const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
     const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
-    const storeUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.lenaonline.com';
+    const storeUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
     
     const { sendAdminNewChatMessageEmail } = await import('@/lib/mailer');
     sendAdminNewChatMessageEmail(

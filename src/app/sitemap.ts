@@ -4,7 +4,8 @@ import prisma from '@/lib/prisma';
 import { getContactSettings } from '@/actions/contactSettings';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com'; // Replace with the real domain
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com';
+  const baseUrl = rawBaseUrl.replace(/\/$/, '');
   const contactSettings = await getContactSettings();
 
   // 1. Pages statiques

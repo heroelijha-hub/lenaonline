@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = settingsMap['HOME_META_DESCRIPTION'] || "Découvrez notre vaste sélection de produits de haute qualité sur notre boutique en ligne complète.";
   const ogImage = settingsMap['HEADER_LOGO_IMAGE'] || '/logo.jpg';
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://mystore.vercel.app";
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://www.toplenaolline.com").replace(/\/$/, '');
 
   return {
     metadataBase: new URL(baseUrl),
@@ -252,7 +252,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               "@type": "Store",
               "name": storeName,
               "image": settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
-              "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com',
+              "url": (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.toplenaolline.com').replace(/\/$/, ''),
               "telephone": settingsMap.FOOTER_SUPPORT_PHONE ?? settingsMap.HEADER_SUPPORT_PHONE,
               "email": settingsMap.FOOTER_SUPPORT_EMAIL ?? settingsMap.HEADER_SUPPORT_EMAIL,
               "address": {

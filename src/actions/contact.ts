@@ -94,7 +94,7 @@ export async function submitNewsletter(formData: FormData) {
     const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
     const token = Buffer.from(`${payload}|${signature}`).toString('base64');
     
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.lenaonline.com';
+    const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
     const confirmUrl = `${baseUrl}/api/newsletter/confirm?token=${token}`;
 
     try {

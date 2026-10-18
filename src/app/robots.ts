@@ -19,7 +19,8 @@ const DEFAULT_DISALLOW_PATHS = [
 ];
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mystore.com';
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com';
+  const baseUrl = rawBaseUrl.replace(/\/$/, '');
 
   // Read robots settings from the database
   const settings = await prisma.setting.findMany({
