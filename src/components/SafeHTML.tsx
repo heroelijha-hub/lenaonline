@@ -26,7 +26,12 @@ export default function SafeHTML({
 
   useEffect(() => {
     if (typeof window !== 'undefined' && html) {
-      setClean(DOMPurify.sanitize(html, {
+      // Normalize non-breaking spaces that prevent responsive word wrapping
+      const normalizedHtml = html
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\u00A0/g, ' ');
+
+      setClean(DOMPurify.sanitize(normalizedHtml, {
         // Allow common HTML tags for rich content
         ALLOWED_TAGS: [
           'h1', 'h2', 'h3', 'h4', 'h5', 'h6',

@@ -66,10 +66,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const categoryIds = (product as any).categories?.map((c: any) => c.id) || [];
   const relatedProducts = await getCachedRelatedProducts(categoryIds, product.id);
 
-  // Check if logged in
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const isLoggedIn = !!user;
+  // Check if logged in safely
+  let isLoggedIn = false;
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    isLoggedIn = !!user;
+  } catch (error) {
+    isLoggedIn = false;
+  }
 
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'My Store';
 

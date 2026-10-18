@@ -83,10 +83,10 @@ export default function ProductReviews({ productId, productTitle, reviews, descr
         {activeTab === 'desc' ? (
           <div className="text-sm text-gray-700 leading-relaxed space-y-6">
             {description ? (
-              <div className="w-full overflow-x-auto">
+              <div className="w-full max-w-full overflow-hidden">
                 <SafeHTML 
                   html={description}
-                  className="prose prose-sm max-w-none min-w-full" 
+                  className="prose prose-sm max-w-none break-words [overflow-wrap:anywhere] [&_table]:w-full [&_table]:max-w-full [&_table]:table-auto [&_table]:border-collapse" 
                 />
               </div>
             ) : (

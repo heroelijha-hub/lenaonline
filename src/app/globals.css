@@ -63,3 +63,24 @@ a {
     letter-spacing: var(--ls-d, var(--ls-t, var(--ls-m, normal)));
   } 
 }
+
+/* Responsive rich text & tables */
+.prose {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.prose table {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: table;
+  border-collapse: collapse;
+}
+
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
