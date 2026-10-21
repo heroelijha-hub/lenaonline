@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const faviconUrl = settingsMap['FAVICON_IMAGE'];
   const title = settingsMap['HOME_META_TITLE'] || `${storeName} | E-commerce`;
   const description = settingsMap['HOME_META_DESCRIPTION'] || "Découvrez notre vaste sélection de produits de haute qualité sur notre boutique en ligne complète.";
-  const ogImage = settingsMap['HEADER_LOGO_IMAGE'] || '/logo.jpg';
+  const ogImage = settingsMap['OG_IMAGE'] || settingsMap['HEADER_LOGO_IMAGE'] || '/logo.jpg';
 
   const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://www.toplenaolline.com").replace(/\/$/, '');
 
