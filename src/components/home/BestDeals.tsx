@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { getFilteredProducts } from '@/actions/public';
 import Link from 'next/link';
-import prisma from '@/lib/prisma';
+import { getCachedSettings } from '@/lib/cache';
 import CountdownTimer from './CountdownTimer';
 import ProductSliderWrapper from './ProductSliderWrapper';
 import BestDealsCard from './BestDealsCard';
@@ -33,8 +33,8 @@ export default async function BestDeals({ config }: { config?: any }) {
   
   const maxNum = parseInt(config?.maxProducts || '6', 10) || 6;
   const dbProducts = await getFilteredProducts(filterType, categoryId, maxNum, config?.productIds);
-  const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const cachedSettings = await getCachedSettings();
+  const settings = { ...cachedSettings };
   
   if (config) {
     Object.assign(settings, config);

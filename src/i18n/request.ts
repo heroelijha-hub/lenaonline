@@ -1,6 +1,6 @@
 import { getRequestConfig } from 'next-intl/server';
 import { headers } from 'next/headers';
-import prisma from '@/lib/prisma';
+import { getCachedSettings } from '@/lib/cache';
 
 export default getRequestConfig(async () => {
   let pathname = '/';
@@ -13,16 +13,14 @@ export default getRequestConfig(async () => {
 
   const isAdminRoute = pathname.startsWith('/admin');
 
-  // Fetch settings from DB
+  // Fetch settings from cache (0ms DB latency)
   let activeLanguage = 'en';
   let translationScope = 'all'; // 'frontend_only', 'admin_only', 'all'
 
   try {
-    const langSetting = await prisma.setting.findUnique({ where: { key: 'active_language' } });
-    const scopeSetting = await prisma.setting.findUnique({ where: { key: 'translation_scope' } });
-    
-    if (langSetting) activeLanguage = langSetting.value;
-    if (scopeSetting) translationScope = scopeSetting.value;
+    const settings = await getCachedSettings();
+    if (settings['active_language']) activeLanguage = settings['active_language'];
+    if (settings['translation_scope']) translationScope = settings['translation_scope'];
   } catch (error) {
     console.error("Failed to fetch i18n settings", error);
   }

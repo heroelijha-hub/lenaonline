@@ -43,17 +43,22 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 2. Update Supabase session
-  const response = await updateSession(request)
+  // 2. Check if request has Supabase auth cookies
+  const hasSession = request.cookies.getAll().some(c => c.name.startsWith('sb-') && c.name.endsWith('-auth-token'))
+
+  // Only update/refresh Supabase session if session cookies exist (saves 150-300ms on public pages/bots)
+  let response: NextResponse
+  if (hasSession) {
+    response = await updateSession(request)
+  } else {
+    response = NextResponse.next({ request })
+  }
 
   // Custom route protection logic
   // For example, redirect unauthenticated users away from /account
   const url = request.nextUrl.clone()
   
   if (url.pathname.startsWith('/account')) {
-    // We can parse the session cookies to see if there is an auth token
-    const hasSession = request.cookies.getAll().some(c => c.name.startsWith('sb-') && c.name.endsWith('-auth-token'))
-    
     if (!hasSession) {
       url.pathname = '/login'
       return Response.redirect(url)

@@ -48,6 +48,7 @@ export async function updateSetting(key: string, value: string) {
       update: { value },
       create: { key, value }
     });
+    revalidateTag('settings');
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
@@ -67,6 +68,7 @@ export async function updateSettingsBatch(settingsMap: Record<string, string>) {
     });
     
     await prisma.$transaction(transactions);
+    revalidateTag('settings');
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {

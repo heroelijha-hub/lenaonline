@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
 
 function generateSlug(text: string) {
@@ -102,6 +102,7 @@ export async function createMenu(name: string) {
       },
     });
     
+    revalidateTag('menus');
     revalidatePath('/admin/settings/menus');
     return { success: true, menu };
   } catch (error: any) {
@@ -123,6 +124,7 @@ export async function updateMenu(id: string, nameOrData: string | { name: string
       data: { name: trimmedName },
     });
     
+    revalidateTag('menus');
     revalidatePath('/admin/settings/menus');
     return { success: true, menu };
   } catch (error: any) {
@@ -138,6 +140,7 @@ export async function deleteMenu(id: string) {
       where: { id },
     });
     
+    revalidateTag('menus');
     revalidatePath('/admin/settings/menus');
     return { success: true };
   } catch (error: any) {
@@ -184,6 +187,7 @@ export async function updateMenuItems(menuId: string, items: MenuItemInput[]) {
       }
     });
 
+    revalidateTag('menus');
     revalidatePath('/admin/settings/menus');
     revalidatePath('/'); // Revalidate front-end to reflect menu changes
     return { success: true };

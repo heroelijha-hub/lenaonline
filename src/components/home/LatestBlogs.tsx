@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import { getCachedSettings, getCachedLatestArticles } from '@/lib/cache';
 import { getTranslations, getLocale } from 'next-intl/server';
 
 export default async function LatestBlogs({ config }: { config?: any }) {
@@ -18,10 +19,12 @@ export default async function LatestBlogs({ config }: { config?: any }) {
       // Reorder according to manual order
       articles = ids.map((id: string) => fetched.find(a => a.id === id)).filter(Boolean);
     }
+  } else if (displayMode === 'DATE_DESC') {
+    articles = await getCachedLatestArticles(4);
   } else {
     articles = await prisma.article.findMany({
       where: { isPublished: true },
-      orderBy: { createdAt: displayMode === 'DATE_ASC' ? 'asc' : 'desc' },
+      orderBy: { createdAt: 'asc' },
       take: 4,
       include: { _count: { select: { comments: { where: { isApproved: true } } } } }
     });
@@ -29,8 +32,8 @@ export default async function LatestBlogs({ config }: { config?: any }) {
 
   if (articles.length === 0) return null;
 
-  const settingsDb = await prisma.setting.findMany();
-  const settings = settingsDb.reduce((acc: any, s: any) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  const cachedSettings = await getCachedSettings();
+  const settings = { ...cachedSettings };
   
   if (config) {
     Object.assign(settings, config);

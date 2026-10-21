@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
 
 // ARTICLES
@@ -76,6 +76,7 @@ export async function createArticle(data: any) {
         metaKeywords: data.metaKeywords || null
       }
     });
+    revalidateTag('articles');
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
     return { success: true, article };
@@ -105,6 +106,7 @@ export async function updateArticle(id: string, data: any) {
         metaKeywords: data.metaKeywords || null
       }
     });
+    revalidateTag('articles');
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
     revalidatePath(`/blog/${article.slug}`);
@@ -120,6 +122,7 @@ export async function deleteArticle(id: string) {
     await prisma.article.delete({
       where: { id }
     });
+    revalidateTag('articles');
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
     return { success: true };

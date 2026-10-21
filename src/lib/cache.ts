@@ -121,3 +121,47 @@ export const getCachedProductCounts = unstable_cache(
   ['layout-product-counts'],
   { tags: ['products'], revalidate: 3600 }
 );
+
+// Caching menus for layout
+export const getCachedMenus = unstable_cache(
+  async () => {
+    try {
+      return await prisma.menu.findMany({
+        include: {
+          items: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching cached menus:', error);
+      return [];
+    }
+  },
+  ['layout-menus'],
+  { tags: ['menus'], revalidate: 3600 }
+);
+
+// Caching latest articles for homepage
+export const getCachedLatestArticles = unstable_cache(
+  async (limit: number = 4) => {
+    try {
+      return await prisma.article.findMany({
+        where: { isPublished: true },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        include: { _count: { select: { comments: { where: { isApproved: true } } } } }
+      });
+    } catch (error) {
+      console.error('Error fetching cached articles:', error);
+      return [];
+    }
+  },
+  ['home-latest-articles'],
+  { tags: ['articles'], revalidate: 3600 }
+);

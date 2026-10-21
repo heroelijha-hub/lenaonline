@@ -12,8 +12,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
 import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { Toaster } from 'react-hot-toast';
-import { getCachedSettings, getCachedCategoriesTree, getCachedProductCounts } from '@/lib/cache';
-import { getMenus } from '@/actions/menus';
+import { getCachedSettings, getCachedCategoriesTree, getCachedProductCounts, getCachedMenus } from '@/lib/cache';
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -86,7 +85,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     categories
   ] = await Promise.all([
     getCachedSettings(),
-    getMenus(),
+    getCachedMenus(),
     getCachedProductCounts(),
     getCachedCategoriesTree()
   ]);

@@ -5,13 +5,13 @@ import LatestBlogs from '@/components/home/LatestBlogs';
 import Newsletter from '@/components/home/Newsletter';
 import PromoBanners from '@/components/home/PromoBanners';
 import ProductGrid from '@/components/home/ProductGrid';
-import { getSettings } from '@/actions/settings';
+import { getCachedSettings } from '@/lib/cache';
 import { SectionConfig, SectionType } from '@/app/admin/(dashboard)/landing/LandingForm';
 
 export const revalidate = 3600; // Cache for 1 hour
 
 export default async function Home() {
-  const settings = await import('@/lib/cache').then(m => m.getCachedSettings());
+  const settings = await getCachedSettings();
   
   let layout: SectionConfig[] = [];
   try {
