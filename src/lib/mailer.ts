@@ -12,7 +12,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
-// Fetch SMTP settings from DB
+// Fetch SMTP settings and store details from DB
 async function getTransporter() {
   const settingsDb = await prisma.setting.findMany({
     where: {
@@ -24,6 +24,12 @@ async function getTransporter() {
           "SMTP_PASS",
           "SMTP_FROM",
           "HEADER_LOGO_IMAGE",
+          "FOOTER_LOGO_IMAGE",
+          "CONTACT_ADDRESS",
+          "FOOTER_ADDRESS_1",
+          "CONTACT_EMAIL_DISPLAY",
+          "FOOTER_SUPPORT_EMAIL",
+          "CHAT_STORE_NAME",
         ],
       },
     },
@@ -48,11 +54,22 @@ async function getTransporter() {
     },
   });
 
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "My Store";
+  const storeName = settings.CHAT_STORE_NAME || process.env.NEXT_PUBLIC_STORE_NAME || "TOP LEÑA ONLINE";
+  const storeAddress = settings.CONTACT_ADDRESS || settings.FOOTER_ADDRESS_1 || "C. Atún, 1, 03540 Alicante, ESPANA";
+  const storeEmail = settings.CONTACT_EMAIL_DISPLAY || settings.FOOTER_SUPPORT_EMAIL || "info@toplenaolline.com";
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://www.toplenaolline.com").replace(/\/$/, "");
+  let logo = settings.HEADER_LOGO_IMAGE || settings.FOOTER_LOGO_IMAGE || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+  if (logo && logo.startsWith("/")) {
+    logo = `${siteUrl}${logo}`;
+  }
+
   return {
     transporter,
     from: settings.SMTP_FROM || `"${storeName}" <${settings.SMTP_USER}>`,
-    logo: settings.HEADER_LOGO_IMAGE,
+    logo,
+    storeName,
+    storeAddress,
+    storeEmail,
   };
 }
 
@@ -99,6 +116,23 @@ const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("es-ES", { dateStyle: "long" }).format(date);
 };
 
+function getEmailFooterHtml(storeName: string, storeAddress: string, storeEmail: string) {
+  return `
+    <div style="border-top: 1px solid #e5e7eb; padding-top: 25px; text-align: center; font-size: 11px; color: #666; line-height: 1.6;">
+      <strong style="color: #111; font-size: 12px; text-transform: uppercase;">${escapeHtml(storeName)}</strong><br/>
+      <span>${escapeHtml(storeAddress)}</span><br/>
+      <a href="mailto:${escapeHtml(storeEmail)}" style="color: #ea580c; text-decoration: none;">${escapeHtml(storeEmail)}</a>
+    </div>
+  `;
+}
+
+function getEmailLogoHtml(logo: string, storeName: string) {
+  if (logo) {
+    return `<div style="text-align: left; margin-bottom: 25px;"><img src="${logo}" alt="${escapeHtml(storeName)}" style="max-height: 55px; width: auto; object-fit: contain; display: block;" /></div>`;
+  }
+  return `<div style="text-align: left; margin-bottom: 25px; font-size: 22px; font-weight: bold; color: #ea580c;">${escapeHtml(storeName)}</div>`;
+}
+
 // --- EMAIL TEMPLATES ---
 
 // 1. Client Order Confirmation
@@ -108,14 +142,19 @@ export async function sendClientOrderConfirmation(
   userName: string,
 ) {
   try {
-    const { logo, from } = await getTransporter().catch(() => ({
-      logo: "",
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
       from: "",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
     }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>`
-      : "";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     let metadata: any = {};
     if (order.destinationAddress) {
@@ -155,12 +194,6 @@ export async function sendClientOrderConfirmation(
       `${s.firstName || ""} ${s.lastName || ""}`.trim() || billingName;
     const billingAddressHtml = `${b.address1 || ""}<br/>${b.postalCode || ""} ${b.city || ""}${b.country ? `, ${b.country}` : ""}`;
     const shippingAddressHtml = `${s.address1 || ""}<br/>${s.postalCode || ""} ${s.city || ""}${s.country ? `, ${s.country}` : ""}`;
-
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
-    const storeEmailMatch = from.match(/<(.+)>/);
-    const storeEmail = storeEmailMatch
-      ? storeEmailMatch[1]
-      : "info@toplenaolline.com";
 
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
@@ -322,14 +355,13 @@ export async function sendClientOrderConfirmation(
           </table>
         </div>
         
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="color: #333;">¡Muchas gracias! Si necesita ayuda con su pedido, puede contactarnos en cualquier momento en <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> kontaktieren.</p>
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 25px; font-size: 13px; color: #333;">
+          <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 14px; color: #111;">¡Muchas gracias por su compra!</p>
+          <p style="margin: 0 0 8px 0; color: #555;">Si necesita ayuda con su pedido, puede contactarnos en cualquier momento en <a href="mailto:${storeEmail}" style="color: #ea580c; font-weight: bold; text-decoration: underline;">${storeEmail}</a>.</p>
+          <p style="margin: 0; color: #777; font-size: 12px;">En el archivo adjunto a este correo encontrará su factura oficial con todos los detalles en formato PDF.</p>
         </div>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
@@ -364,11 +396,19 @@ export async function sendAdminOrderNotification(
   customerDetails: any,
 ) {
   try {
-    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
+      from: "",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
+    }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>`
-      : "";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     let metadata: any = {};
     if (order.destinationAddress) {
@@ -409,7 +449,6 @@ export async function sendAdminOrderNotification(
     const billingAddressHtml = `${b.address1 || ""}<br/>${b.postalCode || ""} ${b.city || ""}${b.country ? `, ${b.country}` : ""}`;
     const shippingAddressHtml = `${s.address1 || ""}<br/>${s.postalCode || ""} ${s.city || ""}${s.country ? `, ${s.country}` : ""}`;
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
@@ -538,10 +577,7 @@ export async function sendAdminOrderNotification(
           <p style="color: #666; margin-top: 0;">Gestione sus pedidos. <a href="#" style="color: #eab308; text-decoration: underline;">Ir al panel de control</a>.</p>
         </div>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
@@ -562,14 +598,19 @@ export async function sendOrderStatusUpdate(
   status: string,
 ) {
   try {
-    const { logo, from } = await getTransporter().catch(() => ({
-      logo: "",
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
       from: "",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
     }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>`
-      : "";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     let title = "Su pedido ha sido actualizado";
     let message = `El estado de su pedido <strong>#${order.id.slice(-6).toUpperCase()}</strong> ha sido actualizado.`;
@@ -626,11 +667,6 @@ export async function sendOrderStatusUpdate(
     const billingAddressHtml = `${b.address1 || ""}<br/>${b.postalCode || ""} ${b.city || ""}${b.country ? `, ${b.country}` : ""}`;
     const shippingAddressHtml = `${s.address1 || ""}<br/>${s.postalCode || ""} ${s.city || ""}${s.country ? `, ${s.country}` : ""}`;
 
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
-    const storeEmailMatch = from?.match(/<(.+)>/);
-    const storeEmail = storeEmailMatch
-      ? storeEmailMatch[1]
-      : "info@toplenaolline.com";
 
     // Payment Method mapping
     let paymentMethodStr = order.paymentMethod;
@@ -762,14 +798,11 @@ export async function sendOrderStatusUpdate(
           </table>
         </div>
         
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; font-size: 13px;">
-          <p style="color: #333;">No dude en contactarnos si tiene más preguntas en <a href="mailto:${storeEmail}" style="color: #2563eb; text-decoration: underline;">${storeEmail}</a> .</p>
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 25px; font-size: 13px; color: #333;">
+          <p style="color: #555;">No dude en contactarnos si tiene cualquier pregunta en <a href="mailto:${storeEmail}" style="color: #ea580c; font-weight: bold; text-decoration: underline;">${storeEmail}</a>.</p>
         </div>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
@@ -791,16 +824,21 @@ export async function sendAbandonedCartRecoveryEmail(
   checkoutUrl: string,
 ) {
   try {
-    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
+    }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>`
-      : "";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     // USER TODO: Add your coupon code here! For example: "Use code COMEBACK10 for 10% off!"
     const couponMessage = "";
-
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
     let itemsHtml = "";
     if (cart.cartData && cart.cartData.length > 0) {
@@ -883,10 +921,7 @@ export async function sendAbandonedCartRecoveryEmail(
           <p style="color: #666;">Si tiene alguna pregunta, no dude en contactarnos.</p>
         </div>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
@@ -908,13 +943,18 @@ export async function sendReviewRequestEmail(
   storeUrl: string,
 ) {
   try {
-    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
+    }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 50px;"></div>`
-      : "";
-
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     let itemsHtml = "";
     if (order.orderItems && order.orderItems.length > 0) {
@@ -984,10 +1024,7 @@ export async function sendReviewRequestEmail(
           <p style="color: #666;">Muchas gracias por tomarse el tiempo de compartir su experiencia.</p>
         </div>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
@@ -1068,13 +1105,18 @@ export async function sendAdminNewChatMessageEmail(
   storeUrl: string,
 ) {
   try {
-    const { logo } = await getTransporter().catch(() => ({ logo: "" }));
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
+    }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>`
-      : "";
-
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
@@ -1099,16 +1141,13 @@ export async function sendAdminNewChatMessageEmail(
           </a>
         </p>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
     return sendEmail({
       to: adminEmail,
-      subject: `[Support-Chat] Nuevo mensaje de ${escapeHtml(guestName) || "Besucher"}`,
+      subject: `[Support-Chat] Nuevo mensaje de ${escapeHtml(guestName) || "Visitante"}`,
       html,
     });
   } catch (e) {
@@ -1119,56 +1158,56 @@ export async function sendAdminNewChatMessageEmail(
 // 8. Newsletter Welcome Email for Client
 export async function sendNewsletterWelcomeEmail(userEmail: string) {
   try {
-    const { logo, from } = await getTransporter().catch(() => ({
-      logo: "",
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
       from: "",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
     }));
 
-    const logoHtml = logo
-      ? `<div style="text-align: left; margin-bottom: 20px;"><img src="${logo}" alt="Logo" style="max-height: 40px;"></div>`
-      : "";
-
-    const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const logo = tData.logo || "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png";
+    const logoHtml = getEmailLogoHtml(logo, storeName);
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.5; padding: 20px;">
         ${logoHtml}
-        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">ðŸŽ Willkommen! 25 â‚¬ Rabatt auf Ihren nÃ¤chsten Einkauf</h1>
+        <h1 style="font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 15px;">🎁 ¡Bienvenido/a! Descuento para su próxima compra</h1>
         
         <p style="font-size: 14px; color: #333; margin-bottom: 20px;">¡Estamos muy contentos de darle la bienvenida como nuevo suscriptor de nuestro boletín! 🌿</p>
-        <p style="font-size: 14px; color: #333; margin-bottom: 25px;">ðŸŽ Als Willkommensgeschenk erhalten Sie <strong>25 â‚¬ Rabatt</strong> auf Ihren nÃ¤chsten Einkauf!</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 25px;">🎁 Como regalo de bienvenida, disfrute de un descuento en su próxima compra.</p>
         
         <div style="background-color: #fef3c7; border: 1px dashed #d97706; padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 25px;">
           <p style="margin: 0; font-size: 14px; color: #92400e;">Simplemente use el siguiente código promocional exclusivo:</p>
-          <p style="margin: 10px 0 0 0; font-size: 22px; font-weight: bold; color: #b45309; letter-spacing: 2px;">ðŸ·ï¸ BH874XP</p>
+          <p style="margin: 10px 0 0 0; font-size: 22px; font-weight: bold; color: #b45309; letter-spacing: 2px;">🏷️ BIENVENIDO25</p>
         </div>
         
-        <p style="font-size: 13px; color: #666; margin-bottom: 30px;">Ingrese el código en su próxima compra: ¡no hay valor mínimo de pedido! 🛒</p>
+        <p style="font-size: 13px; color: #666; margin-bottom: 30px;">Ingrese el código en su próxima compra: ¡aproveche nuestras mejores ofertas! 🛒</p>
         
         <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 15px;">Como suscriptor(a) de nuestro boletín, recibirá regularmente:</h3>
         <ul style="font-size: 14px; color: #333; padding-left: 20px; margin-bottom: 30px; line-height: 1.8;">
           <li>✨ Ofertas y descuentos exclusivos</li>
-          <li>🔥 Noticias sobre nuestros productos</li>
-          <li>💡 Consejos e información útil sobre nuestros productos</li>
+          <li>🔥 Noticias sobre nuestros productos de leña y pellets</li>
+          <li>💡 Consejos e información útil sobre calefacción ecológica</li>
         </ul>
         
         <div style="background-color: #f9fafb; border-left: 4px solid #3b82f6; padding: 15px; margin-bottom: 30px; border-radius: 0 4px 4px 0;">
-          <p style="margin: 0; font-size: 13px; color: #4b5563;">📥 <strong>Consejo:</strong> ¡Guarde nuestra dirección de correo electrónico en sus contactos para no perderse ninguna de nuestras ofertas y noticias!</p>
+          <p style="margin: 0; font-size: 13px; color: #4b5563;">📥 <strong>Consejo:</strong> Guarde nuestra dirección de correo electrónico en sus contactos para no perderse ninguna de nuestras ofertas y noticias.</p>
         </div>
         
-        <p style="font-size: 14px; color: #333; margin-bottom: 10px;">¡Esperamos volver a saber de usted pronto y le deseamos una feliz compra! 😊</p>
-        <p style="font-size: 14px; font-weight: bold; color: #ea580c; margin-bottom: 40px;">🔥 Su equipo de ${storeName}</p>
+        <p style="font-size: 14px; color: #333; margin-bottom: 10px;">¡Esperamos atenderle muy pronto y le deseamos una feliz compra! 😊</p>
+        <p style="font-size: 14px; font-weight: bold; color: #ea580c; margin-bottom: 40px;">🔥 Su equipo de ${escapeHtml(storeName)}</p>
         
-        <div style="border-top: 1px solid #eee; padding-top: 25px; text-align: center; font-size: 10px; color: #eab308; text-transform: uppercase;">
-          <strong>${storeName}</strong><br/>
-          
-        </div>
+        ${getEmailFooterHtml(storeName, storeAddress, storeEmail)}
       </div>
     `;
 
     return sendEmail({
       to: userEmail,
-      subject: `Willkommen! Hier ist Ihr 25 â‚¬ Gutschein ðŸŽ`,
+      subject: `¡Bienvenido/a! Aquí tiene su descuento de bienvenida 🎁`,
       html,
     });
   } catch (e) {
