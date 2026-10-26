@@ -118,18 +118,27 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     
     if (res.error) {
       if ((res as any).paymentUnavailable) {
+        const failedMethod = (res as any).failedMethod || paymentMethod;
+        
         // Find alternative active payment method
         let alternative = '';
-        if (paymentMethod === 'STRIPE') {
+        if (failedMethod === 'STRIPE') {
           alternative = enableBankTransfer ? 'BANK_TRANSFER' : enablePaypal ? 'PAYPAL' : '';
-        } else if (paymentMethod === 'PAYPAL') {
+        } else if (failedMethod === 'PAYPAL') {
           alternative = enableBankTransfer ? 'BANK_TRANSFER' : enableStripe ? 'STRIPE' : '';
         } else {
           alternative = enableBankTransfer ? 'BANK_TRANSFER' : enableStripe ? 'STRIPE' : enablePaypal ? 'PAYPAL' : '';
         }
+
+        // Get localized error message
+        const localizedMessage = failedMethod === 'STRIPE'
+          ? t('stripe_unavailable')
+          : failedMethod === 'PAYPAL'
+            ? t('paypal_unavailable')
+            : t('payment_unavailable_alert');
         
         setPaymentError({
-          message: res.error,
+          message: localizedMessage,
           suggestedMethod: alternative
         });
       } else {
@@ -566,6 +575,64 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
           </div>
         </div>
       </form>
+
+      {/* Modal Popup en cas d'échec du moyen de paiement */}
+      {paymentError && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 transform transition-all animate-scale-in">
+            {/* Icône d'avertissement */}
+            <div className="w-14 h-14 mx-auto rounded-full bg-amber-100 flex items-center justify-center mb-5 text-amber-600">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+
+            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
+              {t('payment_error_modal_title')}
+            </h3>
+
+            <p className="text-sm font-medium text-amber-900 bg-amber-50 border border-amber-200 rounded-lg p-3.5 text-center mb-4">
+              {paymentError.message}
+            </p>
+
+            {paymentError.suggestedMethod ? (
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
+                <p className="text-xs text-gray-600 mb-2.5 text-center">
+                  {t('payment_fallback_suggestion')}
+                </p>
+                <div className="text-center font-bold text-gray-900 text-base py-1">
+                  {paymentError.suggestedMethod === 'BANK_TRANSFER' ? t('direct_bank_transfer') :
+                   paymentError.suggestedMethod === 'STRIPE' ? t('credit_card_stripe') :
+                   paymentError.suggestedMethod === 'PAYPAL' ? t('paypal') : ''}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPaymentMethod(paymentError.suggestedMethod);
+                    setPaymentError(null);
+                  }}
+                  className="w-full mt-3 inline-flex items-center justify-center gap-2 px-5 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                >
+                  <span>{t('switch_payment_btn')}</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </div>
+            ) : null}
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setPaymentError(null)}
+                className="text-xs font-semibold text-gray-500 hover:text-gray-800 transition-colors"
+              >
+                {t('close_modal')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
