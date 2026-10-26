@@ -245,18 +245,18 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       if (!stripeSecretKey) {
         import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
           sendCriticalFailureAlertEmail({
-            action: 'Paiement Carte (Stripe)',
-            errorDetails: 'La clé secrète Stripe (STRIPE_SECRET_KEY) n’est pas configurée dans les paramètres de la boutique.',
+            action: 'Pago con tarjeta (Stripe)',
+            errorDetails: 'La clave secreta de Stripe (STRIPE_SECRET_KEY) no está configurada en los ajustes de la tienda.',
             customerEmail: user.email,
             orderId: order.id,
-            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}`, Moyen: 'STRIPE' }
+            contextData: { Importe: `${verifiedTotal} ${storeCurrencyCode}`, Método: 'STRIPE' }
           }).catch(console.error);
         });
         import('@/lib/notifications').then(({ createNotification }) => {
           createNotification({
             isAdmin: true,
             type: 'SYSTEM',
-            message: `⚠️ Paiement Stripe échoué : Clé API Stripe non configurée pour la commande #${order.id.slice(0, 8)} (${user.email}).`,
+            message: `⚠️ Pago con Stripe fallido: Clave API de Stripe no configurada para el pedido #${order.id.slice(0, 8)} (${user.email}).`,
             link: '/admin/settings'
           }).catch(console.error);
         });
@@ -336,24 +336,24 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         console.error("Stripe Checkout Session error:", stripeErr);
         import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
           sendCriticalFailureAlertEmail({
-            action: 'Création Session Stripe',
+            action: 'Creación de sesión Stripe',
             errorDetails: stripeErr?.message || String(stripeErr),
             customerEmail: user.email,
             orderId: order.id,
-            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}` }
+            contextData: { Importe: `${verifiedTotal} ${storeCurrencyCode}` }
           }).catch(console.error);
         });
         import('@/lib/notifications').then(({ createNotification }) => {
           createNotification({
             isAdmin: true,
             type: 'SYSTEM',
-            message: `⚠️ Session Stripe rejetée : ${stripeErr?.message || 'Erreur API'} sur commande #${order.id.slice(0, 8)}.`,
+            message: `⚠️ Sesión de Stripe rechazada: ${stripeErr?.message || 'Error de API'} en el pedido #${order.id.slice(0, 8)}.`,
             link: `/admin/orders/${order.id}`
           }).catch(console.error);
         });
 
         return { 
-          error: "Le paiement par carte bancaire est actuellement indisponible.", 
+          error: "El pago con tarjeta de crédito no está disponible actualmente.", 
           paymentUnavailable: true, 
           failedMethod: 'STRIPE' 
         };
@@ -366,24 +366,24 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
       if (!paypalClientId || !paypalSecret) {
         import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
           sendCriticalFailureAlertEmail({
-            action: 'Paiement PayPal',
-            errorDetails: 'Les identifiants PayPal (PAYPAL_CLIENT_ID ou PAYPAL_SECRET) ne sont pas configurés dans les paramètres.',
+            action: 'Pago con PayPal',
+            errorDetails: 'Las credenciales de PayPal (PAYPAL_CLIENT_ID o PAYPAL_SECRET) no están configuradas en los ajustes de la tienda.',
             customerEmail: user.email,
             orderId: order.id,
-            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}`, Moyen: 'PAYPAL' }
+            contextData: { Importe: `${verifiedTotal} ${storeCurrencyCode}`, Método: 'PAYPAL' }
           }).catch(console.error);
         });
         import('@/lib/notifications').then(({ createNotification }) => {
           createNotification({
             isAdmin: true,
             type: 'SYSTEM',
-            message: `⚠️ Paiement PayPal impossible : Identifiants PayPal non renseignés (Commande #${order.id.slice(0, 8)}).`,
+            message: `⚠️ Pago con PayPal no disponible: Credenciales de PayPal no configuradas (Pedido #${order.id.slice(0, 8)}).`,
             link: '/admin/settings'
           }).catch(console.error);
         });
 
         return { 
-          error: "Le paiement par PayPal est actuellement indisponible.", 
+          error: "El pago por PayPal no está disponible actualmente.", 
           paymentUnavailable: true, 
           failedMethod: 'PAYPAL' 
         };
@@ -404,15 +404,15 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         if (!tokenData.access_token) {
           import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
             sendCriticalFailureAlertEmail({
-              action: 'Authentification OAuth PayPal',
-              errorDetails: tokenData.error_description || 'Identifiants PayPal invalides ou refusés par l’API PayPal.',
+              action: 'Autenticación OAuth PayPal',
+              errorDetails: tokenData.error_description || 'Credenciales de PayPal inválidas o rechazadas por la API de PayPal.',
               customerEmail: user.email,
               orderId: order.id
             }).catch(console.error);
           });
 
           return { 
-            error: "Le paiement par PayPal est actuellement indisponible.", 
+            error: "El pago por PayPal no está disponible actualmente.", 
             paymentUnavailable: true, 
             failedMethod: 'PAYPAL' 
           };
@@ -448,7 +448,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         } else {
           import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
             sendCriticalFailureAlertEmail({
-              action: 'Création Commande PayPal',
+              action: 'Creación del pedido PayPal',
               errorDetails: orderData.message || JSON.stringify(orderData),
               customerEmail: user.email,
               orderId: order.id
@@ -456,7 +456,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
           });
 
           return { 
-            error: "Le paiement par PayPal est actuellement indisponible.", 
+            error: "El pago por PayPal no está disponible actualmente.", 
             paymentUnavailable: true, 
             failedMethod: 'PAYPAL' 
           };
@@ -465,7 +465,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         console.error("PayPal checkout error:", paypalErr);
         import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
           sendCriticalFailureAlertEmail({
-            action: 'Connexion Passerelle PayPal',
+            action: 'Conexión con la pasarela PayPal',
             errorDetails: paypalErr?.message || String(paypalErr),
             customerEmail: user.email,
             orderId: order.id
@@ -473,7 +473,7 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
         });
 
         return { 
-          error: "Le paiement par PayPal est actuellement indisponible.", 
+          error: "El pago por PayPal no está disponible actualmente.", 
           paymentUnavailable: true, 
           failedMethod: 'PAYPAL' 
         };

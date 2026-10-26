@@ -91,7 +91,7 @@ export async function finalizeOrder(orderId: string) {
       sendClientOrderConfirmation(order, userEmail, customerName).catch((e) => {
         console.error('[finalizeOrder] Client email failed', e);
         sendCriticalFailureAlertEmail({
-          action: 'Envoi Confirmation de Commande Client',
+          action: 'Envío de confirmación de pedido al cliente',
           errorDetails: e?.message || String(e),
           customerEmail: userEmail,
           orderId: order.id
@@ -106,7 +106,7 @@ export async function finalizeOrder(orderId: string) {
       console.error('[finalizeOrder] Email sending setup failed', e);
       import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
         sendCriticalFailureAlertEmail({
-          action: 'Initialisation des E-mails de Commande',
+          action: 'Inicialización del envío de correos del pedido',
           errorDetails: e?.message || String(e),
           customerEmail: userEmail,
           orderId: order.id

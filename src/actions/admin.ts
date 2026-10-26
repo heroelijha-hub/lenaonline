@@ -826,29 +826,29 @@ export async function resendOrderConfirmationEmail(orderId: string) {
     const recipientName = [billing.firstName, billing.lastName].filter(Boolean).join(' ') || 'Cliente';
 
     if (!recipientEmail) {
-      return { error: "Aucune adresse e-mail associée à cette commande pour l'envoi." };
+      return { error: "No hay ninguna dirección de correo electrónico asociada a este pedido para el envío." };
     }
 
     const { sendClientOrderConfirmation } = await import('@/lib/mailer');
     const result = await sendClientOrderConfirmation(order, recipientEmail, recipientName);
 
     if (result && (result as any).success === false) {
-      throw new Error((result as any).error?.message || "Erreur lors de l'envoi SMTP.");
+      throw new Error((result as any).error?.message || "Error durante el envío SMTP.");
     }
 
-    return { success: true, message: `Confirmation renvoyée avec succès à ${recipientEmail}.` };
+    return { success: true, message: `Confirmación reenviada con éxito a ${recipientEmail}.` };
   } catch (error: any) {
     console.error("Failed to resend order confirmation email:", error);
     // Send critical failure alert
     import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
       sendCriticalFailureAlertEmail({
-        action: 'Renvoi Confirmation Commande',
+        action: 'Reenvío de confirmación de pedido',
         errorDetails: error?.message || String(error),
         orderId: orderId,
       }).catch(console.error);
     });
 
-    return { error: error?.message || "Erreur lors du renvoi de l'e-mail de confirmation." };
+    return { error: error?.message || "Error al reenviar el correo electrónico de confirmación." };
   }
 }
 
