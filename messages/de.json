@@ -583,7 +583,8 @@
         "shipping": "Versand",
         "sign_out": "Abmelden",
         "media": "Medien",
-        "trash": "Papierkorb"
+        "trash": "Papierkorb",
+        "supervision": "Live-Überwachung"
     },
     "AdminDashboard": {
         "title": "Dashboard",
@@ -801,7 +802,14 @@
         "shipping_info_manual_hint": "Konfigurieren Sie hier die manuellen Lieferinformationen.",
         "payment_method": "Zahlungsmethode",
         "payment_bank_transfer": "Banküberweisung",
-        "payment_stripe": "Kreditkarte"
+        "payment_stripe": "Kreditkarte",
+        "edit_customer_info": "Bearbeiten",
+        "save_customer_info": "Änderungen speichern",
+        "resend_order_confirmation": "Bestellbestätigung erneut senden",
+        "resend_confirmation_hint": "Erstellt Bestellübersicht und aktualisierte PDF-Rechnung neu für den Kunden.",
+        "confirm_resend_order": "Möchten Sie die Bestellbestätigung (mit aktualisierter PDF-Rechnung) erneut an den Kunden senden?",
+        "customer_info_saved": "Kunden- und Adressdaten erfolgreich gespeichert.",
+        "different_shipping_address": "Lieferung an eine andere Adresse"
     },
     "AdminAbandonedCarts": {
         "abandoned_carts": "Verlassene Warenkörbe",

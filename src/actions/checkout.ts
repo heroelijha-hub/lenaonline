@@ -243,125 +243,240 @@ export async function processCheckout(formData: FormData, cartItems: any[], fina
     if (paymentMethod === 'STRIPE') {
       const stripeSecretKey = settingsMap['STRIPE_SECRET_KEY'];
       if (!stripeSecretKey) {
-        return { error: "Card payment (Stripe) has not been configured by the administrator yet." };
+        import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+          sendCriticalFailureAlertEmail({
+            action: 'Paiement Carte (Stripe)',
+            errorDetails: 'La clé secrète Stripe (STRIPE_SECRET_KEY) n’est pas configurée dans les paramètres de la boutique.',
+            customerEmail: user.email,
+            orderId: order.id,
+            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}`, Moyen: 'STRIPE' }
+          }).catch(console.error);
+        });
+        import('@/lib/notifications').then(({ createNotification }) => {
+          createNotification({
+            isAdmin: true,
+            type: 'SYSTEM',
+            message: `⚠️ Paiement Stripe échoué : Clé API Stripe non configurée pour la commande #${order.id.slice(0, 8)} (${user.email}).`,
+            link: '/admin/settings'
+          }).catch(console.error);
+        });
+
+        return { 
+          error: "Le paiement par carte bancaire est actuellement indisponible.", 
+          paymentUnavailable: true, 
+          failedMethod: 'STRIPE' 
+        };
       }
 
-      const { default: Stripe } = await import('stripe');
-      const stripe = new Stripe(stripeSecretKey);
+      try {
+        const { default: Stripe } = await import('stripe');
+        const stripe = new Stripe(stripeSecretKey);
 
-      const line_items: any[] = verifiedItems.map(item => ({
-        price_data: {
-          currency: storeCurrencyCode.toLowerCase(),
-          product_data: {
-            name: item.title,
-            images: item.image ? [item.image] : [],
-          },
-          unit_amount: Math.round(item.price * 100),
-        },
-        quantity: item.quantity,
-      }));
-
-      // Include shipping fee in Stripe session
-      if (shippingRate > 0) {
-        line_items.push({
+        const line_items: any[] = verifiedItems.map(item => ({
           price_data: {
             currency: storeCurrencyCode.toLowerCase(),
             product_data: {
-              name: `Livraison: ${validZone.methods[0].type || 'Standard'}`,
-              images: [],
+              name: item.title,
+              images: item.image ? [item.image] : [],
             },
-            unit_amount: Math.round(shippingRate * 100),
+            unit_amount: Math.round(item.price * 100),
           },
-          quantity: 1,
-        });
-      }
+          quantity: item.quantity,
+        }));
 
-      const sessionParams: any = {
-        payment_method_types: ['card'],
-        line_items,
-        mode: 'payment',
-        success_url: `${baseUrl}/checkout/success?orderId=${order.id}&token=${orderToken}`,
-        cancel_url: `${baseUrl}/checkout`,
-        client_reference_id: order.id,
-        customer_email: user.email,
-      };
-
-      // Apply coupon discount in Stripe if any
-      if (discountAmount > 0) {
-        try {
-          const stripeCoupon = await stripe.coupons.create({
-            amount_off: Math.round(discountAmount * 100),
-            currency: storeCurrencyCode.toLowerCase(),
-            duration: 'once',
-            name: couponCode ? `Coupon ${couponCode.toUpperCase()}` : 'Remise',
+        // Include shipping fee in Stripe session
+        if (shippingRate > 0) {
+          line_items.push({
+            price_data: {
+              currency: storeCurrencyCode.toLowerCase(),
+              product_data: {
+                name: `Livraison: ${validZone.methods[0].type || 'Standard'}`,
+                images: [],
+              },
+              unit_amount: Math.round(shippingRate * 100),
+            },
+            quantity: 1,
           });
-          sessionParams.discounts = [{ coupon: stripeCoupon.id }];
-        } catch (couponErr) {
-          console.error('[Stripe Checkout] Failed to create Stripe discount coupon:', couponErr);
         }
+
+        const sessionParams: any = {
+          payment_method_types: ['card'],
+          line_items,
+          mode: 'payment',
+          success_url: `${baseUrl}/checkout/success?orderId=${order.id}&token=${orderToken}`,
+          cancel_url: `${baseUrl}/checkout`,
+          client_reference_id: order.id,
+          customer_email: user.email,
+        };
+
+        // Apply coupon discount in Stripe if any
+        if (discountAmount > 0) {
+          try {
+            const stripeCoupon = await stripe.coupons.create({
+              amount_off: Math.round(discountAmount * 100),
+              currency: storeCurrencyCode.toLowerCase(),
+              duration: 'once',
+              name: couponCode ? `Coupon ${couponCode.toUpperCase()}` : 'Remise',
+            });
+            sessionParams.discounts = [{ coupon: stripeCoupon.id }];
+          } catch (couponErr) {
+            console.error('[Stripe Checkout] Failed to create Stripe discount coupon:', couponErr);
+          }
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionParams);
+
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { stripeSessionId: session.id }
+        });
+
+        return { success: true, orderId: order.id, redirectUrl: session.url };
+      } catch (stripeErr: any) {
+        console.error("Stripe Checkout Session error:", stripeErr);
+        import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+          sendCriticalFailureAlertEmail({
+            action: 'Création Session Stripe',
+            errorDetails: stripeErr?.message || String(stripeErr),
+            customerEmail: user.email,
+            orderId: order.id,
+            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}` }
+          }).catch(console.error);
+        });
+        import('@/lib/notifications').then(({ createNotification }) => {
+          createNotification({
+            isAdmin: true,
+            type: 'SYSTEM',
+            message: `⚠️ Session Stripe rejetée : ${stripeErr?.message || 'Erreur API'} sur commande #${order.id.slice(0, 8)}.`,
+            link: `/admin/orders/${order.id}`
+          }).catch(console.error);
+        });
+
+        return { 
+          error: "Le paiement par carte bancaire est actuellement indisponible.", 
+          paymentUnavailable: true, 
+          failedMethod: 'STRIPE' 
+        };
       }
-
-      const session = await stripe.checkout.sessions.create(sessionParams);
-
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { stripeSessionId: session.id }
-      });
-
-      return { success: true, orderId: order.id, redirectUrl: session.url };
     } 
     else if (paymentMethod === 'PAYPAL') {
       const paypalClientId = settingsMap['PAYPAL_CLIENT_ID'];
       const paypalSecret = settingsMap['PAYPAL_SECRET'];
       
       if (!paypalClientId || !paypalSecret) {
-        return { error: "PayPal payment has not been configured by the administrator yet." };
-      }
-      
-      const auth = Buffer.from(`${paypalClientId}:${paypalSecret}`).toString('base64');
-      const tokenRes = await fetch('https://api-m.paypal.com/v1/oauth2/token', {
-        method: 'POST',
-        body: 'grant_type=client_credentials',
-        headers: {
-          Authorization: `Basic ${auth}`,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-      
-      const tokenData = await tokenRes.json();
-      if (!tokenData.access_token) {
-        return { error: "PayPal authentication error. Check the keys in Admin." };
-      }
+        import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+          sendCriticalFailureAlertEmail({
+            action: 'Paiement PayPal',
+            errorDetails: 'Les identifiants PayPal (PAYPAL_CLIENT_ID ou PAYPAL_SECRET) ne sont pas configurés dans les paramètres.',
+            customerEmail: user.email,
+            orderId: order.id,
+            contextData: { Montant: `${verifiedTotal} ${storeCurrencyCode}`, Moyen: 'PAYPAL' }
+          }).catch(console.error);
+        });
+        import('@/lib/notifications').then(({ createNotification }) => {
+          createNotification({
+            isAdmin: true,
+            type: 'SYSTEM',
+            message: `⚠️ Paiement PayPal impossible : Identifiants PayPal non renseignés (Commande #${order.id.slice(0, 8)}).`,
+            link: '/admin/settings'
+          }).catch(console.error);
+        });
 
-      const orderRes = await fetch('https://api-m.paypal.com/v2/checkout/orders', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          intent: 'CAPTURE',
-          purchase_units: [{
-            reference_id: order.id,
-            amount: {
-              currency_code: storeCurrencyCode,
-              value: verifiedTotal.toFixed(2)
-            }
-          }],
-          application_context: {
-            return_url: `${baseUrl}/api/paypal/capture?orderId=${order.id}`,
-            cancel_url: `${baseUrl}/checkout`
+        return { 
+          error: "Le paiement par PayPal est actuellement indisponible.", 
+          paymentUnavailable: true, 
+          failedMethod: 'PAYPAL' 
+        };
+      }
+      
+      try {
+        const auth = Buffer.from(`${paypalClientId}:${paypalSecret}`).toString('base64');
+        const tokenRes = await fetch('https://api-m.paypal.com/v1/oauth2/token', {
+          method: 'POST',
+          body: 'grant_type=client_credentials',
+          headers: {
+            Authorization: `Basic ${auth}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
           }
-        })
-      });
-      
-      const orderData = await orderRes.json();
-      const approveLink = orderData.links?.find((l: any) => l.rel === 'approve');
-      
-      if (approveLink) {
-        return { success: true, orderId: order.id, redirectUrl: approveLink.href };
-      } else {
-        return { error: "Unable to create PayPal payment session." };
+        });
+        
+        const tokenData = await tokenRes.json();
+        if (!tokenData.access_token) {
+          import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+            sendCriticalFailureAlertEmail({
+              action: 'Authentification OAuth PayPal',
+              errorDetails: tokenData.error_description || 'Identifiants PayPal invalides ou refusés par l’API PayPal.',
+              customerEmail: user.email,
+              orderId: order.id
+            }).catch(console.error);
+          });
+
+          return { 
+            error: "Le paiement par PayPal est actuellement indisponible.", 
+            paymentUnavailable: true, 
+            failedMethod: 'PAYPAL' 
+          };
+        }
+
+        const orderRes = await fetch('https://api-m.paypal.com/v2/checkout/orders', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${tokenData.access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            intent: 'CAPTURE',
+            purchase_units: [{
+              reference_id: order.id,
+              amount: {
+                currency_code: storeCurrencyCode,
+                value: verifiedTotal.toFixed(2)
+              }
+            }],
+            application_context: {
+              return_url: `${baseUrl}/api/paypal/capture?orderId=${order.id}`,
+              cancel_url: `${baseUrl}/checkout`
+            }
+          })
+        });
+        
+        const orderData = await orderRes.json();
+        const approveLink = orderData.links?.find((l: any) => l.rel === 'approve');
+        
+        if (approveLink) {
+          return { success: true, orderId: order.id, redirectUrl: approveLink.href };
+        } else {
+          import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+            sendCriticalFailureAlertEmail({
+              action: 'Création Commande PayPal',
+              errorDetails: orderData.message || JSON.stringify(orderData),
+              customerEmail: user.email,
+              orderId: order.id
+            }).catch(console.error);
+          });
+
+          return { 
+            error: "Le paiement par PayPal est actuellement indisponible.", 
+            paymentUnavailable: true, 
+            failedMethod: 'PAYPAL' 
+          };
+        }
+      } catch (paypalErr: any) {
+        console.error("PayPal checkout error:", paypalErr);
+        import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+          sendCriticalFailureAlertEmail({
+            action: 'Connexion Passerelle PayPal',
+            errorDetails: paypalErr?.message || String(paypalErr),
+            customerEmail: user.email,
+            orderId: order.id
+          }).catch(console.error);
+        });
+
+        return { 
+          error: "Le paiement par PayPal est actuellement indisponible.", 
+          paymentUnavailable: true, 
+          failedMethod: 'PAYPAL' 
+        };
       }
     } 
     else {

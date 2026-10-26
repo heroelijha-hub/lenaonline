@@ -241,6 +241,9 @@
         "stripe_msg": "Paga de forma segura con tu tarjeta de crédito a través de Stripe. Serás redirigido a la plataforma de pago segura.",
         "paypal": "PayPal",
         "paypal_msg": "Paga tus compras de forma segura y fiable usando tu cuenta de PayPal.",
+        "payment_unavailable_alert": "El método de pago seleccionado no está disponible actualmente.",
+        "payment_fallback_suggestion": "Para no interrumpir su pedido, le proponemos continuar con:",
+        "switch_payment_btn": "Continuar con este método de pago",
         "privacy_policy_msg_1": "Tus datos personales se utilizarán para procesar tu pedido, apoyar tu experiencia en este sitio web y para otros fines descritos en nuestra ",
         "privacy_policy_link": "política de privacidad",
         "privacy_policy_msg_2": ".",
@@ -583,7 +586,8 @@
         "brands": "Marcas",
         "tags": "Etiquetas",
         "media": "Medios",
-        "trash": "Papelera"
+        "trash": "Papelera",
+        "supervision": "Supervisión en Vivo"
     },
     "AdminDashboard": {
         "title": "Panel de control",
@@ -801,7 +805,14 @@
         "shipping_info_manual_hint": "Configure aquí la información de entrega manual.",
         "payment_method": "Método de pago",
         "payment_bank_transfer": "Transferencia bancaria",
-        "payment_stripe": "Tarjeta de crédito"
+        "payment_stripe": "Tarjeta de crédito",
+        "edit_customer_info": "Modificar",
+        "save_customer_info": "Guardar cambios",
+        "resend_order_confirmation": "Reenviar confirmación de pedido",
+        "resend_confirmation_hint": "Regenera el resumen y la factura PDF actualizada para el cliente.",
+        "confirm_resend_order": "¿Confirmar el reenvío del correo de confirmación de pedido (con factura PDF) al cliente?",
+        "customer_info_saved": "Información del cliente y direcciones guardadas con éxito.",
+        "different_shipping_address": "Dirección de envío diferente"
     },
     "AdminAbandonedCarts": {
         "abandoned_carts": "Carritos Abandonados",
@@ -1664,5 +1675,42 @@
     "AdminHeaderDesign": {
         "favicon": "Favicon",
         "header_menu": "Menú de cabecera"
+    },
+    "AdminSupervision": {
+        "title": "Supervisión en Vivo y Alertas",
+        "subtitle": "Supervisión en tiempo real de los servicios, del checkout y notificación automática por correo profesional.",
+        "last_sync": "Última sincronización:",
+        "auto_refresh": "Automático (15s)",
+        "refresh_btn": "Actualizar",
+        "refreshing": "Actualizando...",
+        "pro_email_card_title": "Alertas al Correo Pro",
+        "pro_email_card_desc": "Todos los fallos críticos de pago o pedidos activan un envío directo de alerta por correo a esta dirección.",
+        "active_badge": "ACTIVO",
+        "smtp_status": "SMTP:",
+        "stripe_card_title": "Pago Stripe",
+        "paypal_card_title": "Pago PayPal",
+        "bank_card_title": "Transferencia Bancaria",
+        "fallback_active_msg": "Respaldo activo a Transferencia",
+        "ready_msg": "Operativo",
+        "not_configured": "NO CONFIGURADO",
+        "manage_stripe_keys": "Gestionar claves Stripe →",
+        "manage_paypal_keys": "Gestionar credenciales PayPal →",
+        "guaranteed_fallback": "Método de respaldo garantizado",
+        "orders_24h": "Pedidos (24h)",
+        "pending_orders": "Pendientes",
+        "abandoned_carts_24h": "Carritos abandonados (24h)",
+        "low_stock_alerts": "Alertas de stock crítico",
+        "recent_system_alerts": "Últimas Alertas y Notificaciones del Sistema",
+        "no_alerts": "No hay alertas recientes del sistema.",
+        "live_orders_feed": "Flujo de Pedidos en Vivo",
+        "all_orders_link": "Todos los pedidos →",
+        "live_carts": "Carritos en Vivo",
+        "see_all": "Ver todo →",
+        "no_carts": "No hay carritos recientes.",
+        "critical_stocks": "Alerta de Stock Crítico",
+        "all_stocks_ok": "Todos los niveles de stock están por encima del umbral de alerta.",
+        "live_chat": "Chat en Directo",
+        "open_chat": "Abrir chat →",
+        "no_chats": "No hay conversaciones recientes."
     }
 }

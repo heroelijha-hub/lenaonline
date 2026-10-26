@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import DeliveryTracker from '@/components/admin/DeliveryTracker';
+import OrderCustomerEditor from '@/components/admin/OrderCustomerEditor';
 import Price from '@/components/Price';
 import { getTranslations } from 'next-intl/server';
 
@@ -152,114 +153,22 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
           </div>
         </div>
 
-        {/* Infos client — 1/3 */}
+        {/* Infos client & édition / renvoi confirmation — 1/3 */}
         <div className="lg:col-span-1">
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-full">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">👤 {t('customer_info')}</h2>
-
-            {billing ? (
-              <>
-                {/* Adresse de facturation */}
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{t('billing_address')}</p>
-                <div className="space-y-2 text-sm text-gray-700 mb-5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 w-4 shrink-0">👤</span>
-                    <span className="font-medium">{[billing.firstName, billing.lastName].filter(Boolean).join(' ') || '—'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 w-4 shrink-0">✉️</span>
-                    <a href={`mailto:${billing.email || order.user?.email}`} className="text-orange-700 hover:underline break-all text-xs">
-                      {billing.email || order.user?.email || '—'}
-                    </a>
-                  </div>
-                  {billing.phone && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-gray-500 w-4 shrink-0">📞</span>
-                      <a href={`tel:${billing.phone}`} className="hover:underline">{billing.phone}</a>
-                    </div>
-                  )}
-                  <div className="flex items-start gap-2">
-                    <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
-                    <div className="leading-5">
-                      {billing.address1 && <p>{billing.address1}</p>}
-                      {billing.address2 && <p>{billing.address2}</p>}
-                      <p>{[billing.postalCode, billing.city].filter(Boolean).join(' ')}</p>
-                      {billing.country && <p className="font-medium">{billing.country}</p>}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Adresse de livraison */}
-                <div className="border-t pt-4">
-                  {shipping ? (
-                    <>
-                      <p className="text-xs font-semibold text-orange-600 uppercase tracking-wide mb-3">🚚 {t('shipping_address_different')}</p>
-                      <div className="space-y-2 text-sm text-gray-700 bg-orange-50 border border-orange-100 rounded-lg p-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-500 w-4 shrink-0">👤</span>
-                          <span className="font-medium">{[shipping.firstName, shipping.lastName].filter(Boolean).join(' ') || '—'}</span>
-                        </div>
-                        {shipping.company && (
-                          <div className="flex items-center gap-2">
-                            <span className="text-gray-500 w-4 shrink-0">🏢</span>
-                            <span>{shipping.company}</span>
-                          </div>
-                        )}
-                        {shipping.phone && (
-                          <div className="flex items-center gap-2">
-                            <span className="text-gray-500 w-4 shrink-0">📞</span>
-                            <a href={`tel:${shipping.phone}`} className="hover:underline">{shipping.phone}</a>
-                          </div>
-                        )}
-                        <div className="flex items-start gap-2">
-                          <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
-                          <div className="leading-5">
-                            {shipping.address1 && <p>{shipping.address1}</p>}
-                            {shipping.address2 && <p>{shipping.address2}</p>}
-                            <p>{[shipping.postalCode, shipping.city].filter(Boolean).join(' ')}</p>
-                            {shipping.country && <p className="font-medium">{shipping.country}</p>}
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">🚚 {t('shipping_address')}</p>
-                      <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
-                    </>
-                  )}
-                </div>
-              </>
-            ) : (
-              /* Fallback: commandes sans métadonnées JSON */
-              <div className="space-y-3 text-sm text-gray-700">
-                {fallbackCustomerName && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 w-4 shrink-0">👤</span>
-                    <span className="font-medium">{fallbackCustomerName}</span>
-                  </div>
-                )}
-                {order.user?.email && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 w-4 shrink-0">✉️</span>
-                    <a href={`mailto:${order.user.email}`} className="text-orange-700 hover:underline break-all text-xs">
-                      {order.user.email}
-                    </a>
-                  </div>
-                )}
-                {order.destinationAddress && (
-                  <div className="flex items-start gap-2 pt-1">
-                    <span className="text-gray-500 w-4 shrink-0 mt-0.5">📍</span>
-                    <p className="whitespace-pre-wrap leading-relaxed">{order.destinationAddress}</p>
-                  </div>
-                )}
-                <div className="border-t pt-3 mt-1">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">🚚 {t('shipping_address')}</p>
-                  <p className="text-sm text-gray-500 italic">{t('same_as_billing')}</p>
-                </div>
-              </div>
-            )}
-          </div>
+          <OrderCustomerEditor
+            orderId={order.id}
+            initialBilling={billing || {
+              firstName: fallbackCustomerName ? fallbackCustomerName.split(' ')[0] : '',
+              lastName: fallbackCustomerName ? fallbackCustomerName.split(' ').slice(1).join(' ') : '',
+              email: order.user?.email || '',
+              address1: order.destinationAddress && !orderMeta ? order.destinationAddress : '',
+              city: order.destinationCountry || '',
+              postalCode: '',
+              country: order.destinationCountry || 'Espagne',
+            }}
+            initialShipping={shipping}
+            userEmail={order.user?.email}
+          />
         </div>
       </div>
 

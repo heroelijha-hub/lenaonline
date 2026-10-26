@@ -1214,3 +1214,125 @@ export async function sendNewsletterWelcomeEmail(userEmail: string) {
     console.error(e);
   }
 }
+
+// 12. Critical System / Checkout Failure Alert to Admin
+export async function sendCriticalFailureAlertEmail({
+  action,
+  errorDetails,
+  customerEmail,
+  orderId,
+  contextData,
+}: {
+  action: string;
+  errorDetails: string;
+  customerEmail?: string;
+  orderId?: string;
+  contextData?: Record<string, any>;
+}) {
+  try {
+    const tData = await getTransporter().catch(() => ({
+      logo: "https://res.cloudinary.com/vfcn3q7k/image/upload/v1791542723/lenaonline/media/rtms6igtfzytefjjnkak.png",
+      storeName: "TOP LEÑA ONLINE",
+      storeAddress: "C. Atún, 1, 03540 Alicante, ESPANA",
+      storeEmail: "info@toplenaolline.com",
+    }));
+
+    const settingsDb = await prisma.setting.findMany({
+      where: {
+        key: {
+          in: ["CONTACT_RECEIVER_EMAIL", "FOOTER_SUPPORT_EMAIL", "SMTP_USER"],
+        },
+      },
+    });
+    const sMap = settingsDb.reduce(
+      (acc, s) => ({ ...acc, [s.key]: s.value }),
+      {} as Record<string, string>,
+    );
+
+    const adminEmail =
+      sMap.CONTACT_RECEIVER_EMAIL ||
+      sMap.FOOTER_SUPPORT_EMAIL ||
+      sMap.SMTP_USER ||
+      "admin@mystore.com";
+
+    const storeName = tData.storeName || "TOP LEÑA ONLINE";
+    const storeAddress = tData.storeAddress || "C. Atún, 1, 03540 Alicante, ESPANA";
+    const storeEmail = tData.storeEmail || "info@toplenaolline.com";
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://www.toplenaolline.com").replace(/\/$/, "");
+
+    let contextRows = "";
+    if (contextData && Object.keys(contextData).length > 0) {
+      contextRows = Object.entries(contextData)
+        .map(
+          ([k, v]) =>
+            `<tr><td style="padding: 6px 10px; font-weight: bold; color: #475569; width: 140px; font-size: 12px; background: #f1f5f9;">${escapeHtml(k)}</td><td style="padding: 6px 10px; font-size: 12px; color: #1e293b; word-break: break-all;">${escapeHtml(typeof v === 'object' ? JSON.stringify(v) : String(v))}</td></tr>`,
+        )
+        .join("");
+    }
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #1e293b; line-height: 1.5; padding: 20px; background: #f8fafc;">
+        <div style="background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+          <div style="background: #dc2626; color: white; padding: 20px 24px;">
+            <div style="font-size: 12px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; opacity: 0.9;">⚠️ SUPERVISION LIVE - ALERTE SYSTÈME</div>
+            <h1 style="margin: 6px 0 0 0; font-size: 20px; font-weight: 800;">Échec critique détecté : ${escapeHtml(action)}</h1>
+          </div>
+          
+          <div style="padding: 24px;">
+            <p style="font-size: 14px; color: #334155; margin-top: 0;">
+              Une action importante a échoué sur votre boutique <strong>${escapeHtml(storeName)}</strong>. Veuillez consulter les détails ci-dessous :
+            </p>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 18px 0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;">
+              <tr>
+                <td style="padding: 8px 12px; font-weight: bold; color: #475569; width: 140px; font-size: 13px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">Action</td>
+                <td style="padding: 8px 12px; font-size: 13px; color: #dc2626; font-weight: bold; border-bottom: 1px solid #e2e8f0;">${escapeHtml(action)}</td>
+              </tr>
+              ${orderId ? `
+              <tr>
+                <td style="padding: 8px 12px; font-weight: bold; color: #475569; font-size: 13px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">ID Commande</td>
+                <td style="padding: 8px 12px; font-size: 13px; color: #1e293b; border-bottom: 1px solid #e2e8f0;"><a href="${siteUrl}/admin/orders/${orderId}" style="color: #2563eb; text-decoration: underline;">#${orderId}</a></td>
+              </tr>` : ''}
+              ${customerEmail ? `
+              <tr>
+                <td style="padding: 8px 12px; font-weight: bold; color: #475569; font-size: 13px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">Client</td>
+                <td style="padding: 8px 12px; font-size: 13px; color: #1e293b; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${customerEmail}" style="color: #2563eb;">${escapeHtml(customerEmail)}</a></td>
+              </tr>` : ''}
+              <tr>
+                <td style="padding: 8px 12px; font-weight: bold; color: #475569; font-size: 13px; background: #f8fafc; vertical-align: top;">Détail de l'erreur</td>
+                <td style="padding: 8px 12px; font-size: 13px; color: #b91c1c; font-family: monospace; background: #fef2f2;">${escapeHtml(errorDetails)}</td>
+              </tr>
+            </table>
+
+            ${contextRows ? `
+            <div style="margin-top: 16px;">
+              <h4 style="font-size: 12px; text-transform: uppercase; color: #64748b; margin-bottom: 8px; letter-spacing: 0.5px;">Données contextuelles complémentaires</h4>
+              <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 6px;">
+                ${contextRows}
+              </table>
+            </div>` : ''}
+
+            <div style="margin-top: 25px; text-align: center;">
+              <a href="${siteUrl}/admin/supervision" style="background: #1e293b; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; display: inline-block;">
+                Accéder à la Supervision Live
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #94a3b8;">
+          ${escapeHtml(storeName)} — Notification de sécurité et supervision automatique
+        </div>
+      </div>
+    `;
+
+    return sendEmail({
+      to: adminEmail,
+      subject: `[ALERTE SUPERVISION] Échec critique : ${action}`,
+      html,
+    });
+  } catch (err) {
+    console.error("[sendCriticalFailureAlertEmail] Failed to send alert email:", err);
+  }
+}
+

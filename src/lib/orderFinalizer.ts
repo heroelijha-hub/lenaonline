@@ -84,20 +84,34 @@ export async function finalizeOrder(orderId: string) {
 
     // 3. Send emails (non-blocking)
     try {
-      const { sendClientOrderConfirmation, sendAdminOrderNotification } = await import(
+      const { sendClientOrderConfirmation, sendAdminOrderNotification, sendCriticalFailureAlertEmail } = await import(
         '@/lib/mailer'
       );
 
-      sendClientOrderConfirmation(order, userEmail, customerName).catch((e) =>
-        console.error('[finalizeOrder] Client email failed', e)
-      );
+      sendClientOrderConfirmation(order, userEmail, customerName).catch((e) => {
+        console.error('[finalizeOrder] Client email failed', e);
+        sendCriticalFailureAlertEmail({
+          action: 'Envoi Confirmation de Commande Client',
+          errorDetails: e?.message || String(e),
+          customerEmail: userEmail,
+          orderId: order.id
+        }).catch(console.error);
+      });
 
       sendAdminOrderNotification(order, adminEmail, {
         name: customerName,
         email: userEmail,
       }).catch((e) => console.error('[finalizeOrder] Admin email failed', e));
-    } catch (e) {
+    } catch (e: any) {
       console.error('[finalizeOrder] Email sending setup failed', e);
+      import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+        sendCriticalFailureAlertEmail({
+          action: 'Initialisation des E-mails de Commande',
+          errorDetails: e?.message || String(e),
+          customerEmail: userEmail,
+          orderId: order.id
+        }).catch(console.error);
+      });
     }
 
     // 4. Stock decrement inside a Prisma interactive transaction (race-condition safe)

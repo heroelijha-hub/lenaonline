@@ -82,6 +82,8 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
 
   const finalTotal = Math.max(0, cartTotal - discountAmount) + shippingCost;
 
+  const [paymentError, setPaymentError] = useState<{ message: string; suggestedMethod: string } | null>(null);
+
   const handleApplyCoupon = async () => {
     setCouponError('');
     if (!couponCode) return;
@@ -98,6 +100,7 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
 
   const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setPaymentError(null);
     
     if (!paymentMethod) {
       alert(t('select_payment'));
@@ -114,7 +117,24 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
     const res = await processCheckout(formData, cart, finalTotal, paymentMethod as any);
     
     if (res.error) {
-      alert(res.error);
+      if ((res as any).paymentUnavailable) {
+        // Find alternative active payment method
+        let alternative = '';
+        if (paymentMethod === 'STRIPE') {
+          alternative = enableBankTransfer ? 'BANK_TRANSFER' : enablePaypal ? 'PAYPAL' : '';
+        } else if (paymentMethod === 'PAYPAL') {
+          alternative = enableBankTransfer ? 'BANK_TRANSFER' : enableStripe ? 'STRIPE' : '';
+        } else {
+          alternative = enableBankTransfer ? 'BANK_TRANSFER' : enableStripe ? 'STRIPE' : enablePaypal ? 'PAYPAL' : '';
+        }
+        
+        setPaymentError({
+          message: res.error,
+          suggestedMethod: alternative
+        });
+      } else {
+        alert(res.error);
+      }
       setIsProcessing(false);
       return;
     }
@@ -416,6 +436,43 @@ export default function CheckoutClient({ settings, zones }: CheckoutClientProps)
 
             {/* Payment method accordion */}
             <div className="space-y-4 mb-8">
+              {paymentError && (
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 shadow-sm animate-fade-in">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <div className="flex-1 text-sm">
+                      <p className="font-semibold text-amber-950">{paymentError.message}</p>
+                      {paymentError.suggestedMethod && (
+                        <div className="mt-2.5">
+                          <p className="text-amber-800 text-xs mb-2">
+                            {t('payment_fallback_suggestion')} <span className="font-bold underline">
+                              {paymentError.suggestedMethod === 'BANK_TRANSFER' ? t('direct_bank_transfer') :
+                               paymentError.suggestedMethod === 'STRIPE' ? t('credit_card_stripe') :
+                               paymentError.suggestedMethod === 'PAYPAL' ? t('paypal') : ''}
+                            </span>
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPaymentMethod(paymentError.suggestedMethod);
+                              setPaymentError(null);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-semibold shadow transition-colors"
+                          >
+                            <span>{t('switch_payment_btn')}</span>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {!enableBankTransfer && !enableStripe && !enablePaypal && (
                 <div className="p-4 bg-red-50 text-red-600 rounded text-sm text-center font-medium">
                   {t('no_payment_method')}

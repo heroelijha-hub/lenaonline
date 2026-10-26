@@ -1,4 +1,5 @@
 # Liste des tâches et idées pour l'avenir (TODO)
 
 ## Fonctionnalités Admin
-- [ ] **Live Supervision (Visiteurs en ligne)** : Ajouter un widget ou une vue permettant de suivre les visiteurs en temps réel sur la boutique (pour prévenir les abandons de panier ou observer l'impact des campagnes marketing). À réaliser idéalement avec Supabase Realtime (Presence) une fois que le trafic sera régulier.
+- [x] **Live Supervision (Vue en temps réel & Alerting)** : Tableau de bord de supervision live intégré dans l'admin (/admin/supervision) avec surveillance des passerelles (Stripe, PayPal, Virement), flux d'activité 24h et déclenchement automatique d'alertes par e-mail pro en cas d'échec critique.
+

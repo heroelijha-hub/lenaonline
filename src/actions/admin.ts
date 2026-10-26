@@ -700,6 +700,159 @@ export async function updateOrderStatus(orderId: string, status: any) {
   }
 }
 
+export async function updateOrderCustomerInfo(orderId: string, payload: {
+  billing: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    address1: string;
+    address2?: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
+  shipping?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    company?: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
+  } | null;
+}) {
+  await requireAdmin();
+  try {
+    const existingOrder = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: { user: true }
+    });
+
+    if (!existingOrder) {
+      return { error: "Commande introuvable." };
+    }
+
+    let meta: any = {};
+    if (existingOrder.destinationAddress) {
+      try {
+        meta = typeof existingOrder.destinationAddress === 'string'
+          ? JSON.parse(existingOrder.destinationAddress)
+          : existingOrder.destinationAddress;
+      } catch {
+        meta = { destinationAddress: existingOrder.destinationAddress };
+      }
+    }
+
+    // Merge new billing & shipping
+    meta.billing = {
+      ...(meta.billing || {}),
+      ...payload.billing
+    };
+
+    if (payload.shipping) {
+      meta.shipping = {
+        ...(meta.shipping || {}),
+        ...payload.shipping
+      };
+    } else {
+      meta.shipping = null;
+    }
+
+    // Update User email if changed and user exists
+    if (payload.billing.email && existingOrder.user && existingOrder.user.email !== payload.billing.email.trim().toLowerCase()) {
+      try {
+        await prisma.user.update({
+          where: { id: existingOrder.userId },
+          data: { email: payload.billing.email.trim().toLowerCase() }
+        });
+      } catch (userErr) {
+        console.warn("[updateOrderCustomerInfo] Could not update user email in DB:", userErr);
+      }
+    }
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        destinationAddress: JSON.stringify(meta),
+        destinationCountry: payload.shipping?.country || payload.billing.country || existingOrder.destinationCountry
+      }
+    });
+
+    revalidatePath(`/admin/orders/${orderId}`);
+    revalidatePath('/admin/orders');
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to update order customer info:", error);
+    return { error: error?.message || "Erreur lors de la mise à jour des informations client." };
+  }
+}
+
+export async function resendOrderConfirmationEmail(orderId: string) {
+  await requireAdmin();
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        user: true,
+        orderItems: {
+          include: {
+            product: true
+          }
+        }
+      }
+    });
+
+    if (!order) {
+      return { error: "Commande introuvable." };
+    }
+
+    let meta: any = {};
+    if (order.destinationAddress) {
+      try {
+        meta = typeof order.destinationAddress === 'string'
+          ? JSON.parse(order.destinationAddress)
+          : order.destinationAddress;
+      } catch {}
+    }
+
+    const billing = meta?.billing || {};
+    const recipientEmail = billing.email || order.user?.email;
+    const recipientName = [billing.firstName, billing.lastName].filter(Boolean).join(' ') || 'Cliente';
+
+    if (!recipientEmail) {
+      return { error: "Aucune adresse e-mail associée à cette commande pour l'envoi." };
+    }
+
+    const { sendClientOrderConfirmation } = await import('@/lib/mailer');
+    const result = await sendClientOrderConfirmation(order, recipientEmail, recipientName);
+
+    if (result && (result as any).success === false) {
+      throw new Error((result as any).error?.message || "Erreur lors de l'envoi SMTP.");
+    }
+
+    return { success: true, message: `Confirmation renvoyée avec succès à ${recipientEmail}.` };
+  } catch (error: any) {
+    console.error("Failed to resend order confirmation email:", error);
+    // Send critical failure alert
+    import('@/lib/mailer').then(({ sendCriticalFailureAlertEmail }) => {
+      sendCriticalFailureAlertEmail({
+        action: 'Renvoi Confirmation Commande',
+        errorDetails: error?.message || String(error),
+        orderId: orderId,
+      }).catch(console.error);
+    });
+
+    return { error: error?.message || "Erreur lors du renvoi de l'e-mail de confirmation." };
+  }
+}
+
+
 // --- COUPONS ---
 export async function getCoupons() {
   await requireAdmin();

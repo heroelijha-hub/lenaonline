@@ -241,6 +241,9 @@
         "stripe_msg": "Payez de manière sécurisée avec votre carte bancaire via Stripe. Vous serez redirigé vers la plateforme de paiement sécurisée.",
         "paypal": "PayPal",
         "paypal_msg": "Réglez vos achats en toute sécurité en utilisant votre compte PayPal.",
+        "payment_unavailable_alert": "Le paiement sélectionné est actuellement indisponible.",
+        "payment_fallback_suggestion": "Pour ne pas bloquer votre commande, nous vous proposons de continuer avec :",
+        "switch_payment_btn": "Continuer avec ce mode de paiement",
         "privacy_policy_msg_1": "Vos données personnelles seront utilisées pour traiter votre commande, améliorer votre expérience sur ce site web et à d'autres fins décrites dans notre ",
         "privacy_policy_link": "politique de confidentialité",
         "privacy_policy_msg_2": ".",
@@ -583,7 +586,8 @@
         "shipping": "Livraison",
         "sign_out": "Déconnexion",
         "media": "Médias",
-        "trash": "Corbeille"
+        "trash": "Corbeille",
+        "supervision": "Supervision Live"
     },
     "AdminDashboard": {
         "title": "Tableau de bord",
@@ -801,7 +805,14 @@
         "shipping_info_manual_hint": "Configurez les informations de livraison manuelles ici.",
         "payment_method": "Mode de paiement",
         "payment_bank_transfer": "Virement bancaire",
-        "payment_stripe": "Carte Bancaire"
+        "payment_stripe": "Carte Bancaire",
+        "edit_customer_info": "Modifier",
+        "save_customer_info": "Enregistrer les modifications",
+        "resend_order_confirmation": "Renvoyer la confirmation de commande",
+        "resend_confirmation_hint": "Régénère le récapitulatif & la facture PDF actualisée à destination du client.",
+        "confirm_resend_order": "Confirmez-vous le renvoi de l’e-mail récapitulatif de commande (avec facture PDF) au client ?",
+        "customer_info_saved": "Informations client et adresses enregistrées avec succès.",
+        "different_shipping_address": "Adresse de livraison différente"
     },
     "AdminAbandonedCarts": {
         "abandoned_carts": "Paniers abandonnés",
@@ -1664,5 +1675,42 @@
     "AdminHeaderDesign": {
         "favicon": "Favicon",
         "header_menu": "Menu d'en-tête"
+    },
+    "AdminSupervision": {
+        "title": "Supervision Live & Alerting",
+        "subtitle": "Surveillance en temps réel des services, du checkout et notification automatique par e-mail pro.",
+        "last_sync": "Dernière synchro :",
+        "auto_refresh": "Auto (15s)",
+        "refresh_btn": "Actualiser",
+        "refreshing": "Actualisation...",
+        "pro_email_card_title": "Mail Pro Alerting",
+        "pro_email_card_desc": "Toutes les erreurs critiques de paiement ou de commande déclenchent un envoi direct d'e-mail d'alerte à cette adresse.",
+        "active_badge": "ACTIF",
+        "smtp_status": "SMTP :",
+        "stripe_card_title": "Paiement Stripe",
+        "paypal_card_title": "Paiement PayPal",
+        "bank_card_title": "Virement Bancaire",
+        "fallback_active_msg": "Repli actif vers Virement",
+        "ready_msg": "Opérationnel",
+        "not_configured": "NON CONFIGURÉ",
+        "manage_stripe_keys": "Gérer les clés Stripe →",
+        "manage_paypal_keys": "Gérer les identifiants PayPal →",
+        "guaranteed_fallback": "Mode de repli garanti",
+        "orders_24h": "Commandes (24h)",
+        "pending_orders": "En attente (Pending)",
+        "abandoned_carts_24h": "Paniers abandonnés (24h)",
+        "low_stock_alerts": "Alertes Stock Bas",
+        "recent_system_alerts": "Dernières Alertes & Notifications Système",
+        "no_alerts": "Aucune alerte système récente.",
+        "live_orders_feed": "Flux des Commandes en Direct",
+        "all_orders_link": "Toutes les commandes →",
+        "live_carts": "Paniers en Direct",
+        "see_all": "Voir tout →",
+        "no_carts": "Aucun panier récent.",
+        "critical_stocks": "Alerte Stocks Critiques",
+        "all_stocks_ok": "Tous les stocks sont au-dessus du seuil d'alerte.",
+        "live_chat": "Chat Direct",
+        "open_chat": "Ouvrir le chat →",
+        "no_chats": "Aucune conversation récente."
     }
 }

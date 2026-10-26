@@ -241,6 +241,9 @@
         "stripe_msg": "Pay securely with your credit card via Stripe. You will be redirected to the secure payment platform.",
         "paypal": "PayPal",
         "paypal_msg": "Pay for your purchases safely and securely using your PayPal account.",
+        "payment_unavailable_alert": "The selected payment method is currently unavailable.",
+        "payment_fallback_suggestion": "To proceed without interruption, we suggest completing your order using:",
+        "switch_payment_btn": "Continue with this payment method",
         "privacy_policy_msg_1": "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our ",
         "privacy_policy_link": "privacy policy",
         "privacy_policy_msg_2": ".",
@@ -583,7 +586,8 @@
         "shipping": "Shipping",
         "sign_out": "Sign out",
         "media": "Media",
-        "trash": "Trash"
+        "trash": "Trash",
+        "supervision": "Live Supervision"
     },
     "AdminDashboard": {
         "title": "Dashboard",
@@ -801,7 +805,14 @@
         "shipping_info_manual_hint": "Configure manual delivery information here.",
         "payment_method": "Payment Method",
         "payment_bank_transfer": "Bank Transfer",
-        "payment_stripe": "Credit Card"
+        "payment_stripe": "Credit Card",
+        "edit_customer_info": "Edit",
+        "save_customer_info": "Save Changes",
+        "resend_order_confirmation": "Resend Order Confirmation",
+        "resend_confirmation_hint": "Regenerates order summary and updated invoice PDF to the customer.",
+        "confirm_resend_order": "Do you confirm resending the order confirmation email (with updated invoice PDF) to the customer?",
+        "customer_info_saved": "Customer info and addresses updated successfully.",
+        "different_shipping_address": "Ship to a different address"
     },
     "AdminAbandonedCarts": {
         "abandoned_carts": "Abandoned Carts",

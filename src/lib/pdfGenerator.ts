@@ -57,30 +57,40 @@ export async function generateInvoicePDF(order: any): Promise<Buffer> {
   }
 
   // Load logo buffer with robust fallback:
-  // 1. Local public/logo.png (fastest, guaranteed available)
-  // 2. Fetch remote logoUrl if specified
+  // 1. Fetch remote logoUrl if specified (from settings HEADER_LOGO_IMAGE or FOOTER_LOGO_IMAGE)
+  // 2. Local public/logo.png
   // 3. Local public/logo.jpg
   let logoBuffer: Buffer | null = null;
-  const localLogoPng = path.join(process.cwd(), "public", "logo.png");
-  if (fs.existsSync(localLogoPng)) {
+
+  if (logoUrl) {
     try {
-      logoBuffer = fs.readFileSync(localLogoPng);
+      if (logoUrl.startsWith("http://") || logoUrl.startsWith("https://")) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch(logoUrl, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (res.ok) {
+          logoBuffer = Buffer.from(await res.arrayBuffer());
+        }
+      } else if (logoUrl.startsWith("/")) {
+        const localRelative = path.join(process.cwd(), "public", logoUrl.replace(/^\//, ""));
+        if (fs.existsSync(localRelative)) {
+          logoBuffer = fs.readFileSync(localRelative);
+        }
+      }
     } catch (e) {
-      console.warn("Failed to read public/logo.png", e);
+      console.warn("Failed to load configured invoice logo:", e);
     }
   }
 
-  if (!logoBuffer && logoUrl) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 3500);
-      const res = await fetch(logoUrl, { signal: controller.signal });
-      clearTimeout(timeout);
-      if (res.ok) {
-        logoBuffer = Buffer.from(await res.arrayBuffer());
+  if (!logoBuffer) {
+    const localLogoPng = path.join(process.cwd(), "public", "logo.png");
+    if (fs.existsSync(localLogoPng)) {
+      try {
+        logoBuffer = fs.readFileSync(localLogoPng);
+      } catch (e) {
+        console.warn("Failed to read public/logo.png", e);
       }
-    } catch (e) {
-      console.warn("Failed to fetch remote invoice logo:", e);
     }
   }
 
