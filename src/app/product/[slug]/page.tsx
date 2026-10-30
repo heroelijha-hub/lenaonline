@@ -83,6 +83,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     ? reviews.reduce((acc: number, curr: any) => acc + curr.rating, 0) / reviews.length
     : 0;
 
+  const storeCountry = settingsMap.STORE_COUNTRY || 'ES';
+  const priceValidUntil = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0];
+
   const schemaJson: any = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -95,6 +98,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       url: `${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com'}/product/${product.slug}`,
       priceCurrency: 'EUR',
       price: product.price,
+      priceValidUntil: priceValidUntil,
       itemCondition: 'https://schema.org/NewCondition',
       availability: product.stock && product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
@@ -103,7 +107,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       },
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
-        applicableCountry: 'DE',
+        applicableCountry: storeCountry,
         returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 30,
         returnMethod: 'https://schema.org/ReturnByMail',
@@ -118,7 +122,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         },
         shippingDestination: {
           '@type': 'DefinedRegion',
-          addressCountry: 'DE'
+          addressCountry: storeCountry
         },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',
@@ -164,6 +168,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     schemaJson.brand = {
       '@type': 'Brand',
       name: (product as any).brand.name
+    };
+  } else {
+    schemaJson.brand = {
+      '@type': 'Brand',
+      name: storeName
     };
   }
 
