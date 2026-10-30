@@ -1455,7 +1455,15 @@
         "rss_before_placeholder": "Ej: Bienvenido a nuestro blog...",
         "rss_after_label": "Contenido después del artículo (RSS)",
         "rss_after_help": "Recomendado para la atribución SEO (estilo RankMath).",
-        "rss_after_placeholder": "El artículo {post_link} apareció primero en {blog_link}."
+        "rss_after_placeholder": "El artículo {post_link} apareció primero en {blog_link}.",
+        "store_price_range_label": "Rango de precios (priceRange)",
+        "store_price_range_help": "Ej: €, €€, €€€ o 50€ - 500€. Utilizado por Google para los datos estructurados de la tienda.",
+        "store_city_label": "Ciudad / Localidad (addressLocality)",
+        "store_city_help": "Ej: Alicante. Indica la ciudad para los datos estructurados de Google.",
+        "store_postal_code_label": "Código Postal (postalCode)",
+        "store_postal_code_help": "Ej: 03540. Indica el código postal para los datos estructurados de Google.",
+        "store_phone_label": "Teléfono oficial (telephone)",
+        "store_phone_help": "Número mostrado en los datos estructurados de Google (dejar vacío si no desea mostrar ninguno)."
     },
     "CookieConsent": {
         "title": "Respetamos su privacidad",

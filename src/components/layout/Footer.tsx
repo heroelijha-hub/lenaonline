@@ -38,7 +38,7 @@ type FooterProps = {
 };
 
 export default function Footer({ 
-  supportPhone = '+08 9229 8228', 
+  supportPhone = '', 
   supportEmail = 'info@maca.topgartengeraete.de',
   footerBgColor = '#278a54',
   footerTextColor = '#ffffff',

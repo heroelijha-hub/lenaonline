@@ -15,7 +15,11 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
   const [googleSiteVerification, setGoogleSiteVerification] = useState(initialSettings.GOOGLE_SITE_VERIFICATION || '');
   const [googleAnalyticsId, setGoogleAnalyticsId] = useState(initialSettings.GOOGLE_ANALYTICS_ID || '');
   
-  const [storeCountry, setStoreCountry] = useState(initialSettings.STORE_COUNTRY || 'FR');
+  const [storeCountry, setStoreCountry] = useState(initialSettings.STORE_COUNTRY || 'ES');
+  const [storeCity, setStoreCity] = useState(initialSettings.STORE_LOCALITY || '');
+  const [storePostalCode, setStorePostalCode] = useState(initialSettings.STORE_POSTAL_CODE || '');
+  const [storePhone, setStorePhone] = useState(initialSettings.STORE_PHONE || '');
+  const [storePriceRange, setStorePriceRange] = useState(initialSettings.STORE_PRICE_RANGE || '€€');
   const [rssBeforeContent, setRssBeforeContent] = useState(initialSettings.RSS_BEFORE_CONTENT || '');
   const [rssAfterContent, setRssAfterContent] = useState(initialSettings.RSS_AFTER_CONTENT || 'L\'article {post_link} est apparu en premier sur {blog_link}.');
 
@@ -36,6 +40,10 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
       GOOGLE_SITE_VERIFICATION: googleSiteVerification,
       GOOGLE_ANALYTICS_ID: googleAnalyticsId,
       STORE_COUNTRY: storeCountry,
+      STORE_LOCALITY: storeCity,
+      STORE_POSTAL_CODE: storePostalCode,
+      STORE_PHONE: storePhone,
+      STORE_PRICE_RANGE: storePriceRange,
       RSS_BEFORE_CONTENT: rssBeforeContent,
       RSS_AFTER_CONTENT: rssAfterContent,
     };
@@ -165,7 +173,7 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
         <div className="mt-8 pt-8 border-t border-gray-200">
           <h3 className="text-xl font-bold text-gray-900 mb-4">{tSeo('local_seo_title') || 'Local SEO & Données Structurées'}</h3>
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-100">
             <div className="mb-4 md:mb-0 md:w-1/3">
               <label className="block text-sm font-medium text-gray-700">{tSeo('store_country_label') || 'Pays de la Boutique (Code ISO)'}</label>
               <p className="text-xs text-gray-500 mt-1">{tSeo('store_country_help') || 'Ex: FR, DE, CH, CA. Utilisé pour indiquer à Google la localisation principale.'}</p>
@@ -175,8 +183,73 @@ export default function SeoForm({ initialSettings }: { initialSettings: Record<s
                 type="text"
                 value={storeCountry}
                 onChange={(e) => setStoreCountry(e.target.value.toUpperCase())}
-                placeholder="FR"
+                placeholder="ES"
                 maxLength={2}
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-gray-100">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">{tSeo('store_city_label') || 'Ville / Localité (addressLocality)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('store_city_help') || 'Ex: Alicante. Indique la ville du siège pour Google.'}</p>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                value={storeCity}
+                onChange={(e) => setStoreCity(e.target.value)}
+                placeholder="Alicante"
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-gray-100">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">{tSeo('store_postal_code_label') || 'Code Postal (postalCode)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('store_postal_code_help') || 'Ex: 03540. Indique le code postal pour Google.'}</p>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                value={storePostalCode}
+                onChange={(e) => setStorePostalCode(e.target.value)}
+                placeholder="03540"
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-gray-100">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">{tSeo('store_phone_label') || 'Téléphone officiel (telephone)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('store_phone_help') || 'Numéro pour Google structured data (laisser vide pour ne rien afficher).'}</p>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                value={storePhone}
+                onChange={(e) => setStorePhone(e.target.value)}
+                placeholder="+34 912 345 678"
+                className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between pt-6 pb-2">
+            <div className="mb-4 md:mb-0 md:w-1/3">
+              <label className="block text-sm font-medium text-gray-700">{tSeo('store_price_range_label') || 'Fourchette de prix (priceRange)'}</label>
+              <p className="text-xs text-gray-500 mt-1">{tSeo('store_price_range_help') || 'Ex: €, €€, €€€ ou 50€ - 500€. Utilisé par Google pour les données structurées du magasin.'}</p>
+            </div>
+            <div className="md:w-2/3">
+              <input
+                type="text"
+                value={storePriceRange}
+                onChange={(e) => setStorePriceRange(e.target.value)}
+                placeholder="€€"
+                maxLength={20}
                 className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono"
               />
             </div>

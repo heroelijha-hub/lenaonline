@@ -47,7 +47,7 @@ export default function FooterForm({ initialSettings, menus = [] }: { initialSet
   
   const [footerAddress, setFooterAddress] = useState(getVal('FOOTER_ADDRESS_1', '2972 Westheimer Rd. Illinois 85486'));
   const [footerSupportEmail, setFooterSupportEmail] = useState(getVal('FOOTER_SUPPORT_EMAIL', initialSettings.HEADER_SUPPORT_EMAIL ?? 'support@mystore.com'));
-  const [footerSupportPhone, setFooterSupportPhone] = useState(getVal('FOOTER_SUPPORT_PHONE', initialSettings.HEADER_SUPPORT_PHONE ?? '+08 9229 8228'));
+  const [footerSupportPhone, setFooterSupportPhone] = useState(getVal('FOOTER_SUPPORT_PHONE', initialSettings.HEADER_SUPPORT_PHONE ?? ''));
 
   const [footerCopyright, setFooterCopyright] = useState(getVal('FOOTER_COPYRIGHT', '© 2026 My Store. All rights reserved.'));
   
@@ -75,7 +75,7 @@ export default function FooterForm({ initialSettings, menus = [] }: { initialSet
     setFooterShowWhatsapp(getBool('FOOTER_SHOW_WHATSAPP', false));
     setFooterAddress(getVal('FOOTER_ADDRESS_1', '2972 Westheimer Rd. Illinois 85486'));
     setFooterSupportEmail(getVal('FOOTER_SUPPORT_EMAIL', initialSettings.HEADER_SUPPORT_EMAIL ?? 'support@mystore.com'));
-    setFooterSupportPhone(getVal('FOOTER_SUPPORT_PHONE', initialSettings.HEADER_SUPPORT_PHONE ?? '+08 9229 8228'));
+    setFooterSupportPhone(getVal('FOOTER_SUPPORT_PHONE', initialSettings.HEADER_SUPPORT_PHONE ?? ''));
     setFooterSupportWhatsapp(getVal('FOOTER_SUPPORT_WHATSAPP', ''));
     setFooterCopyright(getVal('FOOTER_COPYRIGHT', '© 2026 My Store. All rights reserved.'));
     setFooterLogoImage(getVal('FOOTER_LOGO_IMAGE', ''));

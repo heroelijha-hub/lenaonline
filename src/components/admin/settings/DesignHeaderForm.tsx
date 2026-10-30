@@ -22,7 +22,7 @@ export default function DesignHeaderForm({ initialSettings, menus = [] }: { init
   const [themeColor, setThemeColor] = useState(getVal('THEME_COLOR', '#c2410c'));
   const [headerAnnouncement, setHeaderAnnouncement] = useState(getVal('HEADER_ANNOUNCEMENT', 'Welcome to our store!'));
   const [searchPlaceholder, setSearchPlaceholder] = useState(getVal('SEARCH_PLACEHOLDER', 'Search products...'));
-  const [headerSupportPhone, setHeaderSupportPhone] = useState(getVal('HEADER_SUPPORT_PHONE', '+08 9229 8228'));
+  const [headerSupportPhone, setHeaderSupportPhone] = useState(getVal('HEADER_SUPPORT_PHONE', ''));
   const [headerSupportEmail, setHeaderSupportEmail] = useState(getVal('HEADER_SUPPORT_EMAIL', 'support@mystore.com'));
   const [topBarBgColor, setTopBarBgColor] = useState(getVal('TOP_BAR_BG_COLOR', '#ffffff'));
   const [topBarTextColor, setTopBarTextColor] = useState(getVal('TOP_BAR_TEXT_COLOR', '#4b5563'));
@@ -41,7 +41,7 @@ export default function DesignHeaderForm({ initialSettings, menus = [] }: { init
     setThemeColor(getVal('THEME_COLOR', '#c2410c'));
     setHeaderAnnouncement(getVal('HEADER_ANNOUNCEMENT', 'Welcome to our store!'));
     setSearchPlaceholder(getVal('SEARCH_PLACEHOLDER', 'Search products...'));
-    setHeaderSupportPhone(getVal('HEADER_SUPPORT_PHONE', '+08 9229 8228'));
+    setHeaderSupportPhone(getVal('HEADER_SUPPORT_PHONE', ''));
     setHeaderSupportEmail(getVal('HEADER_SUPPORT_EMAIL', 'support@mystore.com'));
     setTopBarBgColor(getVal('TOP_BAR_BG_COLOR', '#ffffff'));
     setTopBarTextColor(getVal('TOP_BAR_TEXT_COLOR', '#4b5563'));

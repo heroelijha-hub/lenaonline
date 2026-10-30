@@ -144,7 +144,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const storeSettings = {
     announcement: settingsMap.HEADER_ANNOUNCEMENT || `Welcome to ${storeName}`,
     logoImage: settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
-    supportPhone: settingsMap.FOOTER_SUPPORT_PHONE ?? settingsMap.HEADER_SUPPORT_PHONE ?? '+08 9229 8228',
+    supportPhone: settingsMap.FOOTER_SUPPORT_PHONE || settingsMap.HEADER_SUPPORT_PHONE || settingsMap.STORE_PHONE || '',
     supportEmail: settingsMap.FOOTER_SUPPORT_EMAIL ?? settingsMap.HEADER_SUPPORT_EMAIL ?? 'support@mystore.com',
     headerMainMenuId: settingsMap.HEADER_MAIN_MENU_ID || '',
     footerCol2MenuId: settingsMap.FOOTER_COL2_MENU_ID || '',
@@ -252,12 +252,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               "name": storeName,
               "image": settingsMap.HEADER_LOGO_IMAGE || '/logo.jpg',
               "url": (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.toplenaolline.com').replace(/\/$/, ''),
-              "telephone": settingsMap.FOOTER_SUPPORT_PHONE ?? settingsMap.HEADER_SUPPORT_PHONE,
-              "email": settingsMap.FOOTER_SUPPORT_EMAIL ?? settingsMap.HEADER_SUPPORT_EMAIL,
+              ...(settingsMap.STORE_PHONE || settingsMap.FOOTER_SUPPORT_PHONE || settingsMap.HEADER_SUPPORT_PHONE ? {
+                "telephone": settingsMap.STORE_PHONE || settingsMap.FOOTER_SUPPORT_PHONE || settingsMap.HEADER_SUPPORT_PHONE
+              } : {}),
+              ...(settingsMap.FOOTER_SUPPORT_EMAIL || settingsMap.HEADER_SUPPORT_EMAIL ? {
+                "email": settingsMap.FOOTER_SUPPORT_EMAIL || settingsMap.HEADER_SUPPORT_EMAIL
+              } : {}),
+              "priceRange": settingsMap.STORE_PRICE_RANGE || "€€",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": settingsMap.FOOTER_ADDRESS_1 || '',
-                "addressCountry": settingsMap.STORE_COUNTRY || "FR"
+                ...(settingsMap.STORE_LOCALITY ? { "addressLocality": settingsMap.STORE_LOCALITY } : {}),
+                ...(settingsMap.STORE_POSTAL_CODE ? { "postalCode": settingsMap.STORE_POSTAL_CODE } : {}),
+                "addressCountry": settingsMap.STORE_COUNTRY || "ES"
               }
             })
           }}

@@ -1455,7 +1455,15 @@
         "rss_before_placeholder": "Ex: Welcome to our blog...",
         "rss_after_label": "Content after article (RSS)",
         "rss_after_help": "Recommended for SEO attribution (RankMath style).",
-        "rss_after_placeholder": "The article {post_link} first appeared on {blog_link}."
+        "rss_after_placeholder": "The article {post_link} first appeared on {blog_link}.",
+        "store_price_range_label": "Price Range (priceRange)",
+        "store_price_range_help": "Ex: €, €€, €€€ or 50€ - 500€. Used by Google for store structured data.",
+        "store_city_label": "City / Locality (addressLocality)",
+        "store_city_help": "Ex: Alicante. Specifies the city for Google structured data.",
+        "store_postal_code_label": "Postal Code (postalCode)",
+        "store_postal_code_help": "Ex: 03540. Specifies the postal code for Google structured data.",
+        "store_phone_label": "Official Phone (telephone)",
+        "store_phone_help": "Number displayed in Google structured data (leave empty if none)."
     },
     "CookieConsent": {
         "title": "We value your privacy",
