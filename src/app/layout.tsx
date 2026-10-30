@@ -103,7 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     { label: 'Home', url: '/' },
     { label: 'Shop', url: '/shop' },
     { label: 'Pages', url: '/pages' },
-    { label: 'Blogs', url: '/blogs' },
+    { label: 'Blog', url: '/blog' },
     { label: 'Portfolios', url: '/portfolios' },
     { label: 'Contact Us', url: `/${contactSlug}` },
   ];
