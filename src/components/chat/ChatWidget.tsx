@@ -12,7 +12,12 @@ function generateId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID();
   }
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  // Fallback RFC4122 v4 UUID format
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 interface ChatWidgetProps {
@@ -63,7 +68,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       try {
         const session = await getOrCreateSession(id as string, savedName || undefined, savedEmail || undefined);
         setSessionId(session.id);
-        const msgs = await getSessionMessages(session.id);
+        const msgs = await getSessionMessages(session.id, id as string);
         setMessages(msgs);
       } catch (err) {
         console.error("Failed to init chat session:", err);
@@ -89,7 +94,7 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
       try {
         const session = await getOrCreateSession(guestId, guestName, guestEmail);
         setSessionId(session.id);
-        const msgs = await getSessionMessages(session.id);
+        const msgs = await getSessionMessages(session.id, guestId);
         setMessages(msgs);
       } catch (err) {
         console.error("Failed to create session on register:", err);
@@ -99,19 +104,30 @@ export default function ChatWidget({ enabled, storeName, storeIcon }: ChatWidget
     }
   };
 
-  // Polling for new messages when open
+  // Polling for new messages when open (every 1.5s for near-instant responsiveness)
   useEffect(() => {
     if (!isOpen || !sessionId) return;
     
-    const interval = setInterval(async () => {
-      const msgs = await getSessionMessages(sessionId);
-      if (msgs.length > messages.length) {
-        setMessages(msgs);
+    let isCancelled = false;
+    const fetchNewMessages = async () => {
+      try {
+        const msgs = await getSessionMessages(sessionId, guestId);
+        if (!isCancelled && msgs && msgs.length > 0) {
+          setMessages(msgs);
+        }
+      } catch (err) {
+        console.error("Chat polling error:", err);
       }
-    }, 3000); // Poll every 3 seconds
+    };
+
+    fetchNewMessages();
+    const interval = setInterval(fetchNewMessages, 1500);
     
-    return () => clearInterval(interval);
-  }, [isOpen, sessionId, messages.length]);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
+  }, [isOpen, sessionId, guestId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

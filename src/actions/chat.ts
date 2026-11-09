@@ -87,23 +87,33 @@ export async function sendMessage(sessionId: string, content: string, guestId?: 
     data: { updatedAt: new Date() },
   });
 
-  // Notify Admin via Email
-  try {
-    const allSettings = await prisma.setting.findMany();
-    const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
-    const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
-    const storeUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
-    
-    const { sendAdminNewChatMessageEmail } = await import('@/lib/mailer');
-    sendAdminNewChatMessageEmail(
-      updatedSession.guestName || 'Visiteur',
-      updatedSession.guestEmail,
-      content.trim(),
-      adminEmail,
-      storeUrl
-    ).catch(e => console.error('Chat admin email failed', e));
-  } catch (e) {
-    console.error('Failed to send chat email', e);
+  // Count previous customer messages to only email on the very first message
+  const customerMessagesCount = await prisma.chatMessage.count({
+    where: {
+      sessionId,
+      sender: ChatSender.CUSTOMER,
+    },
+  });
+
+  // Notify Admin via Email only on the FIRST message from the customer
+  if (customerMessagesCount === 1) {
+    try {
+      const allSettings = await prisma.setting.findMany();
+      const settingsMap = allSettings.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+      const adminEmail = settingsMap['CONTACT_RECEIVER_EMAIL'] || 'admin@mystore.com';
+      const storeUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com').replace(/\/$/, '');
+      
+      const { sendAdminNewChatMessageEmail } = await import('@/lib/mailer');
+      sendAdminNewChatMessageEmail(
+        updatedSession.guestName || 'Visiteur',
+        updatedSession.guestEmail,
+        content.trim(),
+        adminEmail,
+        storeUrl
+      ).catch(e => console.error('Chat admin email failed', e));
+    } catch (e) {
+      console.error('Failed to send chat email', e);
+    }
   }
 
   // Notify Admin via push notification
@@ -141,7 +151,7 @@ export async function getSessionMessages(sessionId: string, guestId?: string) {
     }
   }
 
-  // If no guestId was passed, allow if it matches the current session's guestId format or if authorized
+  // If a mismatched guestId was provided, reject access
   if (!isAuthorized && guestId && session.guestId !== guestId) {
     return [];
   }

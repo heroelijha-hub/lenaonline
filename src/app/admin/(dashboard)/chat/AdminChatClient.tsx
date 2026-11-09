@@ -17,9 +17,11 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
   // Poll for sessions (left sidebar)
   useEffect(() => {
     const interval = setInterval(async () => {
-      const freshSessions = await getAdminSessions();
-      setSessions(freshSessions);
-    }, 5000);
+      try {
+        const freshSessions = await getAdminSessions();
+        setSessions(freshSessions);
+      } catch (e) {}
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -27,14 +29,22 @@ export default function AdminChatClient({ initialSessions }: { initialSessions: 
   useEffect(() => {
     if (!activeSessionId) return;
 
+    let isCancelled = false;
     const fetchMessages = async () => {
-      const msgs = await getSessionMessages(activeSessionId);
-      setMessages(msgs);
+      try {
+        const msgs = await getSessionMessages(activeSessionId);
+        if (!isCancelled && msgs) {
+          setMessages(msgs);
+        }
+      } catch (e) {}
     };
 
     fetchMessages();
-    const interval = setInterval(fetchMessages, 3000);
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchMessages, 1500);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
   }, [activeSessionId]);
 
   useEffect(() => {
