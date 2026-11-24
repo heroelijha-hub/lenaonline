@@ -5,6 +5,7 @@ import ShopSort from '@/components/shop/ShopSort';
 import ShopPagination from '@/components/shop/ShopPagination';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { getCachedSettings, getCachedShopFilters, PRODUCT_CARD_SELECT } from '@/lib/cache';
 
 const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "LEÑA ONLINE SL";
 
@@ -22,7 +23,8 @@ export async function generateMetadata({
   
   if (categories.length === 1) {
     const category = await prisma.category.findFirst({
-      where: { OR: [{ slug: categories[0] }, { id: categories[0] }] }
+      where: { OR: [{ slug: categories[0] }, { id: categories[0] }] },
+      select: { name: true, metaTitle: true, metaDescription: true }
     });
     
     if (category) {
@@ -71,7 +73,7 @@ export default async function ShopPage({
   const limit = 12;
 
   // Build Prisma where clause
-  const where: any = {};
+  const where: any = { isDeleted: false };
   
   if (categories.length > 0) {
     where.categories = { some: { slug: { in: categories } } };
@@ -87,39 +89,11 @@ export default async function ShopPage({
     if (maxPrice !== undefined) where.price.lte = maxPrice;
   }
 
-  // Fetch all categories for the filter sidebar with product counts
-  const allCategories = await prisma.category.findMany({
-    include: {
-      _count: {
-        select: { products: true }
-      }
-    },
-    orderBy: { name: 'asc' }
-  });
-
-  // Get global min/max price for the slider
-  const priceAgg = await prisma.product.aggregate({
-    _min: { price: true },
-    _max: { price: true }
-  });
-  const globalMinPrice = Math.floor(priceAgg._min?.price || 0);
-  const globalMaxPrice = Math.ceil(priceAgg._max?.price || 1000);
-
-  // Fetch all brands for the filter sidebar with product counts
-  const allBrands = await prisma.brand.findMany({
-    include: {
-      _count: {
-        select: { products: true }
-      }
-    },
-    orderBy: { name: 'asc' }
-  });
-
-  // Fetch shop specific settings
-  const settingsDb = await prisma.setting.findMany({
-    where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
-  });
-  const settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+  // Fetch cached metadata & settings in parallel (0 redundant DB queries)
+  const [{ categories: validCategories, brands: validBrands, globalMinPrice, globalMaxPrice }, settingsMap] = await Promise.all([
+    getCachedShopFilters(),
+    getCachedSettings()
+  ]);
   const cardStyle = (settingsMap.SHOP_CARD_STYLE as 'design1' | 'design2') || 'design2';
   const borderColor = settingsMap.SHOP_CARD_BORDER_COLOR || '';
 
@@ -130,61 +104,55 @@ export default async function ShopPage({
   if (sort === 'price_asc') orderBy = { price: 'asc' };
   if (sort === 'price_desc') orderBy = { price: 'desc' };
 
-  // Fetch products
-  const products = await prisma.product.findMany({
-    where,
-    include: {
-      categories: { select: { name: true, slug: true } },
-      reviews: { select: { rating: true } }
-    },
-    orderBy
-  });
+  // SQL pagination & minimal projection
+  let paginatedProducts: any[] = [];
+  let totalResults = 0;
 
-  // Filter by rating in memory if needed
-  let filteredProducts = products;
   if (ratings.length > 0) {
-    filteredProducts = products.filter(p => {
+    const matchingProducts = await prisma.product.findMany({
+      where,
+      select: PRODUCT_CARD_SELECT,
+      orderBy
+    });
+
+    const filtered = matchingProducts.filter(p => {
       const avg = p.reviews.length > 0 
         ? p.reviews.reduce((acc, curr) => acc + curr.rating, 0) / p.reviews.length 
         : 0;
       const roundedAvg = Math.round(avg);
-      // We check if the rounded average rating is within the selected ratings
       return ratings.includes(roundedAvg) || (ratings.includes(0) && p.reviews.length === 0);
     });
+
+    totalResults = filtered.length;
+    paginatedProducts = filtered.slice((page - 1) * limit, page * limit);
+  } else {
+    const [total, items] = await Promise.all([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        select: PRODUCT_CARD_SELECT,
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit
+      })
+    ]);
+    totalResults = total;
+    paginatedProducts = items;
   }
 
-  const totalResults = filteredProducts.length;
   const totalPages = Math.ceil(totalResults / limit);
   const startIndex = (page - 1) * limit;
   const endIndex = Math.min(startIndex + limit, totalResults);
-  
-  // Paginate in memory (since we might have filtered in memory)
-  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + limit);
 
   const currentRange = `${totalResults > 0 ? startIndex + 1 : 0}-${endIndex}`;
 
-  const validCategories = allCategories
-    .filter(c => c.slug !== null)
-    .map(c => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug as string,
-      _count: c._count
-    }));
 
-  const validBrands = allBrands
-    .map(b => ({
-      id: b.id,
-      name: b.name,
-      slug: b.slug,
-      _count: b._count
-    }));
 
   const view = (params.view as 'grid' | 'list') || 'grid';
 
   let pageTitle = t('title');
   if (categories.length === 1) {
-    const selectedCategory = allCategories.find(c => c.slug === categories[0] || c.id === categories[0]);
+    const selectedCategory = validCategories.find(c => c.slug === categories[0] || c.id === categories[0]);
     if (selectedCategory) {
       pageTitle = selectedCategory.name;
     }

@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag as refreshCacheTag } from 'next/cache';
 import { requireAdmin } from '@/lib/auth';
 
 const SENSITIVE_KEYS = new Set([
@@ -48,7 +48,7 @@ export async function updateSetting(key: string, value: string) {
       update: { value },
       create: { key, value }
     });
-    revalidateTag('settings');
+    refreshCacheTag('settings');
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
@@ -68,7 +68,7 @@ export async function updateSettingsBatch(settingsMap: Record<string, string>) {
     });
     
     await prisma.$transaction(transactions);
-    revalidateTag('settings');
+    refreshCacheTag('settings');
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {

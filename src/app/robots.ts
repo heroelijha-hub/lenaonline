@@ -1,13 +1,26 @@
 import { MetadataRoute } from 'next';
-import prisma from '@/lib/prisma';
+import { getCachedSettings } from '@/lib/cache';
 
 const DEFAULT_DISALLOW_PATHS = [
   '/admin/', 
   '/account/', 
   '/checkout/', 
+  '/cart/',
   '/api/', 
   '/categorie-produit/', 
   '/produit/',
+  '/search',
+  '/search/*',
+  '/*?*sort=*',
+  '/*?*page=*',
+  '/*?*filter=*',
+  '/*?*minPrice=*',
+  '/*?*maxPrice=*',
+  '/*?*rating=*',
+  '/*?*category=*',
+  '/*?*brand=*',
+  '/*?*view=*',
+  '/*?*q=*',
   '/*?filter_cat=/',
   '/*?column=/',
   '/*?per_page=/',
@@ -18,23 +31,25 @@ const DEFAULT_DISALLOW_PATHS = [
   '/*?add-to-cart=/'
 ];
 
+// List of aggressive SEO / scraping crawlers that burn Vercel Fluid CPU
+const AGGRESSIVE_SCRAPERS = [
+  'AhrefsBot',
+  'SemrushBot',
+  'PetalBot',
+  'DotBot',
+  'MJ12bot',
+  'DataForSeoBot',
+  'ZoominfoBot',
+  'Barkrowler',
+  'BLEXBot',
+  'SeznamBot'
+];
+
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.toplenaolline.com';
   const baseUrl = rawBaseUrl.replace(/\/$/, '');
 
-  // Read robots settings from the database
-  const settings = await prisma.setting.findMany({
-    where: {
-      key: {
-        in: ['ROBOTS_DISALLOW_PATHS', 'ROBOTS_CRAWL_DELAY'],
-      },
-    },
-  });
-
-  const settingsMap = settings.reduce(
-    (acc, s) => ({ ...acc, [s.key]: s.value }),
-    {} as Record<string, string>
-  );
+  const settingsMap = await getCachedSettings();
 
   // Parse disallow paths from DB or use defaults
   let disallowPaths: string[] = DEFAULT_DISALLOW_PATHS;
@@ -52,12 +67,18 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     : undefined;
 
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: disallowPaths,
-      ...(crawlDelay && !isNaN(crawlDelay) ? { crawlDelay } : {}),
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: disallowPaths,
+        ...(crawlDelay && !isNaN(crawlDelay) ? { crawlDelay } : {}),
+      },
+      ...AGGRESSIVE_SCRAPERS.map(bot => ({
+        userAgent: bot,
+        disallow: ['/'],
+      }))
+    ],
     sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

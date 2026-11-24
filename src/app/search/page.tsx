@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import Price from '@/components/Price';
 import ProductCard from '@/components/shop/ProductCard';
+import { getCachedSettings, PRODUCT_CARD_SELECT } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +16,7 @@ export default async function SearchPage({
   const q = typeof resolvedParams.q === 'string' ? resolvedParams.q : '';
   const category = typeof resolvedParams.category === 'string' ? resolvedParams.category : 'all';
 
-  let where: any = {};
+  let where: any = { isDeleted: false };
   
   if (q) {
     where.OR = [
@@ -32,19 +33,17 @@ export default async function SearchPage({
   let settingsMap: Record<string, string> = {};
 
   try {
-    products = await prisma.product.findMany({
-      where,
-      include: { 
-        categories: true,
-        reviews: { select: { rating: true } }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-
-    const settingsDb = await prisma.setting.findMany({
-      where: { key: { in: ['SHOP_CARD_STYLE', 'SHOP_CARD_BORDER_COLOR'] } }
-    });
-    settingsMap = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
+    const [foundProducts, cachedSettings] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        select: PRODUCT_CARD_SELECT,
+        take: 30,
+        orderBy: { createdAt: 'desc' }
+      }),
+      getCachedSettings()
+    ]);
+    products = foundProducts;
+    settingsMap = cachedSettings;
   } catch (error) {
     console.error("Error fetching search results:", error);
     // Continue with empty products array and empty settingsMap

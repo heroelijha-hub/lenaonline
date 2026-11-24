@@ -1,14 +1,8 @@
 import Link from 'next/link';
-import prisma from '@/lib/prisma';
+import { getCachedSettings } from '@/lib/cache';
 
 export default async function NotFound() {
-  let settings: Record<string, string> = {};
-  try {
-    const settingsDb = await prisma.setting.findMany();
-    settings = settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
-  } catch (e) {
-    console.error('Error fetching settings in NotFound page:', e);
-  }
+  const settings = await getCachedSettings();
   
   const title = settings.NOT_FOUND_TITLE || "Oops! Cette page est introuvable.";
   const text = settings.NOT_FOUND_TEXT || "It seems we cannot find the page you are looking for. It may have been moved or deleted.";

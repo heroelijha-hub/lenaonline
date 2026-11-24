@@ -4,7 +4,7 @@ import BlogSidebar from '@/components/blog/BlogSidebar';
 import { getRecentComments } from '@/actions/blog';
 import { getTranslations, getLocale } from 'next-intl/server';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 1800;
 
 export default async function BlogIndexPage({
   searchParams,
@@ -21,7 +21,17 @@ export default async function BlogIndexPage({
       ...(query ? { title: { contains: query, mode: 'insensitive' } } : {})
     },
     orderBy: { createdAt: 'desc' },
-    include: { _count: { select: { comments: { where: { isApproved: true } } } } }
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      image: true,
+      category: true,
+      createdAt: true,
+      excerpt: true,
+      content: true,
+      _count: { select: { comments: { where: { isApproved: true } } } }
+    }
   });
 
   const recentArticles = await prisma.article.findMany({

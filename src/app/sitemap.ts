@@ -36,8 +36,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   ];
 
-  // 2. Produits dynamiques
+  // 2. Produits dynamiques (non supprimés uniquement)
   const products = await prisma.product.findMany({
+    where: { isDeleted: false },
     select: { slug: true, updatedAt: true },
   });
 

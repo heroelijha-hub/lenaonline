@@ -2,12 +2,13 @@
 
 import prisma from '@/lib/prisma';
 import { unstable_cache } from 'next/cache';
+import { PRODUCT_CARD_SELECT } from '@/lib/cache';
 
 export const getBestDeals = unstable_cache(
   async () => {
     return await prisma.product.findMany({
-      where: { isDealOfTheDay: true },
-      include: { categories: true, reviews: { where: { isApproved: true } } },
+      where: { isDealOfTheDay: true, isDeleted: false },
+      select: PRODUCT_CARD_SELECT,
       take: 4,
       orderBy: { createdAt: 'desc' }
     });
@@ -19,8 +20,8 @@ export const getBestDeals = unstable_cache(
 export const getBestSellers = unstable_cache(
   async () => {
     return await prisma.product.findMany({
-      where: { isBestSeller: true },
-      include: { categories: true, reviews: { where: { isApproved: true } } },
+      where: { isBestSeller: true, isDeleted: false },
+      select: PRODUCT_CARD_SELECT,
       take: 10,
       orderBy: { createdAt: 'desc' }
     });
@@ -34,14 +35,14 @@ export const getFilteredProducts = async (filterType: string, categoryId?: strin
     async () => {
       if (filterType === 'MANUAL' && productIds && productIds.length > 0) {
         const products = await prisma.product.findMany({
-          where: { id: { in: productIds } },
-          include: { categories: true, reviews: { where: { isApproved: true } } },
+          where: { id: { in: productIds }, isDeleted: false },
+          select: PRODUCT_CARD_SELECT,
           take: limit,
         });
         return products.sort((a, b) => productIds.indexOf(a.id) - productIds.indexOf(b.id));
       }
 
-      let where: any = {};
+      let where: any = { isDeleted: false };
       let orderBy: any = { createdAt: 'desc' };
 
       if (filterType === 'ON_SALE') {
@@ -57,7 +58,7 @@ export const getFilteredProducts = async (filterType: string, categoryId?: strin
 
       return await prisma.product.findMany({
         where,
-        include: { categories: true, reviews: { where: { isApproved: true } } },
+        select: PRODUCT_CARD_SELECT,
         take: limit,
         orderBy
       });

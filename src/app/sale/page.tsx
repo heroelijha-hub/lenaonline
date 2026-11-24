@@ -2,17 +2,19 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import ProductCard from '@/components/shop/ProductCard';
+import { PRODUCT_CARD_SELECT } from '@/lib/cache';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default async function SaleProductsPage() {
   const t = await getTranslations('SaleProducts');
 
   const products = await prisma.product.findMany({
     where: {
+      isDeleted: false,
       compareAtPrice: { not: null }
     },
-    include: { categories: true, reviews: { select: { rating: true } } },
+    select: PRODUCT_CARD_SELECT,
     orderBy: { updatedAt: 'desc' },
     take: 50 // Fetch sale products
   });

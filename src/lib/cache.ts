@@ -1,9 +1,38 @@
 import { unstable_cache } from 'next/cache';
 import prisma from '@/lib/prisma';
 
-// Helper to get raw settings
+// Projection minimale anti-egress pour toutes les listes, cartes et grids
+export const PRODUCT_CARD_SELECT = {
+  id: true,
+  title: true,
+  slug: true,
+  price: true,
+  compareAtPrice: true,
+  images: true,
+  discountLabel: true,
+  type: true,
+  isBestSeller: true,
+  isDealOfTheDay: true,
+  categories: {
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    }
+  },
+  reviews: {
+    where: { isApproved: true },
+    select: {
+      rating: true,
+    }
+  }
+} as const;
+
+// Helper to get raw settings with minimal columns
 async function fetchSettings() {
-  const settingsDb = await prisma.setting.findMany();
+  const settingsDb = await prisma.setting.findMany({
+    select: { key: true, value: true }
+  });
   return settingsDb.reduce((acc, s) => ({ ...acc, [s.key]: s.value }), {} as Record<string, string>);
 }
 
@@ -14,8 +43,60 @@ export const getCachedSettings = unstable_cache(
   { tags: ['settings'], revalidate: 3600 }
 );
 
+// Cached Shop filter metadata (categories count, brands count, price ranges)
+export const getCachedShopFilters = unstable_cache(
+  async () => {
+    const [categories, brands, priceAgg] = await Promise.all([
+      prisma.category.findMany({
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          _count: {
+            select: { products: true }
+          }
+        },
+        orderBy: { name: 'asc' }
+      }),
+      prisma.brand.findMany({
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          _count: {
+            select: { products: true }
+          }
+        },
+        orderBy: { name: 'asc' }
+      }),
+      prisma.product.aggregate({
+        _min: { price: true },
+        _max: { price: true }
+      })
+    ]);
+
+    return {
+      categories: categories.filter(c => c.slug !== null).map(c => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug as string,
+        _count: c._count
+      })),
+      brands: brands.map(b => ({
+        id: b.id,
+        name: b.name,
+        slug: b.slug,
+        _count: b._count
+      })),
+      globalMinPrice: Math.floor(priceAgg._min?.price || 0),
+      globalMaxPrice: Math.ceil(priceAgg._max?.price || 1000)
+    };
+  },
+  ['shop-filters-metadata'],
+  { tags: ['categories', 'brands', 'products'], revalidate: 3600 }
+);
+
 // We need a helper for dynamic tags per slug since unstable_cache tags must be statically defined in the wrapper
-// A common pattern is a factory function:
 export const getCachedProductBySlug = async (slug: string) => {
   const safeTag = slug.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64) || 'item';
   return unstable_cache(
@@ -42,15 +123,22 @@ export const getCachedProductBySlug = async (slug: string) => {
           ]
         },
         include: {
-          categories: true,
-          Product_ForceSales_A: true,
-          Product_SaleTogether_A: true,
-          brand: true,
-          tags: true,
+          categories: { select: { id: true, name: true, slug: true } },
+          Product_ForceSales_A: { select: PRODUCT_CARD_SELECT },
+          Product_SaleTogether_A: { select: PRODUCT_CARD_SELECT },
+          brand: { select: { id: true, name: true, slug: true } },
+          tags: { select: { id: true, name: true, slug: true } },
           reviews: {
             where: { isApproved: true },
             orderBy: { createdAt: 'desc' },
-            include: { user: { select: { email: true } } }
+            select: {
+              id: true,
+              rating: true,
+              comment: true,
+              reviewerName: true,
+              createdAt: true,
+              user: { select: { email: true } }
+            }
           }
         }
       });
@@ -61,15 +149,15 @@ export const getCachedProductBySlug = async (slug: string) => {
 };
 
 export const getCachedRelatedProducts = async (categoryIds: string[], excludeProductId: string) => {
-  // Sort IDs so the cache key is consistent
   const sortedIds = [...categoryIds].sort();
   return unstable_cache(
     async () => prisma.product.findMany({
       where: { 
         categories: { some: { id: { in: categoryIds } } }, 
-        id: { not: excludeProductId } 
+        id: { not: excludeProductId },
+        isDeleted: false
       },
-      include: { categories: true },
+      select: PRODUCT_CARD_SELECT,
       take: 4,
     }),
     ['related-products', sortedIds.join(','), excludeProductId],
@@ -82,7 +170,7 @@ export const getCachedBestSellers = unstable_cache(
   async () => prisma.product.findMany({
     where: { isBestSeller: true, isDeleted: false },
     take: 8,
-    include: { categories: true }
+    select: PRODUCT_CARD_SELECT
   }),
   ['home-best-sellers'],
   { tags: ['products'], revalidate: 3600 }
@@ -94,7 +182,7 @@ export const getCachedLatestProducts = unstable_cache(
     where: { isDeleted: false },
     take: 8,
     orderBy: { createdAt: 'desc' },
-    include: { categories: true }
+    select: PRODUCT_CARD_SELECT
   }),
   ['home-latest-products'],
   { tags: ['products'], revalidate: 3600 }
@@ -104,7 +192,18 @@ export const getCachedLatestProducts = unstable_cache(
 export const getCachedCategoriesTree = unstable_cache(
   async () => prisma.category.findMany({
     where: { parentId: null },
-    include: { children: true }
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      children: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        }
+      }
+    }
   }),
   ['categories-tree'],
   { tags: ['categories'], revalidate: 3600 }
@@ -112,9 +211,11 @@ export const getCachedCategoriesTree = unstable_cache(
 
 export const getCachedProductCounts = unstable_cache(
   async () => {
-    const newCount = await prisma.product.count();
-    const hotCount = await prisma.product.count({ where: { orderItems: { some: {} } } });
-    const saleCount = await prisma.product.count({ where: { compareAtPrice: { not: null } } });
+    const [newCount, hotCount, saleCount] = await Promise.all([
+      prisma.product.count({ where: { isDeleted: false } }),
+      prisma.product.count({ where: { isDeleted: false, orderItems: { some: {} } } }),
+      prisma.product.count({ where: { isDeleted: false, compareAtPrice: { not: null } } })
+    ]);
     
     return { newCount, hotCount, saleCount };
   },
@@ -127,8 +228,17 @@ export const getCachedMenus = unstable_cache(
   async () => {
     try {
       return await prisma.menu.findMany({
-        include: {
+        select: {
+          id: true,
+          name: true,
           items: {
+            select: {
+              id: true,
+              label: true,
+              url: true,
+              icon: true,
+              order: true,
+            },
             orderBy: {
               order: 'asc',
             },
@@ -155,7 +265,15 @@ export const getCachedLatestArticles = unstable_cache(
         where: { isPublished: true },
         orderBy: { createdAt: 'desc' },
         take: limit,
-        include: { _count: { select: { comments: { where: { isApproved: true } } } } }
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          image: true,
+          category: true,
+          createdAt: true,
+          _count: { select: { comments: { where: { isApproved: true } } } }
+        }
       });
     } catch (error) {
       console.error('Error fetching cached articles:', error);
